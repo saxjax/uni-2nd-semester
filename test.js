@@ -3,3 +3,5 @@ function hej() {
 }
 
 hej();
+
+console.log("Rallefar var her");
