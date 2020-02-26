@@ -15,6 +15,8 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  rules: {
+  rules: { // Regler kan findes her: https://eslint.org/docs/rules/
+    //"indent": ["error", 4],
+    //"linebreak-style": 0,
   },
 };
