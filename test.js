@@ -1,7 +1,7 @@
 function hej() {
-    return 1;
+  return 1;
 }
 
 hej();
 
-console.log("Rallefar var her");
+console.log('Rallefar var her');
