@@ -17,6 +17,6 @@ module.exports = {
   },
   rules: { // Regler kan findes her: https://eslint.org/docs/rules/
     //"indent": ["error", 4],
-    //"linebreak-style": 0,
+    "linebreak-style": 0,
   },
 };
