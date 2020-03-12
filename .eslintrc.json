@@ -16,6 +16,8 @@
         "sourceType": "module"
     },
     "rules": {
-        "linebreak-style": 0
+        "linebreak-style": 0,
+        "quotes": ["error", "backtick", {"allowTemplateLiterals": true}],
+        "no-use-before-define": ["error", {"functions": false }]
     }
 }
