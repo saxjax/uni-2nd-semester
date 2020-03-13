@@ -2,7 +2,7 @@
   "name": "p2-vidensdeling",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "dependencies": {
     "acorn-jsx": "^5.1.0",
     "acorn": "^7.1.0",
@@ -44,7 +44,10 @@
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.20.1"
+    "eslint-plugin-import": "^2.20.1",
+    "tap-simple": "^0.3.1",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.13.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
