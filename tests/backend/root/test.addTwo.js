@@ -6,7 +6,7 @@ basicTest(`Funktionen addTwo i node/calculation.js`, (assert) => {
   const actual = addTwo(3);
 
   assert.equal(actual, expected,
-    `Funktionen skulle gerne kunne lægge to til et vilkårligt tal`);
+    `Funktionen skal kunne lægge to til et vilkårligt tal`);
 
   assert.end();
 });
@@ -16,7 +16,7 @@ basicTest(`Funktionen addTwo i node/calculation.js`, (assert) => {
   const actual = addTwo(`13`);
 
   assert.equal(actual, expected,
-    `Funktionen skulle gerne kunne omdanne en streng til det tilsvarende tal`);
+    `Funktionen skal kunne omdanne en streng til det tilsvarende tal`);
 
   assert.end();
 });

@@ -24,7 +24,7 @@ basicTest(`Funktionen Y i node_www/Mappe-Z/filNavn.js`, (assert) => {
   const actual = theFunction(`x`);
 
   assert.equal(actual, expected,
-    `Funktionen skulle gerne kunne X`);
+    `Funktionen skal kunne X`);
 
   assert.end();
 });
@@ -40,7 +40,7 @@ promiseTest(`Funktionen Y i node_www/Mappe-Z/filNavn.js`, (assert) => {
   const expected = `forventet ud fra testværdi`;
 
   return promiseFunction(`testværdi`).then((actual) => assert.equal(actual, expected,
-    `Promiset skulle gerne kunne X`));
+    `Promiset skal kunne X`));
 });
 
 /* Class Methods ******************************************************** */
@@ -53,7 +53,7 @@ methodTest(`Metoden Y der tilhører objektet Z i node_www/Mappe-Z/filNavn.js`, (
   const actual = object.someMethod(`x`);
 
   assert.equal(actual, expected,
-    `Metoden skulle gerne kunne X`);
+    `Metoden skal kunne X`);
 
   assert.end();
 });
