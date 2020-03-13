@@ -1,9 +1,9 @@
 const basicTest = require(`tape`);
 
-basicTest(`Blot for at teste om det er sandt.`, (assert) => {
+basicTest(`Stuben www/js/index.js`, (assert) => {
   const actual = true;
 
-  assert.true(actual, `Skulle denne gerne returnere sandt`);
+  assert.true(actual, `Returnere altid sandt`);
 
   assert.end();
 });

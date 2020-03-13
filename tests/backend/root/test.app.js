@@ -1,9 +1,9 @@
-const basicTest = require(`tape`);
+const stubTest = require(`tape`);
 
-basicTest(`Blot for at teste om det er sandt.`, (assert) => {
+stubTest(`Stuben node/test.app.js`, (assert) => {
   const actual = true;
 
-  assert.true(actual);
+  assert.true(actual, `Returnere altid sandt`);
 
   assert.end();
 });

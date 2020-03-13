@@ -4,16 +4,27 @@
 /* npm i --save-dev tape-promise */
 
 /* JS Templates */
+/* Stubs */
+const stubTest = require(`tape`);
+
+stubTest(`Stuben node_www/Mappe-Z/index.js`, (assert) => {
+  const actual = true;
+
+  assert.true(actual, `Returnere altid sandt`);
+
+  assert.end();
+});
+
 /* `Normal` Functions ********************************************** */
 const basicTest = require(`tape`);
 const { theFunction } = require(`../../../node_Eller_www/mapper/til/dinFilDerSkalTestes.js`);
 
-basicTest(`Funktionen Y i Mappe-Z/filNavn.js`, (assert) => {
+basicTest(`Funktionen Y i node_www/Mappe-Z/filNavn.js`, (assert) => {
   const expected = `Det forventede output`;
   const actual = theFunction(`x`);
 
   assert.equal(actual, expected,
-    `theFunction kaldt på \`x\` gav ikke: \`Det forventede output\``);
+    `Funktionen skulle gerne kunne X`);
 
   assert.end();
 });
@@ -25,24 +36,24 @@ const testDecorater = require(`tape-promise`).default;
 const promiseTest = testDecorater(tape);
 const { promiseFunction } = require(`../../../node_Eller_www/mapper/til/dinFilDerSkalTestes.js`);
 
-promiseTest(`Funktionen Y i Mappe-Z/filNavn.js`, (assert) => {
+promiseTest(`Funktionen Y i node_www/Mappe-Z/filNavn.js`, (assert) => {
   const expected = `forventet ud fra testværdi`;
 
   return promiseFunction(`testværdi`).then((actual) => assert.equal(actual, expected,
-    `promiseFunction kaldt på \`testværdi\` gav ikke: \`forventet ud fra testværdi\``));
+    `Promiset skulle gerne kunne X`));
 });
 
 /* Class Methods ******************************************************** */
 const methodTest = require(`tape`);
 const { ObjectetsNavn } = require(`../../../node_Eller_www/mapper/til/dinFilDerSkalTestes.js`);
 
-methodTest(`Metoden Y der tilhører objektet Z`, (assert) => {
+methodTest(`Metoden Y der tilhører objektet Z i node_www/Mappe-Z/filNavn.js`, (assert) => {
   const expected = `Det forventede output`;
   const object = new ObjectetsNavn(`Constructor Placeholder`, `Placeholder 2`);
   const actual = object.someMethod(`x`);
 
   assert.equal(actual, expected,
-    `someMethod kaldt på \`x\` gav ikke \`Det forventede output\``);
+    `Metoden skulle gerne kunne X`);
 
   assert.end();
 });
