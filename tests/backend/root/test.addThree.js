@@ -6,7 +6,7 @@ basicTest(`Funktionen addThree i node/calculation.js`, (assert) => {
   const actual = addThree(3);
 
   assert.equal(actual, expected,
-    `addThree kaldt på 3 gav ikke: 6`);
+    `Funktionen skulle gerne kunne lægge to til et vilkårligt tal`);
 
   assert.end();
 });
@@ -16,7 +16,7 @@ basicTest(`Funktionen addThree i node/calculation.js`, (assert) => {
   const actual = addThree(`3`);
 
   assert.equal(actual, expected,
-    `addThree kaldt på "3" gav ikke: 6`);
+    `Funktionen skulle gerne kunne omdanne en streng til det tilsvarende tal`);
 
   assert.end();
 });
