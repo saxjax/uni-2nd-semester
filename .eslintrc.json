@@ -19,6 +19,8 @@
         "linebreak-style": 0,                                               // Tillader linjeskift på windows :'D
         "quotes": ["error", "backtick", {"allowTemplateLiterals": true}],   // Tillader kun at man bruger backtics i strings
         "no-use-before-define": ["error", {"functions": false }],           // Tillader at man kalder funktioner inden de er erklæret
-        "no-plusplus": 0                                                    // Tillader post- og prefix increment og decrement
+        "no-plusplus": 0,                                                   // Tillader post- og prefix increment og decrement
+        "curly": ["error", "all"],
+        "brace-style": ["error", "stroustrup"]
     }
 }
