@@ -1,13 +1,13 @@
 /* Tests */
+/* JS Test Requirements */
+const tape = require(`tape`);
+const testDecorater = require(`tape-promise`).default;
 
-/* npm i --save-dev tape */
-/* npm i --save-dev tape-promise */
+const test = testDecorater(tape);
 
 /* JS Templates */
 /* Stubs */
-const stubTest = require(`tape`);
-
-stubTest(`Stuben node_www/Mappe-Z/index.js`, (assert) => {
+test(`Stuben node_www/mapper/til/dinFil.js`, (assert) => {
   const actual = true;
 
   assert.true(actual, `Returnere altid sandt`);
@@ -15,13 +15,12 @@ stubTest(`Stuben node_www/Mappe-Z/index.js`, (assert) => {
   assert.end();
 });
 
-/* `Normal` Functions ********************************************** */
-const basicTest = require(`tape`);
-const { theFunction } = require(`../../../node_Eller_www/mapper/til/dinFilDerSkalTestes.js`);
+/* Functions ********************************************** */
+const { theFunction } = require(`../../../node_www/mapper/til/dinFil.js`);
 
-basicTest(`Funktionen Y i node_www/Mappe-Z/filNavn.js`, (assert) => {
-  const expected = `Det forventede output`;
-  const actual = theFunction(`x`);
+test(`Funktionen Y i node_www/mapper/til/dinFil.js`, (assert) => {
+  const expected = `forventet output`;
+  const actual = theFunction(`var(s)`);
 
   assert.equal(actual, expected,
     `Funktionen skal kunne X`);
@@ -29,34 +28,45 @@ basicTest(`Funktionen Y i node_www/Mappe-Z/filNavn.js`, (assert) => {
   assert.end();
 });
 
-/* Promise Functions **************************************************** */
-const tape = require(`tape`);
-const testDecorater = require(`tape-promise`).default;
+/* Async Functions */
+const { theAsyncFunction } = require(`../../../node_www/mapper/til/dinFil.js`);
 
-const promiseTest = testDecorater(tape);
-const { promiseFunction } = require(`../../../node_Eller_www/mapper/til/dinFilDerSkalTestes.js`);
+test(`Async Funktionen Y i node_www/mapper/til/dinFil.js`, async (assert) => {
+  const expected = `forventet output`;
+  const actual = await theAsyncFunction(`var(s)`);
 
-promiseTest(`Funktionen Y i node_www/Mappe-Z/filNavn.js`, (assert) => {
-  const expected = `forventet ud fra testværdi`;
+  assert.equal(actual, expected,
+    `Funktionen skal kunne X`);
 
-  return promiseFunction(`testværdi`).then((actual) => assert.equal(actual, expected,
-    `Promiset skal kunne X`));
+  assert.end();
+});
+
+/* Promise **************************************************** */
+const { promiseFunction } = require(`../../../node_www/mapper/til/dinFil.js`);
+
+test(`Promised Y i node_www/mapper/til/dinFil.js`, (assert) => {
+  const expected = `forventet output`;
+
+  return promiseFunction(`var(s)`)
+    .then((actual) => assert.equal(actual, expected, `Promiset skal kunne X`))
+    .catch((error) => assert.false(false, `Promiset resolvede ikke men catchede ${error}`));
 });
 
 /* Class Methods ******************************************************** */
-const methodTest = require(`tape`);
-const { ObjectetsNavn } = require(`../../../node_Eller_www/mapper/til/dinFilDerSkalTestes.js`);
+const { ObjectetsNavn } = require(`../../../node_www/mapper/til/dinFil.js`);
 
-methodTest(`Metoden Y der tilhører objektet Z i node_www/Mappe-Z/filNavn.js`, (assert) => {
-  const expected = `Det forventede output`;
-  const object = new ObjectetsNavn(`Constructor Placeholder`, `Placeholder 2`);
-  const actual = object.someMethod(`x`);
+test(`Metoden Y der tilhører objektet Z i node_www/mapper/til/dinFil.js`, (assert) => {
+  const expected = `forventet output`;
+  const object = new ObjectetsNavn(`Var(s)`);
+  const actual = object.someMethod(`var(s)`);
 
   assert.equal(actual, expected,
     `Metoden skal kunne X`);
 
   assert.end();
 });
+
+/* React/JSDOM Test Requirements */
 
 /* React Templates ********************************************** */
 /* Rendering **************************************************** */

@@ -47,7 +47,8 @@
     "eslint-plugin-import": "^2.20.1",
     "tap-simple": "^0.3.1",
     "tap-spec": "^5.0.0",
-    "tape": "^4.13.2"
+    "tape": "^4.13.2",
+    "tape-promise": "^4.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
