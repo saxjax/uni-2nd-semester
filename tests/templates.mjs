@@ -10,10 +10,10 @@ const { theFunction } = require(`../../../node_Eller_www/mapper/til/dinFilDerSka
 
 basicTest(`Funktionen Y i Mappe-Z/filNavn.js`, (assert) => {
   const expected = `Det forventede output`;
-  const actual = theFunction();
+  const actual = theFunction(`x`);
 
   assert.equal(actual, expected,
-    `Skulle gerne kunne gøre X`);
+    `theFunction kaldt på \`x\` gav ikke: \`Det forventede output\``);
 
   assert.end();
 });
@@ -29,7 +29,7 @@ promiseTest(`Funktionen Y i Mappe-Z/filNavn.js`, (assert) => {
   const expected = `forventet ud fra testværdi`;
 
   return promiseFunction(`testværdi`).then((actual) => assert.equal(actual, expected,
-    `Skulle gerne kunne gøre X`));
+    `promiseFunction kaldt på \`testværdi\` gav ikke: \`forventet ud fra testværdi\``));
 });
 
 /* Class Methods ******************************************************** */
@@ -39,10 +39,10 @@ const { ObjectetsNavn } = require(`../../../node_Eller_www/mapper/til/dinFilDerS
 methodTest(`Metoden Y der tilhører objektet Z`, (assert) => {
   const expected = `Det forventede output`;
   const object = new ObjectetsNavn(`Constructor Placeholder`, `Placeholder 2`);
-  const actual = object.someMethod();
+  const actual = object.someMethod(`x`);
 
   assert.equal(actual, expected,
-    `Skulle gerne kunne gøre X`);
+    `someMethod kaldt på \`x\` gav ikke \`Det forventede output\``);
 
   assert.end();
 });
