@@ -20,7 +20,8 @@
         "quotes": ["error", "backtick", {"allowTemplateLiterals": true}],   // Tillader kun at man bruger backtics i strings
         "no-use-before-define": ["error", {"functions": false }],           // Tillader at man kalder funktioner inden de er erklæret
         "no-plusplus": 0,                                                   // Tillader post- og prefix increment og decrement
-        "curly": ["error", "all"],
-        "brace-style": ["error", "stroustrup"]
+        "curly": ["error", "all"],                                          // Vi skal altid bruge curly brackets
+        "brace-style": ["error", "stroustrup"],                             // Håndhæver stroustrup reglen: https://eslint.org/docs/rules/brace-style#stroustrup
+        "radix": ["error", "as-needed"]                                     // Tillader parseInt(var) uden radix-parameter
     }
 }
