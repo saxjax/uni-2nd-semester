@@ -8,7 +8,7 @@
 const basicTest = require(`tape`);
 const { theFunction } = require(`../../../node_Eller_www/mapper/til/dinFilDerSkalTestes.js`);
 
-basicTest(`Funktionen Y`, (assert) => {
+basicTest(`Funktionen Y i Mappe-Z/filNavn.js`, (assert) => {
   const expected = `Det forventede output`;
   const actual = theFunction();
 
@@ -25,7 +25,7 @@ const testDecorater = require(`tape-promise`).default;
 const promiseTest = testDecorater(tape);
 const { promiseFunction } = require(`../../../node_Eller_www/mapper/til/dinFilDerSkalTestes.js`);
 
-promiseTest(`Funktionen Y`, (assert) => {
+promiseTest(`Funktionen Y i Mappe-Z/filNavn.js`, (assert) => {
   const expected = `forventet ud fra testværdi`;
 
   return promiseFunction(`testværdi`).then((actual) => assert.equal(actual, expected,

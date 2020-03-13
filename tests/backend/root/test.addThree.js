@@ -1,7 +1,7 @@
 const basicTest = require(`tape`);
 const { addThree } = require(`../../../node/calculation.js`);
 
-basicTest(`Funktionen addThree`, (assert) => {
+basicTest(`Funktionen addThree i node/calculation.js`, (assert) => {
   const expected = 6;
   const actual = addThree(3);
 
@@ -11,7 +11,7 @@ basicTest(`Funktionen addThree`, (assert) => {
   assert.end();
 });
 
-basicTest(`Funktionen addThree`, (assert) => {
+basicTest(`Funktionen addThree i node/calculation.js`, (assert) => {
   const expected = 6;
   const actual = addThree(`3`);
 
