@@ -31,11 +31,11 @@ promiseTest(`testPromise skal konvertere string input til numbers`, (assert) => 
 });
 
 
-/* React Rendering**************************************************** */
+/* React Rendering **************************************************** */
 // Se kilder i bunden. Mangler Template
 
-/* Eksempler (der fejler)********************************************* */
-/* Funktionerne der skal testes*************************************** */
+/* Eksempler (der fejler) ********************************************* */
+/* Funktionerne der skal testes *************************************** */
 function testFunktion(inputValue) {
   return Number(inputValue) + 5;
 }
@@ -47,7 +47,7 @@ function testPromise(inputValue) {
   }));
 }
 
-/* Non-Async*********************************************************** */
+/* Non-Async *********************************************************** */
 basicTest(`testFunktion skal konvertere string input til numbers`, (assert) => {
   const expected = 6;
   const actual = testFunktion(`1`);
@@ -60,7 +60,7 @@ basicTest(`testFunktion skal konvertere string input til numbers`, (assert) => {
   assert.end();
 });
 
-/* Promise**************************************************************** */
+/* Promise **************************************************************** */
 promiseTest(`testPromise skal konvertere string input til numbers`, (assert) => {
   const expected = 6;
 
@@ -70,7 +70,7 @@ promiseTest(`testPromise skal konvertere string input til numbers`, (assert) => 
             + `Desuden må man meget gerne gøre beskrivelserne længere hvis man har behov for det`));
 });
 
-/* Kilder**************************************************************** */
+/* Kilder **************************************************************** */
 // Tape:              https://medium.com/javascript-scene/why-i-use-tape-instead-of-mocha-so-should-you-6aa105d8eaf4
 // Tape-Promise:      https://github.com/jprichardson/tape-promise
 // Shallow Rendering: https://simonsmith.io/unit-testing-react-components-without-a-dom
