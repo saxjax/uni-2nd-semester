@@ -33,10 +33,14 @@ const { theAsyncFunction } = require(`../../../node_www/mapper/til/dinFil.js`);
 
 test(`Async Funktionen Y i node_www/mapper/til/dinFil.js`, async (assert) => {
   const expected = `forventet output`;
-  const actual = await theAsyncFunction(`par/s`);
-
-  assert.equal(actual, expected,
-    `Funktionen skal kunne X`);
+  try {
+    const actual = await theAsyncFunction(`par/s`);
+    assert.equal(actual, expected,
+      `Funktionen skal kunne X`);
+  }
+  catch (error) {
+    assert.false(false, `Async Funcktionen resolvede ikke, men catchede: ${error}`);
+  }
 
   assert.end();
 });
@@ -49,7 +53,7 @@ test(`Promised Y i node_www/mapper/til/dinFil.js`, (assert) => {
 
   return promiseFunction(`par/s`)
     .then((actual) => assert.equal(actual, expected, `Promiset skal kunne X`))
-    .catch((error) => assert.false(false, `Promiset resolvede ikke men catchede ${error}`));
+    .catch((error) => assert.false(false, `Promiset resolvede ikke, men catchede ${error}`));
 });
 
 /* Class Methods ******************************************************** */
