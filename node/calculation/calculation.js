@@ -7,10 +7,16 @@ function addThree(val) {
 }
 
 async function addFour(val) {
+  let result;
   const promise = new Promise((resolve) => {
     setTimeout(() => resolve(val + 4), 400);
   });
-  const result = await promise;
+  try {
+    result = await promise;
+  }
+  catch (error) {
+    result = error;
+  }
   return result;
 }
 
