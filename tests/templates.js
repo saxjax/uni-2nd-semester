@@ -39,7 +39,7 @@ test(`Async Funktionen Y i node_www/mapper/til/dinFil.js`, async (assert) => {
       `Funktionen skal kunne X`);
   }
   catch (error) {
-    assert.false(false, `Async Funcktionen resolvede ikke, men catchede: ${error}`);
+    assert.false(false, `Async Funktionen resolvede ikke, men catchede: ${error}`);
   }
 
   assert.end();
