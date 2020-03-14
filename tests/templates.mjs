@@ -20,7 +20,7 @@ const { theFunction } = require(`../../../node_www/mapper/til/dinFil.js`);
 
 test(`Funktionen Y i node_www/mapper/til/dinFil.js`, (assert) => {
   const expected = `forventet output`;
-  const actual = theFunction(`var(s)`);
+  const actual = theFunction(`par/s`);
 
   assert.equal(actual, expected,
     `Funktionen skal kunne X`);
@@ -33,7 +33,7 @@ const { theAsyncFunction } = require(`../../../node_www/mapper/til/dinFil.js`);
 
 test(`Async Funktionen Y i node_www/mapper/til/dinFil.js`, async (assert) => {
   const expected = `forventet output`;
-  const actual = await theAsyncFunction(`var(s)`);
+  const actual = await theAsyncFunction(`par/s`);
 
   assert.equal(actual, expected,
     `Funktionen skal kunne X`);
@@ -47,7 +47,7 @@ const { promiseFunction } = require(`../../../node_www/mapper/til/dinFil.js`);
 test(`Promised Y i node_www/mapper/til/dinFil.js`, (assert) => {
   const expected = `forventet output`;
 
-  return promiseFunction(`var(s)`)
+  return promiseFunction(`par/s`)
     .then((actual) => assert.equal(actual, expected, `Promiset skal kunne X`))
     .catch((error) => assert.false(false, `Promiset resolvede ikke men catchede ${error}`));
 });
@@ -57,8 +57,8 @@ const { ObjectetsNavn } = require(`../../../node_www/mapper/til/dinFil.js`);
 
 test(`Metoden Y der tilhører objektet Z i node_www/mapper/til/dinFil.js`, (assert) => {
   const expected = `forventet output`;
-  const object = new ObjectetsNavn(`Var(s)`);
-  const actual = object.someMethod(`var(s)`);
+  const object = new ObjectetsNavn(`Atr/s`);
+  const actual = object.someMethod(`par/s`);
 
   assert.equal(actual, expected,
     `Metoden skal kunne X`);

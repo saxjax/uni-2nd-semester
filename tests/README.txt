@@ -1,16 +1,22 @@
-For at gå igennem alle test, brug denne kommando fra root directory:
+Kommando til at gennemgå alle test:
 node_modules\.bin\tape tests/**/*.js | node_modules\.bin\tap-spec
 
-For at arbejde testbaseret, lav din unittest og arbejd mens scriptet herunder kører:
+Kommando til at arbejde testbaseret i realtime:
 nodemon tests/backend_eller_frontend/mappeMedDinTest/test.filNavn.js | .\node_modules\.bin\tap-simple
 
-eksporter sådan her:
+SÅDAN LAVES EN TEST
+Lav en mappe der har dit filnavn i tests/backend eller tests/frontend.
+I mappen, lav en fil pr. navngivet funktion.
+Den første unittest i hver fil er den der tester for hvad funktionen skal returnere efter hensigten (kravsspecifikationen).
+De resterende unittest er til for at teste fejlkilder (forkert input, forkert udregning, andre funktionaliteter i funktionen)
+Hvordan de laves er der templates for i tests/templates.mjs
+En test tester kravsspecifikationen til funktionen, altså "hvad bør denne funktion gøre?"
+
+eksporter dine funktioner/objekter i bunden af ikke-test filen sådan her:
 
 module.exports = {
-  addTwo,
-  addThree,
+  functionOne,
+  functionTwo,
+  objectOne,
+  objectTwo
 };
-
-Installer test værktøjer sådan her:
-npm i tape-spec -D
-npm i nodemon -g
