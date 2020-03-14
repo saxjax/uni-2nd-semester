@@ -10,7 +10,7 @@ test(`Async Funktionen addFour i node/calculation/calculation.js`, async (assert
   const actual = await addFour(2);
 
   assert.equal(actual, expected,
-    `Funktionen skal kunne lægge 4 til en vilkårlig`);
+    `Funktionen skal kunne lægge 4 til et vilkårligt tal`);
 
   assert.end();
 });
@@ -20,7 +20,7 @@ test(`Async Funktionen addFour i node/calculation/calculation.js`, async (assert
   const actual = await addFour(`2`);
 
   assert.equal(actual, expected,
-    `Funktionen skal kunne omdanne en streng til et tilsvarende tal`);
+    `Funktionen skal kunne omdanne en streng til det tilsvarende tal`);
 
   assert.end();
 });
