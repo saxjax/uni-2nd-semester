@@ -10,7 +10,7 @@ test(`Async Funktionen addFour i node/calculation/calculation.js`, async (assert
   try {
     const actual = await addFour(2);
     assert.equal(actual, expected,
-      `Funktionen skal kunne lægge 4 til et vilkårligt tal`);
+      `Funktionen fik ${actual} og forventede ${expected}`);
   }
   catch (error) {
     assert.false(false, `Async Funcktionen resolvede ikke, men catchede: ${error}`);
@@ -24,7 +24,7 @@ test(`Async Funktionen addFour i node/calculation/calculation.js`, async (assert
   try {
     const actual = await addFour(`2`);
     assert.equal(actual, expected,
-      `Funktionen skal kunne omdanne en streng til det tilsvarende tal`);
+      `Funktionen fik ${actual} og forventede ${expected}`);
   }
   catch (error) {
     assert.false(false, `Async Funcktionen resolvede ikke, men catchede: ${error}`);

@@ -20,8 +20,19 @@ async function addFour(val) {
   return result;
 }
 
+class Adder {
+  constructor(value) {
+    this.value = value;
+  }
+
+  addFive() {
+    return this.value + 5;
+  }
+}
+
 module.exports = {
   addTwo,
   addThree,
   addFour,
+  Adder,
 };

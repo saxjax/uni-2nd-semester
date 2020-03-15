@@ -5,12 +5,20 @@ const test = testDecorater(tape);
 
 const { addTwo } = require(`../../../node/calculation/calculation.js`);
 
+test(`Kravsspecifikationen node/calculation/calculation.js`, (assert) => {
+  const actual = true;
+
+  assert.true(actual, `Specifikation 0`);
+
+  assert.end();
+});
+
 test(`Funktionen addTwo i node/calculation/calculation.js`, (assert) => {
   const expected = 5;
   const actual = addTwo(3);
 
   assert.equal(actual, expected,
-    `Funktionen skal kunne lægge to til et vilkårligt tal`);
+    `Specifikation 1`);
 
   assert.end();
 });
@@ -20,7 +28,7 @@ test(`Funktionen addTwo i node/calculation/calculation.js`, (assert) => {
   const actual = addTwo(`13`);
 
   assert.equal(actual, expected,
-    `Funktionen skal kunne omdanne en streng til det tilsvarende tal`);
+    `Specifikation 2`);
 
   assert.end();
 });
