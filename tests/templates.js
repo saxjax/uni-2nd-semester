@@ -7,10 +7,10 @@ const test = testDecorater(tape);
 
 /* JS Templates */
 /* Stubs */
-test(`Stuben node_www/mapper/til/dinFil.js`, (assert) => {
+test(`Kravsspecifikationen node_www/mapper/til/filNavn.js`, (assert) => {
   const actual = true;
 
-  assert.true(actual, `Returnere altid sandt`);
+  assert.true(actual, `Specifikation 0`);
 
   assert.end();
 });
@@ -18,12 +18,12 @@ test(`Stuben node_www/mapper/til/dinFil.js`, (assert) => {
 /* Functions ********************************************** */
 const { theFunction } = require(`../../../node_www/mapper/til/dinFil.js`);
 
-test(`Funktionen Y i node_www/mapper/til/dinFil.js`, (assert) => {
+test(`Funktionen Y i node_www/mapper/til/filNavn.js`, (assert) => {
   const expected = `forventet output`;
   const actual = theFunction(`par/s`);
 
   assert.equal(actual, expected,
-    `Funktionen skal kunne X`);
+    `Specifikation X`);
 
   assert.end();
 });
@@ -36,7 +36,7 @@ test(`Async Funktionen Y i node_www/mapper/til/dinFil.js`, async (assert) => {
   try {
     const actual = await theAsyncFunction(`par/s`);
     assert.equal(actual, expected,
-      `Funktionen skal kunne X`);
+      `Specifikation X`);
   }
   catch (error) {
     assert.false(false, `Async Funktionen resolvede ikke, men catchede: ${error}`);
@@ -65,7 +65,7 @@ test(`Metoden Y der tilhører objektet Z i node_www/mapper/til/dinFil.js`, (asse
   const actual = object.someMethod(`par/s`);
 
   assert.equal(actual, expected,
-    `Metoden skal kunne X`);
+    `Specifikation X`);
 
   assert.end();
 });
