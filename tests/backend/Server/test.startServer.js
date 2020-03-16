@@ -10,6 +10,7 @@ let object = new Server();
 test(`Test af startServer i node/Server`, (assert) => {
   assert.equal(actual, expected, `Testen skulle gerne være oprettet.`);
 
+  object = new Server();
   const serverStart = object.startServer();
 
   assert.true(serverStart, `Metoden skal kunne starte og slukke`);
