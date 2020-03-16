@@ -1,73 +1,62 @@
 /* Tests */
-/* JS Test Requirements */
+/* Start Template **************************************************** */
 const tape = require(`tape`);
 const testDecorater = require(`tape-promise`).default;
 
 const test = testDecorater(tape);
+const { Navn } = require(`../../../node_www/mapper/til/dinFil.js`);
+let actual = true;
+let expected = true;
+let object = new Navn();
 
-/* JS Templates */
-/* Stubs */
-test(`Kravsspecifikationen node_www/mapper/til/filNavn.js`, (assert) => {
-  const actual = true;
+test(`Test af X i node_www/objektNavn`, (assert) => {
+  assert.equal(actual, expected, `Skulle gerne være oprettet.`);
 
-  assert.true(actual, `Specifikation 0`);
+  /* Indsæt variable og asserts her */
 
   assert.end();
 });
 
 /* Functions ********************************************** */
-const { theFunction } = require(`../../../node_www/mapper/til/dinFil.js`);
-
-test(`Funktionen Y i node_www/mapper/til/filNavn.js`, (assert) => {
-  const expected = `forventet output`;
-  const actual = theFunction(`par/s`);
+test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
+  expected = `forventet output`;
+  actual = Navn(`par/s`);
 
   assert.equal(actual, expected,
-    `Specifikation X`);
-
-  assert.end();
+    `{Forventet: ${expected} Reel: ${actual}} Funktionen skal kunne X`);
 });
 
-/* Async Functions */
-const { theAsyncFunction } = require(`../../../node_www/mapper/til/dinFil.js`);
+/* Class Methods ******************************************************** */
+test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
+  expected = `forventet output`;
+  object = new Navn(`Atr/s`);
+  actual = object.someMethod(`par/s`);
 
-test(`Async Funktionen Y i node_www/mapper/til/dinFil.js`, async (assert) => {
-  const expected = `forventet output`;
+  assert.equal(actual, expected,
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne X`);
+});
+
+/* Async Functions **************************************************** */
+test(`Kopier det nedenunder ind i Start Templaten`, async (assert) => {
+  expected = `forventet output`;
   try {
-    const actual = await theAsyncFunction(`par/s`);
+    actual = await Navn(`par/s`);
     assert.equal(actual, expected,
-      `Specifikation X`);
+      `{Forventet: ${expected} Reel: ${actual}} Async Funktionen skal kunne X`);
   }
   catch (error) {
     assert.false(false, `Async Funktionen resolvede ikke, men catchede: ${error}`);
   }
-
-  assert.end();
 });
 
 /* Promise **************************************************** */
-const { promiseFunction } = require(`../../../node_www/mapper/til/dinFil.js`);
+test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
+  expected = `forventet output`;
 
-test(`Promised Y i node_www/mapper/til/dinFil.js`, (assert) => {
-  const expected = `forventet output`;
-
-  return promiseFunction(`par/s`)
-    .then((actual) => assert.equal(actual, expected, `Promiset skal kunne X`))
+  return Navn(`par/s`)
+    .then((actua) => assert.equal(actua, expected,
+      `{Forventet: ${expected} Reel: ${actual}} Promiset skal kunne X`))
     .catch((error) => assert.false(false, `Promiset resolvede ikke, men catchede ${error}`));
-});
-
-/* Class Methods ******************************************************** */
-const { ObjectetsNavn } = require(`../../../node_www/mapper/til/dinFil.js`);
-
-test(`Metoden Y der tilhører objektet Z i node_www/mapper/til/dinFil.js`, (assert) => {
-  const expected = `forventet output`;
-  const object = new ObjectetsNavn(`Atr/s`);
-  const actual = object.someMethod(`par/s`);
-
-  assert.equal(actual, expected,
-    `Specifikation X`);
-
-  assert.end();
 });
 
 /* React/JSDOM Test Requirements */
