@@ -21,7 +21,6 @@ class Server {
   startServer(startMsg) {
     this.staticMiddleware();
     this.urlPatterns();
-    this.query();
 
     return this.app.listen(this.port, () => console.log(`${startMsg}`));
   }
@@ -30,7 +29,7 @@ class Server {
     const Show = new ViewController();
     this.app.get(`/`, (req, res) => Show.homePage(req, res));
     this.app.get(`/about`, (req, res) => Show.aboutPage(req, res));
-    this.app.get(`/form/?{d+}/`, (req, res) => Show.businessLogicPage(req, res));
+    this.app.get(`/form/`, (req, res) => Show.businessLogicPage(req, res));
   }
 
   staticMiddleware() {

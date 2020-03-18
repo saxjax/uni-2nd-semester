@@ -1,5 +1,5 @@
 class GroupMember {
-  constructor() {
+  constructor(request) {
     this.name = `GroupMember`;
   }
 /*
