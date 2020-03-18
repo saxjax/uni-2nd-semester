@@ -69,6 +69,7 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 *.komodoproject
+*.code-workspace
 package-lock.json
 package.json
 
