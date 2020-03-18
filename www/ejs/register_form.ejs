@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="utf-8">
+		<%- include(`header.ejs`)  %> 
 		<title>Login Form Tutorial</title>
 		<link rel="stylesheet" href="css/index.css">
 	</head>
 	<body>
-		<div class="Register-form">
+		<div class="login-form">
 			<h1>Register form</h1>
 			<form action="auth" method="POST">
 				<input type="text" name="username" placeholder="Username" required>
@@ -14,6 +14,6 @@
 				<input type="submit">
 			</form>
 			</div>
+	<%- include(`footer.ejs`) %> 
 	</body>
-	</html>
-	
+</html>
