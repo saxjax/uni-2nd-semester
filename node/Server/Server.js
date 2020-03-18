@@ -16,6 +16,7 @@ class Server {
       password: `Admin123!`,
       database: `p2`,
     });
+    this.root = __dirname.slice(0, -(`node/Server`.length));
   }
 
   startServer(startMsg) {
@@ -32,12 +33,12 @@ class Server {
     this.app.get(`/about`, (req, res) => Show.aboutPage(req, res));
     this.app.get(`/form/`, (req, res) => Show.businessLogicPage(req, res));
     this.app.get(`/1234`, (req, res) => Show.testPage(req, res));
+    this.app.get(`/register`, (req, res) => Show.registerPage(req, res));
+    this.app.get(`/login`, (req, res) => Show.loginPage(req, res));
   }
 
   staticMiddleware() {
-    this.app.use(express.static(`../../www/css`));
-    this.app.use(express.static(`../../www/img`));
-    this.app.use(express.static(`../../www/js`));
+    this.app.use(`/css`, express.static(`${this.root}/www/css`));
   }
 
   query() {

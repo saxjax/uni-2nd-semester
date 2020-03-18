@@ -15,7 +15,6 @@ class ViewController {
   }
 
   homePage(req, res) {
-    console.log(this.root);
     this.ejs = path.join(`${this.root}/www/ejs/home.ejs`);
     res.render(this.ejs);
   }
@@ -35,7 +34,18 @@ class ViewController {
     this.html = `Jeg er frustreret`;
     res.send(`Hello World`);
   }
+
+  registerPage(req, res) {
+    this.ejs = path.join(`${this.root}/www/ejs/register_form.ejs`);
+    res.render(this.ejs);
+  }
+
+  loginPage(req, res) {
+    this.ejs = path.join(`${this.root}/www/ejs/login.ejs`);
+    res.render(this.ejs);
+  }
 }
+
 
 module.exports = {
   ViewController,
