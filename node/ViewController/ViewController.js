@@ -5,11 +5,12 @@ const { Expert } = require(`../Expert/Expert.js`);
 class ViewController {
   constructor(request) {
     this.name = `ViewController`;
-    this.dir = __dirname;
+    this.root = __dirname.slice(0, -(`node/ViewController`.length));
   }
 
   homePage(req, res) {
-    this.html = path.join(`${this.dir}/home.html`);
+    console.log(this.root);
+    this.html = path.join(`${this.root}/www/index.html`);
     res.sendFile(this.html);
   }
 
