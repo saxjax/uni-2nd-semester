@@ -25,3 +25,42 @@ function elementList(elements){
         }
     return a-list-of-elements-viewElement
 }
+
+//icon telling if an evaluation is createt for a section
+//takes a bool  true->green  , false->red, color overrides true/false color
+class EvalCreatetViewObject {
+    constructor(color, bool) {  }
+}
+
+//a status view showing progress and amount of finished evaluations over total availlable evaluations
+//takes pct(0-100), takenEvals, totalEvals
+class StatusViewObject {
+    constructor(pct,finishedEval,totalEval){
+
+    }
+}
+
+//list of elements
+//takes an array of any elements returns an array of viewObjects for displaying in a list
+//takes styles to create different list types, (standard/timemachine)
+class elementListViewObject{
+    constructor(elements){
+
+    }
+}
+
+// presents  sections, highlights keywords depending on users answers in evaluation tools
+//displays red and green key to indicate whether a page contains keywords and if the keywords 
+// are mmarked as known or unknown in users Evaluationlog.
+class documentDisplayViewObject{
+    constructor(Sections,keywords){
+
+    }
+}
+
+//key symbol to indicate if a keyword is known or the user shuld be extra opmærksom
+class keywordIndicatorViewObject{
+    constructor(color, bool){
+    }
+}
+
