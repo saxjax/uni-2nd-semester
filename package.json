@@ -2,7 +2,7 @@
   "name": "p2-vidensdeling",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "main.js",
   "dependencies": {
     "acorn": "^7.1.1",
     "acorn-jsx": "^5.1.0",
