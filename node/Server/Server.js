@@ -27,6 +27,7 @@ class Server {
 
   urlPatterns() {
     const Show = new ViewController();
+    this.app.get(`/template`, (req, res) => Show.template(req, res));
     this.app.get(`/`, (req, res) => Show.homePage(req, res));
     this.app.get(`/about`, (req, res) => Show.aboutPage(req, res));
     this.app.get(`/form/`, (req, res) => Show.businessLogicPage(req, res));

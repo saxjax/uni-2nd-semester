@@ -8,10 +8,16 @@ class ViewController {
     this.root = __dirname.slice(0, -(`node/ViewController`.length));
   }
 
+
+  template(req, res) {
+    this.ejs = path.join(`${this.root}/www/ejs/template.ejs`);
+    res.render(this.ejs);
+  }
+
   homePage(req, res) {
     console.log(this.root);
-    this.html = path.join(`${this.root}/www/index.html`);
-    res.sendFile(this.html);
+    this.ejs = path.join(`${this.root}/www/ejs/home.ejs`);
+    res.render(this.ejs);
   }
 
   aboutPage(req, res) {
