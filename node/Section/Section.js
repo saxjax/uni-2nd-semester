@@ -1,5 +1,5 @@
 class Section {
-  constructor() {
+  constructor(request) {
     this.name = `Section`;
   }
 }

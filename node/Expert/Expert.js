@@ -1,5 +1,5 @@
 class Expert {
-  constructor(req) {
+  constructor(request) {
     this.name = `Expert`;
     this.firstname = `Poul`;
   }

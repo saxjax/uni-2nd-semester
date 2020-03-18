@@ -1,5 +1,5 @@
 class Document {
-  constructor() {
+  constructor(request) {
     this.name = `Document`;
   }
 }

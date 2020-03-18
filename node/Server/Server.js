@@ -2,7 +2,7 @@ const express = require(`express`);
 // const bodyParser = require(`body-parser`);
 const mysql = require(`mysql`);
 
-const { Client } = require(`../Client/Client.js`);
+const { ViewController } = require(`../ViewController/ViewController.js`);
 
 class Server {
   constructor() {
@@ -27,7 +27,7 @@ class Server {
   }
 
   urlPatterns() {
-    const Show = new Client();
+    const Show = new ViewController();
     this.app.get(`/`, (req, res) => Show.homePage(req, res));
     this.app.get(`/about`, (req, res) => Show.aboutPage(req, res));
     this.app.get(`/form/?{d+}/`, (req, res) => Show.businessLogicPage(req, res));

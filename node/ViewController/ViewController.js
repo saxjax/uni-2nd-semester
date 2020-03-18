@@ -1,7 +1,7 @@
 const { Expert } = require(`../Expert/Expert.js`);
 
-class Client {
-  constructor() {
+class ViewController {
+  constructor(request) {
     this.name = `Client`;
     this.html = ``;
   }
@@ -43,5 +43,5 @@ class Client {
 }
 
 module.exports = {
-  Client,
+  ViewController,
 };
