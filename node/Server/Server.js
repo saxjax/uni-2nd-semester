@@ -30,6 +30,7 @@ class Server {
     this.app.get(`/`, (req, res) => Show.homePage(req, res));
     this.app.get(`/about`, (req, res) => Show.aboutPage(req, res));
     this.app.get(`/form/`, (req, res) => Show.businessLogicPage(req, res));
+    this.app.get(`/1234`, (req, res) => Show.testPage(req, res));
   }
 
   staticMiddleware() {

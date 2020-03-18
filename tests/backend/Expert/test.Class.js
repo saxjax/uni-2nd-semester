@@ -10,10 +10,11 @@ let object = new Expert();
 test(`Test af Expert Klassen i node/Expert`, (assert) => {
   assert.equal(actual, expected, `Testen skulle gerne være oprettet.`);
 
-  actual = true;
-  expected = true;
   object = new Expert();
-  assert.equal(object.name, object.name, `Ny test`);
+  actual = object.name;
+  expected = `Expert`;
+
+  assert.equal(actual, expected, `{Forventet: ${expected} Reel: ${actual}} Klassen skulle gerne have navn efter sig selv`);
 
   assert.end();
 });

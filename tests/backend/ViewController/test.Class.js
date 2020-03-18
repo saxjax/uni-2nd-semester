@@ -10,10 +10,11 @@ let object = new ViewController();
 test(`Test af ViewController Klassen i node/ViewController`, (assert) => {
   assert.equal(actual, expected, `Skulle gerne være oprettet.`);
 
-  actual = true;
-  expected = true;
   object = new ViewController();
-  assert.equal(object.name, object.name, `Ny test`);
+  actual = object.name;
+  expected = `ViewController`;
+
+  assert.equal(actual, expected, `{Forventet: ${expected} Reel: ${actual}} Klassen skulle gerne have navn efter sig selv`);
 
   assert.end();
 });

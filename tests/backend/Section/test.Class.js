@@ -10,10 +10,11 @@ let object = new Section();
 test(`Test af Section klassen i node/Section`, (assert) => {
   assert.equal(actual, expected, `Testen skulle gerne være oprettet.`);
 
-  actual = true;
-  expected = true;
   object = new Section();
-  assert.equal(object.name, object.name, `Ny test`);
+  actual = object.name;
+  expected = `Section`;
+
+  assert.equal(actual, expected, `{Forventet: ${expected} Reel: ${actual}} Klassen skulle gerne have navn efter sig selv`);
 
   assert.end();
 });

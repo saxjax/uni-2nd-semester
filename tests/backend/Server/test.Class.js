@@ -10,10 +10,11 @@ let object = new Server();
 test(`Test af Server Klassen i node/Server`, (assert) => {
   assert.equal(actual, expected, `Testen skulle gerne være oprettet.`);
 
-  actual = true;
-  expected = true;
   object = new Server();
-  assert.equal(object.name, object.name, `Ny test`);
+  actual = object.name;
+  expected = `Server`;
+
+  assert.equal(actual, expected, `{Forventet: ${expected} Reel: ${actual}} Klassen skulle gerne have navn efter sig selv`);
 
   assert.end();
 });

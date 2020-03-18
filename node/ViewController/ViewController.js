@@ -4,7 +4,7 @@ const { Expert } = require(`../Expert/Expert.js`);
 
 class ViewController {
   constructor(request) {
-    this.name = `Client`;
+    this.name = `ViewController`;
     this.dir = __dirname;
   }
 
@@ -22,6 +22,11 @@ class ViewController {
     const Master = new Expert(req);
     this.html = `<p>På denne side vil du gerne vide et tilfældigt navn som er ${Master.firstname}</p>`;
     res.send(this.html);
+  }
+
+  testPage(req, res) {
+    this.html = `Jeg er frustreret`;
+    res.send(`Hello World`);
   }
 }
 

@@ -1,9 +1,9 @@
-class GroupMember {
+class User {
   constructor(request) {
-    this.name = `GroupMember`;
+    this.name = `User`;
   }
 /*
-  validateUser(req){
+  validateUser(){
       lookup req.user and lookup req.password in dabase;
         return rightio;
       else;
@@ -13,5 +13,5 @@ class GroupMember {
 }
 
 module.exports = {
-  GroupMember,
+  User,
 };
