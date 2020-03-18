@@ -20,6 +20,7 @@ module.exports = {
 
 For hver eksporteret funktion skal der være en unittest. Eksporteres en Class skal alle metoder unittestes.
 
+<<<<<<< HEAD
 *INSTALLATIONS NPM
 npm i tape
 npm i --save-dev tape-promise
@@ -27,3 +28,14 @@ npm i tap-spec
 npm i mysql
 npm i express --save
 npm i eslint --save-dev
+=======
+## Node moduler
+```
+npm install express --save
+npm install mysql
+npm i tape
+npm i --save-dev tape-promise
+npm i tap-spec
+npm install eslint --save-dev
+```
+>>>>>>> 520a761eda9669cb66d6e7847cad9a25776998ab
