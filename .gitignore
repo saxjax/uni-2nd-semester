@@ -70,8 +70,6 @@ Thumbs.db
 *.sublime-workspace
 *.komodoproject
 *.code-workspace
-package-lock.json
-package.json
 
 # ignore log files and databases
 *.log
