@@ -28,4 +28,5 @@ npm i tape
 npm i --save-dev tape-promise
 npm i tap-spec
 npm install eslint --save-dev
+npm install ejs
 ```
