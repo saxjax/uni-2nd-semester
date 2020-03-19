@@ -31,14 +31,5 @@ Alle metoder i Classes skal unittestes.
 Avancerede funktioner kan med fordel unittestes.
 
 ## Node moduler
-```
-npm install express --save
-npm install mysql
-npm i tape
-npm i --save-dev tape-promise
-npm i tap-spec
-npm install eslint --save-dev
-npm i jsdom
-npm i fs
-call npm i ejs
-```
+Kør`npm install` for at installerer alle dependencies.
+
