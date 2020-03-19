@@ -44,6 +44,16 @@ class ViewController {
     this.ejs = path.join(`${this.root}/www/ejs/login.ejs`);
     res.render(this.ejs);
   }
+
+  evalPage(req, res) {
+    this.ejs = path.join(`${this.root}/www/ejs/evalueringer.ejs`);
+    res.render(this.ejs);
+  }
+
+  rapPage(req, res) {
+    this.ejs = path.join(`${this.root}/www/ejs/rapport.ejs`);
+    res.render(this.ejs);
+  }
 }
 
 

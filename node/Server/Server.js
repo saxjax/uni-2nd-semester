@@ -35,6 +35,8 @@ class Server {
     this.app.get(`/1234`, (req, res) => Show.testPage(req, res));
     this.app.get(`/register`, (req, res) => Show.registerPage(req, res));
     this.app.get(`/login`, (req, res) => Show.loginPage(req, res));
+    this.app.get(`/eval`, (req, res) => Show.evalPage(req, res));
+    this.app.get(`/rapport`, (req, res) => Show.rapPage(req, res));
   }
 
   staticMiddleware() {
