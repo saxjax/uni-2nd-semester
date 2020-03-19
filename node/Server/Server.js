@@ -1,3 +1,5 @@
+/* eslint no-console: off */
+
 const express = require(`express`);
 // const bodyParser = require(`body-parser`);
 const mysql = require(`mysql`);
@@ -46,7 +48,7 @@ class Server {
       if (err) {
         throw err;
       }
-      this.con.query(`SELECT * from books WHERE book_title like "Megadeth%"`, (error, result, fields) => {
+      this.con.query(`SELECT * from books WHERE book_title like "Megadeth%"`, (error, result) => { // optional third parameter: fields
         if (error) {
           throw error;
         }
