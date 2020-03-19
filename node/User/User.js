@@ -18,28 +18,21 @@ class User {
   }
 
   loginValid() {
-    const res = new Promise((resolve, reject) => {
-      console.log(this.username);
-      console.log(this.password);
-      if (this.username && this.password) {
-        this.con.query(`SELECT * FROM users WHERE username = ? AND password = ?`, [this.username, this.password], (error, results, fields) => {
-          if (error) {
-            console.log(error);
-            reject(error);
-          }
-          if (results.length > 0) {
-            console.log(`Query worked`);
-            resolve(true);
-          }
+    return new Promise((resolve, reject) => {
+        this.con.query(`SELECT * FROM users WHERE username = ? AND password = ?`, [this.username, this.password],
+        (error, result) => {
+        if(error) {
+          console.log(`Couldn't reach database, got:\n${error}`)
+          reject(error);
+        }
+        else if(result) {
+          resolve(true);
+        }
+        else {
           resolve(false);
-        })
-          .catch((error) => {
-            console.log(error);
-            reject(error);
-          });
-      }
+        }
+        });
     });
-    return res;
   }
 }
 
