@@ -69,7 +69,10 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 *.komodoproject
+<<<<<<< HEAD
 *.code-workspace
+=======
+>>>>>>> e102774b7aa2b4f26b01766887add0cfd3ac0107
 
 # ignore log files and databases
 *.log

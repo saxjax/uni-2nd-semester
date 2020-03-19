@@ -1,9 +1,18 @@
-<%- include(`header.ejs`)  %> 
-<h1>
-    hello there!
-</h1>
-<a href="/about">
-    Try to go here!
-</a>
-
-<%- include(`footer.ejs`) %> 
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('meta/header') %> 
+  </head>
+  <body>
+    <div class="container" id="content">
+      <div class="row">
+        <div class="col-12">
+          <h1>
+            <a href="/login">Hello There</a>
+          </h1>
+        </div>
+      </div>
+    </div>
+    <%- include('meta/footer') %> 
+  </body>
+</html>
