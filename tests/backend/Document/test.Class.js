@@ -3,14 +3,17 @@ const testDecorater = require(`tape-promise`).default;
 
 const test = testDecorater(tape);
 const { Document } = require(`../../../node/Document/Document.js`);
+
+let request = {'body':{}};
 let actual = true;
 let expected = true;
-let object = new Document();
+let object = new Document(request);
 
 test(`Test af Document Klassen i node/Document`, (assert) => {
   assert.equal(actual, expected, `Testen skulle gerne være oprettet.`);
 
-  object = new Document();
+  request = {'body':{}};
+  object = new Document(request);
   actual = object.name;
   expected = `Document`;
 
