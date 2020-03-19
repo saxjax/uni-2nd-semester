@@ -22,13 +22,4 @@ For hver eksporteret funktion skal der være en unittest. Eksporteres en Class s
 
 =======
 ## Node moduler
-```
-npm install express --save
-npm install mysql
-npm i tape
-npm i --save-dev tape-promise
-npm i tap-spec
-npm install eslint --save-dev
-call npm i ejs
-```
->>>>>>> 520a761eda9669cb66d6e7847cad9a25776998ab
+Kør`npm install` for at installerer alle dependencies.
