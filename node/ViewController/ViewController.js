@@ -10,12 +10,12 @@ class ViewController {
 
 
   template(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/template.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/template.ejs`);
     res.render(this.ejs);
   }
 
   homePage(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/home.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs);
   }
 
@@ -36,22 +36,22 @@ class ViewController {
   }
 
   registerPage(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/register_form.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/register_form.ejs`);
     res.render(this.ejs);
   }
 
   loginPage(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/login.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/login.ejs`);
     res.render(this.ejs);
   }
 
   evalPage(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/evalueringer.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
     res.render(this.ejs);
   }
 
   rapPage(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/rapport.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
     res.render(this.ejs);
   }
 }
