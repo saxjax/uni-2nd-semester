@@ -1,23 +1,30 @@
-<%- include(`meta/header.ejs`)  %> 
 
-<body>
-    <nav>
-        <a href="/www/views/home.ejs">Home</a>
-    </nav>
-    <h1>
-        Rapport
-    </h1>
-    <section>
-        <button id="design-rapport"> Show design </button>
-        <img id="">
-
-
-
-
-
-    </section>
-
-</body>
-
-
-<%- include(`meta/footer.ejs`) %> 
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('meta/header') %> 
+        <link href="css/design.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container" id="content">
+            <div class="row">
+                <div class="col-5">  
+                    <nav>
+                        <a href="/">Home</a><br>
+                        <a href="/evalueringer">Evalueringer</a>
+                    </nav> 
+                </div>
+                <div class="col-12">
+                    <h1> RAPPORT </h1>
+                </div>
+            </div>
+                <div class="col-10">
+                    <button id="design-rapport"> Tryk for design </button><br>
+                    <img id="design-rapportPage">
+                </div>
+            
+        </div>
+        <%- include('meta/footer') %> 
+    </body>
+    <script src="js/view-design.js"></script>
+</html>
