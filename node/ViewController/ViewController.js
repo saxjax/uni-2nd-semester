@@ -14,12 +14,12 @@ class ViewController {
 
 
   template(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/template.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/template.ejs`);
     res.render(this.ejs);
   }
 
   homePage(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/home.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs);
   }
 
@@ -40,12 +40,12 @@ class ViewController {
   }
 
   registerPage(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/register.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/register.ejs`);
     res.render(this.ejs);
   }
 
   loginPage(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/login.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/login.ejs`);
     res.render(this.ejs);
   }
   elementList(req, res) {
