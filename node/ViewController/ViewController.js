@@ -39,7 +39,7 @@ class ViewController {
   }
 
   registerPage(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/register_form.ejs`);
+    this.ejs = path.join(`${this.root}/www/ejs/register.ejs`);
     res.render(this.ejs);
   }
 
