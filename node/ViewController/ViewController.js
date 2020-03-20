@@ -2,13 +2,14 @@
 const path = require(`path`);
 
 const { Expert } = require(`../Expert/Expert.js`);
-const { User } = require(`../User/User.js`);
 
 class ViewController {
   constructor(req) {
     this.name = `ViewController`;
+    this.ejs = {};
     this.validated = false;
-    this.root = __dirname.slice(0, -(`node/ViewController`.length));
+    this.root = __dirname.slice(0, -(`node/${this.name}`.length));
+    this.request = req;
   }
 
 
@@ -46,23 +47,6 @@ class ViewController {
   loginPage(req, res) {
     this.ejs = path.join(`${this.root}/www/ejs/login.ejs`);
     res.render(this.ejs);
-  }
-
-  async authenticationPage(req, res) {
-    const currentUser = new User(req);
-    try {
-      this.validated = await currentUser.loginValid();
-      console.log(this.validated);
-      if (this.validated) {
-        res.redirect(`/`);
-      }
-      else {
-        res.send(`Wrong username or password`);
-      }
-    }
-    catch (error) {
-      res.send(error);
-    }
   }
 }
 
