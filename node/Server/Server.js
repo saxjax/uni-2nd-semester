@@ -62,7 +62,8 @@ class Server {
       else {
         console.log(result[0].book_author);
       }
-  });
+    });
+  }
 }
 
 
