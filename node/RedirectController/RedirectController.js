@@ -23,7 +23,6 @@ class RedirectController {
           res.redirect(`/`);
         }
         else {
-          // Indsæt besked til bruger på en eller anden måde. Evt ikke smid personen direkte til register, men giv muligheden for det?
           res.redirect(`/register`);
         }
     }
