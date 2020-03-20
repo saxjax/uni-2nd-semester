@@ -1,7 +1,7 @@
 /* eslint no-console: off */
 
 const express = require(`express`);
-// const bodyParser = require(`body-parser`);
+const bodyParser = require(`body-parser`);
 const mysql = require(`mysql`);
 
 const { ViewController } = require(`../ViewController/ViewController.js`);
@@ -23,9 +23,15 @@ class Server {
 
   startServer(startMsg) {
     this.staticMiddleware();
+    this.bodyParserMiddleware();
     this.urlPatterns();
-
+    this.redirectPatterns();
     return this.app.listen(this.port, () => console.log(`${startMsg}`));
+  }
+
+  redirectPatterns() {
+    const Redirect = new ViewController();
+    this.app.post(`/auth`, (req, res) => Redirect.authenticationPage(req, res));
   }
 
   urlPatterns() {
@@ -43,20 +49,22 @@ class Server {
     this.app.use(`/css`, express.static(`${this.root}/www/css`));
   }
 
-  query() {
-    this.con.connect((err) => {
-      if (err) {
-        throw err;
-      }
-      this.con.query(`SELECT * from books WHERE book_title like "Megadeth%"`, (error, result) => { // optional third parameter: fields
-        if (error) {
-          throw error;
-        }
-        console.log(result[0].book_author);
-      });
-    });
+  bodyParserMiddleware() {
+    this.app.use(bodyParser.urlencoded({ extended: true }));
+    this.app.use(bodyParser.json());
   }
+
+  query() {
+    this.con.query(`SELECT * from books WHERE book_title like "Megadeth%"`, (error, result, fields) => {
+      if (error) {
+        throw error;
+      }
+      else {
+        console.log(result[0].book_author);
+      }
+  });
 }
+
 
 module.exports = {
   Server,
