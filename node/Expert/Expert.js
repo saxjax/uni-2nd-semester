@@ -1,16 +1,11 @@
-class Expert {
-  constructor(request) {
+const { User } = require(`../User/User.js`);
+
+class Expert extends User {
+  constructor(req) {
+    super(req);
     this.name = `Expert`;
     this.firstname = `Poul`;
   }
-/*
-  validateUser(user,password) {
-    if user and password in database;
-        return userID;
-    else;
-        return null;
-  }
-  */
 }
 
 module.exports = {
