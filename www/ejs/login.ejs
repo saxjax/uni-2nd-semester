@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<%- include(`meta/header.ejs`)  %> 
+		<%- include(`meta/header.ejs`) %> 
 		<title>Login Form Tutorial</title>
 		<link rel="stylesheet" href="css/index.css">
 	</head>
 	<body>
-		<div class="login-form">
+        <%- include('meta/navbar') %> 
+        <div class="container">
+		  <div class="login-form">
 			<h1>Login Form</h1>
 			<form action="auth" method="POST">
 				<input type="text" name="username" placeholder="Username" required>
@@ -14,9 +16,11 @@
 				<input type="submit">
 			</form>
 			<p>
-				<a href="/register">Register here!</a>
+				Not registered yet? <br>
+				<a href="/register">Click here to sign up.</a>
 			</p>
-		</div>
+          </div>
+        </div>
 		<%- include(`meta/footer.ejs`) %> 	
 	</body>
 </html>
