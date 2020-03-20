@@ -9,6 +9,7 @@ class ViewController {
     this.ejs = {};
     this.validated = false;
     this.root = __dirname.slice(0, -(`node/${this.name}`.length));
+    this.request = req;
   }
 
 

@@ -1,3 +1,4 @@
+/* eslint no-console: off */
 const express = require(`express`);
 const bodyParser = require(`body-parser`);
 
@@ -35,7 +36,7 @@ class Server {
 
   redirectPatterns() {
     const Redirect = new RedirectController();
-    this.app.get(`/dbdown`, (req,res) => Redirect.databaseDown(req,res));
+    this.app.get(`/dbdown`, (req, res) => Redirect.databaseDown(req, res));
     this.app.post(`/auth`, (req, res) => Redirect.authentication(req, res));
   }
 
