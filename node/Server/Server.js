@@ -1,3 +1,5 @@
+/* eslint no-console: off */
+
 const express = require(`express`);
 const bodyParser = require(`body-parser`);
 const mysql = require(`mysql`);
@@ -57,11 +59,10 @@ class Server {
       if (error) {
         throw error;
       }
-      if (result) {
+      else {
         console.log(result[0].book_author);
       }
-    });
-  }
+  });
 }
 
 

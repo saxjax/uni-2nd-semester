@@ -1,24 +1,25 @@
 # P2-vidensdeling
 
-# Start:
+## Start server:
 node main.js
 
-# Alle test:
+## Test
+### Alle test:
 node_modules\.bin\tape tests/**/test.*.js | node_modules\.bin\tap-spec
 
-# Backend test:
+### Backend test:
 node_modules\.bin\tape tests/backend/**/test.*.js | node_modules\.bin\tap-spec
 
-# Frontend dokument test:
+### Frontend dokument test:
 node_modules\.bin\tape tests/frontend/test.*.js | node_modules\.bin\tap-spec
 
-# Frontend meta test:
+### Frontend meta test:
 node_modules\.bin\tape tests/frontend/meta/test.*.js | node_modules\.bin\tap-spec
 
-# Realtime test:
+### Realtime test:
 nodemon tests/backend_eller_frontend/mappeMedDinTest/test.filNavn.js | .\node_modules\.bin\tap-spec
 
-# Korrekt Eksport:
+## Korrekt Eksport:
 module.exports = {
   functionOne,
   functionTwo,
