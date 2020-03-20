@@ -58,7 +58,7 @@ test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
   expected = `forventet output`;
 
   return Navn(`par/s`)
-    .then((actua) => assert.equal(actua, expected,
+    .then((actual) => assert.equal(actual, expected,
       `{Forventet: ${expected} Reel: ${actual}} Promiset skal kunne X`))
     .catch((error) => assert.false(false, `Promiset resolvede ikke, men catchede ${error}`));
 });

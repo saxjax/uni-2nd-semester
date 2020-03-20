@@ -1,4 +1,5 @@
 /* eslint no-console: off */
+
 const express = require(`express`);
 const bodyParser = require(`body-parser`);
 
@@ -42,6 +43,7 @@ class Server {
 
   staticMiddleware() {
     this.app.use(`/css`, express.static(`${this.root}/www/css`));
+    this.app.use(`/icon.ico`, express.static(`www/img/icon.ico`));
   }
 
   bodyParserMiddleware() {
