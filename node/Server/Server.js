@@ -28,15 +28,16 @@ class Server {
 
   urlPatterns() {
     const Show = new ViewController();
-    this.app.get(`/template`, (req, res) => Show.template(req, res));
-    this.app.get(`/`, (req, res) => Show.homePage(req, res));
-    this.app.get(`/about`, (req, res) => Show.aboutPage(req, res));
-    this.app.get(`/form/`, (req, res) => Show.businessLogicPage(req, res));
-    this.app.get(`/1234`, (req, res) => Show.testPage(req, res));
-    this.app.get(`/register`, (req, res) => Show.registerPage(req, res));
-    this.app.get(`/login`, (req, res) => Show.loginPage(req, res));
-    this.app.get(`/eval`, (req, res) => Show.evalPage(req, res));
-    this.app.get(`/rapport`, (req, res) => Show.rapPage(req, res));
+    this.app.get(`/template`, (req, res)  => Show.template(req, res));
+    this.app.get(`/`, (req, res)          => Show.homePage(req, res));
+    this.app.get(`/about`, (req, res)     => Show.aboutPage(req, res));
+    this.app.get(`/form/`, (req, res)     => Show.businessLogicPage(req, res));
+    this.app.get(`/1234`, (req, res)      => Show.testPage(req, res));
+    this.app.get(`/register`, (req, res)  => Show.registerPage(req, res));
+    this.app.get(`/login`, (req, res)     => Show.loginPage(req, res));
+    this.app.get(`/eval`, (req, res)      => Show.evalPage(req, res));
+    this.app.get(`/rapport`, (req, res)   => Show.rapPage(req, res));
+    this.app.get(`/elementList`, (req, res) => Show.elementList(req, res));
   }
 
   staticMiddleware() {

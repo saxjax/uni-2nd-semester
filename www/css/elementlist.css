@@ -1,0 +1,105 @@
+.deck
+{
+	width:50%;
+	margin: 20px auto;
+	background:dodgerblue;
+	border:solid 10px black;
+	padding: 10px;
+	border-radius:10px;
+	text-align: center;
+	color:white;
+}
+
+
+.elementTypeQuizz{
+    padding: 10px;
+	border: solid 1px #808080;
+	background-color:yellowgreen;
+	display: inline-block;
+	border-radius: 10px;
+	font-size: 14pt;
+	text-align: center;
+	color:black;
+	margin: 3px;
+
+}
+
+.elementTypeFlashcard{
+    padding: 10px;
+	border: solid 1px #808080;
+	background-color: rgb(27, 163, 163);
+	display: inline-block;
+	border-radius: 10px;
+	font-size: 14pt;
+	text-align: center;
+	color:black;
+	margin: 3px;
+
+}
+
+.elementTypeSection{
+    padding: 10px;
+	border: solid 1px #808080;
+	background-color: black;
+	display: inline-block;
+	border-radius: 10px;
+	font-size: 14pt;
+	text-align: center;
+	color:white;
+	margin: 3px;
+	
+}
+
+.card
+{
+	padding: 10px;
+	border: solid 1px #808080;
+	background-color: white;
+	display: inline-block;
+	border-radius: 10px;
+	font-size: 14pt;
+	text-align: center;
+	color:black;
+	margin: 3px;
+}
+
+ .contentSection {
+    padding: 1px;
+	border: solid 1px #8b1515;
+	background-color: white;
+	display: inline-block;
+	border-radius: 3px;
+	font-size: 9pt;
+	text-align: left;
+	color:black;
+	margin: 3px;
+
+}
+
+  .contentFlashcard{
+    padding: 1px;
+	border: solid 5px #8b1515;
+	background-color: white;
+	display: inline-block;
+	border-radius: 9px;
+	font-size: 20pt;
+	text-align: center;
+	color:black;
+	margin: 5px;
+
+} */
+
+.btn
+{
+	background:white;
+	padding: 10px 20px;
+	border-radius:30px;
+	margin: 10px;
+	display:inline-block;
+}
+
+.card .value{
+	font-size:15pt;
+	font-family: sans-serif;
+}
+
