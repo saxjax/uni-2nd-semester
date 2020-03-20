@@ -48,6 +48,11 @@ class ViewController {
     this.ejs = path.join(`${this.root}/www/ejs/login.ejs`);
     res.render(this.ejs);
   }
+  elementList(req, res) {
+    this.ejs = path.join(`${this.root}/www/views/elementList.ejs`);
+    res.render(this.ejs);
+  }
+  
 }
 
 

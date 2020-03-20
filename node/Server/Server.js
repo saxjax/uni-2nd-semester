@@ -45,6 +45,7 @@ class Server {
   }
 
   staticMiddleware() {
+    this.app.use(`/js`, express.static(`${this.root}/www/js`));
     this.app.use(`/css`, express.static(`${this.root}/www/css`));
     this.app.use(`/icon.ico`, express.static(`www/img/icon.ico`));
   }
