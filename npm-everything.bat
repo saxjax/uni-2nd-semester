@@ -1,3 +1,4 @@
+:: Installing app-dependencies
 echo Installing EXPRESS
 call npm install express --save
 echo Installing MYSQL 
@@ -9,6 +10,7 @@ call npm install path --save
 echo Installing EJS 
 call npm install ejs --save
 
+:: Installing dev-dependencies
 echo Installing TAPE 
 call npm install tape --save-dev
 echo Installing TAPE-PROMISE
