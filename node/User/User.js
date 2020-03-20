@@ -7,6 +7,7 @@ class User extends Database {
     this.name = `User`;
     this.table = `users`;
     this.data = ``;
+    this.choice = `*`;
     this.queries = ``;
     this.objects = [];
     this.username = req.body.username;
@@ -14,9 +15,10 @@ class User extends Database {
   }
 
   async loginValid() {
+    this.choice = `*`;
     this.queries = `username = ? AND password = ?`;
     this.objects = [this.username, this.password];
-    this.data = await this.get(this.table, this.queries, this.objects)
+    this.data = await this.get(this.table, this.choice, this.queries, this.objects)
       .then((result) => result)
       .catch((error) => error);
 
