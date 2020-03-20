@@ -23,6 +23,7 @@ class RedirectController {
           res.redirect(`/`);
         }
         else {
+          // Indsæt besked til bruger på en eller anden måde.
           res.redirect(`/register`);
         }
     }

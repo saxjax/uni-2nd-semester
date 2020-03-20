@@ -5,17 +5,21 @@ class User extends Database{
   constructor(req) {
     super()
     this.name = `User`;
+    this.table = `users`;
+    this.command = ``;
+    this.get = `SELECT * FROM ${this.table} WHERE `
+    this.post = `INSERT INTO ${this.table} VALUES `
+    this.queries = ``;
+    this.objects = [];
     this.username = req.body.username;
     this.password = req.body.password;
-    this.table = `SELECT * FROM users `;
-    this.string = `WHERE `;
-    this.objects = [];
   }
 
   loginValid() {
-    this.string = `WHERE username = ? AND password = ?`;
+    this.command = this.get;
+    this.queries = `username = ? AND password = ?`;
     this.objects = [this.username, this.password];
-    return this.query(this.table,this.string,this.objects)
+    return this.query(this.command, this.queries,this.objects)
     .then(result => result)
     .catch(error => error);
   }

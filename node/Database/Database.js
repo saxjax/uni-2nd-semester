@@ -9,10 +9,10 @@ class Database {
       password: `Admin123!`,
       database: `p2`,
     });
-    }
+  }
 
-  query(table,string,objects) {
-    return new Promise((resolve, reject) => {this.connect.query(`${table}${string}`, objects,
+  query(command,queries,objects) {
+    return new Promise((resolve, reject) => {this.connect.query(`${command}${queries}`, objects,
       (error, result) => {
         if(error) {
           console.log(`Here at node/Database/Database.js-query the error \n${error.code} 
