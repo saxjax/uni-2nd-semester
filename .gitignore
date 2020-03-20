@@ -82,7 +82,6 @@ Thumbs.db
 *.exe
 *.o
 *.so
-*.bat
 
 # ignore packaged files
 *.7z
