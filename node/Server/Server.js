@@ -57,7 +57,9 @@ class Server {
       if (error) {
         throw error;
       }
-      console.log(result[0].book_author);
+      if (result) {
+        console.log(result[0].book_author);
+      }
     });
   }
 }

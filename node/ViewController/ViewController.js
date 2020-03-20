@@ -57,7 +57,7 @@ class ViewController {
         res.redirect(`/`);
       }
       else {
-        res.send(`something fucked up here`);
+        res.send(`Wrong username or password`);
       }
     }
     catch (error) {

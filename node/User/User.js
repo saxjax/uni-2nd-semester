@@ -1,5 +1,4 @@
 /* eslint no-console: off */
-const bodyParser = require(`body-parser`);
 const mysql = require(`mysql`);
 
 class User {
@@ -19,18 +18,20 @@ class User {
 
   loginValid() {
     return new Promise((resolve, reject) => {
-        this.con.query(`SELECT * FROM users WHERE username = ? AND password = ?`, [this.username, this.password],
+      this.con.query(`SELECT * FROM users WHERE username = ? AND password = ?`, [this.username, this.password],
         (error, result) => {
-        if(error) {
-          console.log(`Couldn't reach database, got:\n${error}`)
-          reject(error);
-        }
-        else if(result) {
-          resolve(true);
-        }
-        else {
-          resolve(false);
-        }
+          if (error) {
+            console.log(`Message: Couldn't reach database, got:\n${error}`);
+            reject(error);
+          }
+          else if (result.length > 0) {
+            console.log(`Message: User found: |Username: ${this.username} Password: ${this.password}|`);
+            resolve(true);
+          }
+          else {
+            console.log(`Message: Wrong password, no entry found for |Username: ${this.username} Password: ${this.password}|`);
+            resolve(false);
+          }
         });
     });
   }
