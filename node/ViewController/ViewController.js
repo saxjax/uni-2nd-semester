@@ -13,7 +13,7 @@ class ViewController {
   }
 
   homePage(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/home.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs);
   }
 
@@ -23,7 +23,7 @@ class ViewController {
       res.redirect(`/`);
     }
     else {
-      this.ejs = path.join(`${this.root}/www/ejs/register.ejs`);
+      this.ejs = path.join(`${this.root}/www/views/register.ejs`);
       res.render(this.ejs);
     }
   }
