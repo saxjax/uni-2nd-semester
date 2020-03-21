@@ -4,7 +4,7 @@ const JSDOM = require('jsdom').JSDOM;
 const root = __dirname.slice(0, -(`tests/frontend/meta`.length));
 const fs = require(`fs`);
 
-const ejs = fs.readFileSync(`${root}/www/ejs/meta/navbar.ejs`);
+const ejs = fs.readFileSync(`${root}/www/views/meta/navbar.ejs`);
 const DOM = new JSDOM(ejs);
 
 const test = testDecorater(tape);
@@ -13,7 +13,7 @@ let expected = true;
 let actual = true;
 
 
-test(`Test af navbar i www/ejs/meta`, (assert) => {
+test(`Test af navbar i www/views/meta`, (assert) => {
   assert.equal(actual, expected, `Skulle gerne være oprettet.`);
 
   assert.end();

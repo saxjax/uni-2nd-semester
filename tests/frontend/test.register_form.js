@@ -4,7 +4,7 @@ const JSDOM = require('jsdom').JSDOM;
 const root = __dirname.slice(0, -(`tests/frontend`.length));
 const fs = require(`fs`);
 
-const ejs = fs.readFileSync(`${root}/www/ejs/login.ejs`);
+const ejs = fs.readFileSync(`${root}/www/views/login.ejs`);
 const DOM = new JSDOM(ejs);
 
 const test = testDecorater(tape);
@@ -13,7 +13,7 @@ let expected = true;
 let actual = true;
 
 
-test(`Test af register_form i www/ejs`, (assert) => {
+test(`Test af register_form i www/views`, (assert) => {
   assert.equal(actual, expected, `Skulle gerne være oprettet.`);
 
   expected = `Angiv Navn`;

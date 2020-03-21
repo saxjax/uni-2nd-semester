@@ -33,8 +33,8 @@ class ViewController {
     res.render(this.ejs);
   }
 
-  rapPage(req, res) {
-    this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
+  evalueringerPage(req, res) {
+    this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
     res.render(this.ejs);
   }
 
