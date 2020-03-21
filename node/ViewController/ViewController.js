@@ -12,6 +12,11 @@ class ViewController {
     this.request = req;
   }
 
+  homePage(req, res) {
+    this.ejs = path.join(`${this.root}/www/ejs/home.ejs`);
+    res.render(this.ejs);
+  }
+
   registerPage(req, res) {
     const Registered = new User(req);
     if (Registered.alreadyLoggedIn()) {
@@ -24,7 +29,17 @@ class ViewController {
   }
 
   loginPage(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/login.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/login.ejs`);
+    res.render(this.ejs);
+  }
+
+  rapPage(req, res) {
+    this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
+    res.render(this.ejs);
+  }
+
+  elementList(req, res) {
+    this.ejs = path.join(`${this.root}/www/views/elementList.ejs`);
     res.render(this.ejs);
   }
 
