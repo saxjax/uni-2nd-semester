@@ -25,6 +25,12 @@ class User extends Database {
 
     return this.data;
   }
+
+  /* Skal implementeres med sessions */
+  alreadyLoggedIn() {
+    this.cookie = false;
+    return this.cookie;
+  }
 }
 
 module.exports = {
