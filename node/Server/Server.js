@@ -38,8 +38,8 @@ class Server {
 
   redirectPatterns() {
     const Redirect = new RedirectController();
-    this.app.get(`/dbdown`, (req, res) => Redirect.databaseDown(req, res));
-    this.app.post(`/auth`,  (req, res) => Redirect.authentication(req, res));
+    this.app.get(`/dbdown`, (req, res) => Redirect.dbdown(req, res));
+    this.app.post(`/auth`,  (req, res) => Redirect.auth(req, res));
   }
 
   staticMiddleware() {

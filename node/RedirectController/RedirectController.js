@@ -3,18 +3,17 @@ const path = require(`path`);
 const { User } = require(`../User/User.js`);
 
 class RedirectController {
-  constructor(req) {
+  constructor() {
     this.name = `RedirectController`;
     this.root = __dirname.slice(0, -(`node/${this.name}`.length));
-    this.request = req;
   }
 
-  databaseDown(req, res) {
+  dbdown(req, res) {
     this.ejs = path.join(`${this.root}/www/ejs/database_down.ejs`);
     res.render(this.ejs);
   }
 
-  async authentication(req, res) {
+  async auth(req, res) {
     const currentUser = new User(req);
     this.data = await currentUser.loginValid();
     if (this.data.fatal) {

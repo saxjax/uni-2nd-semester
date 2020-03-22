@@ -19,7 +19,7 @@ class User extends Database {
     this.choice = `*`;
     this.queries = `username = ? AND password = ?`;
     this.objects = [this.username, this.password];
-    this.data = await this.get(this.table, this.choice, this.queries, this.objects)
+    this.data = await this.get(this.choice, this.queries, this.objects)
       .then((result) => result)
       .catch((error) => error);
 
