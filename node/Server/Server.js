@@ -47,7 +47,6 @@ class Server {
     this.app.use(`/css`,      express.static(`${this.root}/www/css`));
     this.app.use(`/img`, express.static(`${this.root}/www/img`));
     this.app.use(`/icon.ico`, express.static(`${this.root}/www/img/icon.ico`));
-  
   }
 
   bodyParserMiddleware() {
@@ -55,7 +54,6 @@ class Server {
     this.app.use(bodyParser.json());
   }
 }
-
 
 module.exports = {
   Server,
