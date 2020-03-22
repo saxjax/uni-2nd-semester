@@ -9,7 +9,7 @@ const { Navn } = require(`../../../node/mapper/til/dinFil.js`);
 let request = {'body':{}};
 let actual = true;
 let expected = true;
-let object = new Navn();
+let object = new Navn(request);
 
 test(`Test af X i node/objektNavn`, (assert) => {
   assert.equal(actual, expected, `Skulle gerne være oprettet.`);
