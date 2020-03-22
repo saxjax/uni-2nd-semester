@@ -1,13 +1,71 @@
-<%- include(`../meta/header.ejs`)  %> 
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('meta/header') %> 
+        <link href="css/design.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container" id="content">
+            <div class="row">
+                <div class="col-5">  
+                    <nav>
+                        <a href="/">Home</a><br>
+                        <a href="/evalueringer">Evalueringer</a>
+                    </nav> 
+                </div>
+                <div class="col-12">
+                    <h1> RAPPORT </h1>
+                </div>
+            </div>
+                <div class="col-10">
+                    <button id="design-rapport"> Tryk for design </button><br>
+                    <img id="design-rapportPage">
+                </div>
+            <section>
+                <div class="row">
+        
+                        <div class="col">
+                            <div class="leftside">
+                                <a href="/rapport/<%= 2.1 %>"> 
+                                    <img id="afsnit2-1" src="img/Design/cardview1.png" href="/rapportafsnit">
+                                </a><br>
+                                <a href="/rapport/<%= 2.2 %>"> 
+                                    <img id="afsnit2-2" src="img/Design/cardview1.png" href="/rapportafsnit">
+                                </a><br>
+                                <a href="/rapport/<%= 2.3 %>"> 
+                                    <img id="afsnit2-3" src="img/Design/cardview1.png" href="/rapportafsnit">
+                                </a><br>
+                                <a href="/rapport/<%= 2.4 %>"> 
+                                    <img id="afsnit2-4" src="img/Design/cardview1.png" href="/rapportafsnit">
+                                </a><br>
+                                
+                            </div>
+                        </div>
+        
+                        <div class="col">
+                            <div class="rightside">
+                                <a href="/rapport/<%= 3.1 %>"> 
+                                    <img id="afsnit3-1" src="img/Design/cardview1.png" href="/rapportafsnit">
+                                </a><br>
+                                <a href="/rapport/<%= 3.2 %>"> 
+                                    <img id="afsnit3-2" src="img/Design/cardview1.png" href="/rapportafsnit">
+                                </a><br>
+                                <a href="/rapport/<%= 3.3 %>"> 
+                                    <img id="afsnit3-3" src="img/Design/cardview1.png" href="/rapportafsnit">
+                                </a><br>
+                                <a href="/rapport/<%= 3.4 %>"> 
+                                    <img id="afsnit3-4" src="img/Design/cardview1.png" href="/rapportafsnit">
+                                </a><br>
+                                
+                            </div>
+                        </div>
+        
+                </div>
 
-<body>
-    <h1>
-        Rapport
-    </h1>
-<%- include(`elementList.ejs`); %>
-
-
-</body>
-
-
-<%- include(`../meta/footer.ejs`) %> 
+            </section>
+            
+        </div>
+        <%- include('meta/footer') %> 
+    </body>
+    <script src="js/view-design.js"></script>
+</html>

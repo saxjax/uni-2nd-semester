@@ -5,7 +5,7 @@ const { JSDOM } = require(`jsdom`);
 const root = __dirname.slice(0, -(`tests/frontend/meta`.length));
 const fs = require(`fs`);
 
-const ejs = fs.readFileSync(`${root}/www/ejs/meta/footer.ejs`);
+const ejs = fs.readFileSync(`${root}/www/views/meta/footer.ejs`);
 const DOM = new JSDOM(ejs);
 
 const test = testDecorater(tape);
@@ -14,7 +14,7 @@ let expected = true;
 let actual = true;
 
 
-test(`Test af footer i www/ejs/meta`, (assert) => {
+test(`Test af footer i www/views/meta`, (assert) => {
   assert.equal(actual, expected, `Skulle gerne være oprettet.`);
 
   expected = `container-fluid fixed-bottom footer`;

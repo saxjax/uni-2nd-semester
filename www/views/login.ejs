@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<%- include(`../meta/header.ejs`) %> 
-		<title>GroupHub | Login</title>
-		<link rel="stylesheet" href="css/login_register_form.css">
+		<%- include(`meta/header.ejs`)  %> 
+		<title>Login Form Tutorial</title>
+		<link rel="stylesheet" href="css/index.css">
 	</head>
 	<body>
-        <%- include('../meta/navbar') %> 
-        <div class="container">
-		  <div class="login-form">
-			<h1>Login</h1>
+		<div class="login-form">
+			<h1>Login Form</h1>
 			<form action="auth" method="POST">
 				<input type="text" name="username" placeholder="Username" required>
 				<input type="password" name="password" placeholder="Password" required>
 				<input type="submit">
 			</form>
 			<p>
-				Not registered yet? <br>
-				<a href="/register">Sign up here.</a>
+				<a href="/register">Register here!</a>
 			</p>
-          </div>
-        </div>
-		<%- include(`../meta/footer.ejs`) %> 	
+		</div>
+		<%- include(`meta/footer.ejs`) %> 	
 	</body>
 </html>

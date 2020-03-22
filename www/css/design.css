@@ -34,6 +34,8 @@ nav {text-align: center;}
     text-align: center;
 }
 
+
+
 /* Clear floats after the columns */
 .row:after {
     content: "";
@@ -43,10 +45,14 @@ nav {text-align: center;}
 
 #newsfeed {
     width: 400px;
-    align-content: center;
+    text-align:  center;
 }
 
 #progress-cirle {
     width: 400px;
-    align-content: center;
+    text-align:  center;
+}
+
+#afsnit2-1, #afsnit2-2, #afsnit2-3, #afsnit2-4, #afsnit3-1, #afsnit3-2, #afsnit3-3, #afsnit3-4 {
+    padding: 10px;
 }

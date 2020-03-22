@@ -13,7 +13,7 @@ class ViewController {
   }
 
   homePage(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/home.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs);
   }
 
@@ -23,7 +23,7 @@ class ViewController {
       res.redirect(`/`);
     }
     else {
-      this.ejs = path.join(`${this.root}/www/ejs/register.ejs`);
+      this.ejs = path.join(`${this.root}/www/views/register.ejs`);
       res.render(this.ejs);
     }
   }
@@ -33,9 +33,19 @@ class ViewController {
     res.render(this.ejs);
   }
 
-  rapPage(req, res) {
-    this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
+  evalueringerPage(req, res) {
+    this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
     res.render(this.ejs);
+  }
+
+  evalueringerTypePage(req, res) {
+    if (req.params.type === `flashcard`){
+      this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
+      res.render(this.ejs);
+    } else if (req.params.type === `quiz`){
+      this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
+      res.render(this.ejs);
+    }
   }
 
   elementList(req, res) {
@@ -46,6 +56,18 @@ class ViewController {
   rapportPage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
     res.render(this.ejs);
+  }
+
+  rapportSectionPage(req, res) {
+    this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
+    let sectionDatabase = {
+      2.1:   {keywords: ['vidensdeling', 'feed-up', 'feed-forward'].toString()},
+      2.2:   {keywords: ['studier', 'evaluering', 'formativ', 'summativ'].toString()},
+      2.3:   {keywords: ['metoder', 'active recall', 'spaced repetition'].toString()},
+      2.4:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()}
+    };
+
+    res.render(this.ejs, {section: req.params.afsnit, content: sectionDatabase});
   }
 }
 
