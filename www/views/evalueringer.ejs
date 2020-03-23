@@ -22,28 +22,33 @@
                     <button id="design-evalueringer"> Tryk for design </button><br>
                     <img id="design-evalueringerPage">
                 </div>
-                
+
             <section>
                 <div class="row">
             
                     <div class="col">
-                        <div class="quiz">
-                            <a href=""> 
-                                <img id="" src="">
+                        <div class="quizzes">
+                            <h2> QUIZ </h2>
+                        <% evalueringerContent.forEach(result =>{ %>
+                            <a href="/evalueringer/<%= result.content.quiz %>"> 
+                                <img id="quiz" src="img/Design/quiz.png">
                             </a><br>
-                        
+                        <% }) %>
                         </div>
-
-                        <div class="col">
-                            <div class="flashcard">
-                                <a href=""> 
-                                    <img id="" src="">
-                                </a><br>
-                            
-                                
-                                
-                            </div>
                     </div>
+
+                    <div class="col">
+                        <div class="flashcards">
+                             <h2> FLASHCARDS </h2>
+                        <% evalueringerContent.forEach(result =>{ %>
+                            <a href="/evalueringer/<%= result.content.flashcard %>"> 
+                                <img id="flashcard" src="img/Design/flashcard.png">
+                            </a><br>
+                        <% }) %>
+                        </div>
+                    </div>
+
+                </div>
 
 
 

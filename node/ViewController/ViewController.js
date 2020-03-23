@@ -34,8 +34,14 @@ class ViewController {
   }
 
   evalueringerPage(req, res) {
+    let sectionDatabase = [ 
+      {content:  {section: 2.1, flashcard: 'Flashcard', quiz: 'Quiz'}},
+      {content:  {section: 2.2, flashcard: 'Flashcard', quiz: 'Quiz'}},
+      {content:  {section: 2.3, flashcard: 'Flashcard', quiz: 'Quiz'}},
+      {content:  {section: 2.4, flashcard: 'Flashcard', quiz: 'Quiz'}}
+    ];
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-    res.render(this.ejs);
+    res.render(this.ejs, {evalueringerContent: sectionDatabase});
   }
 
   evalueringerTypePage(req, res) {
