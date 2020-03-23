@@ -39,10 +39,11 @@ class ViewController {
   }
 
   evalueringerTypePage(req, res) {
-    if (req.params.type === `flashcard`){
+    if (req.params.type === `flashcard`) {
       this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
       res.render(this.ejs);
-    } else if (req.params.type === `quiz`){
+    }
+    else if (req.params.type === `quiz`) {
       this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
       res.render(this.ejs);
     }
@@ -60,14 +61,15 @@ class ViewController {
 
   rapportSectionPage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    let sectionDatabase = {
-      2.1:   {keywords: ['vidensdeling', 'feed-up', 'feed-forward'].toString()},
-      2.2:   {keywords: ['studier', 'evaluering', 'formativ', 'summativ'].toString()},
-      2.3:   {keywords: ['metoder', 'active recall', 'spaced repetition'].toString()},
-      2.4:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()}
+    const sectionDatabase = {
+      2.1: { keywords: [`vidensdeling`, `feed-up`, `feed-forward`].toString() },
+      2.2: { keywords: [`studier`, `evaluering`, `formativ`, `summativ`].toString() },
+      2.3: { keywords: [`metoder`, `active recall`, `spaced repetition`].toString() },
+      2.4: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
     };
 
-    res.render(this.ejs, {section: req.params.afsnit, content: sectionDatabase});
+
+    res.render(this.ejs, { section: req.params.afsnit, content: sectionDatabase });
   }
 }
 

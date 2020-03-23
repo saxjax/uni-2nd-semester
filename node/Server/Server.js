@@ -34,6 +34,9 @@ class Server {
     this.app.get(`/rapport`,            (req, res) => Show.rapportPage(req, res));
     this.app.get(`/rapport/:afsnit`,    (req, res) => Show.rapportSectionPage(req, res));
     this.app.get(`/elementList`,        (req, res) => Show.elementList(req, res));
+    this.app.get(`/sections/:id`,       (req, res) => console.log(req.params.id));
+
+    // const GetStuff = new GetStuffClass();
   }
 
   redirectPatterns() {
