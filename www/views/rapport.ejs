@@ -56,13 +56,19 @@
                                 </a><br>
                                 <a href="/rapport/<%= 3.4 %>"> 
                                     <img id="afsnit3-4" src="img/Design/cardview1.png" href="/rapportafsnit">
-                                </a><br>
-                                
+                                </a><br> 
                             </div>
                         </div>
         
                 </div>
 
+            </section>
+            <section>
+                <% afsnit.forEach(result => { %>
+                    <a href="/rapport/<%= result %>">
+                        <img id="afsnit3-1" src="img/Design/cardview1.png" href="/rapportafsnit">
+                    </a>
+                <% }); %>
             </section>
             
         </div>
