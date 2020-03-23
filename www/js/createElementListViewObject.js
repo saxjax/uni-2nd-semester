@@ -15,20 +15,37 @@
 // let deck = new Array()
 
 
-var titles = ["Key word 1", "Key word 2", "Key word 3", "Key word 4", "Key word 5", "Key word 6", "Key word 7", "Key word 8", "Key word 9", "Key word 10", "Key word 11", "Key word 12", "Key word 13"];
-var content = ["Content : Key word 1 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 2 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 3 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 4 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 5 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 6 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 7 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 8 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 9 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 10 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 11 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 12 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 13 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok"];
-var elementTypes = ["Section", "Quizz", "Flashcard"];
-var deck = new Array();
+let titles = ["Key word 1", "Key word 2", "Key word 3", "Key word 4", "Key word 5", "Key word 6", "Key word 7", "Key word 8", "Key word 9", "Key word 10", "Key word 11", "Key word 12", "Key word 13"];
+let content = ["Content : Key word 1 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 2 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 3 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 4 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 5 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 6 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 7 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 8 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 9 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 10 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 11 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 12 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok", "Content : Key word 13 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok"];
+let elementTypes = ["Section", "Quizz", "Flashcard"];
+let deck = new Array();
 
-function getDeck()
+
+// class Card {
+// 	constructor(){
+// 		this.Title = title
+// 		this.Content = content
+// 		this.ElementType = elementType
+//		this.keyword
+// 		this.SectionID = id
+// 		this.Buttons = {if (this.ElementType == "flashCard") }
+// 	}
+// }
+
+function getDataForSectionCard(sectionNr){
+	//get req til 
+
+}
+
+async function getDeck()
 {
-	var deck = new Array();
+	let deck = new Array();
 
-	for(var i = 0; i < elementTypes.length; i++)
+	for(let i = 0; i < elementTypes.length; i++)
 	{
-		for(var x = 0; x < titles.length; x++)
+		for(let x = 0; x < titles.length; x++)
 		{
-			var card = {Value: titles[x], Content: content[x], ElementType: elementTypes[i], SectionID: x};
+			let card = {Value: titles[x], Content: content[x], ElementType: elementTypes[i], SectionID: x};
 			deck.push(card);
 			
 
@@ -59,11 +76,11 @@ function shuffle()
 {
 	// for 1000 turns
 	// switch the values of two random titles
-	for (var i = 0; i < 1000; i++)
+	for (let i = 0; i < 1000; i++)
 	{
-		var location1 = Math.floor((Math.random() * deck.length));
-		var location2 = Math.floor((Math.random() * deck.length));
-		var tmp = deck[location1];
+		let location1 = Math.floor((Math.random() * deck.length));
+		let location2 = Math.floor((Math.random() * deck.length));
+		let tmp = deck[location1];
 
 		deck[location1] = deck[location2];
 		deck[location2] = tmp;
@@ -104,9 +121,7 @@ function readText(path){
 	npm i --save-dev tape-promise
 	npm i tap-spec
 	npm install eslint --save-dev
-	npm install ejs
-	
-	`
+	npm install ejs`
 }
 
 function getKeywordsFrom(SectionID){
@@ -118,11 +133,11 @@ function getKeywordsFrom(SectionID){
 function renderElementList(elementList)
 {
 	document.getElementById('deck').innerHTML = '';
-	for(var i = 0; i < elementList.length; i++)
+	for(let i = 0; i < elementList.length; i++)
 	{
-		var card = document.createElement("div");
-		var value = document.createElement("div");
-        var elementType = document.createElement("div");
+		let card = document.createElement("div");
+		let value = document.createElement("div");
+        let elementType = document.createElement("div");
         let content = document.createElement("div");
         // switch (card.className) {
         //     case "Section": card.className =
@@ -131,12 +146,15 @@ function renderElementList(elementList)
         
         //     default:
         //         break;
-        // }
+		// }
+		
 		card.className = "card";
         value.className = "value";
         content.className = "content"+ elementList[i].ElementType;
         elementType.className = "elementType" + elementList[i].ElementType;
-        
+		
+		//card.classList.add("card")
+		
         elementType.innerHTML = elementList[i].ElementType
         value.innerHTML = elementList[i].Value;
         content.innerHTML = elementList[i].Content
@@ -149,9 +167,9 @@ function renderElementList(elementList)
 	}
 }
 
-function load()
+async function load()
 {
-	deck = getDeck();
+	deck = await getDeck();
 	// shuffle();
 	renderElementList(deck);
 }
