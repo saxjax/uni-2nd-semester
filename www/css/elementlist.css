@@ -1,10 +1,10 @@
 .deck
 {
-	width:50%;
+	width:70%;
 	margin: 20px auto;
-	background:dodgerblue;
-	border:solid 10px black;
-	padding: 10px;
+	background:#cfd5da;
+	border:solid 1px black;
+	padding: 20px;
 	border-radius:10px;
 	text-align: center;
 	color:white;
@@ -38,11 +38,11 @@
 }
 
 .elementTypeSection{
-    padding: 10px;
+    padding: 50px;
 	border: solid 1px #808080;
 	background-color: black;
 	display: inline-block;
-	border-radius: 10px;
+	border-radius: 100px;
 	font-size: 14pt;
 	text-align: center;
 	color:white;
@@ -64,7 +64,7 @@
 }
 
  .contentSection {
-    padding: 1px;
+    padding: 20px;
 	border: solid 1px #8b1515;
 	background-color: white;
 	display: inline-block;
@@ -77,8 +77,8 @@
 }
 
   .contentFlashcard{
-    padding: 1px;
-	border: solid 5px #8b1515;
+    padding: 10px;
+	border: solid 1px #8b1515;
 	background-color: white;
 	display: inline-block;
 	border-radius: 9px;
