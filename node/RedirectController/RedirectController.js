@@ -21,6 +21,11 @@ class RedirectController {
     this.root = __dirname.slice(0, -(`node/${this.name}`.length));
   }
 
+  add_new_section(newSection, newKeywords){
+    sectionDatabase[newSection] = {};
+    sectionDatabase[newSection]['keywords'] = newKeywords;
+  }
+
   dbdown(req, res) {
     this.ejs = path.join(`${this.root}/www/ejs/database_down.ejs`);
     res.render(this.ejs);
@@ -43,8 +48,10 @@ class RedirectController {
   UploadRapport(req, res) {
     let new_keywords = [req.body.keyword_1, req.body.keyword_2, req.body.keyword_3].toString();
     let new_section = req.body.name_of_section;
-    sectionDatabase[new_section] = {};
-    sectionDatabase[new_section]['keywords'] = new_keywords;
+    // sectionDatabase[new_section] = {};
+    // sectionDatabase[new_section]['keywords'] = new_keywords;
+
+    this.add_new_section(new_section, new_keywords);
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
     res.render(this.ejs, {section: req.body.name_of_section, content: sectionDatabase});
@@ -60,3 +67,5 @@ class RedirectController {
 module.exports = {
   RedirectController,
 };
+
+
