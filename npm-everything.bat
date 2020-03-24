@@ -1,7 +1,7 @@
 :: Setting up
 call del /f package.json
 call del /f package-lock.json
-call rmdir /Q /S C:\Users\humle\AppData\Roaming\npm-cache\_logs
+call rmdir /Q /S C:\Users\%USERNAME%\AppData\Roaming\npm-cache\_logs
 call rmdir /Q /S node_modules
 call npm cache verify
 :: Add package.json
