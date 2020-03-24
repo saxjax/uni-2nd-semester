@@ -35,6 +35,8 @@ class Server {
     this.app.get(`/rapport/:afsnit`,     (req, res) => Show.rapportSectionPage(req, res));
     this.app.get(`/elementList`,         (req, res) => Show.elementList(req, res));
     this.app.get(`/upload/:type`,        (req, res) => Show.UploadPage(req, res));
+    this.app.post(`/rapport/:afsnit`,    (req, res) => Show.RapportPost(req, res));
+    this.app.post(`/evalueringer/:type`, (req, res) => Show.EvalueringerPost(req, res));
   }
 
   redirectPatterns() {
@@ -55,6 +57,8 @@ class Server {
     this.app.use(bodyParser.json());
   }
 }
+
+
 
 module.exports = {
   Server,
