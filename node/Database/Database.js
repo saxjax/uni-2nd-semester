@@ -11,8 +11,20 @@ class Database {
       database: `p2`,
     });
     this.table = `database`;
+    this.optionalValue = `optionalValue`
+    this.query = `*/rows/rowUnique/values/valueUnique` + `column1(${this.optionalValue})` + `column2(${this.optionalValue})` `ètc.`;
   }
 
+  info() {
+
+
+    return false;
+  }
+
+  parser(method) {
+
+    return false;
+  }
 
   get(choice, queries, objects) {
     return new Promise((resolve, reject) => {
