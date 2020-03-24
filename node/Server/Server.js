@@ -46,15 +46,18 @@ class Server {
   }
 
   staticMiddleware() {
-    this.app.use(`/js`,       express.static(`${this.root}/www/js`));
-    this.app.use(`/css`,      express.static(`${this.root}/www/css`));
-    this.app.use(`/img`,      express.static(`${this.root}/www/img`));
-    this.app.use(`/icon.ico`, express.static(`${this.root}/www/img/icon.ico`));
+    this.app.use(express.static(`${this.root}/www`));
+    this.app.use(this.logger);
   }
 
   bodyParserMiddleware() {
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
+  }
+
+  logger(req, res, next) {
+    console.log(`GOT ${req.method}: ${req.protocol}://${req.get(`host`)}${req.originalUrl} -- ${(new Date()).toUTCString()}`);
+    next();
   }
 }
 
