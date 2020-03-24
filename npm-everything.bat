@@ -1,6 +1,7 @@
 :: Setting up
 @echo off
 echo Getting ready...
+echo Node version:
 call node --version
 IF errorlevel 1 (
     Start "" https://nodejs.org/en/#home-downloadhead
@@ -49,22 +50,22 @@ call npm install jsdom --save-dev
 echo =====================================================================================
 echo Installing ESLINT
 call npm install eslint --save-dev
+echo =====================================================================================
+echo Installing ESLINT-airbnb-base
+call npm install eslint-config-airbnb-base --save-dev
+echo =====================================================================================
+echo Installing ESLINT-plugin-import
+call npm install eslint-plugin-import --save-dev
 
 :: Installing global dependencies
-echo =====================================================================================
-echo Installing NODEMON
-@echo off
+echo Nodemon version:
 call nodemon --version
 IF errorlevel 1 (
+    echo =====================================================================================
+    echo Installing NODEMON
     call npm install -g nodemon
-) ELSE (
-    echo Nodemon is already installed... Skipping installation.
 )
 echo =====================================================================================
-echo Make sure to fix all errors manually before continuing.
-echo =====================================================================================
-echo Setting up ESLINT
-call npx eslint --init
 
 echo Done!
 pause
