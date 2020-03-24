@@ -3,15 +3,21 @@
     <head>
         <%- include('meta/header') %> 
         <title>Rapport Uploading</title>
+        <link href="css/design.css" rel="stylesheet">
     </head>
     <body>
         <%- include('meta/navbar') %> 
         <div class="container" id="content">
             <div class="row">
                 <div class="col-12">    
-                    <h1> HER KOMMER UPLOAD AF AFSNIT TIL RAPPORTEN</h1>
-                    
+                    <h1> Upload afsnit fra rapporten</h1>
                 </div>
+            </div>
+            <div class ="col-12">
+                <form action="/upload/rapport" method="POST">
+                    <input type="file" id="section" name="filename">
+                    <input type="submit" id="submitknap">
+                </form>
             </div>
         </div>
         <%- include('meta/footer') %> 
