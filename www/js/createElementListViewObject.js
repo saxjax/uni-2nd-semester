@@ -69,7 +69,7 @@ function shuffle()
 		deck[location2] = tmp;
 	}
 
-	renderDeck();
+	renderElementList();
 }
 
 
@@ -115,10 +115,10 @@ function getKeywordsFrom(SectionID){
 
 
 
-function renderDeck()
+function renderElementList(elementList)
 {
 	document.getElementById('deck').innerHTML = '';
-	for(var i = 0; i < deck.length; i++)
+	for(var i = 0; i < elementList.length; i++)
 	{
 		var card = document.createElement("div");
 		var value = document.createElement("div");
@@ -134,12 +134,12 @@ function renderDeck()
         // }
 		card.className = "card";
         value.className = "value";
-        content.className = "content"+ deck[i].ElementType;
-        elementType.className = "elementType" + deck[i].ElementType;
+        content.className = "content"+ elementList[i].ElementType;
+        elementType.className = "elementType" + elementList[i].ElementType;
         
-        elementType.innerHTML = deck[i].ElementType
-        value.innerHTML = deck[i].Value;
-        content.innerHTML = deck[i].Content
+        elementType.innerHTML = elementList[i].ElementType
+        value.innerHTML = elementList[i].Value;
+        content.innerHTML = elementList[i].Content
         
         card.appendChild(elementType);
         card.appendChild(value);
@@ -153,7 +153,7 @@ function load()
 {
 	deck = getDeck();
 	// shuffle();
-	renderDeck();
+	renderElementList(deck);
 }
 
 
