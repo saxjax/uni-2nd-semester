@@ -1,11 +1,25 @@
 {
-  "name": "p2-vidensdeling",
+  "name": "P2-vidensdeling",
   "version": "1.0.0",
   "description": "node main.js",
   "main": "main.js",
   "directories": {
     "test": "tests"
   },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/humleflue/P2-vidensdeling.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/humleflue/P2-vidensdeling/issues"
+  },
+  "homepage": "https://github.com/humleflue/P2-vidensdeling#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
     "ejs": "^3.0.1",
@@ -19,18 +33,5 @@
     "tap-spec": "^5.0.0",
     "tape": "^4.13.2",
     "tape-promise": "^4.0.0"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/humleflue/P2-vidensdeling.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/humleflue/P2-vidensdeling/issues"
-  },
-  "homepage": "https://github.com/humleflue/P2-vidensdeling#readme"
+  }
 }

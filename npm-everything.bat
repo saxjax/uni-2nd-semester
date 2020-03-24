@@ -1,3 +1,10 @@
+:: Setting up
+call del /f package.json
+call del /f package-lock.json
+call rmdir /s node_modules
+echo Adding PACKAGE.JSON
+call npm init -y
+
 :: Installing app-dependencies
 echo Installing EXPRESS
 call npm install express --save
@@ -21,5 +28,9 @@ echo Installing ESLINT
 call npm install eslint --save-dev
 echo Installing JSDOM
 call npm install jsdom --save-dev
+
+:: Installing global dependencies
+echo Installing NODEMON
+call npm install -g nodemon
 
 pause
