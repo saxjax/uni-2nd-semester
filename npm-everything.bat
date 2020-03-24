@@ -1,14 +1,13 @@
 :: Setting up
 @echo off
+echo Getting ready...
 call node --version
 IF errorlevel 1 (
-    @echo on
     Start "" https://nodejs.org/en/#home-downloadhead
     echo Goto https://nodejs.org/en/#home-downloadhead to download node. After that you can run this file again to install the dependencies.
     pause
     exit 
 )
-@echo on
 call del /f package.json
 call del /f package-lock.json
 call rmdir /Q /S C:\Users\%USERNAME%\AppData\Roaming\npm-cache\_logs
@@ -45,11 +44,11 @@ echo ===========================================================================
 echo Installing TAP-SPEC
 call npm install tap-spec --save-dev
 echo =====================================================================================
-echo Installing ESLINT
-call npm install eslint --save-dev
-echo =====================================================================================
 echo Installing JSDOM
 call npm install jsdom --save-dev
+echo =====================================================================================
+echo Installing ESLINT
+call npm install eslint --save-dev
 
 :: Installing global dependencies
 echo =====================================================================================
@@ -57,11 +56,15 @@ echo Installing NODEMON
 @echo off
 call nodemon --version
 IF errorlevel 1 (
-    @echo on
     call npm install -g nodemon
 ) ELSE (
-    @echo on
-    echo Module: nodemon is already installed... Skipping installation.
+    echo Nodemon is already installed... Skipping installation.
 )
+echo =====================================================================================
+echo Make sure to fix all errors manually before continuing.
+echo =====================================================================================
+echo Setting up ESLINT
+call npx eslint --init
 
+echo Done!
 pause
