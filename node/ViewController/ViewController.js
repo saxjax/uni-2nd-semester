@@ -3,6 +3,18 @@ const path = require(`path`);
 
 const { User } = require(`../User/User.js`);
 
+// Mock data til test
+var sectionDatabase = {
+  2.1:   {keywords: ['vidensdeling', 'feed-up', 'feed-forward'].toString()},
+  2.2:   {keywords: ['studier', 'evaluering', 'formativ', 'summativ'].toString()},
+  2.3:   {keywords: ['metoder', 'active recall', 'spaced repetition'].toString()},
+  2.4:   {keywords: ['blabla', 'jepjepjep', 'superdupersuperduper'].toString()},
+  2.5:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
+  2.6:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
+  3.1:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
+  3.2:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
+  3.3:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()}
+};
 
 
 class ViewController {
@@ -37,14 +49,14 @@ class ViewController {
 
   evalueringerPage(req, res) {
     // Mock data til test
-    let sectionDatabase = [ 
+    let sectionDatabaseEval = [ 
       {content:  {section: 2.1, flashcard: 'flashcard', quiz: 'quiz'}},
       {content:  {section: 2.2, flashcard: 'flashcard', quiz: 'quiz'}},
       {content:  {section: 2.3, flashcard: 'flashcard', quiz: 'quiz'}},
       {content:  {section: 2.4, flashcard: 'flashcard', quiz: 'quiz'}}
     ];
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-    res.render(this.ejs, {evalueringerContent: sectionDatabase});
+    res.render(this.ejs, {evalueringerContent: sectionDatabaseEval});
   }
 
   evalueringerTypePage(req, res) {
@@ -64,26 +76,13 @@ class ViewController {
 
   rapportPage(req, res) {
     // Mock data til test
-    let sectionDatabase = [2.1,2.2,2.3,2.4,2.5,2.6,3.1,3.2,3.3];
+    let sections = [2.1,2.2,2.3,2.4,2.5,2.6,3.1,3.2,3.3];
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
-    res.render(this.ejs, {afsnit: sectionDatabase});
+    res.render(this.ejs, {afsnit: sections});
   }
 
   rapportSectionPage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    // Mock data til test
-    var sectionDatabase = {
-      2.1:   {keywords: ['vidensdeling', 'feed-up', 'feed-forward'].toString()},
-      2.2:   {keywords: ['studier', 'evaluering', 'formativ', 'summativ'].toString()},
-      2.3:   {keywords: ['metoder', 'active recall', 'spaced repetition'].toString()},
-      2.4:   {keywords: ['blabla', 'jepjepjep', 'superdupersuperduper'].toString()},
-      2.5:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
-      2.6:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
-      3.1:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
-      3.2:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
-      3.3:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()}
-    };
-
     res.render(this.ejs, {section: req.params.afsnit, content: sectionDatabase});
   }
 
@@ -97,29 +96,7 @@ class ViewController {
     }
   }
 
-  RapportPost(req, res) {
-    this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    console.log(req.body.name);
-    var sectionDatabase = {
-      2.1:   {keywords: ['vidensdeling', 'feed-up', 'feed-forward'].toString()},
-      2.2:   {keywords: ['studier', 'evaluering', 'formativ', 'summativ'].toString()},
-      2.3:   {keywords: ['metoder', 'active recall', 'spaced repetition'].toString()},
-      2.4:   {keywords: ['blabla', 'jepjepjep', 'superdupersuperduper'].toString()},
-      2.5:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
-      2.6:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
-      3.1:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
-      3.2:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
-      3.3:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()}
-    };
-    res.render(this.ejs, {section: req.body.name, content: sectionDatabase});
-  }
-
-  EvalueringerPost(req, res) {
-    this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-    res.render(this.ejs);
-  }
 }
-
 
 module.exports = {
   ViewController,

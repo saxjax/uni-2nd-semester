@@ -26,23 +26,23 @@ class Server {
 
   urlPatterns() {
     const Show = new ViewController();
-    this.app.get(`/`,                    (req, res) => Show.homePage(req, res));
-    this.app.get(`/register`,            (req, res) => Show.registerPage(req, res));
-    this.app.get(`/login`,               (req, res) => Show.loginPage(req, res));
-    this.app.get(`/evalueringer`,        (req, res) => Show.evalueringerPage(req, res));
-    this.app.get(`/evalueringer/:type`,  (req, res) => Show.evalueringerTypePage(req, res));
-    this.app.get(`/rapport`,             (req, res) => Show.rapportPage(req, res));
-    this.app.get(`/rapport/:afsnit`,     (req, res) => Show.rapportSectionPage(req, res));
-    this.app.get(`/elementList`,         (req, res) => Show.elementList(req, res));
-    this.app.get(`/upload/:type`,        (req, res) => Show.UploadPage(req, res));
-    this.app.post(`/rapport/:afsnit`,    (req, res) => Show.RapportPost(req, res));
-    this.app.post(`/evalueringer/:type`, (req, res) => Show.EvalueringerPost(req, res));
+    this.app.get(`/`,                     (req, res) => Show.homePage(req, res));
+    this.app.get(`/register`,             (req, res) => Show.registerPage(req, res));
+    this.app.get(`/login`,                (req, res) => Show.loginPage(req, res));
+    this.app.get(`/evalueringer`,         (req, res) => Show.evalueringerPage(req, res));
+    this.app.get(`/evalueringer/:type`,   (req, res) => Show.evalueringerTypePage(req, res));
+    this.app.get(`/rapport`,              (req, res) => Show.rapportPage(req, res));
+    this.app.get(`/rapport/:afsnit`,      (req, res) => Show.rapportSectionPage(req, res));
+    this.app.get(`/elementList`,          (req, res) => Show.elementList(req, res));
+    this.app.get(`/upload/:type`,         (req, res) => Show.UploadPage(req, res));
   }
 
   redirectPatterns() {
     const Redirect = new RedirectController();
     this.app.get(`/dbdown`, (req, res) => Redirect.dbdown(req, res));
     this.app.post(`/auth`,  (req, res) => Redirect.auth(req, res));
+    this.app.post(`/upload/rapport`,      (req, res) => Redirect.UploadRapport(req, res));
+    this.app.post(`/upload/evalueringer`, (req, res) => Redirect.UploadEvalueringer(req, res));
   }
 
   staticMiddleware() {
