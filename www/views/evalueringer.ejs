@@ -1,66 +1,59 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <%- include('meta/header') %> 
-        <link href="css/design.css" rel="stylesheet">
-    </head>
-    <body>
-        <%- include('meta/navbar') %> 
-        <div class="container" id="content">
-            <div class="row">
-                <div class="col-5">  
-                    <nav>
-                        <a href="/upload/evalueringer"> Upload </a>
-                    </nav> 
-                </div>
-                <div class="row">
-                    
-                    <div class="col-12">
-                        <h1> EVALUERINGER </h1>
-                        <form method="POST">
-                            <p> Vælg det afsnit du ønsker at finde evalueringer til </p>
-                                <input type="text" id="section" name="section">
-                                <input type="submit">
-                        </form>
-                    </div>
-                </div>
-                    <div class="col-10">
-                        <button id="design-evalueringer"> Tryk for design </button><br>
-                        <img id="design-evalueringerPage">
-                    </div>
-                    
-                           
-                
-
-                <section>
-                    <div class="row">
-                
-                        <div class="col">
-                            <div class="quizzes">
-                                <h2> QUIZ </h2>
-                            <% evalueringerContent.forEach(result =>{ %>
-                                <a href="/evalueringer/<%= result.content.quiz %>"> 
-                                    <img id="quiz" src="img/Design/quiz.png">
-                                </a><br>
-                            <% }) %>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="flashcards">
-                                <h2> FLASHCARDS </h2>
-                            <% evalueringerContent.forEach(result =>{ %>
-                                <a href="/evalueringer/<%= result.content.flashcard %>"> 
-                                    <img id="flashcard" src="img/Design/flashcard.png">
-                                </a><br>
-                            <% }) %>
-                            </div>
-                        </div>
-
-                    </div>
-                </section>
+  <head>
+    <%- include('meta/header') %> 
+    <link href="css/design.css" rel="stylesheet">
+    <script defer src="js/view-design.js"></script>
+  </head>
+  <body>
+    <%- include('meta/navbar') %> 
+    <div class="container" id="content">
+      <div class="row">
+        <div class="col-5">  
+          <nav>
+            <a href="/upload/evalueringer"> Upload </a>
+          </nav> 
         </div>
-        <%- include('meta/footer') %> 
-    </body>
-    <script src="js/view-design.js"></script>
+        <div class="row">
+          <div class="col-12">
+            <h1> EVALUERINGER </h1>
+            <form method="POST">
+              <p> Vælg det afsnit du ønsker at finde evalueringer til </p>
+                <input type="text" id="section" name="section">
+                <input type="submit">
+            </form>
+          </div>
+        </div>
+        <div class="col-10">
+          <button id="design-evalueringer"> Tryk for design </button><br>
+          <img id="design-evalueringerPage">
+        </div>
+        <section>
+          <div class="row">
+            <div class="col">
+              <div class="quizzes">
+                <h2> QUIZ </h2>
+                <% evalueringerContent.forEach(result =>{ %>
+                <a href="/evalueringer/<%= result.content.quiz %>"> 
+                  <img id="quiz" src="img/Design/quiz.png">
+                </a><br>
+                <% }) %>
+              </div>
+            </div>
+            <div class="col">
+              <div class="flashcards">
+                <h2> FLASHCARDS </h2>
+                <% evalueringerContent.forEach(result =>{ %>
+                <a href="/evalueringer/<%= result.content.flashcard %>"> 
+                  <img id="flashcard" src="img/Design/flashcard.png">
+                </a><br>
+                <% }) %>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <%- include('meta/footer') %> 
+  </body>
 </html>
