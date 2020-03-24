@@ -1,4 +1,14 @@
 :: Setting up
+@echo off
+call node --version
+IF errorlevel 1 (
+    @echo on
+    Start "" https://nodejs.org/en/#home-downloadhead
+    echo Goto https://nodejs.org/en/#home-downloadhead to download node. After that you can run this file again to install the dependencies.
+    pause
+    exit 
+)
+@echo on
 call del /f package.json
 call del /f package-lock.json
 call rmdir /Q /S C:\Users\%USERNAME%\AppData\Roaming\npm-cache\_logs
