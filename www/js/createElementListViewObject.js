@@ -32,8 +32,10 @@ let deck = new Array();
 // 	}
 // }
 
-function sendGetReqeustForSection(sectionID) {
-  fetch(`/sections/${sectionID}`).then((response) => console.log(`We asked for something!`));
+async function sendGetReqeustForSection(sectionID) {
+  const data = await fetch(`/sections/${sectionID}`).then((response) => response)
+  .then((result) => console.log(result));
+  //renderElementList(array)
 }
 
 
@@ -170,5 +172,5 @@ window.onload = load;
 
 const button = document.querySelector(`#section_id_77`);
 button.addEventListener(`click`, () => {
-  sendGetReqeustForSection(`klajfdlkjdslkj`);
+  sendGetReqeustForSection(`77`);
 });

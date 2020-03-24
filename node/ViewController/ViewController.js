@@ -2,6 +2,7 @@
 const path = require(`path`);
 
 const { User } = require(`../User/User.js`);
+const { Document } = require(`../Document/Document.js`);
 
 class ViewController {
   constructor(req) {
@@ -56,6 +57,15 @@ class ViewController {
 
   rapportPage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
+    res.render(this.ejs);
+  }
+
+  async rapportPage2(req, res) {
+    const doc = new Document(req);
+    const data = await doc.getAllSections();
+    console.log(data);
+    this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
+    //this.ejs = this.insertSections(this.ejs,data);
     res.render(this.ejs);
   }
 

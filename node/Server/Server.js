@@ -20,7 +20,6 @@ class Server {
     this.bodyParserMiddleware();
 
     this.urlPatterns();
-    this.callGetFunction();
     this.redirectPatterns();
 
     return this.app.listen(this.port, () => console.log(`${startMsg}`));
@@ -36,23 +35,11 @@ class Server {
     this.app.get(`/rapport`,            (req, res) => Show.rapportPage(req, res));
     this.app.get(`/rapport/:afsnit`,    (req, res) => Show.rapportSectionPage(req, res));
     this.app.get(`/elementList`,        (req, res) => Show.elementList(req, res));
-    
+    this.app.get(`/sections/:id`,       (req, res) => Show.rapportPage2(req, res));
 
     // const GetStuff = new GetStuffClass();
   }
 
-  callGetFunction(){
-    const database = new Database();
-    database.table = "document";
-
-    this.app.get(`/sections/:id`, async (req, res) => {
-      let all_found_sections = await database.get(`*`, `title = "123"`)
-      .then((result) => result)
-      .catch((error) => error);
-      console.log(all_found_sections);
-      //res.render(`sections`,{sections: all_found_sections})
-    });
-  }
 
   redirectPatterns() {
     const Redirect = new RedirectController();

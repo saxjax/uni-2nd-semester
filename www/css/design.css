@@ -56,3 +56,10 @@ nav {text-align: center;}
 #afsnit2-1, #afsnit2-2, #afsnit2-3, #afsnit2-4, #afsnit3-1, #afsnit3-2, #afsnit3-3, #afsnit3-4 {
     padding: 10px;
 }
+
+.Document_frame{
+	padding: 2px;
+	background-color: azure;
+    height: 200px;
+    
+}
