@@ -13,8 +13,11 @@ class Database {
     this.table = `database`;
   }
 
+
   get(choice, queries, objects) {
     return new Promise((resolve, reject) => {
+      console.log(`Choice = ${choice} TABLE = ${this.table} QUERIES = ${queries} `);
+      console.log(`SELECT ${choice} FROM ${this.table} WHERE ${queries}`);
       this.connect.query(`SELECT ${choice} FROM ${this.table} WHERE ${queries}`, objects,
         (error, result) => {
           if (error) {
