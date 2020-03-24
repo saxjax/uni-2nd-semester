@@ -7,11 +7,13 @@
     <body>
         <%- include('meta/navbar') %> 
         <div class="container" id="content">
+
             <div class="row">
                 <div class="col-5">  
                     <nav>
                         <a href="/">Home</a><br>
-                        <a href="/evalueringer">Evalueringer</a>
+                        <a href="/evalueringer">Evalueringer </a><br>
+                        <a href="/upload/rapport"> Upload </a>
                     </nav> 
                 </div>
                 <div class="col-12">
@@ -24,45 +26,12 @@
                 </div>
             <section>
                 <div class="row">
-        
-                        <div class="col">
-                            <div class="leftside">
-                                <a href="/rapport/<%= 2.1 %>"> 
-                                    <img id="afsnit2-1" src="img/Design/cardview1.png" href="/rapportafsnit">
-                                </a><br>
-                                <a href="/rapport/<%= 2.2 %>"> 
-                                    <img id="afsnit2-2" src="img/Design/cardview1.png" href="/rapportafsnit">
-                                </a><br>
-                                <a href="/rapport/<%= 2.3 %>"> 
-                                    <img id="afsnit2-3" src="img/Design/cardview1.png" href="/rapportafsnit">
-                                </a><br>
-                                <a href="/rapport/<%= 2.4 %>"> 
-                                    <img id="afsnit2-4" src="img/Design/cardview1.png" href="/rapportafsnit">
-                                </a><br>
-                                
-                            </div>
-                        </div>
-        
-                        <div class="col">
-                            <div class="rightside">
-                                <a href="/rapport/<%= 3.1 %>"> 
-                                    <img id="afsnit3-1" src="img/Design/cardview1.png" href="/rapportafsnit">
-                                </a><br>
-                                <a href="/rapport/<%= 3.2 %>"> 
-                                    <img id="afsnit3-2" src="img/Design/cardview1.png" href="/rapportafsnit">
-                                </a><br>
-                                <a href="/rapport/<%= 3.3 %>"> 
-                                    <img id="afsnit3-3" src="img/Design/cardview1.png" href="/rapportafsnit">
-                                </a><br>
-                                <a href="/rapport/<%= 3.4 %>"> 
-                                    <img id="afsnit3-4" src="img/Design/cardview1.png" href="/rapportafsnit">
-                                </a><br>
-                                
-                            </div>
-                        </div>
-        
+                    <% afsnit.forEach(result => { %>
+                        <a href="/rapport/<%= result %>">
+                            <img id="afsnit" src="img/Design/cardview1.png">
+                        </a>
+                    <% }); %>
                 </div>
-
             </section>
             
         </div>
