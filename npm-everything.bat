@@ -56,6 +56,9 @@ call npm install eslint-config-airbnb-base --save-dev
 echo =====================================================================================
 echo Installing ESLINT-plugin-import
 call npm install eslint-plugin-import --save-dev
+echo =====================================================================================
+echo Installing ESLINT-plugin-ejs
+call npm install eslint-plugin-ejs --save-dev
 
 :: Installing global dependencies
 echo Nodemon version:

@@ -1,8 +1,8 @@
-let sectionDatabase = {
-    2.1:   {keywords: ['vidensdeling', 'feed-up', 'feed-forward'].toString()},
-    2.2:   {keywords: ['studier', 'evaluering', 'formativ', 'summativ']},
-    2.3:   {keywords: ['metoder', 'active recall', 'spaced repetition']},
-    2.4:   {keywords: ['SOTA', 'classkick', 'kahoot!']}
+const sectionDatabase = {
+  2.1: { keywords: [`vidensdeling`, `feed-up`, `feed-forward`].toString() },
+  2.2: { keywords: [`studier`, `evaluering`, `formativ`, `summativ`] },
+  2.3: { keywords: [`metoder`, `active recall`, `spaced repetition`] },
+  2.4: { keywords: [`SOTA`, `classkick`, `kahoot!`] },
 };
 
 
@@ -20,8 +20,8 @@ let sectionDatabase = {
 // console.log(afsnitMap.get(2.3));
 // console.log(afsnitMap.get(2.4));
 
-let afsnit = {
-    2.1: {keyword: 'hej med dig'} 
-}
+const afsnit = {
+  2.1: { keyword: `hej med dig` },
+};
 
 console.log(sectionDatabase[2.1].keywords);
