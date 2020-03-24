@@ -17,7 +17,7 @@ let actual = true;
 test(`Test af footer i www/views/meta`, (assert) => {
   assert.equal(actual, expected, `Skulle gerne være oprettet.`);
 
-  expected = `container-fluid fixed-bottom footer`;
+  expected = `container-fluid fixed-bottom footer bg-light`;
   actual = document.querySelectorAll(`div`)[0].className;
 
   assert.equal(actual, expected,
