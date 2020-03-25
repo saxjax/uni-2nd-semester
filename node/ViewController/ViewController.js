@@ -76,7 +76,7 @@ class ViewController {
 
   rapportPage(req, res) {
     // Mock data til test
-    let sections = [2.1,2.2,2.3,2.4,2.5,2.6,3.1,3.2,3.3];
+    let sections = [2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 3.1, 3.2, 3.3];
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
     res.render(this.ejs, {afsnit: sections});
   }
@@ -95,7 +95,6 @@ class ViewController {
       res.render(this.ejs);
     }
   }
-
 }
 
 module.exports = {
