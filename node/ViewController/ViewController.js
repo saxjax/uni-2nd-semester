@@ -55,6 +55,7 @@ class ViewController {
       {content:  {section: 2.3, flashcard: 'flashcard', quiz: 'quiz'}},
       {content:  {section: 2.4, flashcard: 'flashcard', quiz: 'quiz'}}
     ];
+
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
     res.render(this.ejs, {evalueringerContent: sectionDatabaseEval});
   }
