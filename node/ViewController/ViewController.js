@@ -76,11 +76,16 @@ class ViewController {
       2.2: { keywords: [`studier`, `evaluering`, `formativ`, `summativ`].toString() },
       2.3: { keywords: [`metoder`, `active recall`, `spaced repetition`].toString() },
       2.4: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-    };
-
-
+    }
     res.render(this.ejs, { section: req.params.afsnit, content: sectionDatabase });
   }
+
+  async testPage(req, res) {
+    this.data = new User({body:{username:"test",password:"Test"}});
+    this.new = await this.data.query(`SELECT *`).then(result => result).catch(error => error);
+    console.log(this.new);
+    res.send(this.new);
+}
 }
 
 

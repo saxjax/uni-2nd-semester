@@ -66,7 +66,7 @@ test(`Test af Database Klassen i node/Database`, async function (assert) {
     assert.true(expected,
       `(1.1) {Altid true hvis der IKKE sker en error} Databasen skal have adgang til SQL databasen.`);
 
-    expected = false;
+    expected = true;
     actual = object.info();
     assert.equal(actual, expected,
       `(2.1) {Returnere true hvis info metoden er implementeret} Databasen skal have en informations metode til hvordan den bruges`);
@@ -187,6 +187,8 @@ test(`Test af Database Klassen i node/Database`, async function (assert) {
     actual = true;
     assert.equal(actual, expected,
       `(7.4) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne give en fejlmeddelse, hvis dataene ikke er blevet slettet`);
+    
+    object.connect.end();
   }
   catch (error) {
     assert.false(true, `Database Tests resolvede kun delvist eller slet ikke og catchede:\n ${error}`);

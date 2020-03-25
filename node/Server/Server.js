@@ -36,6 +36,7 @@ class Server {
     this.app.get(`/rapport/:afsnit`,    (req, res) => Show.rapportSectionPage(req, res));
     this.app.get(`/elementList`,        (req, res) => Show.elementList(req, res));
     this.app.get(`/sections/:id`,       (req, res) => Show.rapportPage2(req, res));
+    this.app.get(`/test`,               (req, res) => Show.testPage(req, res));
 
     // const GetStuff = new GetStuffClass();
   }
