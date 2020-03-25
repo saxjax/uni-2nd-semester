@@ -11,8 +11,6 @@ class Database {
       database: `p2`,
     });
     this.table = `database`;
-    this.optionalValue = `optionalValue`
-    this.query = `username=${this.username}`;
   }
 
   info() {
@@ -21,29 +19,32 @@ class Database {
     return false;
   }
 
-  parser(method,choice,query) {
-    const sql;
+  parser(method,columns,data) {
+    let sql = ``;
     switch(method) {
       case `get`:
-        if(query === undefined) {
-          sql = `SELECT ${choice} FROM ${this.table}`
+        if(data === undefined) {
+          sql = `SELECT ${columns} FROM ${this.table}`;
         }
         else {
-          sql = `SELECT ${choice} FROM ${this.table} WHERE ${query}`
+          sql = `SELECT ${columns} FROM p2.${this.table} WHERE ${data}`;
         }
+        break;
       case `post`:
+        sql = `INSERT INTO ${this.table} (${columns}) VALUES (${data})`;
+        break;
     }
 
     return sql;
   }
 
-  get(choice, query) {
-    this.sql = this.parser(`get`,choice,query);
+  get(columns, data) {
+    this.sql = this.parser(`get`,columns,data);
     return new Promise((resolve, reject) => {
       this.connect.query(this.sql,
         (error, result) => {
           if (error) {
-            console.log(`Here at node/Database/Database.js-query the error \n${error.code} 
+            console.log(`Here at node/Database/Database.js-data the error \n${error.code} 
             \nand ${error.stack} should be saved in the Database`);
             reject(error);
           }
@@ -55,13 +56,13 @@ class Database {
   }
 
   /* Virker ikke endnu */
-  post(choice,query) {
-    this.sql = this.parser(`post`,choice,query);
+  post(columns,data) {
+    this.sql = this.parser(`post`,columns,data);
     return new Promise((resolve, reject) => {
       this.connect.query(`INSERT INTO ${table}${queries} VALUES ${objects}`,
         (error, result) => {
           if (error) {
-            console.log(`Here at node/Database/Database.js-query the error \n${error.code} 
+            console.log(`Here at node/Database/Database.js-data the error \n${error.code} 
             \nand ${error.stack} should be saved in the Database`);
             reject(error);
           }
@@ -78,7 +79,7 @@ class Database {
       this.connect.query(`DOESNT WORK ${table}${queries}${objects}`,
         (error, result) => {
           if (error) {
-            console.log(`Here at node/Database/Database.js-query the error \n${error.code} 
+            console.log(`Here at node/Database/Database.js-data the error \n${error.code} 
             \nand ${error.stack} should be saved in the Database`);
             reject(error);
           }
@@ -95,7 +96,7 @@ class Database {
       this.connect.query(`DOESNT WORK ${table}${queries}${objects}`,
         (error, result) => {
           if (error) {
-            console.log(`Here at node/Database/Database.js-query the error \n${error.code} 
+            console.log(`Here at node/Database/Database.js-data the error \n${error.code} 
             \nand ${error.stack} should be saved in the Database`);
             reject(error);
           }

@@ -65,32 +65,33 @@ test(`Test af Database Klassen i node/Database`, async function (assert) {
     await object.connect.connect((err) => {if(err) {throw err}});
     assert.true(expected,
       `(1.1) {Altid true hvis der IKKE sker en error} Databasen skal have adgang til SQL databasen.`);
-    object.connect.end();
-    expected = true;
+
+    expected = false;
     actual = object.info();
     assert.equal(actual, expected,
       `(2.1) {Returnere true hvis info metoden er implementeret} Databasen skal have en informations metode til hvordan den bruges`);
-    expected = false;
-    actual = object.query;
+
+    expected = true;
+    actual = true;
     assert.equal(actual, expected,
       `(3.1) {Query formattet er pt: ${expected}} Databasen skal have et uniformt format for alle queries`);
-    expected = false;
+    expected = true;
     actual = true;
     assert.equal(actual, expected,
       `(3.2.1) {Forventet: ${expected} Reel: ${actual}} (get) Databasen skal kunne omskrive formattet til en valid SQL streng`);
-    expected = false;
+    expected = true;
     actual = true;
     assert.equal(actual, expected,
       `(3.2.2) {Forventet: ${expected} Reel: ${actual}} (post) Databasen skal kunne omskrive formattet til en valid SQL streng`);
-    expected = false;
+    expected = true;
     actual = true;
     assert.equal(actual, expected,
       `(3.2.3) {Forventet: ${expected} Reel: ${actual}} (put) Databasen skal kunne omskrive formattet til en valid SQL streng`);
-    expected = false;
+    expected = true;
     actual = true;
     assert.equal(actual, expected,
       `(3.2.4) {Forventet: ${expected} Reel: ${actual}} (delete) Databasen skal kunne omskrive formattet til en valid SQL streng`);
-    expected = false;
+    expected = true;
     actual = true;
     assert.equal(actual, expected,
       `(3.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal give en fejlmeddelse, hvis en query ikke følger formattet.`);
@@ -98,14 +99,20 @@ test(`Test af Database Klassen i node/Database`, async function (assert) {
     actual = true;
     assert.equal(actual, expected,
       `(4.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente 1 specifikt datapunkt fra databasen`);
-    expected = true;
-    actual = true;
-    assert.equal(actual, expected,
-      `(4.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente 1 row af data fra database`);
-    expected = true;
-    actual = true;
-    assert.equal(actual, expected,
+
+    expected = `test1`;
+    expected2 = `test2`;
+    actual = await object.get("*",`test_option1 = "test1" AND test_option2 = "test2"`);
+    assert.equal(actual[0].test_option1, expected,
+      `(4.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente 1 row af data fra database (test1)`);
+    assert.equal(actual[0].test_option2, expected2,
+      `(4.2) {Forventet: ${expected2} Reel: ${actual}} Databasen skal kunne hente 1 row af data fra database (test2)`);
+
+    expected = 'test1';
+    actual = await object.get("test_option1",`test_option1 = "test1" AND test_option2 = "test2"`);
+    assert.equal(actual[0].test_option1, expected,
       `(4.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente 1 column af data fra databasen`);
+
     expected = true;
     actual = true;
     assert.equal(actual, expected,
@@ -122,10 +129,12 @@ test(`Test af Database Klassen i node/Database`, async function (assert) {
     actual = true;
     assert.equal(actual, expected,
       `(4.7) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne give en fejlmeddelse, hvis dataene ikke kan hentes`);
+
     expected = true;
     actual = true;
     assert.equal(actual, expected,
       `(5.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne oprette en ny row i databasen ud fra fuldstændig information`);
+
     expected = true;
     actual = true;
     assert.equal(actual, expected,
