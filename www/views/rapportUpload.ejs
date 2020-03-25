@@ -14,8 +14,13 @@
                 </div>
             </div>
             <div class ="col-12">
-                <form action="/rapport/:2.1" method="POST">
+                <form action="/upload/rapport" method="POST">
+                    <p> Tilføj afsnittets nummer </p>
                     <input type="text" id="name_of_section" name="name_of_section">
+                    <p> Tilføj keywords til afsnittet </p>
+                    <input type="text" id="keyword1" name="keyword_1"><br>
+                    <input type="text" id="keyword2" name="keyword_2"><br>
+                    <input type="text" id="keyword3" name="keyword_3"><br>
                     <input type="file" id="section" name="filename">
                     <input type="submit" id="submitknap">
                 </form>
