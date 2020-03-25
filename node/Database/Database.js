@@ -12,7 +12,7 @@ class Database {
     });
     this.table = `database`;
     this.optionalValue = `optionalValue`
-    this.query = `*/rows/rowUnique/values/valueUnique` + `column1(${this.optionalValue})` + `column2(${this.optionalValue})` `ètc.`;
+    this.query = `username=${this.username}`;
   }
 
   info() {
@@ -21,16 +21,26 @@ class Database {
     return false;
   }
 
-  parser(method) {
+  parser(method,choice,query) {
+    const sql;
+    switch(method) {
+      case `get`:
+        if(query === undefined) {
+          sql = `SELECT ${choice} FROM ${this.table}`
+        }
+        else {
+          sql = `SELECT ${choice} FROM ${this.table} WHERE ${query}`
+        }
+      case `post`:
+    }
 
-    return false;
+    return sql;
   }
 
-  get(choice, queries, objects) {
+  get(choice, query) {
+    this.sql = this.parser(`get`,choice,query);
     return new Promise((resolve, reject) => {
-      console.log(`Choice = ${choice} TABLE = ${this.table} QUERIES = ${queries} `);
-      console.log(`SELECT ${choice} FROM ${this.table} WHERE ${queries}`);
-      this.connect.query(`SELECT ${choice} FROM ${this.table} WHERE ${queries}`, objects,
+      this.connect.query(this.sql,
         (error, result) => {
           if (error) {
             console.log(`Here at node/Database/Database.js-query the error \n${error.code} 
@@ -45,7 +55,8 @@ class Database {
   }
 
   /* Virker ikke endnu */
-  post(table, queries, objects) {
+  post(choice,query) {
+    this.sql = this.parser(`post`,choice,query);
     return new Promise((resolve, reject) => {
       this.connect.query(`INSERT INTO ${table}${queries} VALUES ${objects}`,
         (error, result) => {
