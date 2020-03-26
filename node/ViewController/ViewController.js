@@ -5,15 +5,15 @@ const { Document } = require(`../Document/Document.js`);
 const { User } = require(`../User/User.js`);
 //Mock Data
 let sectionDatabaseJakob = {
-  1:{id: "2.1", elementType: "section",content: "her er de første ti linier af en sektion", keywords: [`vidensdeling`, `feed-up`, `feed-forward`] },
-  2:{id: "2.2",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`studier`, `evaluering`, `formativ`, `summativ`] },
-  3:{id: "2.3",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`metoder`, `active recall`, `spaced repetition`] },
-  4:{id: "2.4",  elementType: "flashcard",definition: "Et lyserødt dyr som spiser trøfler",keywords: [`Gris`] },
-  5:{id: "2.5",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
-  6:{id: "2.6",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
-  7:{id: "2.7",  elementType: "quiz",question: "Hvilket dyr er en mester til at finde trøfler?",answers:["min radiator", "en gris!","en ged", "et evalueringsværktøj"],correctness:[0,1,0,0] ,keywords: [`SOTA`, `classkick`, `kahoot!`] },
-  8:{id: "2.8",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
-  9:{id: "2.9",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
+  2.1:{iddocument: "2.1", elementType: "section",content: "her er de første ti linier af en sektion", keywords: [`vidensdeling`, `feed-up`, `feed-forward`] },
+  2.2:{iddocument: "2.2",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`studier`, `evaluering`, `formativ`, `summativ`] },
+  2.3:{iddocument: "2.3",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`metoder`, `active recall`, `spaced repetition`] },
+  2.4:{iddocument: "2.4",  elementType: "flashcard",definition: "Et lyserødt dyr som spiser trøfler",keywords: [`Gris`] },
+  2.5:{iddocument: "2.5",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
+  2.6:{iddocument: "2.6",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
+  2.7:{iddocument: "2.7",  elementType: "quiz",question: "Hvilket dyr er en mester til at finde trøfler?",answers:["min radiator", "en gris!","en ged", "et evalueringsværktøj"],correctness:[0,1,0,0] ,keywords: [`SOTA`, `classkick`, `kahoot!`] },
+  2.8:{iddocument: "2.8",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
+  2.9:{iddocument: "2.9",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
 };
 
 // Mock data til test
@@ -116,25 +116,23 @@ class ViewController {
     // const data = await doc.getAllSections();
     // console.log(data);
     
-    for (let element in data) {
-      console.log("Nyt data element "+data[element]);
-    }
+    // for (let element in data) {
+    //   console.log("Nyt data element "+data[element]);
+    // }
 
     let list1 = createlist(data);
     let sections = [];
     for (const section in data) {
-      
-        sections.push(data[section].id);
+        sections.push(data[section].iddocument);
     }
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
     res.render(this.ejs, { afsnit: sections, listOfAllReports: list1 });
   }
 
-  rapportSectionPage(req, res) {
-    let doc = Document();
-    let data = doc.getSection(req.uuid);
-    let keywords = [];
-
+  async rapportSectionPage(req, res) {
+    let doc = new Document();
+    //let data = await doc.getSection(req.iddocument);
+    const data = sectionDatabaseJakob;
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
     res.render(this.ejs, { section: req.params.afsnit, content: sectionDatabaseJakob });
@@ -199,9 +197,9 @@ function createlist(elementList) {
 
       switch (elementList[element].elementType) {
         case `section`:
-          HTML += `<a href="/rapport/${elementList[element].id}" >`
+          HTML += `<a href="/rapport/${elementList[element].iddocument}" >`
           HTML += `<div class="card">`;
-          HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].id}">${elementList[element].elementType} ${elementList[element].id}</div>`
+          HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].iddocument}">${elementList[element].elementType} ${elementList[element].iddocument}</div>`
           HTML += `<div class="value">keywords:</div><div>`
 
           elementList[element].keywords.forEach(key => {
@@ -212,9 +210,9 @@ function createlist(elementList) {
           break;
 
         case `quiz`:
-          HTML += `<a href="/evalueringer/quiz/${elementList[element].id}" >`
+          HTML += `<a href="/evalueringer/quiz/${elementList[element].iddocument}" >`
           HTML += `<div class="card">`;
-          HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].id}">${elementList[element].elementType} ${elementList[element].id}</div>`
+          HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].iddocument}">${elementList[element].elementType} ${elementList[element].iddocument}</div>`
           HTML += `<div class="contentQuiz">${elementList[element].question}</div>`;
           HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#1:${elementList[element].answers[0]}</p></a>`
           HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#2${elementList[element].answers[1]}</p></a>`
@@ -230,9 +228,9 @@ function createlist(elementList) {
             keywords += `<p>${key}</p>`
           });
           //   console.log(elementList[element].keywords)
-          HTML += `<a href="/evalueringer/flashcard/${elementList[element].id}" >`
+          HTML += `<a href="/evalueringer/flashcard/${elementList[element].iddocument}" >`
           HTML += `<div class="card">`;
-          HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].id}">${elementList[element].elementType} ${elementList[element].id}</div>`
+          HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].iddocument}">${elementList[element].elementType} ${elementList[element].iddocument}</div>`
           HTML += `<div class="FlashcardBegreb">${keywords}</div>`
           HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`
           HTML += `<div class="FlashcardDefinition">${elementList[element].definition}</div>`
