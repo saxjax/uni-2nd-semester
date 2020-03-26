@@ -8,15 +8,25 @@ class Document extends Database {
     this.request = request;
   }
 
-  getAllSections() { 
-    return this.get( `*`, `title IS NOT NULL` )
-    .then((result) => result )
+  async getAllSections() {
+    // console.log(`prøver at hente : `+ id);
+    return this.query(`SELECT *`)
+    .then((result) => result)
     .catch((error) => error);
   }
 
-  querySectionContent(id) { 
-    return this.query( `SELECT content`, `iddcoument = "${id}"` )
-    .then((result) => result )
+  async getSectionContent(id) {
+    // console.log(`prøver at hente : `+ id);
+    return this.query(`SELECT content`, `iddocument = "${id}"`)
+    .then((result) => result)
+    .catch((error) => error);
+  }
+
+  async getKeywordsForSection(id) {
+    // console.log(`prøver at hente : ` + id);
+    this.table = `document_keywords`;
+    return this.query(`SELECT *`, `iddocument = "${id}"`)
+    .then((result) => result)
     .catch((error) => error);
   }
 
