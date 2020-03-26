@@ -1,19 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <%- include('meta/header') %> 
-    <link href="css/design.css" rel="stylesheet">
-  </head>
-  <body>
-    <%- include('meta/navbar') %> 
-    <div class="container" id="content">
-      <div class="row">
-        <div class="col-5">  
-          <nav>
-            <a href="/">Home</a><br>
-            <a href="/evalueringer">Evalueringer </a><br>
-            <a href="/upload/rapport"> Upload </a>
-          </nav> 
+    <head>
+        <%- include('meta/header') %> 
+        <link href="css/design.css" rel="stylesheet">
+    </head>
+    <body>
+        <%- include('meta/navbar') %> 
+        <div class="container" id="content">
+
+            <div class="row">
+                <div class="col-5">  
+                    <nav>
+                        <button class="btn btn-info">
+                            <a href="/upload/rapport"> Upload </a>
+                        </button>
+                    </nav> 
+                </div>
+                <div class="col-12">
+                    <h1> RAPPORT </h1>
+                    <%- listea %>
+                </div>
+            </div>
+                <div class="col-10">
+                    <button id="design-rapport"> Tryk for design </button><br>
+                    <img id="design-rapportPage">
+                </div>
+            <section>
+                <div class="row">
+                    <% afsnit.forEach(result => { %>
+                        <a href="/rapport/<%= result %>">
+                            <img id="afsnit" src="img/Design/cardview1.png">
+                        </a>
+                    <% }); %>
+                </div>
+            </section>
         </div>
         <div class="col-12">
           <h1> RAPPORT </h1>
