@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <%- include('meta/header') %> 
-      <title>Upload af evalueringer</title>
+    <%- include('meta/header') %> 
+    <title>Upload af evalueringer</title>
   </head>
   <body>
-      <%- include('meta/navbar') %> 
-      <div class="container" id="content">
-          <div class="row">
-              <div class="col-12">
-                      <h1> UPLOAD EVALUERINGER TIL AFSNIT </h1>
-              </div>
-              <div class ="col-12">
-                  <form action="/upload/evalueringer" method="POST">
-                  <p> Vælg afsnit du ønsker at uploade en ny evaluering til </p>
-                      <input type="text" id="section" name="section">
-                  <p> Vælg type af evaluering </p>
-                      <input type="radio" id="quiz" name="evalueringQuiz" value="quiz">
-                      <label for="quiz">Quiz</label><br>
-                      <input type="radio" id="flashcard" name="evalueringFlashcard" value="flashcard">
-                      <label for="flashcard">Flashcard</label><br>
-                      <input type="submit" id="submitformforevaluering">
-                      <input type="reset" id="resetform">
-                  </form>
-              </div>
-          </div>
+    <%- include('meta/navbar') %> 
+    <div class="container" id="content">
+      <div class="row">
+        <div class="col-12">
+          <h1> UPLOAD EVALUERINGER TIL AFSNIT </h1>
+        </div>
+        <div class ="col-12">
+          <form action="/upload/evalueringer" method="POST">
+          <p> Vælg afsnit du ønsker at uploade en ny evaluering til </p>
+            <input type="text" id="section" name="section">
+          <p> Vælg type af evaluering </p>
+            <input type="radio" id="quiz" name="evalueringQuiz" value="quiz">
+            <label for="quiz">Quiz</label><br>
+            <input type="radio" id="flashcard" name="evalueringFlashcard" value="flashcard">
+            <label for="flashcard">Flashcard</label><br>
+            <input type="submit" id="submitformforevaluering">
+            <input type="reset" id="resetform">
+          </form>
+        </div>
       </div>
-      <%- include('meta/footer') %> 
+    </div>
+    <%- include('meta/footer') %> 
   </body> 
 </html>
