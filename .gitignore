@@ -106,3 +106,4 @@ Thumbs.db
 !.gitignore
 !.editorconfig
 !.phpcs.xml.dist
+!.eslintrc.json
