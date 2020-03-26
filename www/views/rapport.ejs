@@ -34,9 +34,27 @@
                     <% }); %>
                 </div>
             </section>
-            
         </div>
-        <%- include('meta/footer') %> 
-    </body>
-    <script src="js/view-design.js"></script>
+        <div class="col-12">
+          <h1> RAPPORT </h1>
+          <%- listea %>
+        </div>
+      </div>
+        <div class="col-10">
+          <button id="design-rapport"> Tryk for design </button><br>
+          <img id="design-rapportPage">
+        </div>
+      <section>
+        <div class="row">
+          <% afsnit.forEach(result => { %>
+            <a href="/rapport/<%= result %>">
+              <img id="afsnit" src="img/Design/cardview1.png">
+            </a>
+          <% }); %>
+        </div>
+      </section>    
+    </div>
+    <%- include('meta/footer') %> 
+  </body>
+  <script src="js/view-design.js"></script>
 </html>
