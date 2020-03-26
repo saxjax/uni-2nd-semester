@@ -13,6 +13,12 @@ class Document extends Database {
     .then((result) => result )
     .catch((error) => error);
   }
+
+  querySection(id) { 
+    return this.get( `SELECT *`, `content = ${id}` )
+    .then((result) => result )
+    .catch((error) => error);
+  }
 }
 
 
