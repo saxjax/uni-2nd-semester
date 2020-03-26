@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('meta/header') %> 
+    <link href="css/design.css" rel="stylesheet">
+    <script defer src="js/view-design.js"></script>
+  </head>
+  <body>
+    <%- include('meta/navbar') %> 
+    <div class="container" id="content">
+      <div class="row">
+        <div class="col-5">  
+          <nav>
+            <a href="/upload/evalueringer"> Upload </a>
+          </nav> 
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <h1> EVALUERINGER </h1>
+            <form method="POST">
+              <p> Vælg det afsnit du ønsker at finde evalueringer til </p>
+                <input type="text" id="section" name="section">
+                <input type="submit">
+            </form>
+          </div>
+        </div>
+        <div class="col-10">
+          <button id="design-evalueringer"> Tryk for design </button><br>
+          <img id="design-evalueringerPage">
+        </div>
+        <section>
+          
+                <h2> QUIZ </h2>
+                  <%- listOfAllQuizes %>
+              
+            
+                <h2> FLASHCARDS </h2>
+                  <%- listOfAllFlashcards %>
+              
+          
+        </section>
+      </div>
+    </div>
+    <%- include('meta/footer') %> 
+  </body>
+</html>
