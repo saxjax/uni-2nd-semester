@@ -4,8 +4,9 @@ const express = require(`express`);
 const bodyParser = require(`body-parser`);
 const { Database } = require(`../Database/Database.js`);
 
-const { ViewController } = require(`../ViewController/ViewController.js`);
-const { RedirectController } = require(`../RedirectController/RedirectController.js`);
+const { ViewController } = require(`../ViewController/ViewController`);
+const { RedirectController } = require(`../RedirectController/RedirectController`);
+const pad = require(`./pad`);
 
 class Server {
   constructor() {
@@ -59,7 +60,7 @@ class Server {
   }
 
   logger(req, res, next) {
-    console.log(`GOT ${req.method}: ${req.protocol}://${req.get(`host`)}${req.originalUrl} -- ${(new Date()).toUTCString()}`);
+    console.log(`GOT ${pad(req.method, -6, ` `)}: ${req.protocol}://${req.get(`host`)}${req.originalUrl} -- ${(new Date()).toUTCString()}`);
     next();
   }
 }
