@@ -68,3 +68,8 @@ nav {text-align: center;}
 .btn>a{
     color: black;
 }
+#quiz_for_section, #flashcard_for_section {
+    width: 300px;
+    padding: 10px;
+}
+
