@@ -3,7 +3,6 @@ const path = require(`path`);
 const { Document } = require(`../Document/Document.js`);
 
 const { User } = require(`../User/User.js`);
-
 // Mock data til test
 var sectionDatabase = {
   2.1: { keywords: ['vidensdeling', 'feed-up', 'feed-forward'].toString() },
