@@ -10,7 +10,7 @@ class Document extends Database {
 
   getAllSections() { 
     return this.get( `*`, `title IS NOT NULL` )
-    .then((result) => result)
+    .then((result) => result )
     .catch((error) => error);
   }
 
