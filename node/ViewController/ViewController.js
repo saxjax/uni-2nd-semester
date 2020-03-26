@@ -174,7 +174,7 @@ module.exports = {
 function createlist(elementList) {
   
     HTML = `
-    <link rel="stylesheet" href="../css/elementlist.css">
+
     <div class="deck"><h1>A Deck of Cards</h1>
     <a href="javascript:void(0)" class="btn" onclick="shuffle()">Shuffle</a>
     <div id="deck">`;
