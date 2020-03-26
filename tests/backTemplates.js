@@ -6,7 +6,7 @@ const testDecorater = require(`tape-promise`).default;
 const test = testDecorater(tape);
 const { Navn } = require(`../../../node/mapper/til/dinFil.js`);
 
-let request = {'body':{}};
+let request = { body: {} };
 let actual = true;
 let expected = true;
 let object = new Navn(request);
@@ -64,7 +64,7 @@ test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
 /* GAMMELT! Se kun i for at få inspiration */
 /* Class Methods ******************************************************** */
 test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
-  request = {'body':{}};
+  request = { body: {} };
   expected = `forventet output`;
   object = new Navn(request);
   actual = object.someMethod(`par/s`);

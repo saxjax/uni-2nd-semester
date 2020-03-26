@@ -20,26 +20,7 @@ const content = [`Content : Key word 1 Ave verum corpus,est in ad hoc triagtig f
 const elementTypes = [`Section`, `Quizz`, `Flashcard`];
 let deck = new Array();
 
-
-// class Card {
-// 	constructor(){
-// 		this.Title = title
-// 		this.Content = content
-// 		this.ElementType = elementType
-//		this.keyword
-// 		this.SectionID = id
-// 		this.Buttons = {if (this.ElementType == "flashCard") }
-// 	}
-// }
-
-async function sendGetReqeustForSection(sectionID) {
-  const data = await fetch(`/sections/${sectionID}`).then((response) => response)
-  .then((result) => console.log(result));
-  //renderElementList(array)
-}
-
-
-async function getDeck() {
+function getDeck() {
   const deck = new Array();
 
   for (let i = 0; i < elementTypes.length; i++) {
@@ -118,7 +99,10 @@ function readText(path) {
 	npm i --save-dev tape-promise
 	npm i tap-spec
 	npm install eslint --save-dev
-	npm install ejs`;
+
+	npm install ejs
+	
+	`;
 }
 
 function getKeywordsFrom(SectionID) {
@@ -141,13 +125,10 @@ function renderElementList(elementList) {
     //     default:
     //         break;
     // }
-
     card.className = `card`;
     value.className = `value`;
     content.className = `content${elementList[i].ElementType}`;
     elementType.className = `elementType${elementList[i].ElementType}`;
-
-    // card.classList.add("card")
 
     elementType.innerHTML = elementList[i].ElementType;
     value.innerHTML = elementList[i].Value;
@@ -161,12 +142,15 @@ function renderElementList(elementList) {
   }
 }
 
-async function load() {
-  deck = await getDeck();
+function load() {
+  deck = getDeck();
   // shuffle();
   renderElementList(deck);
 }
 
+    elementType.innerHTML = elementList[i].ElementType;
+    value.innerHTML = elementList[i].Value;
+    content.innerHTML = elementList[i].Content;
 
 window.onload = load;
 

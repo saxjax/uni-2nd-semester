@@ -8,12 +8,13 @@ class Document extends Database {
     this.request = request;
   }
 
-  getAllSections(){
-      return this.get(`*`, `title = "123"`)
-      .then((result) => result)
-      .catch((error) => error);
+  getAllSections() { 
+    return this.get( `*`, `title IS NOT NULL` )
+    .then((result) => result )
+    .catch((error) => error);
   }
 }
+
 
 module.exports = {
   Document,

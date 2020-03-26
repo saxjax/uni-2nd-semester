@@ -1,4 +1,5 @@
 h1 {color:black; padding: 20px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-weight: bold;}
+h2 {text-align: center;}
 
 body {background: skyblue; font-family: verdana; color:black; padding: 30px;}
 
@@ -30,11 +31,9 @@ nav {text-align: center;}
     text-align: center;
 }
 
-.right {
+.rightside {
     text-align: center;
 }
-
-
 
 /* Clear floats after the columns */
 .row:after {
@@ -57,9 +56,15 @@ nav {text-align: center;}
     padding: 10px;
 }
 
-.Document_frame{
-	padding: 2px;
-	background-color: azure;
-    height: 200px;
-    
+#quiz, #flashcard {
+    width: 300px;
+    padding: 10px;
+}
+
+.btn{
+    margin-top: 20px;
+}
+
+.btn>a{
+    color: black;
 }

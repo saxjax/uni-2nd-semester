@@ -9,11 +9,7 @@
         <%- include('meta/navbar') %> 
         <div class="container" id="content">
             <div class="row">
-                <div class="col-5">  
-                    <nav>
-                        <a href="/rapport">Rapport</a><br>
-                        <a href="/evalueringer">Evalueringer</a>
-                    </nav> 
+                <div class="col-5">                  
                 </div>
                 <div class="col-12">
                     <h1> HOME OVERVIEW</h1>
@@ -22,29 +18,33 @@
                 <div class="wrapper">
                     <button id="design-home"> Tryk for design </button><br>
                     <img id="design-homePage">
-                </div>   
+                </div>  
         </div>
-
-        <div class="row">
-            
-                <div class="col">
-                    <div class="leftside">
-                        <h2> News Feed</h2>
-                        <img id="newsfeed" src="img/Design/newsfeed.png">
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="rightside">
-                        <h2>Progress</h2>
-                        <img id="progress-circle" src="img/Design/progress-circle.png"><br>
-                        <a href=""> Se mere </a>
-                    </div>
-                </div>
-
+        <div class="col-12">
+          <h1> HOME OVERVIEW</h1>
         </div>
-       
-    </body>
-    <%- include('meta/footer') %> 
-    <script src="js/view-design.js"></script>
+      </div>
+      <div class="wrapper">
+        <button id="design-home"> Tryk for design </button><br>
+        <img id="design-homePage">
+      </div>   
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="leftside">
+          <h2> News Feed</h2>
+          <img id="newsfeed" src="img/Design/newsfeed.png">
+        </div>
+      </div>
+      <div class="col">
+        <div class="rightside">
+          <h2>Progress</h2>
+          <img id="progress-circle" src="img/Design/progress-circle.png"><br>
+          <a href=""> Se mere </a>
+        </div>
+      </div>
+    </div>  
+  </body>
+  <%- include('meta/footer') %> 
+  <script src="js/view-design.js"></script>
 </html>
