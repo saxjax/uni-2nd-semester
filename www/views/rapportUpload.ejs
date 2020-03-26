@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <%- include('meta/header') %> 
-        <title>Rapport Uploading</title>
-        <link href="css/design.css" rel="stylesheet">
-    </head>
-    <body>
-        <%- include('meta/navbar') %> 
-        <div class="container" id="content">
-            <div class="row">
-                <div class="col-12">    
-                    <h1> Upload afsnit fra rapporten</h1>
-                </div>
-            </div>
-            <div class ="col-12">
-                <form action="/upload/rapport" method="POST">
-                    <p> Tilføj afsnittets nummer </p>
-                    <input type="text" id="name_of_section" name="name_of_section">
-                    <p> Tilføj keywords til afsnittet </p>
-                    <input type="text" id="keyword1" name="keyword_1"><br>
-                    <input type="text" id="keyword2" name="keyword_2"><br>
-                    <input type="text" id="keyword3" name="keyword_3"><br>
-                    <input type="file" id="section" name="filename">
-                    <input type="submit" id="submitknap">
-                </form>
-            </div>
+  <head>
+    <%- include('meta/header') %> 
+    <title>Rapport Uploading</title>
+    <link href="css/design.css" rel="stylesheet">
+  </head>
+  <body>
+    <%- include('meta/navbar') %> 
+    <div class="container" id="content">
+      <div class="row">
+        <div class="col-12">    
+          <h1> Upload afsnit fra rapporten</h1>
         </div>
-        <%- include('meta/footer') %> 
-    </body>
+      </div>
+      <div class ="col-12">
+        <form action="/upload/rapport" method="POST">
+          <p> Tilføj afsnittets nummer </p>
+          <input type="text" id="name_of_section" name="name_of_section">
+          <p> Tilføj keywords til afsnittet </p>
+          <input type="text" id="keyword1" name="keyword_1"><br>
+          <input type="text" id="keyword2" name="keyword_2"><br>
+          <input type="text" id="keyword3" name="keyword_3"><br>
+          <input type="file" id="section" name="filename">
+          <input type="submit" id="submitknap">
+        </form>
+      </div>
+    </div>
+    <%- include('meta/footer') %> 
+  </body>
 </html>

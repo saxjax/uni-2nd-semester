@@ -3,6 +3,7 @@
     <head>
         <%- include('meta/header') %> 
         <link href="css/design.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/elementlist.css">
     </head>
     <body>
         <%- include('meta/navbar') %> 
@@ -11,14 +12,14 @@
             <div class="row">
                 <div class="col-5">  
                     <nav>
-                        <a href="/">Home</a><br>
-                        <a href="/evalueringer">Evalueringer </a><br>
-                        <a href="/upload/rapport"> Upload </a>
+                        <button class="btn btn-info">
+                            <a href="/upload/rapport"> Upload </a>
+                        </button>
                     </nav> 
                 </div>
                 <div class="col-12">
                     <h1> RAPPORT </h1>
-                    <%- listea %>
+                    <%- listOfAllReports %>
                 </div>
             </div>
                 <div class="col-10">
@@ -34,9 +35,8 @@
                     <% }); %>
                 </div>
             </section>
-            
         </div>
-        <%- include('meta/footer') %> 
-    </body>
-    <script src="js/view-design.js"></script>
+    <%- include('meta/footer') %> 
+  </body>
+  <script src="js/view-design.js"></script>
 </html>

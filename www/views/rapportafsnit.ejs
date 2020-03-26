@@ -2,7 +2,7 @@
 <html>
     <head>
         <%- include('meta/header') %> 
-        <link href="css/design.css" rel="stylesheet">
+        <link href="/css/design.css" rel="stylesheet">
     </head>
     <body>
         <%- include('meta/navbar') %> 
@@ -15,14 +15,20 @@
                 </div>
                 <div class="col-12">
                     <h1> Afsnit: <%= section %></h1><br>
+                    <p> Keywords for afsnit: <%= content[section].keywords %> </p>
+                    <br>
                 </div>
                 <section>
-                    <p> Keywords for afsnit: <%= content[section].keywords %> </p>
-                    <!---   Her skal vi dynamisk vise det afsnit der bedes om i browseren -->
+                    <H2> EVALUERINGER FOR AFSNITTET</H2><br>
+                    <a href="/evalueringer/quiz/<%= section %>">
+                        <img id="quiz_for_section" src="/img/Design/quiz.png"><br>
+                    </a>
+                    <a href="/evalueringer/flashcard/<%= section %>">
+                        <img id="flashcard_for_section" src="/img/Design/flashcard.png">
+                    </a>
                 </section>
             </div>
         </div>
         <%- include('meta/footer') %> 
     </body>
-    <script></script>
 </html>
