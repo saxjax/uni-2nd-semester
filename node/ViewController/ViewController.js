@@ -48,7 +48,7 @@ class ViewController {
     this.ejs = path.join(`${this.root}/www/views/login.ejs`);
     res.render(this.ejs);
   }
-ª
+
   evalueringerPage(req, res) {
     // Mock data til test
     var sectionDatabaseEval = [
