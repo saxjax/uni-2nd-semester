@@ -79,13 +79,6 @@ class ViewController {
     }
     res.render(this.ejs, { section: req.params.afsnit, content: sectionDatabase });
   }
-
-  async testPage(req, res) {
-    this.data = new User({body:{username:"test",password:"Test"}});
-    this.new = await this.data.query(`SELECT *`).then(result => result).catch(error => error);
-    console.log(this.new);
-    res.send(this.new);
-}
 }
 
 

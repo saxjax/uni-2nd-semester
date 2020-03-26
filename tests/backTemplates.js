@@ -15,6 +15,8 @@ test(`Test af X i node/objektNavn`, async function (assert) {
   assert.equal(actual, expected, `Skulle gerne være oprettet.`);
   try {
     /* Indsæt konstanter, variable og asserts her */
+
+    object.connect.end();
   }
   catch (error) {
     assert.false(false, `Async Funktionen resolvede ikke, men catchede: ${error}`);
@@ -30,9 +32,11 @@ test(`Kopier det nedenunder ind i Start Templaten`, async (assert) => {
       request = {'body':{}};
       expected = `forventet output`;
       object = new Navn(request);
-      actual = await Navn();
+      actual = await object.Method();
       assert.equal(actual, expected,
         `{Forventet: ${expected} Reel: ${actual}} Async Funktionen skal kunne X`);
+
+
 
 });
 
