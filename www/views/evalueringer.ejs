@@ -17,7 +17,7 @@
         <div class="row">
           <div class="col-12">
             <h1> EVALUERINGER </h1>
-            <form method="POST">
+            <form action="/evalueringer" method="POST">
               <p> Vælg det afsnit du ønsker at finde evalueringer til </p>
                 <input type="text" id="section" name="section">
                 <input type="submit">
@@ -34,7 +34,7 @@
               <div class="quizzes">
                 <h2> QUIZ </h2>
                 <% evalueringerContent.forEach(result =>{ %>
-                <a href="/evalueringer/<%= result.content.quiz %>"> 
+                <a href="/evalueringer/<%= result.content.quiz %>/<%= result.content.section %>"> 
                   <img id="quiz" src="img/Design/quiz.png">
                 </a><br>
                 <% }) %>
@@ -44,7 +44,7 @@
               <div class="flashcards">
                 <h2> FLASHCARDS </h2>
                 <% evalueringerContent.forEach(result =>{ %>
-                <a href="/evalueringer/<%= result.content.flashcard %>"> 
+                <a href="/evalueringer/<%= result.content.flashcard %>/<%= result.content.section %>"> 
                   <img id="flashcard" src="img/Design/flashcard.png">
                 </a><br>
                 <% }) %>

@@ -48,7 +48,7 @@ class ViewController {
     this.ejs = path.join(`${this.root}/www/views/login.ejs`);
     res.render(this.ejs);
   }
-
+ª
   evalueringerPage(req, res) {
     // Mock data til test
     var sectionDatabaseEval = [
@@ -59,17 +59,17 @@ class ViewController {
     ];
 
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-    res.render(this.ejs, { evalueringerContent: sectionDatabaseEval });
+    res.render(this.ejs, { evalueringerContent: sectionDatabaseEval});
   }
 
   evalueringerTypePage(req, res) {
     if (req.params.type === `flashcard`) {
       this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
-      res.render(this.ejs);
+      res.render(this.ejs, {section: req.params.afsnit});
     }
     else if (req.params.type === `quiz`) {
       this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
-      res.render(this.ejs);
+      res.render(this.ejs, {section: req.params.afsnit});
     }
   }
 
@@ -112,7 +112,7 @@ class ViewController {
     res.render(this.ejs, { section: req.params.afsnit, content: sectionDatabase });
   }
 
-  UploadPage(req, res) {
+  uploadPage(req, res) {
     if (req.params.type === `evalueringer`) {
       this.ejs = path.join(`${this.root}/www/views/evalueringerUpload.ejs`);
       res.render(this.ejs);

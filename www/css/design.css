@@ -61,3 +61,8 @@ nav {text-align: center;}
     padding: 10px;
 }
 
+#quiz_for_section, #flashcard_for_section {
+    width: 300px;
+    padding: 10px;
+}
+
