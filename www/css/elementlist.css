@@ -103,3 +103,9 @@
 	font-family: sans-serif;
 }
 
+.Document_frame{
+	padding: 2px;
+	background-color: azure;
+	height: 100px;
+}
+

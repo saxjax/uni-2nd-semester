@@ -13,7 +13,6 @@ class Document extends Database {
     .then((result) => result )
     .catch((error) => error);
   }
-
 }
 
 

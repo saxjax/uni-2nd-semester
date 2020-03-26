@@ -99,6 +99,7 @@ function readText(path) {
 	npm i --save-dev tape-promise
 	npm i tap-spec
 	npm install eslint --save-dev
+
 	npm install ejs
 	
 	`;
@@ -147,5 +148,13 @@ function load() {
   renderElementList(deck);
 }
 
+    elementType.innerHTML = elementList[i].ElementType;
+    value.innerHTML = elementList[i].Value;
+    content.innerHTML = elementList[i].Content;
 
 window.onload = load;
+
+const button = document.querySelector(`#section_id_77`);
+button.addEventListener(`click`, () => {
+  sendGetReqeustForSection(`77`);
+});

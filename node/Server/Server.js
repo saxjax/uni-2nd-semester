@@ -2,6 +2,7 @@
 
 const express = require(`express`);
 const bodyParser = require(`body-parser`);
+const { Database } = require(`../Database/Database.js`);
 
 const { ViewController } = require(`../ViewController/ViewController.js`);
 const { RedirectController } = require(`../RedirectController/RedirectController.js`);
@@ -37,6 +38,7 @@ class Server {
     this.app.get(`/elementList`,                  (req, res) => Show.elementList(req, res));
     this.app.get(`/upload/:type`,                 (req, res) => Show.uploadPage(req, res));
   }
+
 
   redirectPatterns() {
     const Redirect = new RedirectController();
