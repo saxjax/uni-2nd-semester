@@ -53,6 +53,7 @@ class RedirectController {
 
     this.add_new_section(new_section, new_keywords);
 
+
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
     res.render(this.ejs, {section: req.body.name_of_section, content: sectionDatabase});
   }

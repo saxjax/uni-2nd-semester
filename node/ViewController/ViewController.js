@@ -17,6 +17,8 @@ var sectionDatabase = {
   3.3: { keywords: ['SOTA', 'classkick', 'kahoot!'].toString() }
 };
 
+let sections = [2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 3.1, 3.2, 3.3];
+
 class ViewController {
   constructor(req) {
     this.name = `ViewController`;
@@ -25,7 +27,7 @@ class ViewController {
     this.root = __dirname.slice(0, -(`node/${this.name}`.length));
     this.request = req;
   }
-
+  
   homePage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs);
@@ -49,7 +51,7 @@ class ViewController {
 
   evalueringerPage(req, res) {
     // Mock data til test
-    var sectionDatabase = [
+    var sectionDatabaseEval = [
       { content: { section: 2.1, flashcard: `flashcard`, quiz: `quiz` } },
       { content: { section: 2.2, flashcard: `flashcard`, quiz: `quiz` } },
       { content: { section: 2.3, flashcard: `flashcard`, quiz: `quiz` } },
@@ -57,7 +59,7 @@ class ViewController {
     ];
 
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-    res.render(this.ejs, { evalueringerContent: sectionDatabase });
+    res.render(this.ejs, { evalueringerContent: sectionDatabaseEval });
   }
 
   evalueringerTypePage(req, res) {
@@ -81,7 +83,7 @@ class ViewController {
     const doc = new Document();
     // const data = await doc.getAllSections();
     // console.log(data);
-    const sectionDatabase = {
+    const sectionDatabaseJakob = {
       1:{id: "2.1", elementType: "Section",content: "her er de første ti linier af en sektion", keywords: [`vidensdeling`, `feed-up`, `feed-forward`] },
       2:{id: "2.2",  elementType: "Section",content: "her er de første ti linier af en sektion",keywords: [`studier`, `evaluering`, `formativ`, `summativ`] },
       3:{id: "2.3",  elementType: "Section",content: "her er de første ti linier af en sektion",keywords: [`metoder`, `active recall`, `spaced repetition`] },
@@ -94,13 +96,13 @@ class ViewController {
   };
 
 
-    let list1 = createlist(sectionDatabase);
+    let list1 = createlist(sectionDatabaseJakob);
     // let sections = data.map
     // for (let i = 0; i < 8; i++) {
     //   console.log( i + " ny DATA "+ data[i].title);
 
     // }
-    let sections = [2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 3.1, 3.2, 3.3];
+    //let sections = [2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 3.1, 3.2, 3.3];
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
     res.render(this.ejs, { afsnit: sections, listea: list1 });
   }
@@ -121,32 +123,33 @@ class ViewController {
     }
   }
 
-  RapportPost(req, res) {
-    this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    console.log(req.body.name);
-    var sectionDatabase = {
-      2.1: { keywords: [`vidensdeling`, `feed-up`, `feed-forward`].toString() },
-      2.2: { keywords: [`studier`, `evaluering`, `formativ`, `summativ`].toString() },
-      2.3: { keywords: [`metoder`, `active recall`, `spaced repetition`].toString() },
-      2.4: { keywords: [`blabla`, `jepjepjep`, `superdupersuperduper`].toString() },
-      2.5: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-      2.6: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-      3.1: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-      3.2: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-      3.3: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-    };
-    res.render(this.ejs, { section: req.body.name, content: sectionDatabase });
-  }
+  // RapportPost(req, res) {
+  //   this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
+  //   console.log(req.body.name);
+  //   var sectionDatabase = {
+  //     2.1: { keywords: [`vidensdeling`, `feed-up`, `feed-forward`].toString() },
+  //     2.2: { keywords: [`studier`, `evaluering`, `formativ`, `summativ`].toString() },
+  //     2.3: { keywords: [`metoder`, `active recall`, `spaced repetition`].toString() },
+  //     2.4: { keywords: [`blabla`, `jepjepjep`, `superdupersuperduper`].toString() },
+  //     2.5: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
+  //     2.6: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
+  //     3.1: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
+  //     3.2: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
+  //     3.3: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
+  //   };
+  //   res.render(this.ejs, { section: req.body.name, content: sectionDatabase });
+  // }
 
-  EvalueringerPost(req, res) {
-    this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-    res.render(this.ejs);
-  }
+  // EvalueringerPost(req, res) {
+  //   this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
+  //   res.render(this.ejs);
+  // }
 }
 
 module.exports = {
   ViewController,
 };
+
 
 function createlist(elementList) {
   
