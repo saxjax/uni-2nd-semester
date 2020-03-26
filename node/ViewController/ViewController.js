@@ -3,6 +3,7 @@ const path = require(`path`);
 const { Document } = require(`../Document/Document.js`);
 
 const { User } = require(`../User/User.js`);
+
 //Mock Data
 let sectionDatabaseJakob = {
   2.1:{iddocument: "2.1", elementType: "section",content: "her er de første ti linier af en sektion", keywords: [`vidensdeling`, `feed-up`, `feed-forward`] },
@@ -129,10 +130,20 @@ class ViewController {
     res.render(this.ejs, { afsnit: sections, listOfAllReports: list1 });
   }
 
-  async rapportSectionPage(req, res) {
-    let doc = new Document();
-    //let data = await doc.getSection(req.iddocument);
-    const data = sectionDatabaseJakob;
+  async rapportPage2(req, res) {
+    const doc = new Document(req);
+    const data = await doc.getAllSections();
+    console.log(data);
+    this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
+    //this.ejs = this.insertSections(this.ejs,data);
+    res.render(this.ejs);
+  }
+
+  rapportSectionPage(req, res) {
+    let doc = Document();
+    let data = doc.getSection(req.uuid);
+    let keywords = [];
+
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
     res.render(this.ejs, { section: req.params.afsnit, content: sectionDatabaseJakob });
