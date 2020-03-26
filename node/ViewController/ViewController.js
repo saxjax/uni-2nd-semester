@@ -131,6 +131,11 @@ class ViewController {
   }
 
   rapportSectionPage(req, res) {
+    let doc = Document();
+    let data = doc.getSection(req.uuid);
+    let keywords = [];
+
+
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
     res.render(this.ejs, { section: req.params.afsnit, content: sectionDatabaseJakob });
   }
