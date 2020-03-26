@@ -48,7 +48,7 @@ class ViewController {
 
   evalueringerPage(req, res) {
     // Mock data til test
-    const sectionDatabase = [
+    var sectionDatabase = [
       { content: { section: 2.1, flashcard: `flashcard`, quiz: `quiz` } },
       { content: { section: 2.2, flashcard: `flashcard`, quiz: `quiz` } },
       { content: { section: 2.3, flashcard: `flashcard`, quiz: `quiz` } },
@@ -101,7 +101,7 @@ class ViewController {
   RapportPost(req, res) {
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
     console.log(req.body.name);
-    const sectionDatabase = {
+    var sectionDatabase = {
       2.1: { keywords: [`vidensdeling`, `feed-up`, `feed-forward`].toString() },
       2.2: { keywords: [`studier`, `evaluering`, `formativ`, `summativ`].toString() },
       2.3: { keywords: [`metoder`, `active recall`, `spaced repetition`].toString() },
