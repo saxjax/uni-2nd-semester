@@ -1,5 +1,5 @@
 {
-  "name": "p2-vidensdeling",
+  "name": "P2-vidensdeling",
   "version": "1.0.0",
   "description": "node main.js",
   "main": "main.js",
@@ -15,6 +15,8 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
     "jsdom": "^16.2.1",
     "tap-spec": "^5.0.0",
     "tape": "^4.13.2",
@@ -27,6 +29,7 @@
     "type": "git",
     "url": "git+https://github.com/humleflue/P2-vidensdeling.git"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {

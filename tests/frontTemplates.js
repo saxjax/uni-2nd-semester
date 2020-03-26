@@ -2,7 +2,8 @@
 /* Start Template ************************************************** */
 const tape = require(`tape`);
 const testDecorater = require(`tape-promise`).default;
-const JSDOM = require('jsdom').JSDOM;
+const { JSDOM } = require(`jsdom`);
+
 const root = __dirname.slice(0, -(`tests/frontend`.length));
 const fs = require(`fs`);
 
@@ -10,7 +11,7 @@ const ejs = fs.readFileSync(`${root}/www/views/mappe/til/filNavn.ejs`);
 const DOM = new JSDOM(ejs);
 
 const test = testDecorater(tape);
-const document = DOM.window.document;
+const { document } = DOM.window;
 let expected = true;
 let actual = true;
 
@@ -20,7 +21,7 @@ test(`Test af X i www/views`, (assert) => {
 
   expected = `Angiv Navn`;
   actual = document.querySelectorAll(`title`)[0].innerHTML;
-    
+
   assert.notEqual(actual, expected,
     `{Forventet: ${expected} Reel: ${actual}} Dokumentet skal have en titel`);
 
@@ -30,12 +31,12 @@ test(`Test af X i www/views`, (assert) => {
 });
 /* Tag Testning (.className/.innerHTML/etc.) ********************* */
 test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
-    expected = `forventet klasse`;
-    actual = document.querySelectorAll(`HTML-tag`)[0].className;
-  
-    assert.equal(actual, expected,
-      `{Forventet: ${expected} Reel: ${actual}} Dokumentet skal X`);
-  });
+  expected = `forventet klasse`;
+  actual = document.querySelectorAll(`HTML-tag`)[0].className;
+
+  assert.equal(actual, expected,
+    `{Forventet: ${expected} Reel: ${actual}} Dokumentet skal X`);
+});
 /* Event Handlers **************************************************** */
 
 /* Kilder **************************************************************** */
