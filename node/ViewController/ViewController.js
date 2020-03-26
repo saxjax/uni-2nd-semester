@@ -130,14 +130,6 @@ class ViewController {
     res.render(this.ejs, { afsnit: sections, listOfAllReports: list1 });
   }
 
-  async rapportPage2(req, res) {
-    const doc = new Document(req);
-    const data = await doc.getAllSections();
-    console.log(data);
-    this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
-    //this.ejs = this.insertSections(this.ejs,data);
-    res.render(this.ejs);
-  }
 
   rapportSectionPage(req, res) {
     let doc = Document();
