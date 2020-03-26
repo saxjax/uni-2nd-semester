@@ -82,15 +82,15 @@ class ViewController {
     // const data = await doc.getAllSections();
     // console.log(data);
     const sectionDatabase = {
-      1:{id: "2.1", elementType: "Section",content: "her er de første ti linier af en sektion", keywords: [`vidensdeling`, `feed-up`, `feed-forward`].toString() },
-      2:{id: "2.2",  elementType: "Section",content: "her er de første ti linier af en sektion",keywords: [`studier`, `evaluering`, `formativ`, `summativ`].toString() },
-      3:{id: "2.3",  elementType: "Section",content: "her er de første ti linier af en sektion",keywords: [`metoder`, `active recall`, `spaced repetition`].toString() },
-      4:{id: "2.4",  elementType: "Flashcard",content: "Hvad er definitionen på en gris? linier af en sektion",keywords: [`blabla`, `jepjepjep`, `superdupersuperduper`].toString() },
-      5:{id: "2.5",  elementType: "Section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-      6:{id: "2.6",  elementType: "Section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-      7:{id: "2.7",  elementType: "Quiz",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-      8:{id: "2.8",  elementType: "Section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-      9:{id: "2.9",  elementType: "Section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
+      1:{id: "2.1", elementType: "Section",content: "her er de første ti linier af en sektion", keywords: [`vidensdeling`, `feed-up`, `feed-forward`] },
+      2:{id: "2.2",  elementType: "Section",content: "her er de første ti linier af en sektion",keywords: [`studier`, `evaluering`, `formativ`, `summativ`] },
+      3:{id: "2.3",  elementType: "Section",content: "her er de første ti linier af en sektion",keywords: [`metoder`, `active recall`, `spaced repetition`] },
+      4:{id: "2.4",  elementType: "Flashcard",definition: "Et lyserødt dyr som spiser trøfler",keywords: [`Gris`] },
+      5:{id: "2.5",  elementType: "Section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
+      6:{id: "2.6",  elementType: "Section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
+      7:{id: "2.7",  elementType: "Quiz",question: "Hvilket dyr er en mester til at finde trøfler?",answers:["min radiator", "en gris!","en ged", "et evalueringsværktøj"],correctness:[0,1,0,0] ,keywords: [`SOTA`, `classkick`, `kahoot!`] },
+      8:{id: "2.8",  elementType: "Section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
+      9:{id: "2.9",  elementType: "Section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
   };
 
 
@@ -162,22 +162,42 @@ function createlist(elementList) {
     
 
     for (let element in elementList) {
-      
+      let keywords = ``
       HTML += `<div class="card">`;
-      HTML += `<div class="elementType${elementList[element].elementType}">${elementList[element].elementType}</div>`
-      HTML += `<div class="value">Key word 1</div>`
+      HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].id}">${elementList[element].elementType} ${elementList[element].id}</div>`
+      
 
       switch (elementList[element].elementType) {
-        case `Section` `section`:
+        case `Section`:
+          HTML += `<div class="value">keywords:</div><div>`
+
+          elementList[element].keywords.forEach(key => {
+            keywords += `<a>${key}  </a>`
+          });
+          HTML += `<div class="keywords">${keywords}</div></div>`
           HTML += `<div class="contentSection">${elementList[element].content}</div>`;
           break;
 
-        case `Quiz` `quiz`:
-          HTML += `<div class="contentQuiz">${elementList[element].content}</div>`;
+        case `Quiz`:
+          HTML += `<div class="contentQuiz">${elementList[element].question}</div>`;
+          HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#1:${elementList[element].answers[0]}</p></a>`
+          HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#2${elementList[element].answers[1]}</p></a>`
+          HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#3${elementList[element].answers[2]}</p></a>`
+          HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#4 ${elementList[element].answers[3]}</p></a>`
+         
           break;
 
-        case `flashcard` `Flashcard`:
-          HTML += `<div class="contentFlashcard">${elementList[element].content}</div>`;
+        case `Flashcard`:
+          
+          elementList[element].keywords.forEach(key => {
+            // console.log(key)
+            keywords += `<p>${key}</p>`
+          });
+          //   console.log(elementList[element].keywords)
+          HTML += `<div class="FlashcardBegreb">${keywords}</div>`
+          HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`
+          HTML += `<div class="FlashcardDefinition">${elementList[element].definition}</div>`
+          // HTML += `<div class="contentFlashcard">${elementList[element].content}</div>`;
           break;
 
         default:  break;
