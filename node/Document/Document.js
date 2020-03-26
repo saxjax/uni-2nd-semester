@@ -14,8 +14,8 @@ class Document extends Database {
     .catch((error) => error);
   }
 
-  getSection(id) { 
-    return this.get( `*`, `iddcoument= "${id}"` )
+  querySectionContent(id) { 
+    return this.query( `SELECT content`, `iddcoument = "${id}"` )
     .then((result) => result )
     .catch((error) => error);
   }
