@@ -1,6 +1,14 @@
 /* eslint no-console: off */
 const mysql = require(`mysql`);
 
+/* Database objektet stiller alle manipulationer af databasen til rådighed for modeller (dvs. Ikke controllere!) 
+ * Databasen er designet efter et REST princip, som betyder at databasen skal kunne:
+ * get    (dvs. få allerede gemte data fra databasen)
+ * post   (dvs. oprette nye elementer i databasen)
+ * put    (dvs. manipulere med data i databasen)
+ * delete (dvs. slette elementer i databasen)
+ */
+
 class Database {
   constructor() {
     this.connect = mysql.createConnection({
@@ -34,6 +42,11 @@ class Database {
     return true;
   }
 
+  /* Input: Metoden modtager de valg som brugeren har lavet, og gennem parser metoden, får noget brugbar SQL,
+   *        Der kan være et get, post, put eller delete.
+   * Output: Metoden outputter data hentet fra SQL databasen, ud fra den givne SQL streng
+   * Formål: Ved at implementere en almen "query" metode, kan andre modeller inherit den
+   */
   query(choice,data) {
     this.sql = this.parser(choice,data);
     return new Promise((resolve, reject) => {
@@ -51,6 +64,12 @@ class Database {
     });
   }
 
+  /* Input: Metoden modtager de valg som brugeren har lavet
+   * Output: Metoden outputter en brugbar SQL streng til brug i mysql
+   * Formål: Ved at standardisere måden der skrives SQL kan andre modeller nemmere håndtere queries.
+   *         Det øger læsbarheden af koden, samtidigt med at det ikke abstrahere for meget, 
+   *         da det er SQL kommandoer der bruges.
+   */
   parser(choice,data) {
     const valid = this.parserValidator(choice,data);
     let sql = ``;
