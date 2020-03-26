@@ -14,11 +14,13 @@ class Document extends Database {
     .catch((error) => error);
   }
 
-  querySection(id) { 
-    return this.get( `SELECT *`, `content = ${id}` )
+  querySectionContent(id) { 
+    return this.query( `SELECT content`, `iddcoument = "${id}"` )
     .then((result) => result )
     .catch((error) => error);
   }
+
+
 }
 
 

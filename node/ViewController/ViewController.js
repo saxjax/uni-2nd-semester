@@ -6,7 +6,7 @@ const { User } = require(`../User/User.js`);
 
 //Mock Data
 let sectionDatabaseJakob = {
-  2.1:{iddocument: "2.1", elementType: "section",content: "her er de første ti linier af en sektion", keywords: [`vidensdeling`, `feed-up`, `feed-forward`] },
+  2.1:{iddocument: "83f5173d-685a-11ea-9793-00ff63f710b8", elementType: "section",content: "her er de første ti linier af en sektion", keywords: [`vidensdeling`, `feed-up`, `feed-forward`] },
   2.2:{iddocument: "2.2",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`studier`, `evaluering`, `formativ`, `summativ`] },
   2.3:{iddocument: "2.3",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`metoder`, `active recall`, `spaced repetition`] },
   2.4:{iddocument: "2.4",  elementType: "flashcard",definition: "Et lyserødt dyr som spiser trøfler",keywords: [`Gris`] },
@@ -130,23 +130,14 @@ class ViewController {
     res.render(this.ejs, { afsnit: sections, listOfAllReports: list1 });
   }
 
-  async rapportPage2(req, res) {
-    const doc = new Document(req);
-    const data = await doc.getAllSections();
+  async rapportSectionPage(req, res) {
+    console.log(req.params.iddocument);
+    let doc = new Document();
+    let data = await doc.querySectionContent(req.params.iddocument);
     console.log(data);
-    this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
-    //this.ejs = this.insertSections(this.ejs,data);
-    res.render(this.ejs);
-  }
-
-  rapportSectionPage(req, res) {
-    let doc = Document();
-    let data = doc.getSection(req.uuid);
-    let keywords = [];
-
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, { section: req.params.afsnit, content: sectionDatabaseJakob });
+    res.render(this.ejs, { section: req.params.iddocument, content: sectionDatabaseJakob });
   }
 
   uploadPage(req, res) {
@@ -159,28 +150,6 @@ class ViewController {
       res.render(this.ejs);
     }
   }
-
-  // RapportPost(req, res) {
-  //   this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-  //   console.log(req.body.name);
-  //   var sectionDatabase = {
-  //     2.1: { keywords: [`vidensdeling`, `feed-up`, `feed-forward`].toString() },
-  //     2.2: { keywords: [`studier`, `evaluering`, `formativ`, `summativ`].toString() },
-  //     2.3: { keywords: [`metoder`, `active recall`, `spaced repetition`].toString() },
-  //     2.4: { keywords: [`blabla`, `jepjepjep`, `superdupersuperduper`].toString() },
-  //     2.5: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-  //     2.6: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-  //     3.1: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-  //     3.2: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-  //     3.3: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-  //   };
-  //   res.render(this.ejs, { section: req.body.name, content: sectionDatabase });
-  // }
-
-  // EvalueringerPost(req, res) {
-  //   this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-  //   res.render(this.ejs);
-  // }
 }
 
 module.exports = {
@@ -197,7 +166,7 @@ function createlist(elementList) {
     <div id="deck">`;
     HTMLEnd = `</div></div>`;
     // console.log("length:"+ elementList.length);
-    console.log(elementList);
+    //console.log(elementList);
     
     
 
