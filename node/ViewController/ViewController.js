@@ -68,10 +68,10 @@ class ViewController {
     //   { content: { section: 2.4, flashcard: `flashcard`, quiz: `quiz` } },
     // ];
         
-    const data = sectionDatabaseJakob;
+    // const data = sectionDatabaseJakob;
 
-    // const doc = new Document();
-    // const data = await doc.getAllSections();
+    const doc = new Document();
+    const data = await doc.getAllSections();
 
     let Quizes = [];
     let Flashcards =[];
@@ -186,12 +186,14 @@ function createlist(elementList) {
 
     for (let element in elementList) {
       let keywords = ``
-      HTML += `<div class="card">`;
-      HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].id}">${elementList[element].elementType} ${elementList[element].id}</div>`
+      
       
 
       switch (elementList[element].elementType) {
         case `section`:
+          HTML += `<a href="/rapport/${elementList[element].id}" >`
+          HTML += `<div class="card">`;
+          HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].id}">${elementList[element].elementType} ${elementList[element].id}</div>`
           HTML += `<div class="value">keywords:</div><div>`
 
           elementList[element].keywords.forEach(key => {
@@ -202,6 +204,9 @@ function createlist(elementList) {
           break;
 
         case `quiz`:
+          HTML += `<a href="/evalueringer/quiz/${elementList[element].id}" >`
+          HTML += `<div class="card">`;
+          HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].id}">${elementList[element].elementType} ${elementList[element].id}</div>`
           HTML += `<div class="contentQuiz">${elementList[element].question}</div>`;
           HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#1:${elementList[element].answers[0]}</p></a>`
           HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#2${elementList[element].answers[1]}</p></a>`
@@ -217,6 +222,9 @@ function createlist(elementList) {
             keywords += `<p>${key}</p>`
           });
           //   console.log(elementList[element].keywords)
+          HTML += `<a href="/evalueringer/flashcard/${elementList[element].id}" >`
+          HTML += `<div class="card">`;
+          HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].id}">${elementList[element].elementType} ${elementList[element].id}</div>`
           HTML += `<div class="FlashcardBegreb">${keywords}</div>`
           HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`
           HTML += `<div class="FlashcardDefinition">${elementList[element].definition}</div>`
@@ -226,7 +234,7 @@ function createlist(elementList) {
         default:  break;
       }
       
-      HTML += `</div>`
+      HTML += `</div></a>`
     }
 
     HTML += HTMLEnd ; 
