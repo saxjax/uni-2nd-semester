@@ -11,15 +11,47 @@ let actual = true;
 let expected = true;
 let object = new Navn(request);
 
-test(`Test af X i node/objektNavn`, (assert) => {
+test(`Test af X i node/objektNavn`, async function (assert) {
   assert.equal(actual, expected, `Skulle gerne være oprettet.`);
+  try {
+    /* Indsæt konstanter, variable og asserts her */
 
-  /* Indsæt konstanter, variable og asserts her */
+    object.connect.end();
+  }
+  catch (error) {
+    assert.false(false, `Async Funktionen resolvede ikke, men catchede: ${error}`);
+  }
 
   assert.end();
 });
 
 /* Backend Templates ********************************************** */
+/* Test af Modeller */
+test(`Kopier det nedenunder ind i Start Templaten`, async (assert) => {
+    
+      request = {'body':{}};
+      expected = `forventet output`;
+      object = new Navn(request);
+      actual = await object.Method();
+      assert.equal(actual, expected,
+        `{Forventet: ${expected} Reel: ${actual}} Async Funktionen skal kunne X`);
+
+
+
+});
+
+/* Test af Controllere */
+test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
+    request = {'body':{}};
+    expected = `forventet output`;
+    object = new Navn(request);
+    actual = object.someMethod(`par/s`);
+  
+    assert.equal(actual, expected,
+      `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne X`);
+  });
+
+/* GAMMELT! Se kun i for at få inspiration */
 /* Functions ********************************************** */
 test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
   expected = `forventet output`;
@@ -29,6 +61,7 @@ test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
     `{Forventet: ${expected} Reel: ${actual}} Funktionen skal kunne X`);
 });
 
+/* GAMMELT! Se kun i for at få inspiration */
 /* Class Methods ******************************************************** */
 test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
   request = { body: {} };
@@ -40,6 +73,7 @@ test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne X`);
 });
 
+/* GAMMELT! Se kun i for at få inspiration */
 /* Async Functions **************************************************** */
 test(`Kopier det nedenunder ind i Start Templaten`, async (assert) => {
   expected = `forventet output`;
@@ -53,6 +87,7 @@ test(`Kopier det nedenunder ind i Start Templaten`, async (assert) => {
   }
 });
 
+/* GAMMELT! Se kun i for at få inspiration */
 /* Promise **************************************************** */
 test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
   expected = `forventet output`;
