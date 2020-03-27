@@ -15,6 +15,20 @@ const { document } = DOM.window;
 let expected = true;
 let actual = true;
 
+/* Dokumentation */
+/* Indsæt her FORMÅLET med klassen/funktionen
+ * Ud fra denne beskrivelse skal det være tydeligt hvad klassen kan, hverken mere eller mindre.
+ * Alle kravsspecifikationer vil desuden være direkte relaterbare til hvad der står her
+ */
+
+/* Indsæt her KRAVSSPECIFIKATIONERNE der gør at klassens/funktionens formål opfyldes
+ * Beskriv ikke metoderne, men formålene, eks:
+ * Database adgang
+ * 1.1: Klassen skal kunne have adgang til databasen
+ * IKKE!!!
+ * Connect()
+ * 1.1: Connect metoden skal tilkoble databasen
+ */
 
 test(`Test af X i www/views`, (assert) => {
   assert.equal(actual, expected, `Skulle gerne være oprettet.`);
