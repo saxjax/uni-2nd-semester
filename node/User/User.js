@@ -16,10 +16,7 @@ class User extends Database {
   }
 
   async loginValid() {
-    this.choice = `*`;
-    this.queries = `username = ? AND password = ?`;
-    this.objects = [this.username, this.password];
-    this.data = await this.get(this.choice, this.queries, this.objects)
+    this.data = await this.query(`SELECT *`, `username = "${this.username}" AND password = "${this.password}"`)
       .then((result) => result)
       .catch((error) => error);
 

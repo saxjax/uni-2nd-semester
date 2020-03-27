@@ -156,6 +156,7 @@ test(`Test af Database Klassen i node/Database`, async function (assert) {
 
     expected3 = `test7`;
     actual3 = actualObject[2].test_option1;
+    console.log(actualObject.length);
     assert.equal(actual, expected,
       `(4.3.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente 1 column af data fra databasen`);
 
