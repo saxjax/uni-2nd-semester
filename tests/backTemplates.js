@@ -26,7 +26,6 @@ test(`Test af X i node/objektNavn`, async (assert) => {
   assert.end();
 });
 
-/* Backend Templates ********************************************** */
 /* Test af Modeller */
 /* actualObject bruges til at kalde queries. actual skal bruges til enkeltstående værdier KUN */
 let actualObject = true;
@@ -43,11 +42,10 @@ test(`Kopier det nedenunder ind i Start Templaten`, async (assert) => {
     `{Forventet: ${expected} Reel: ${actual}} Async Funktionen skal kunne X`);
 });
 
-/* Test af Controllere */
+/* Test af Controllere KAN IKKE BRUGES ENDNU DA CONTROLLERE PT IKKE RETURNERE EN VÆRDI! */
 test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
-  request = { body: {} };
   expected = `forventet output`;
-  object = new Navn(request);
+  object = new Navn();
   actual = object.someMethod(`par/s`);
 
   assert.equal(actual, expected,
