@@ -2,7 +2,6 @@
 
 const express = require(`express`);
 const bodyParser = require(`body-parser`);
-const { Database } = require(`../Database/Database.js`);
 
 const { ViewController } = require(`../ViewController/ViewController`);
 const { RedirectController } = require(`../RedirectController/RedirectController`);

@@ -66,10 +66,10 @@ class Database {
    *         Dette øger kode genbrug, samt sikre fornuftig testning på tværs af hele programmet i forhold til databasen.
    */
   query(choice, data, texton = true) {
-    this.sql = this.parser(choice,data,texton);
+    this.sql = this.parser(choice, data, texton);
     return new Promise((resolve, reject) => {
       this.connect.query(this.sql,
-        (error, result, texton) => {
+        (error, result) => {
           if (error) {
             if (texton) {
               console.log(`Here at node/Database/Database.js-data the error \n${error.code}\n
@@ -112,38 +112,8 @@ class Database {
     else {
       switch (choice) {
         case `INSERT`: {
-          let columns = ``;
-          let values = ``;
-
-          /* Denne while løkke bruger regular expressions som nok kræver en forklaring:
-           * Løkken har til formål at opsplitte "col = var" grupper i kolonner og variable, så de kan bruges som INSERT SQL
-           * Der initialiseres en "done" variabel der returnere true når der ikke er flere ´col = var´ grupper tilbage
-           * /^\w+/.exec(data) finder det første alfanumeriske element og lægger det til column variablen
-           * data = data.slice "slicer" det alfanumeriske element væk + " = " strengen, så variablen i "col = var" konstruktionen er klar.
-           * values bruger samme regular expression for at få variablen ud af den nu forkortede data streng
-           * Der tjekkes nu for, om der er en ny "col = var" ved at se om det næste element er et AND
-           * Er der det appendes der ", " for at gøre det brugbart som en INSERT SQL, og "AND " slices væk fra datasættet
-           * Er der ikke flere elementer, dvs. der er ikke flere "col = var" der skal postes, så antages det her at datasættet er tomt og løkken terminere.
-           */
-          let done = false;
-          while (!done) {
-            columns += /^\w+/.exec(data);
-            data = data.slice(`${/^\w+/.exec(data)} = `.length, data.length);
-            values += /"\w+"/.exec(data);
-            data = data.slice(`${/"\w+"/.exec(data)} `.length, data.length);
-
-            /* NOTE: af en eller anden grund skal det være == og IKKE === . Tjek gerne op på det */
-            if (/^\w+/.exec(data) === `AND`) {
-              columns += `, `;
-              values  += `, `;
-              data = data.slice(`AND `.length, data.length);
-            }
-            else {
-              done = true;
-            }
-          }
-
-          sql = `INSERT INTO ${this.database}.${this.table} (${columns}) VALUES (${values})`;
+          const dataArr = this.insertSplitter(data);
+          sql = `INSERT INTO ${this.database}.${this.table} (${dataArr.columns}) VALUES (${dataArr.values})`;
           break;
         }
         case `UPDATE`:
@@ -165,14 +135,14 @@ class Database {
   }
 
   /* Input: Metoden modtager de valg som brugeren har lavet
-   * Output: Metoden outputter true hvis både choice og data følger det fastsatte format. 
+   * Output: Metoden outputter true hvis både choice og data følger det fastsatte format.
              Ellers false med information om hvordan metoden bruges
    * Formål: Ved at validere om formattet er overholdt, kan der testes om et evt. problem opstår ved metodekaldet eller i operationerne.
    *         Dette gør debugging mere overskueligt, og sikre at dem der bruger metoden hurtigt får respons på metodens API.
    */
   parserValidator(choice, data, texton = true) {
     let choiceValid = false;
-    if (/^SELECT [A-Za-z0-9*]+/.test(choice) 
+    if (/^SELECT [A-Za-z0-9*]+/.test(choice)
        || /^INSERT$/.test(choice)
        || /^UPDATE$/.test(choice)
        || /^DELETE$/.test(choice)
@@ -195,6 +165,55 @@ class Database {
     }
     return choiceValid && dataValid;
   }
+
+  /* Input: får data parameteren fra et INSERT query
+   * Output: Returnere et JSON objekt, hvor dataene er udsplittet i columns og deres værdier.
+   * Formål: Ved at opsplitte col = val i et objekt, undgås det at der skal bruges to forskellige syntakser
+   *         mellem INSERT kontra de andre SELECT, DELETE og UPDATE.
+  */
+  insertSplitter(data) {
+    let done = false;
+    let dataCopy = data;
+    const dataArr = { columns: ``, values: `` };
+
+    while (!done) {
+      dataArr.columns += /^\w+/.exec(dataCopy);
+      dataCopy = dataCopy.slice(`${/^\w+/.exec(dataCopy)} = `.length, dataCopy.length);
+      dataArr.values += /"\w+"/.exec(dataCopy);
+      dataCopy = dataCopy.slice(`${/"\w+"/.exec(dataCopy)} `.length, dataCopy.length);
+      try {
+        if (/^\w+/.exec(dataCopy)[0] === `AND`) {
+          dataArr.columns += `, `;
+          dataArr.values  += `, `;
+          dataCopy = dataCopy.slice(`AND `.length, dataCopy.length);
+        }
+      }
+      catch (error) {
+        if (/^TypeError/.test(error) === true) {
+          done = true;
+        }
+        else {
+          console.log(`FEJL IKKE FANGET i insertSplitter!\n`);
+        }
+      }
+    }
+
+    return dataArr;
+  }
+  /* Metoden insertSplitter bliver her beskrevet mere i detaljen for dem der ikke kender så meget til regular expressions.
+           * Løkken har til formål at opsplitte "col = var" grupper i kolonner og variable, så de kan bruges som INSERT SQL
+           * Der initialiseres en "done" variabel der returnere true når der ikke er flere ´col = var´ grupper tilbage
+           * /^\w+/.exec(dataCopy) finder det første alfanumeriske element og lægger det til column variablen --
+           * -- i et JSON objekt med matchet som det første element
+           * data = data.slice "slicer" det alfanumeriske element væk + " = " strengen, så variablen i "col = var" konstruktionen er klar.
+           * values bruger samme regular expression for at få variablen ud af den nu forkortede data streng
+           * Der tjekkes nu for, om der er en ny "col = var" ved at se om det næste element er et AND
+           * /^\w+/.exec(dataCopy) returnere null hvis der IKKE er et match, hvilket giver en typefejl når der skal ledes efter --
+           * -- det første element i /^\w+/.exec(dataCopy)[0]
+           * Er der det appendes der ", " for at gøre det brugbart som en INSERT SQL, og "AND " slices væk fra datasættet
+           * Er der ikke flere elementer, dvs. der er ikke flere "col = var" der skal postes, så giver det den førnævnte typefejl.
+           * Inden der returnes true sikrer vi os at det rent faktisk er en typefejl, og ikke alt muligt andet der kunne være gået galt.
+           */
 }
 
 
