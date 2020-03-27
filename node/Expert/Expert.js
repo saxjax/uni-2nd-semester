@@ -1,3 +1,5 @@
+/* eslint no-console: off */
+
 const { User } = require(`../User/User.js`);
 
 class Expert extends User {

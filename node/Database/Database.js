@@ -1,4 +1,5 @@
 /* eslint no-console: off */
+
 const mysql = require(`mysql`);
 
 /* Database objektet stiller alle manipulationer af databasen til rådighed for modeller med tilhørende database tabeller.
