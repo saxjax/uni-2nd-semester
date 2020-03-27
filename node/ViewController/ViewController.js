@@ -2,6 +2,7 @@
 /* eslint no-console: off */
 const path = require(`path`);
 const { Document } = require(`../Document/Document.js`);
+const { Evaluation } = require(`../Evaluation/Evaluation.js`);
 
 const { User } = require(`../User/User.js`);
 
@@ -64,38 +65,39 @@ class ViewController {
     res.render(this.ejs);
   }
 
+  // viser alle oprettede evalueringer
   async evalueringerPage(req, res) {
-    // Mock data til test
-    // var sectionDatabaseJakob = [
-    //   { content: { section: 2.1, flashcard: `flashcard`, quiz: `quiz` } },
-    //   { content: { section: 2.2, flashcard: `flashcard`, quiz: `quiz` } },
-    //   { content: { section: 2.3, flashcard: `flashcard`, quiz: `quiz` } },
-    //   { content: { section: 2.4, flashcard: `flashcard`, quiz: `quiz` } },
-    // ];
+  //   // mock data
+  //  let mydata = sectionDatabaseJakob;
 
-    let mydata = sectionDatabaseJakob;
+    // get data from database
+    const doc = new Evaluation();
+    const data = await doc.getAllEvaluations();
 
-    const doc = new Document();
-    const data = await doc.getAllSections();
-    // console.log(data.length);
-    mydata = parsesql(data);
+    // parse data from sqlpacket to OUR packet type
+    let mydata = parsesql(data);
 
+    // populate Quizzes and flashcards based on cardtype 
     let Quizes = [];
     let Flashcards =[];
-
     for (const index in mydata) {
-      if (mydata[index].elementType == `flashcard`){
+      if (mydata[index].elementtype == `flashcard`){
         Flashcards.push(mydata[index]);
       }
-      else if (mydata[index].elementType == `quiz`){
-        Quizes.push(data[index]);
+      else if (mydata[index].elementtype == `quiz`){
+        Quizes.push(mydata[index]);
       }
     }
+
+    // create HTML
     let listFlashcards = createlist(Flashcards);
     let listQuizes = createlist(Quizes);
+
+    // make flashcardlist and quizlist availabel as html on page
     this.ejs = path.join(`${this.root}/www/views/evalueringer1.ejs`);
     res.render(this.ejs, { listOfAllFlashcards: listFlashcards, listOfAllQuizes: listQuizes });
   }
+
 
   evalueringerTypePage(req, res) {
     if (req.params.type === `flashcard`) {
@@ -108,33 +110,35 @@ class ViewController {
     }
   }
 
-  // elementList(req, res) {
-  //   this.ejs = path.join(`${this.root}/www/views/elementList.ejs`);
-  //   res.render(this.ejs);
-  // }
-
+  // viser alle oprettede sections
   async rapportPage(req, res) {
-    //test data
-    let mydata = sectionDatabaseJakob
-    ////data hentes fra DB
+    // //test data
+    // let mydata = sectionDatabaseJakob
+
+    //data hentes fra DB
     const doc = new Document();
     const data = await doc.getAllSections();
-    console.log("rapportPage:");
-    console.log(data);
-    mydata = parsesql(data);
-    mydata
-    console.log(mydata);
     
+    // parse data from sqlpacket to OUR packet type
+    mydata = parsesql(data);    
 
-    let list1 = createlist(mydata);
+    // create HTML
+    let listAllSections = createlist(mydata);
+
+    // make list of all sections availabel as html on page
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
-    res.render(this.ejs, { afsnit: sections, listOfAllReports: list1 });
+    res.render(this.ejs, { afsnit: sections, listOfAllReports: listAllSections });
   }
 
+  // viser én section
   async rapportSectionPage(req, res) {
-    // console.log(req.params.iddocument);
+    // get data from database
     let doc = new Document();
     let data = await doc.getKeywordsForSection(req.params.iddocument);
+
+    // parse data from sqlpacket to OUR packet type
+    let mydata = parsesql(data);
+
     let myKeywords = [];
     for (const i in data){
       myKeywords.push(data[i].keyword);
@@ -165,29 +169,72 @@ function parsesql(data){
  let mydata = [];
   for (let i=0 ; i<data.length; i++){
     // console.log(data[i].elementtype);
-    mydata.push({
-      elementtype : `${data[i].elementtype}`,
-      iddocument : `${data[i].iddocument}`,
-      title : `${data[i].title}`, 
-      content: `${data[i].content}` 
-      // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }
-      
-    })
+    switch (data[i].elementtype) {
+      case `section`:
+        mydata.push({
+          elementtype : `${data[i].elementtype}`,
+          iddocument : `${data[i].iddocument}`,
+          title : `${data[i].title}`, 
+          content: `${data[i].content}` 
+          // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }
+          
+        })
+        break;
+
+        case `quiz`:
+          mydata.push({
+            elementtype : `${data[i].elementtype}`,
+            idquiz :`${data[i].idquiz}`,
+            iddocument : `${data[i].iddocument}`,
+            title : `${data[i].title}`, 
+            question: `${data[i].question}`,
+            answers: [`${data[i].answer1}`,`${data[i].answer2}`,`${data[i].answer3}`,`${data[i].answer4}`],
+            correctness: `${data[i].correctness}`
+
+            // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }  
+          })
+        break;
+
+        case `flashcard`:
+          // mydata.push({
+          //   elementtype : `${data[i].elementtype}`,
+          //   iddocument : `${data[i].iddocument}`,
+          //   title : `${data[i].title}`, 
+          //   entity: `${data[i].content}`,
+          //   definition: [`${data[i].answer1}`,`${data[i].answer2}`,`${data[i].answer3}`,`${data[i].answer4}`],
+          //   correctness: `${data[i].correctness}`
+
+            // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }  
+          // })
+        break;
+    
+      default:
+        break;
+    }
+    
     
   }
+  // console.log("parsed");
+  // console.log(mydata);
   return mydata;  
 }
 
+// convert card information to HTML
+// based on cardtype , section,quiz,Flashcards
+// input: list of cards (section-,quiz-,Flashcards-)
+// output: HTML
 function createlist(elementList) {
+  // console.log("create list:");
+  // console.log(elementList);
+
   let HTML = `
     <div class="deck"><h1>A Deck of Cards</h1>
     <a href="javascript:void(0)" class="btn" onclick="shuffle()">Shuffle</a>
     <div id="deck">`;
 
   const HTMLEnd = `</div></div>`;
-  // console.log("length:"+ elementList.length);
-  console.log("create list:");
-  console.log(elementList);
+  
+  
 
 
   // eslint-disable-next-line no-restricted-syntax
@@ -198,9 +245,9 @@ function createlist(elementList) {
       case `section`:
         HTML += `<a href="/rapport/${elementList[index].iddocument}" >`;
         HTML += `<div class="card">`;
-        HTML += `<div class="elementType${elementList[index].elementtype}">${elementList[index].elementtype} ${elementList[index].title}</div>`
+        HTML += `<div class="elementType${elementList[index].elementtype}">${elementList[index].title}</div>`
         HTML += `<div class="value">keywords:</div><div>`;
-        console.log(elementList[index])
+        // console.log(elementList[index])
 
         // elementList[index].keywords.forEach((key) => {
         //   keywords += `<a>${key}  </a>`;
@@ -212,12 +259,11 @@ function createlist(elementList) {
       case `quiz`:
         HTML += `<a href="/evalueringer/quiz/${elementList[index].iddocument}" >`;
         HTML += `<div class="card">`;
-        HTML += `<div class="elementType${elementList[index].elementtype}${elementList[index].iddocument}">${elementList[index].elementtype} ${elementList[index].iddocument}</div>`;
+        HTML += `<div class="elementType${elementList[index].elementtype}${elementList[index].iddocument}">${elementList[index].title}</div>`;
         HTML += `<div class="contentQuiz">${elementList[index].question}</div>`;
-        HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#1:${elementList[index].answers[0]}</p></a>`;
-        HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#2${elementList[index].answers[1]}</p></a>`;
-        HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#3${elementList[index].answers[2]}</p></a>`;
-        HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#4 ${elementList[index].answers[3]}</p></a>`;
+        for (let i in elementList[index].answers){
+          HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#${i}:${elementList[index].answers[i]}</p></a>`;
+        }
         break;
 
       case `flashcard`:
@@ -227,7 +273,7 @@ function createlist(elementList) {
         // console.log(elementList[index].keywords)
         HTML += `<a href="/evalueringer/flashcard/${elementList[index].iddocument}" >`;
         HTML += `<div class="card">`;
-        HTML += `<div class="elementType${elementList[index].elementtype}${elementList[index].iddocument}">${elementList[index].elementtype} ${elementList[index].iddocument}</div>`;
+        HTML += `<div class="elementType${elementList[index].elementtype}${elementList[index].iddocument}">${elementList[index].title}</div>`;
         HTML += `<div class="FlashcardBegreb">${keywords}</div>`;
         HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`;
         HTML += `<div class="FlashcardDefinition">${elementList[index].definition}</div>`;
@@ -240,5 +286,6 @@ function createlist(elementList) {
   }
 
   HTML += HTMLEnd;
+  // console.log(HTML);
   return HTML;
 }
