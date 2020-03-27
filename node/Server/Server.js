@@ -35,7 +35,7 @@ class Server {
     this.app.get(`/evalueringer/:type`,           (req, res) => Show.evalueringerTypePage(req, res));
     this.app.get(`/evalueringer/:type/:afsnit`,   (req, res) => Show.evalueringerTypePage(req, res));
     this.app.get(`/rapport`,                      (req, res) => Show.rapportPage(req, res));
-    this.app.get(`/rapport/:iddocument`,              (req, res) => Show.rapportSectionPage(req, res));
+    this.app.get(`/rapport/:iddocument`,          (req, res) => Show.rapportSectionPage(req, res));
     this.app.get(`/elementList`,                  (req, res) => Show.elementList(req, res));
     this.app.get(`/upload/:type`,                 (req, res) => Show.uploadPage(req, res));
   }
