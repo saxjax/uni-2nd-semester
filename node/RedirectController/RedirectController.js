@@ -1,17 +1,19 @@
+/* eslint no-console: off */
+
 const path = require(`path`);
 
 const { User } = require(`../User/User.js`);
 
-var sectionDatabase = {
-  2.1:   {keywords: ['vidensdeling', 'feed-up', 'feed-forward'].toString()},
-  2.2:   {keywords: ['studier', 'evaluering', 'formativ', 'summativ'].toString()},
-  2.3:   {keywords: ['metoder', 'active recall', 'spaced repetition'].toString()},
-  2.4:   {keywords: ['blabla', 'jepjepjep', 'superdupersuperduper'].toString()},
-  2.5:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
-  2.6:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
-  3.1:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
-  3.2:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()},
-  3.3:   {keywords: ['SOTA', 'classkick', 'kahoot!'].toString()}
+const sectionDatabase = {
+  2.1: { keywords: [`vidensdeling`, `feed-up`, `feed-forward`].toString() },
+  2.2: { keywords: [`studier`, `evaluering`, `formativ`, `summativ`].toString() },
+  2.3: { keywords: [`metoder`, `active recall`, `spaced repetition`].toString() },
+  2.4: { keywords: [`blabla`, `jepjepjep`, `superdupersuperduper`].toString() },
+  2.5: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
+  2.6: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
+  3.1: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
+  3.2: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
+  3.3: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
 };
 
 
@@ -21,9 +23,9 @@ class RedirectController {
     this.root = __dirname.slice(0, -(`node/${this.name}`.length));
   }
 
-  add_new_section(newSection, newKeywords){
+  addNewSection(newSection, newKeywords) {
     sectionDatabase[newSection] = {};
-    sectionDatabase[newSection]['keywords'] = newKeywords;
+    sectionDatabase[newSection].keywords = newKeywords;
   }
 
   dbdown(req, res) {
@@ -46,15 +48,15 @@ class RedirectController {
   }
 
   UploadRapport(req, res) {
-    let new_keywords = [req.body.keyword_1, req.body.keyword_2, req.body.keyword_3].toString();
-    let new_section = req.body.name_of_section;
-    // sectionDatabase[new_section] = {};
-    // sectionDatabase[new_section]['keywords'] = new_keywords;
+    const newKeywords = [req.body.keyword_1, req.body.keyword_2, req.body.keyword_3].toString();
+    const newSection = req.body.name_of_section;
+    // sectionDatabase[newSection] = {};
+    // sectionDatabase[newSection]['keywords'] = newKeywords;
 
-    this.add_new_section(new_section, new_keywords);
+    this.addNewSection(newSection, newKeywords);
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, {section: req.body.name_of_section, content: sectionDatabase});
+    res.render(this.ejs, { section: req.body.name_of_section, content: sectionDatabase });
   }
 
   UploadEvalueringer(req, res) {
@@ -67,5 +69,3 @@ class RedirectController {
 module.exports = {
   RedirectController,
 };
-
-

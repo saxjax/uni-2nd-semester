@@ -5,7 +5,7 @@ const bodyParser = require(`body-parser`);
 
 const { ViewController } = require(`../ViewController/ViewController`);
 const { RedirectController } = require(`../RedirectController/RedirectController`);
-const pad = require(`./pad`);
+const pad = require(`./Pad`);
 
 class Server {
   constructor() {
@@ -39,7 +39,6 @@ class Server {
     this.app.get(`/upload/:type`,                 (req, res) => Show.uploadPage(req, res));
   }
 
-
   redirectPatterns() {
     const Redirect = new RedirectController();
     this.app.get(`/dbdown`, (req, res) => Redirect.dbdown(req, res));
@@ -63,7 +62,6 @@ class Server {
     next();
   }
 }
-
 
 module.exports = {
   Server,
