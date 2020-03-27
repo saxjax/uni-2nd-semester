@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in */
 /* eslint no-console: off */
 const path = require(`path`);
 const { Document } = require(`../Document/Document.js`);
@@ -6,7 +7,7 @@ const { User } = require(`../User/User.js`);
 
 //Mock Data
 let sectionDatabaseJakob = {
-  1:{iddocument: "83f5173d-685a-11ea-9793-00ff63f710b8", elementType: "section",content: "her er de første ti linier af en sektion", keywords: [`vidensdeling`, `feed-up`, `feed-forward`] },
+  a:{iddocument: "83f5173d-685a-11ea-9793-00ff63f710b8", elementType: "section",content: "her er de første ti linier af en sektion", keywords: [`vidensdeling`, `feed-up`, `feed-forward`] },
   2.2:{iddocument: "0f64f6b9-6dda-11ea-9983-2c4d54532c7a",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`studier`, `evaluering`, `formativ`, `summativ`] },
   2.3:{iddocument: "0f69a258-6dda-11ea-9983-2c4d54532c7a",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`metoder`, `active recall`, `spaced repetition`] },
   2.4:{iddocument: "0f6ed223-6dda-11ea-9983-2c4d54532c7a",  elementType: "flashcard",definition: "Et lyserødt dyr som spiser trøfler",keywords: [`Gris`] },
@@ -70,15 +71,15 @@ class ViewController {
     //   { content: { section: 2.3, flashcard: `flashcard`, quiz: `quiz` } },
     //   { content: { section: 2.4, flashcard: `flashcard`, quiz: `quiz` } },
     // ];
-        
-    // const data = sectionDatabaseJakob;
 
-    const doc = new Document();
-    const data = await doc.getAllSections();
+    const data = sectionDatabaseJakob;
+
+    // const doc = new Document();
+    // const data = await doc.getAllSections();
 
     let Quizes = [];
     let Flashcards =[];
-    
+
     for (const section in data) {
       if (data[section].elementType == `flashcard`){
         Flashcards.push(data[section]);
@@ -90,7 +91,7 @@ class ViewController {
     let listFlashcards = createlist(Flashcards);
     let listQuizes = createlist(Quizes);
     this.ejs = path.join(`${this.root}/www/views/evalueringer1.ejs`);
-    res.render(this.ejs, { listOfAllFlashcards: listFlashcards , listOfAllQuizes: listQuizes });
+    res.render(this.ejs, { listOfAllFlashcards: listFlashcards, listOfAllQuizes: listQuizes });
   }
 
   evalueringerTypePage(req, res) {
@@ -104,10 +105,10 @@ class ViewController {
     }
   }
 
-  elementList(req, res) {
-    this.ejs = path.join(`${this.root}/www/views/elementList.ejs`);
-    res.render(this.ejs);
-  }
+  // elementList(req, res) {
+  //   this.ejs = path.join(`${this.root}/www/views/elementList.ejs`);
+  //   res.render(this.ejs);
+  // }
 
   async rapportPage(req, res) {
     //test data
@@ -166,71 +167,65 @@ module.exports = {
 
 
 function createlist(elementList) {
-  
-    HTML = `
-
+  let HTML = `
     <div class="deck"><h1>A Deck of Cards</h1>
     <a href="javascript:void(0)" class="btn" onclick="shuffle()">Shuffle</a>
     <div id="deck">`;
-    HTMLEnd = `</div></div>`;
-    // console.log("length:"+ elementList.length);
-    //console.log(elementList);
-    
-    
 
-    for (let element in elementList) {
-      let keywords = ``
-      
-      
+  const HTMLEnd = `</div></div>`;
+  // console.log("length:"+ elementList.length);
+  // console.log(elementList);
 
-      switch (elementList[element].elementType) {
-        case `section`:
-          HTML += `<a href="/rapport/${elementList[element].iddocument}" >`
-          HTML += `<div class="card">`;
-          HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].iddocument}">${elementList[element].elementType} ${elementList[element].iddocument}</div>`
-          HTML += `<div class="value">keywords:</div><div>`
 
-          elementList[element].keywords.forEach(key => {
-            keywords += `<a>${key}  </a>`
-          });
-          HTML += `<div class="keywords">${keywords}</div></div>`
-          HTML += `<div class="contentSection">${elementList[element].content}</div>`;
-          break;
+  // eslint-disable-next-line guard-for-in
+  // eslint-disable-next-line no-restricted-syntax
+  for (const index in elementList) {
+    let keywords = ``;
 
-        case `quiz`:
-          HTML += `<a href="/evalueringer/quiz/${elementList[element].iddocument}" >`
-          HTML += `<div class="card">`;
-          HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].iddocument}">${elementList[element].elementType} ${elementList[element].iddocument}</div>`
-          HTML += `<div class="contentQuiz">${elementList[element].question}</div>`;
-          HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#1:${elementList[element].answers[0]}</p></a>`
-          HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#2${elementList[element].answers[1]}</p></a>`
-          HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#3${elementList[element].answers[2]}</p></a>`
-          HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#4 ${elementList[element].answers[3]}</p></a>`
-         
-          break;
+    switch (elementList[index].elementType) {
+      case `section`:
+        HTML += `<a href="/rapport/${elementList[index].iddocument}" >`;
+        HTML += `<div class="card">`;
+        HTML += `<div class="elementType${elementList[index].elementType}${elementList[index].iddocument}">${elementList[index].elementType} ${elementList[index].iddocument}</div>`
+        HTML += `<div class="value">keywords:</div><div>`;
 
-        case `flashcard`:
-          
-          elementList[element].keywords.forEach(key => {
-            // console.log(key)
-            keywords += `<p>${key}</p>`
-          });
-          //   console.log(elementList[element].keywords)
-          HTML += `<a href="/evalueringer/flashcard/${elementList[element].iddocument}" >`
-          HTML += `<div class="card">`;
-          HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].iddocument}">${elementList[element].elementType} ${elementList[element].iddocument}</div>`
-          HTML += `<div class="FlashcardBegreb">${keywords}</div>`
-          HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`
-          HTML += `<div class="FlashcardDefinition">${elementList[element].definition}</div>`
-          // HTML += `<div class="contentFlashcard">${elementList[element].content}</div>`;
-          break;
+        elementList[index].keywords.forEach((key) => {
+          keywords += `<a>${key}  </a>`;
+        });
+        HTML += `<div class="keywords">${keywords}</div></div>`;
+        HTML += `<div class="contentSection">${elementList[index].content}</div>`;
+        break;
 
-        default:  break;
-      }
-      
-      HTML += `</div></a>`
+      case `quiz`:
+        HTML += `<a href="/evalueringer/quiz/${elementList[index].iddocument}" >`;
+        HTML += `<div class="card">`;
+        HTML += `<div class="elementType${elementList[index].elementType}${elementList[index].iddocument}">${elementList[index].elementType} ${elementList[index].iddocument}</div>`;
+        HTML += `<div class="contentQuiz">${elementList[index].question}</div>`;
+        HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#1:${elementList[index].answers[0]}</p></a>`;
+        HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#2${elementList[index].answers[1]}</p></a>`;
+        HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#3${elementList[index].answers[2]}</p></a>`;
+        HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#4 ${elementList[index].answers[3]}</p></a>`;
+        break;
+
+      case `flashcard`:
+        elementList[index].keywords.forEach((key) => {
+          keywords += `<p>${key}</p>`;
+        });
+        // console.log(elementList[index].keywords)
+        HTML += `<a href="/evalueringer/flashcard/${elementList[index].iddocument}" >`;
+        HTML += `<div class="card">`;
+        HTML += `<div class="elementType${elementList[index].elementType}${elementList[index].iddocument}">${elementList[index].elementType} ${elementList[index].iddocument}</div>`;
+        HTML += `<div class="FlashcardBegreb">${keywords}</div>`;
+        HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`;
+        HTML += `<div class="FlashcardDefinition">${elementList[index].definition}</div>`;
+        // HTML += `<div class="contentFlashcard">${elementList[index].content}</div>`;
+        break;
+
+      default:  break;
     }
+    HTML += `</div></a>`;
+  }
 
-    HTML += HTMLEnd ; 
-    return HTML  
+  HTML += HTMLEnd;
+  return HTML;
 }
