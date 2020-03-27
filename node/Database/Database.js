@@ -66,7 +66,7 @@ class Database {
    *         Dette øger kode genbrug, samt sikre fornuftig testning på tværs af hele programmet i forhold til databasen.
    */
   query(choice, data, texton = true) {
-    this.sql = this.parser(choice,data,texton);
+    this.sql = this.parser(choice, data, texton);
     return new Promise((resolve, reject) => {
       this.connect.query(this.sql,
         (error, result, texton) => {
@@ -165,14 +165,14 @@ class Database {
   }
 
   /* Input: Metoden modtager de valg som brugeren har lavet
-   * Output: Metoden outputter true hvis både choice og data følger det fastsatte format. 
+   * Output: Metoden outputter true hvis både choice og data følger det fastsatte format.
              Ellers false med information om hvordan metoden bruges
    * Formål: Ved at validere om formattet er overholdt, kan der testes om et evt. problem opstår ved metodekaldet eller i operationerne.
    *         Dette gør debugging mere overskueligt, og sikre at dem der bruger metoden hurtigt får respons på metodens API.
    */
   parserValidator(choice, data, texton = true) {
     let choiceValid = false;
-    if (/^SELECT [A-Za-z0-9*]+/.test(choice) 
+    if (/^SELECT [A-Za-z0-9*]+/.test(choice)
        || /^INSERT$/.test(choice)
        || /^UPDATE$/.test(choice)
        || /^DELETE$/.test(choice)
