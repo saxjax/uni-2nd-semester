@@ -18,10 +18,10 @@
 const titles = [`Key word 1`, `Key word 2`, `Key word 3`, `Key word 4`, `Key word 5`, `Key word 6`, `Key word 7`, `Key word 8`, `Key word 9`, `Key word 10`, `Key word 11`, `Key word 12`, `Key word 13`];
 const content = [`Content : Key word 1 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok`, `Content : Key word 2 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok`, `Content : Key word 3 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok`, `Content : Key word 4 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok`, `Content : Key word 5 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok`, `Content : Key word 6 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok`, `Content : Key word 7 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok`, `Content : Key word 8 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok`, `Content : Key word 9 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok`, `Content : Key word 10 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok`, `Content : Key word 11 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok`, `Content : Key word 12 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok`, `Content : Key word 13 Ave verum corpus,est in ad hoc triagtig fyldingen snustrok`];
 const elementTypes = [`Section`, `Quizz`, `Flashcard`];
-let deck = new Array();
+let deck = [];
 
 function getDeck() {
-  const deck = new Array();
+  const deck = [];
 
   for (let i = 0; i < elementTypes.length; i++) {
     for (let x = 0; x < titles.length; x++) {
@@ -148,9 +148,9 @@ function load() {
   renderElementList(deck);
 }
 
-    elementType.innerHTML = elementList[i].ElementType;
-    value.innerHTML = elementList[i].Value;
-    content.innerHTML = elementList[i].Content;
+elementType.innerHTML = elementList[i].ElementType;
+value.innerHTML = elementList[i].Value;
+content.innerHTML = elementList[i].Content;
 
 window.onload = load;
 

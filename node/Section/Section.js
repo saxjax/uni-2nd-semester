@@ -1,3 +1,5 @@
+/* eslint no-console: off */
+
 class Section {
   constructor(request) {
     this.name = `Section`;
