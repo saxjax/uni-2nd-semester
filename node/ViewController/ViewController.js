@@ -6,7 +6,7 @@ const { User } = require(`../User/User.js`);
 
 //Mock Data
 let sectionDatabaseJakob = {
-  1:{iddocument: "83f5173d-685a-11ea-9793-00ff63f710b8", elementType: "section",content: "her er de første ti linier af en sektion", keywords: [`vidensdeling`, `feed-up`, `feed-forward`] },
+  2.1:{iddocument: "83f5173d-685a-11ea-9793-00ff63f710b8", elementType: "section",content: "her er de første ti linier af en sektion", keywords: [`vidensdeling`, `feed-up`, `feed-forward`] },
   2.2:{iddocument: "0f64f6b9-6dda-11ea-9983-2c4d54532c7a",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`studier`, `evaluering`, `formativ`, `summativ`] },
   2.3:{iddocument: "0f69a258-6dda-11ea-9983-2c4d54532c7a",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`metoder`, `active recall`, `spaced repetition`] },
   2.4:{iddocument: "0f6ed223-6dda-11ea-9983-2c4d54532c7a",  elementType: "flashcard",definition: "Et lyserødt dyr som spiser trøfler",keywords: [`Gris`] },
