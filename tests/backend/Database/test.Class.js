@@ -40,15 +40,15 @@ let object = new Database();
  * Post Metoden
  * 5.1 : Databasen skal kunne oprette en ny row i databasen ud fra fuldstændig information
  * 5.2 : Databasen skal kunne oprette en ny row i databasen ud fra ufuldstændig information
- * 5.3 : Databasen skal kunne give en fejlmeddelse, hvis dataene ikke er blevet gemt
+ * 5.3 : Databasen skal kunne give en fejlmeddelse, hvis der gemmes duplikeret data i en unique column
  * Put Metoden
  * 6.1 : Databasen skal kunne modificere 1 specifikt datapunkt fra databasen
  * 6.2 : Databasen skal kunne modificere 1 row af data fra database
  * 6.3 : Databasen skal kunne modificere en hel column fra databasen
- * 6.4 : Databasen skal kunne give en fejlmeddelse, hvis dataene ikke er blevet modificeret
+ * 6.4 : Databasen skal kunne give en fejlmeddelse, hvis dataene der ønskes opdateret ikke findes
  * Delete Metoden
  * 7.1 : Databasen skal kunne slette en row i databasen
- * 7.2 : Databasen skal kunne give en fejlmeddelse, hvis dataene ikke er blevet slettet
+ * 7.2 : Databasen skal kunne give en fejlmeddelse, hvis dataene der ønskes slettet ikke findes
  */
 
  /* Denne test gør brug af pregenereret data i MySQL databasen som er:
@@ -324,7 +324,6 @@ test(`Test af Database Klassen i node/Database`, async function (assert) {
       `(5.2.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne oprette en ny row i databasen ud fra ufuldstændig information`);
       
     /* 5.3 */
-    /* Siden test_option1 2 og 3 er unikke, må der ikke indsættes test1 i test_option1 */
     try {
         actualObject = await object.query(`INSERT`,`test_option1 = "test1"`)
         actual = false;
@@ -333,7 +332,7 @@ test(`Test af Database Klassen i node/Database`, async function (assert) {
         actual = true;
     }
     assert.true(actual,
-      `(5.3) Databasen skal kunne give en fejlmeddelse, hvis dataene ikke er blevet gemt`);
+      `(5.3) Databasen skal kunne give en fejlmeddelse, hvis der gemmes duplikeret data i en unique column`);
 
     /* 6.1 */
     try {
@@ -406,10 +405,15 @@ test(`Test af Database Klassen i node/Database`, async function (assert) {
     await object.query(`UPDATE`,`test_option3 = "test6" WHERE test_option3 = "test6_modificeret"`);
     
     /* 6.4 */
-    expected = true;
-    actual = false;
-    assert.equal(actual, expected,
-      `(6.4) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne give en fejlmeddelse, hvis dataene ikke er blevet modificeret`);
+    try {
+      await object.query(`UPDATE`,`notATable = "notAValue_mod" WHERE notATable = "notAValue"`);
+      actual = false;
+    }
+    catch {
+      actual = true;
+    }
+    assert.true(actual,
+      `(6.4) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne give en fejlmeddelse, hvis dataene der ønskes opdateret ikke findes`);
     
     /* 7.1 */
     try {
@@ -433,10 +437,15 @@ test(`Test af Database Klassen i node/Database`, async function (assert) {
     /* Sletter testdata lavede i denne test i databasen */
     await object.query(`DELETE`,`test_option1 = "test13"`);
     
-    expected = true;
-    actual = false;
+    try {
+      await object.query(`DELETE`,`notATable = "notAValue_mod`);
+      actual = false;
+    }
+    catch {
+      actual = true;
+    }
     assert.equal(actual, expected,
-      `(7.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne give en fejlmeddelse, hvis dataene ikke er blevet slettet`);
+      `(7.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne give en fejlmeddelse, hvis dataene der ønskes slettet ikke findes`);
   }
   catch (error) {
     assert.false(true, `Database Tests resolvede kun delvist eller slet ikke og catchede:\n ${error}`);

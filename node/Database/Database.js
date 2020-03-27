@@ -7,7 +7,7 @@ const mysql = require(`mysql`);
  * post   (dvs. oprette nye elementer i databasen)
  * put    (dvs. manipulere med data i databasen)
  * delete (dvs. slette elementer i databasen)
- * 
+ *
  * Alle modeller der extender Databasen skal oprette et tilsvarende this.table der henviser til modellens tilhørende tabel.
  */
 
@@ -24,9 +24,15 @@ class Database {
     this.table = `database`;
     this.choiceValgmuligheder = `SELECT {noget}/UPDATE/INSERT/DELETE & CUSTOM`;
   }
+  /* Input:  Metoden modtager et optional texton variabel, som defaulter til true hvis den ikke medsendes.
+   * Output: Metoden har som (primær) sideeffect information om hvordan querymetoden bruges.
+             Metoden outputter true, så den kan testes i tests/backend/Database/test.Class.js
+   * Formål: Når der sker fejl ved brug af querymetoden vil denne metode give den nødvendige information med det samme.
+   *         Desuden fungere dette som dokumentation af Database klassen som helhed.
+   */
 
-  info(texton=true) {
-    if(texton) {
+  info (texton=true) {
+    if (texton) {
       console.log(`INFORMATION\n`
       + `En query tager et "choice" som sit forste variabel, og "data" som sin anden variabel\n`
       + `En query tager et "choice" som sin forste variabel:\n`
@@ -46,13 +52,10 @@ class Database {
       + `Ved et UPDATE kan man kun give 2, hvor den første er hvilken værdi der skal ændres, og den anden er hvad den aendres til\n`
       + `Datapunkterne i et UPDATE skal seperares med et WHERE (og maksimalt et).\n`
       + `Ved et DELETE kan man kun give 1, hvor det fastsætter hvilken row der slettes\n`
-      + `Ved et CUSTOM definere man hele SQL strengen sådan som det skal stå i mysql\n`
-      );
+      + `Ved et CUSTOM definere man hele SQL strengen sådan som det skal stå i mysql\n`);
     }
-    else{
-      // For test purposes
-      return true;
-    }
+    // For test purposes
+    return true;
   }
 
   /* Input:  Metoden modtager de valg som brugeren har lavet, og gennem parser metoden, får noget brugbar SQL,
@@ -62,13 +65,13 @@ class Database {
    * Formål: Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overridet.
    *         Dette øger kode genbrug, samt sikre fornuftig testning på tværs af hele programmet i forhold til databasen.
    */
-  query(choice,data,texton=true) {
+  query(choice,data, texton=true) {
     this.sql = this.parser(choice,data,texton);
     return new Promise((resolve, reject) => {
       this.connect.query(this.sql,
         (error, result,texton) => {
           if (error) {
-            if(texton) {
+            if (texton) {
               console.log(`Here at node/Database/Database.js-data the error \n${error.code}\n
               and ${error.stack} should be saved in the Database`);
             }
@@ -88,26 +91,25 @@ class Database {
    *         Det øger læsbarheden af koden, samtidigt med at det ikke abstrahere for meget, 
    *         da det er SQL kommandoer der bruges.
    */
-  parser(choice,data,texton=true) {
-    const valid = this.parserValidator(choice,data,texton);
+  parser(choice, data, texton=true) {
+    const valid = this.parserValidator(choice, data, texton);
     let sql = ``;
-    if(!valid) {
-        if(texton) {
-          this.info();
-        }
-        throw `ERROR: Query ikke oprettet korrekt. Se ovenover for hvor fejlen er at finde og find svaret i den givne info.\n`;
-
+    if (!valid) {
+      if (texton) {
+        this.info();
+      }
+      throw (`ERROR: Query ikke oprettet korrekt. Se ovenover for hvor fejlen er at finde og find svaret i den givne info.\n`);
     }
-    else if(/^SELECT [A-Za-z0-9*]+/.test(choice)) {
-      if(data === undefined || data === ``) {
+    else if (/^SELECT [A-Za-z0-9*]+/.test(choice)) {
+      if (data === undefined || data === ``) {
         sql = `${choice} FROM ${this.database}.${this.table}`;
       }
       else {
         sql = `${choice} FROM ${this.database}.${this.table} WHERE ${data}`;
       }
     }
-    else{
-      switch(choice) {
+    else {
+      switch (choice) {
         case `INSERT`:
           let columns = ``;
           let values = ``;
@@ -125,12 +127,12 @@ class Database {
           let done = false;
           while(!done) {
             columns += /^\w+/.exec(data);
-            data = data.slice(`${/^\w+/.exec(data)} = `.length,data.length);
+            data = data.slice(`${/^\w+/.exec(data)} = `.length, data.length);
             values += /"\w+"/.exec(data);
-            data = data.slice(`${/"\w+"/.exec(data)} `.length,data.length);
-    
+            data = data.slice(`${/"\w+"/.exec(data)} `.length, data.length);
+
             /* NOTE: af en eller anden grund skal det være == og IKKE === . Tjek gerne op på det */
-            if(/^\w+/.exec(data) == `AND`) {
+            if (/^\w+/.exec(data) == `AND`) {
               columns += `, `;
               values  += `, `;
               data = data.slice(`AND `.length,data.length);
@@ -139,7 +141,7 @@ class Database {
               done = true;
             }
           }
-          
+
           sql = `INSERT INTO ${this.database}.${this.table} (${columns}) VALUES (${values})`;
           break;
         case `UPDATE`:
@@ -151,6 +153,9 @@ class Database {
         case `CUSTOM`:
           console.log(`Custom metode brugt. Se om den kan inkorperes i de andre metoder.\n`);
           sql = data;
+          break;
+        default:
+          console.log(`ERROR: der blev ikke valgt\nSELECT, INSERT, UPDATE, DELETE eller CUSTOM\n`);
       }
     }
 
@@ -163,38 +168,37 @@ class Database {
    * Formål: Ved at validere om formattet er overholdt, kan der testes om et evt. problem opstår ved metodekaldet eller i operationerne.
    *         Dette gør debugging mere overskueligt, og sikre at dem der bruger metoden hurtigt får respons på metodens API.
    */
-  parserValidator(choice,data,texton=true) {
+  parserValidator(choice, data, texton = true) {
     let choiceValid = false;
-    if(/^SELECT [A-Za-z0-9*]+/.test(choice) ||
-       /^INSERT$/.test(choice) ||
-       /^UPDATE$/.test(choice) ||
-       /^DELETE$/.test(choice) ||
-       /^CUSTOM$/.test(choice)) {
-         choiceValid = true;
-       }
+    if (/^SELECT [A-Za-z0-9*]+/.test(choice) 
+       || /^INSERT$/.test(choice)
+       || /^UPDATE$/.test(choice)
+       || /^DELETE$/.test(choice)
+       || /^CUSTOM$/.test(choice)) {
+      choiceValid = true;
+    }
     else {
-        if(texton) {
-          console.log(`\n\nChoice variablen er sat forkert. Har du husket at det skal være store bogstaver? Korrekt sat Mellemrum?\n\n`);
-        }
+      if(texton) {
+        console.log(`\n\nChoice variablen er sat forkert. Har du husket at det skal være store bogstaver? Korrekt sat Mellemrum?\n\n`);
+      }
     }
 
     let dataValid = false;
     const dataRe = /^\w+ = /;
-    if(data === undefined || data === `` ||
-       dataRe.test(data)) {
-        dataValid = true;
+    if (data === undefined || data === `` || dataRe.test(data)) {
+      dataValid = true;
     }
     else{
-        if(texton) {
-          console.log(`\n\nData variablen er sat forkert. Har du husket at der skal være mellemrum mellem = tegnet og de forskellige operatorer? anførselstegn \"\" omkring strings?\n\n`);
-        }
+      if(texton) {
+        console.log(`\n\nData variablen er sat forkert. Har du husket at der skal være mellemrum mellem = tegnet og de forskellige operatorer? anførselstegn \"\" omkring strings?\n\n`);
+      }
     }
 
-    if(choiceValid && dataValid) {
-        return true;
+    if (choiceValid && dataValid) {
+      return true;
     }
     else {
-        return false;
+      return false;
     }
   }
 }
