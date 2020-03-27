@@ -31,7 +31,7 @@ class Database {
    *         Desuden fungere dette som dokumentation af Database klassen som helhed.
    */
 
-  info (texton=true) {
+  info(texton = true) {
     if (texton) {
       console.log(`INFORMATION\n`
       + `En query tager et "choice" som sit forste variabel, og "data" som sin anden variabel\n`
@@ -65,11 +65,11 @@ class Database {
    * Formål: Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overridet.
    *         Dette øger kode genbrug, samt sikre fornuftig testning på tværs af hele programmet i forhold til databasen.
    */
-  query(choice,data, texton=true) {
+  query(choice, data, texton = true) {
     this.sql = this.parser(choice,data,texton);
     return new Promise((resolve, reject) => {
       this.connect.query(this.sql,
-        (error, result,texton) => {
+        (error, result, texton) => {
           if (error) {
             if (texton) {
               console.log(`Here at node/Database/Database.js-data the error \n${error.code}\n
@@ -88,17 +88,18 @@ class Database {
    *         Metoden indtager også texton parameter, som frakobles info() kald under test af catching af errors, men ellers altid er true.
    * Output: Metoden outputter en brugbar SQL streng til brug i mysql
    * Formål: Ved at standardisere måden der skrives SQL kan andre modeller nemmere håndtere queries.
-   *         Det øger læsbarheden af koden, samtidigt med at det ikke abstrahere for meget, 
+   *         Det øger læsbarheden af koden, samtidigt med at det ikke abstrahere for meget,
    *         da det er SQL kommandoer der bruges.
    */
-  parser(choice, data, texton=true) {
+  parser(choice, data, texton = true) {
     const valid = this.parserValidator(choice, data, texton);
     let sql = ``;
     if (!valid) {
       if (texton) {
         this.info();
       }
-      throw (`ERROR: Query ikke oprettet korrekt. Se ovenover for hvor fejlen er at finde og find svaret i den givne info.\n`);
+      throw (new Error(`ERROR: Query ikke oprettet korrekt.\
+      Se ovenover for hvor fejlen er at finde og find svaret i den givne info.\n`));
     }
     else if (/^SELECT [A-Za-z0-9*]+/.test(choice)) {
       if (data === undefined || data === ``) {
@@ -110,7 +111,7 @@ class Database {
     }
     else {
       switch (choice) {
-        case `INSERT`:
+        case `INSERT`: {
           let columns = ``;
           let values = ``;
 
@@ -125,17 +126,17 @@ class Database {
            * Er der ikke flere elementer, dvs. der er ikke flere "col = var" der skal postes, så antages det her at datasættet er tomt og løkken terminere.
            */
           let done = false;
-          while(!done) {
+          while (!done) {
             columns += /^\w+/.exec(data);
             data = data.slice(`${/^\w+/.exec(data)} = `.length, data.length);
             values += /"\w+"/.exec(data);
             data = data.slice(`${/"\w+"/.exec(data)} `.length, data.length);
 
             /* NOTE: af en eller anden grund skal det være == og IKKE === . Tjek gerne op på det */
-            if (/^\w+/.exec(data) == `AND`) {
+            if (/^\w+/.exec(data) === `AND`) {
               columns += `, `;
               values  += `, `;
-              data = data.slice(`AND `.length,data.length);
+              data = data.slice(`AND `.length, data.length);
             }
             else {
               done = true;
@@ -144,6 +145,7 @@ class Database {
 
           sql = `INSERT INTO ${this.database}.${this.table} (${columns}) VALUES (${values})`;
           break;
+        }
         case `UPDATE`:
           sql = `UPDATE ${this.database}.${this.table} SET ${data}`;
           break;
@@ -177,10 +179,8 @@ class Database {
        || /^CUSTOM$/.test(choice)) {
       choiceValid = true;
     }
-    else {
-      if(texton) {
-        console.log(`\n\nChoice variablen er sat forkert. Har du husket at det skal være store bogstaver? Korrekt sat Mellemrum?\n\n`);
-      }
+    else if (texton) {
+      console.log(`\n\nChoice variablen er sat forkert. Har du husket at det skal være store bogstaver? Korrekt sat Mellemrum?\n\n`);
     }
 
     let dataValid = false;
@@ -188,18 +188,12 @@ class Database {
     if (data === undefined || data === `` || dataRe.test(data)) {
       dataValid = true;
     }
-    else{
-      if(texton) {
-        console.log(`\n\nData variablen er sat forkert. Har du husket at der skal være mellemrum mellem = tegnet og de forskellige operatorer? anførselstegn \"\" omkring strings?\n\n`);
-      }
+    else if (texton) {
+      console.log(`\n\nData variablen er sat forkert. \
+                   Har du husket at der skal være mellemrum mellem = tegnet og de forskellige operatorer?\
+                   anførselstegn "" omkring strings?\n\n`);
     }
-
-    if (choiceValid && dataValid) {
-      return true;
-    }
-    else {
-      return false;
-    }
+    return choiceValid && dataValid;
   }
 }
 
