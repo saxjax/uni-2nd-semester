@@ -1,3 +1,4 @@
+/* eslint no-console: off */
 const tape = require(`tape`);
 const testDecorater = require(`tape-promise`).default;
 
@@ -13,7 +14,7 @@ const textoff = false;
 
 /* Dokumentation */
 /*
- * Database objektet stiller alle manipulationer af databasen til rådighed for modeller (dvs. Ikke controllere!) 
+ * Database objektet stiller alle manipulationer af databasen til rådighed for modeller (dvs. Ikke controllere!)
  * Databasen er designet efter et REST princip, som betyder at databasen skal kunne:
  * get    (dvs. få allerede gemte data fra databasen)
  * post   (dvs. oprette nye elementer i databasen)
@@ -59,7 +60,7 @@ const textoff = false;
   *     *          test4        test5        test6        null
   *     *          test7        test8        test9        null
   *
-  *    Størstedelen af tests vil foregå på test_option1-3, 
+  *    Størstedelen af tests vil foregå på test_option1-3,
   *    hvor test_option4 bruges til at teste funktionaliteter på ikke unikke operationer.
   */
 test(`Test af Database Klassen i node/Database`, async (assert) => {
@@ -91,7 +92,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
 
     /* 3.2 */
     expected = `SELECT * FROM ${object.database}.${object.table} WHERE testfield = "test"`;
-    actual = object.parser(`SELECT *`,`testfield = "test"`);
+    actual = object.parser(`SELECT *`, `testfield = "test"`);
     assert.equal(actual, expected,
       `(3.2.1) {Forventet: ${expected} Reel: ${actual}} (get) Databasen skal kunne omskrive formattet til en valid SQL streng`);
 
@@ -101,12 +102,12 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
       `(3.2.2) {Forventet: ${expected} Reel: ${actual}} (post) Databasen skal kunne omskrive formattet til en valid SQL streng`);
 
     expected = `UPDATE ${object.database}.${object.table} SET testfield1 = "test2" WHERE testfield1 = "test1"`;
-    actual = object.parser(`UPDATE`,`testfield1 = "test2" WHERE testfield1 = "test1"`);
+    actual = object.parser(`UPDATE`, `testfield1 = "test2" WHERE testfield1 = "test1"`);
     assert.equal(actual, expected,
       `(3.2.3) {Forventet: ${expected} Reel: ${actual}} (put) Databasen skal kunne omskrive formattet til en valid SQL streng`);
 
     expected = `DELETE FROM ${object.database}.${object.table} WHERE testfield1 = "test1"`;
-    actual = object.parser(`DELETE`,`testfield1 = "test1"`);
+    actual = object.parser(`DELETE`, `testfield1 = "test1"`);
     assert.equal(actual, expected,
       `(3.2.4) {Forventet: ${expected} Reel: ${actual}} (delete) Databasen skal kunne omskrive formattet til en valid SQL streng`);
 
@@ -119,18 +120,18 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
       actual = true;
     }
     assert.true(actual,
-        `(3.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal give en fejlmeddelse, hvis en query ikke følger formattet.`);
+      `(3.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal give en fejlmeddelse, hvis en query ikke følger formattet.`);
 
     /* 4.1 */
-    actualObject = await object.query(`SELECT test_option1`,`test_option1 = "test1"`);    
+    actualObject = await object.query(`SELECT test_option1`, `test_option1 = "test1"`);
 
     expected = `test1`;
-    actual = actualObject[0].test_option1
+    actual = actualObject[0].test_option1;
     assert.equal(actual, expected,
       `(4.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente 1 specifikt datapunkt fra databasen`);
 
     /* 4.2 */
-    actualObject = await object.query("SELECT *",`test_option1 = "test1" AND test_option2 = "test2"`);
+    actualObject = await object.query(`SELECT *`, `test_option1 = "test1" AND test_option2 = "test2"`);
 
     expected = `test1`;
     actual = actualObject[0].test_option1;
@@ -148,7 +149,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
       `(4.2.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente 1 row af data fra database`);
 
     /* 4.3 */
-    actualObject = await object.query("SELECT test_option1");
+    actualObject = await object.query(`SELECT test_option1`);
 
     expected = `test1`;
     actual = actualObject[0].test_option1;
@@ -166,34 +167,34 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
       `(4.3.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente 1 column af data fra databasen`);
 
     /* 4.4 */
-    actualObject = await object.query(`SELECT *`,`test_option1 = "test1" OR test_option1 = "test4"`);
+    actualObject = await object.query(`SELECT *`, `test_option1 = "test1" OR test_option1 = "test4"`);
 
-    expected = "test1";
+    expected = `test1`;
     actual = actualObject[0].test_option1;
     assert.equal(actual, expected,
       `(4.4.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en serie af rows fra databasen`);
 
-    expected = "test2";
+    expected = `test2`;
     actual = actualObject[0].test_option2;
     assert.equal(actual, expected,
       `(4.4.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en serie af rows fra databasen`);
 
-    expected = "test3";
+    expected = `test3`;
     actual = actualObject[0].test_option3;
     assert.equal(actual, expected,
       `(4.4.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en serie af rows fra databasen`);
 
-    expected = "test4";
+    expected = `test4`;
     actual = actualObject[1].test_option1;
     assert.equal(actual, expected,
       `(4.4.4) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en serie af rows fra databasen`);
 
-    expected = "test5";
+    expected = `test5`;
     actual = actualObject[1].test_option2;
     assert.equal(actual, expected,
       `(4.4.5) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en serie af rows fra databasen`);
 
-    expected = "test6";
+    expected = `test6`;
     actual = actualObject[1].test_option3;
     assert.equal(actual, expected,
       `(4.4.6) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en serie af rows fra databasen`);
@@ -216,7 +217,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     assert.equal(actual, expected,
       `(4.5.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en serie af columns fra databasen`);
 
-      expected = `test5`;
+    expected = `test5`;
     actual = actualObject[1].test_option2;
     assert.equal(actual, expected,
       `(4.5.4) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en serie af columns fra databasen`);
@@ -247,7 +248,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     expected = `test3`;
     actual = actualObject[0].test_option3;
     assert.equal(actual, expected,
-    `(4.6.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en hel tabel fra databasen`);
+      `(4.6.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en hel tabel fra databasen`);
 
     expected = `test4`;
     actual = actualObject[1].test_option1;
@@ -281,88 +282,88 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
 
     /* 5.1  */
     try {
-      await object.query(`INSERT`,`test_option1 = "test10" AND test_option2 = "test11" AND test_option3 = "test12"`);
+      await object.query(`INSERT`, `test_option1 = "test10" AND test_option2 = "test11" AND test_option3 = "test12"`);
     }
-    catch(error) {
+    catch (error) {
       console.log(`TEST FORKERT IMPLEMENTERET PGA: ${error}`);
     }
 
-    actualObject = await object.query(`SELECT *`,`test_option1 = "test10"`);
+    actualObject = await object.query(`SELECT *`, `test_option1 = "test10"`);
 
     expected = `test10`;
     actual = actualObject[0].test_option1;
     assert.equal(actual, expected,
-        `(5.1.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne oprette en ny row i databasen ud fra fuldstændig information`);
-    
+      `(5.1.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne oprette en ny row i databasen ud fra fuldstændig information`);
+
     actual = actualObject[0].test_option2;
     expected = `test11`;
     assert.equal(actual, expected,
-        `(5.1.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne oprette en ny row i databasen ud fra fuldstændig information`);
-    
+      `(5.1.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne oprette en ny row i databasen ud fra fuldstændig information`);
+
     actual = actualObject[0].test_option3;
     expected = `test12`;
     assert.equal(actual, expected,
-        `(5.1.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne oprette en ny row i databasen ud fra fuldstændig information`);
+      `(5.1.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne oprette en ny row i databasen ud fra fuldstændig information`);
 
     /* 5.2 */
     try {
-      await object.query(`INSERT`,`test_option1 = "test13" AND test_option2 = "test14"`);
+      await object.query(`INSERT`, `test_option1 = "test13" AND test_option2 = "test14"`);
     }
-    catch(error) {
+    catch (error) {
       console.log(`TEST FORKERT IMPLEMENTERET PGA: ${error}`);
     }
-  
-    actualObject = await object.query(`SELECT *`,`test_option1 = "test13"`);
+
+    actualObject = await object.query(`SELECT *`, `test_option1 = "test13"`);
 
     expected = `test13`;
     actual = actualObject[0].test_option1;
     assert.equal(actual, expected,
       `(5.2.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne oprette en ny row i databasen ud fra ufuldstændig information`);
-    
+
     expected = `test14`;
     actual = actualObject[0].test_option2;
     assert.equal(actual, expected,
       `(5.2.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne oprette en ny row i databasen ud fra ufuldstændig information`);
-    
+
     expected = null;
     actual = actualObject[0].test_option3;
     assert.equal(actual, expected,
       `(5.2.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne oprette en ny row i databasen ud fra ufuldstændig information`);
-      
+
     /* 5.3 */
     try {
-        actualObject = await object.query(`INSERT`,`test_option1 = "test1"`, textoff);
-        actual = false;
+      actualObject = await object.query(`INSERT`, `test_option1 = "test1"`, textoff);
+      actual = false;
     }
     catch (error) {
-        actual = true;
+      actual = true;
     }
     assert.true(actual,
       `(5.3) Databasen skal kunne give en fejlmeddelse, hvis der gemmes duplikeret data i en unique column`);
 
     /* 6.1 */
     try {
-      await object.query(`UPDATE`,`test_option1 = "test1_modificeret" WHERE test_option1 = "test1"`);
+      await object.query(`UPDATE`, `test_option1 = "test1_modificeret" WHERE test_option1 = "test1"`);
     }
     catch (error) {
-        console.log(`TEST FORKERT IMPLEMENTERET PGA: ${error}`);
+      console.log(`TEST FORKERT IMPLEMENTERET PGA: ${error}`);
     }
-    actualObject = await object.query(`SELECT test_option1`,`test_option1 = "test1_modificeret"`);
+    actualObject = await object.query(`SELECT test_option1`, `test_option1 = "test1_modificeret"`);
 
     expected = `test1_modificeret`;
     actual = actualObject[0].test_option1;
     assert.equal(actual, expected,
       `(6.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne modificere 1 specifikt datapunkt fra databasen`);
-    
+
     /* 6.2 */
     try {
-      await object.query(`UPDATE`,`test_option1 = "test4_modificeret", test_option2 = "test5_modificeret", test_option3 = "test6_modificeret" 
+      await object.query(`UPDATE`, `test_option1 = "test4_modificeret", test_option2 = "test5_modificeret", test_option3 = "test6_modificeret" 
                           WHERE test_option1 = "test4" AND test_option2 = "test5" AND test_option3 = "test6"`);
     }
     catch (error) {
       console.log(`TEST FORKERT IMPLEMENTERET PGA: ${error}`);
     }
-    actualObject = await object.query(`SELECT *`,`test_option1 = "test4_modificeret"`);
+    actualObject = await object.query(`SELECT *`, `test_option1 = "test4_modificeret"`);
 
     expected = `test4_modificeret`;
     actual = actualObject[0].test_option1;
@@ -378,10 +379,10 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     actual = actualObject[0].test_option3;
     assert.equal(actual, expected,
       `(6.2.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne modificere 1 row af data fra database`);
-    
+
     /* 6.3 */
     try {
-      await object.query(`UPDATE`,`test_option4 = "not null"`);
+      await object.query(`UPDATE`, `test_option4 = "not null"`);
     }
     catch (error) {
       console.log(`TEST FORKERT IMPLEMENTERET PGA: ${error}`);
@@ -404,15 +405,15 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
       `(6.3.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne modificere en hel column fra databasen`);
 
     /* For at modificere alle værdier tilbage til det oprindelige */
-    await object.query(`UPDATE`,`test_option4 = NULL`);
-    await object.query(`UPDATE`,`test_option1 = "test1" WHERE test_option1 = "test1_modificeret"`);
-    await object.query(`UPDATE`,`test_option1 = "test4" WHERE test_option1 = "test4_modificeret"`);
-    await object.query(`UPDATE`,`test_option2 = "test5" WHERE test_option2 = "test5_modificeret"`);
-    await object.query(`UPDATE`,`test_option3 = "test6" WHERE test_option3 = "test6_modificeret"`);
-    
+    await object.query(`UPDATE`, `test_option4 = NULL`);
+    await object.query(`UPDATE`, `test_option1 = "test1" WHERE test_option1 = "test1_modificeret"`);
+    await object.query(`UPDATE`, `test_option1 = "test4" WHERE test_option1 = "test4_modificeret"`);
+    await object.query(`UPDATE`, `test_option2 = "test5" WHERE test_option2 = "test5_modificeret"`);
+    await object.query(`UPDATE`, `test_option3 = "test6" WHERE test_option3 = "test6_modificeret"`);
+
     /* 6.4 */
     try {
-      await object.query(`UPDATE`,`notATable = "notAValue_mod" WHERE notATable = "notAValue"`, textoff);
+      await object.query(`UPDATE`, `notATable = "notAValue_mod" WHERE notATable = "notAValue"`, textoff);
       actual = false;
     }
     catch (error) {
@@ -420,18 +421,18 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     }
     assert.true(actual,
       `(6.4) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne give en fejlmeddelse, hvis dataene der ønskes opdateret ikke findes`);
-    
+
     /* 7.1 */
     try {
-      await object.query(`DELETE`,`test_option1 = "test10"`);
+      await object.query(`DELETE`, `test_option1 = "test10"`);
     }
-    catch(error) {
+    catch (error) {
       console.log(`TEST FORKERT IMPLEMENTERET PGA: ${error}`);
     }
-    
+
     expected = true;
-    actualObject = await object.query(`SELECT *`,`test_option1 = "test10"`);
-    if(actualObject.length > 0) {
+    actualObject = await object.query(`SELECT *`, `test_option1 = "test10"`);
+    if (actualObject.length > 0) {
       actual = false;
     }
     else {
@@ -439,12 +440,12 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     }
     assert.equal(actual, expected,
       `(7.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne slette en row i databasen`);
-    
+
     /* Sletter testdata lavede i denne test i databasen */
-    await object.query(`DELETE`,`test_option1 = "test13"`);
-    
+    await object.query(`DELETE`, `test_option1 = "test13"`);
+
     try {
-      await object.query(`DELETE`,`notATable = "notAValue_mod`, textoff);
+      await object.query(`DELETE`, `notATable = "notAValue_mod`, textoff);
       actual = false;
     }
     catch (error) {
