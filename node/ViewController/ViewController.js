@@ -5,18 +5,19 @@ const { Document } = require(`../Document/Document.js`);
 
 const { User } = require(`../User/User.js`);
 
-//Mock Data
-let sectionDatabaseJakob = {
-  a:{iddocument: "83f5173d-685a-11ea-9793-00ff63f710b8", elementType: "section",content: "her er de første ti linier af en sektion", keywords: [`vidensdeling`, `feed-up`, `feed-forward`] },
-  2.2:{iddocument: "0f64f6b9-6dda-11ea-9983-2c4d54532c7a",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`studier`, `evaluering`, `formativ`, `summativ`] },
-  2.3:{iddocument: "0f69a258-6dda-11ea-9983-2c4d54532c7a",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`metoder`, `active recall`, `spaced repetition`] },
-  2.4:{iddocument: "0f6ed223-6dda-11ea-9983-2c4d54532c7a",  elementType: "flashcard",definition: "Et lyserødt dyr som spiser trøfler",keywords: [`Gris`] },
-  2.5:{iddocument: "0f734f32-6dda-11ea-9983-2c4d54532c7a",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
-  2.6:{iddocument: "2.6",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
-  2.7:{iddocument: "2.7",  elementType: "quiz",question: "Hvilket dyr er en mester til at finde trøfler?",answers:["min radiator", "en gris!","en ged", "et evalueringsværktøj"],correctness:[0,1,0,0] ,keywords: [`SOTA`, `classkick`, `kahoot!`] },
-  2.8:{iddocument: "2.8",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
-  2.9:{iddocument: "2.9",  elementType: "section",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
-};
+// Mock Data
+let sectionDatabaseJakob = [
+  {iddocument: "83f5173d-685a-11ea-9793-00ff63f710b8", elementType: "section",title: "titel 1", content: "her er de første ti linier af en sektion", keywords: [`vidensdeling`, `feed-up`, `feed-forward`] },
+  {iddocument: "0f64f6b9-6dda-11ea-9983-2c4d54532c7a",  elementType: "section",title: "titel 1",content: "her er de første ti linier af en sektion",keywords: [`studier`, `evaluering`, `formativ`, `summativ`] },
+  {iddocument: "0f69a258-6dda-11ea-9983-2c4d54532c7a",  elementType: "section",title: "titel 1",content: "her er de første ti linier af en sektion",keywords: [`metoder`, `active recall`, `spaced repetition`] },
+  {iddocument: "0f6ed223-6dda-11ea-9983-2c4d54532c7a",  elementType: "flashcard",definition: "Et lyserødt dyr som spiser trøfler",keywords: [`Gris`] },
+  {iddocument: "0f734f32-6dda-11ea-9983-2c4d54532c7a",  elementType: "section",title: "titel 1",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
+  {iddocument: "2.6",  elementType: "section",title: "titel 1",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
+  {iddocument: "2.7",  elementType: "quiz",question: "Hvilket dyr er en mester til at finde trøfler?",answers:["min radiator", "en gris!","en ged", "et evalueringsværktøj"],correctness:[0,1,0,0] ,keywords: [`SOTA`, `classkick`, `kahoot!`] },
+  {iddocument: "2.8",  elementType: "section",title: "titel 1",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
+  {iddocument: "2.9",  elementType: "section",title: "titel 1",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
+];
+
 
 // Mock data til test
 // var sectionDatabaseJakob = {
@@ -72,20 +73,22 @@ class ViewController {
     //   { content: { section: 2.4, flashcard: `flashcard`, quiz: `quiz` } },
     // ];
 
-    const data = sectionDatabaseJakob;
+    let mydata = sectionDatabaseJakob;
 
-    // const doc = new Document();
-    // const data = await doc.getAllSections();
+    const doc = new Document();
+    const data = await doc.getAllSections();
+    // console.log(data.length);
+    mydata = parsesql(data);
 
     let Quizes = [];
     let Flashcards =[];
 
-    for (const section in data) {
-      if (data[section].elementType == `flashcard`){
-        Flashcards.push(data[section]);
+    for (const index in mydata) {
+      if (mydata[index].elementType == `flashcard`){
+        Flashcards.push(mydata[index]);
       }
-      else if (data[section].elementType == `quiz`){
-        Quizes.push(data[section]);
+      else if (mydata[index].elementType == `quiz`){
+        Quizes.push(data[index]);
       }
     }
     let listFlashcards = createlist(Flashcards);
@@ -112,26 +115,18 @@ class ViewController {
 
   async rapportPage(req, res) {
     //test data
-    const data = sectionDatabaseJakob
+    let mydata = sectionDatabaseJakob
     ////data hentes fra DB
-  //   const doc = new Document();
-  //   const data = await doc.getAllSections();
+    const doc = new Document();
+    const data = await doc.getAllSections();
+    console.log("rapportPage:");
+    console.log(data);
+    mydata = parsesql(data);
+    mydata
+    console.log(mydata);
     
 
-    
-  //   let sections = [];
-  //   for (const i in data) {
-  //       sections.push(data[i].iddocument);
-  //       console.log(data[i].iddocument)
-  //       console.log(data[i].creator)
-  //       console.log(data[i].title)
-  //       console.log(data[i].elementtype)
-  //       console.log(data[i].content)
-    
-  //   sectionDatabaseJakob += {i:{iddocument: data[i].iddocument, elementType: data[i].elementtype,content: data[i].content, keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }}
-  // }
-  //   console.log(sectionDatabaseJakob);
-    let list1 = createlist(data);
+    let list1 = createlist(mydata);
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
     res.render(this.ejs, { afsnit: sections, listOfAllReports: list1 });
   }
@@ -165,6 +160,23 @@ module.exports = {
   ViewController,
 };
 
+function parsesql(data){
+  
+ let mydata = [];
+  for (let i=0 ; i<data.length; i++){
+    // console.log(data[i].elementtype);
+    mydata.push({
+      elementtype : `${data[i].elementtype}`,
+      iddocument : `${data[i].iddocument}`,
+      title : `${data[i].title}`, 
+      content: `${data[i].content}` 
+      // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }
+      
+    })
+    
+  }
+  return mydata;  
+}
 
 function createlist(elementList) {
   let HTML = `
@@ -174,24 +186,25 @@ function createlist(elementList) {
 
   const HTMLEnd = `</div></div>`;
   // console.log("length:"+ elementList.length);
-  // console.log(elementList);
+  console.log("create list:");
+  console.log(elementList);
 
 
-  // eslint-disable-next-line guard-for-in
   // eslint-disable-next-line no-restricted-syntax
-  for (const index in elementList) {
+  for (let index=0 ; index<elementList.length; index++){
     let keywords = ``;
 
-    switch (elementList[index].elementType) {
+    switch (elementList[index].elementtype) {
       case `section`:
         HTML += `<a href="/rapport/${elementList[index].iddocument}" >`;
         HTML += `<div class="card">`;
-        HTML += `<div class="elementType${elementList[index].elementType}${elementList[index].iddocument}">${elementList[index].elementType} ${elementList[index].iddocument}</div>`
+        HTML += `<div class="elementType${elementList[index].elementtype}">${elementList[index].elementtype} ${elementList[index].title}</div>`
         HTML += `<div class="value">keywords:</div><div>`;
+        console.log(elementList[index])
 
-        elementList[index].keywords.forEach((key) => {
-          keywords += `<a>${key}  </a>`;
-        });
+        // elementList[index].keywords.forEach((key) => {
+        //   keywords += `<a>${key}  </a>`;
+        // });
         HTML += `<div class="keywords">${keywords}</div></div>`;
         HTML += `<div class="contentSection">${elementList[index].content}</div>`;
         break;
@@ -199,7 +212,7 @@ function createlist(elementList) {
       case `quiz`:
         HTML += `<a href="/evalueringer/quiz/${elementList[index].iddocument}" >`;
         HTML += `<div class="card">`;
-        HTML += `<div class="elementType${elementList[index].elementType}${elementList[index].iddocument}">${elementList[index].elementType} ${elementList[index].iddocument}</div>`;
+        HTML += `<div class="elementType${elementList[index].elementtype}${elementList[index].iddocument}">${elementList[index].elementtype} ${elementList[index].iddocument}</div>`;
         HTML += `<div class="contentQuiz">${elementList[index].question}</div>`;
         HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#1:${elementList[index].answers[0]}</p></a>`;
         HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#2${elementList[index].answers[1]}</p></a>`;
@@ -214,7 +227,7 @@ function createlist(elementList) {
         // console.log(elementList[index].keywords)
         HTML += `<a href="/evalueringer/flashcard/${elementList[index].iddocument}" >`;
         HTML += `<div class="card">`;
-        HTML += `<div class="elementType${elementList[index].elementType}${elementList[index].iddocument}">${elementList[index].elementType} ${elementList[index].iddocument}</div>`;
+        HTML += `<div class="elementType${elementList[index].elementtype}${elementList[index].iddocument}">${elementList[index].elementtype} ${elementList[index].iddocument}</div>`;
         HTML += `<div class="FlashcardBegreb">${keywords}</div>`;
         HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`;
         HTML += `<div class="FlashcardDefinition">${elementList[index].definition}</div>`;
