@@ -1,5 +1,6 @@
 /* Tests */
 /* Start Template **************************************************** */
+/* eslint no-console: off */
 const tape = require(`tape`);
 const testDecorater = require(`tape-promise`).default;
 
@@ -11,7 +12,7 @@ let actual = true;
 let expected = true;
 let object = new Navn(request);
 
-test(`Test af X i node/objektNavn`, async function (assert) {
+test(`Test af X i node/objektNavn`, async (assert) => {
   assert.equal(actual, expected, `Skulle gerne være oprettet.`);
   try {
     /* Indsæt konstanter, variable og asserts her */
@@ -27,30 +28,33 @@ test(`Test af X i node/objektNavn`, async function (assert) {
 
 /* Backend Templates ********************************************** */
 /* Test af Modeller */
+/* actualObject bruges til at kalde queries. actual skal bruges til enkeltstående værdier KUN */
+let actualObject = true;
+/* textoff bruges til at slå info() teksten fra diverse fejlmeddelser når de testes */
+const textoff = false;
+
 test(`Kopier det nedenunder ind i Start Templaten`, async (assert) => {
-    
-      request = {'body':{}};
-      expected = `forventet output`;
-      object = new Navn(request);
-      actual = await object.Method();
-      assert.equal(actual, expected,
-        `{Forventet: ${expected} Reel: ${actual}} Async Funktionen skal kunne X`);
-
-
-
+  request = { body: {} };
+  expected = `forventet output`;
+  object = new Navn(request);
+  actualObject = await object.query(`queryMetode`, `optionalQueryWhereStatements`, textoff);
+  actual = actualObject[0].tabelNavn;
+  assert.equal(actual, expected,
+    `{Forventet: ${expected} Reel: ${actual}} Async Funktionen skal kunne X`);
 });
 
 /* Test af Controllere */
 test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
-    request = {'body':{}};
-    expected = `forventet output`;
-    object = new Navn(request);
-    actual = object.someMethod(`par/s`);
-  
-    assert.equal(actual, expected,
-      `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne X`);
-  });
+  request = { body: {} };
+  expected = `forventet output`;
+  object = new Navn(request);
+  actual = object.someMethod(`par/s`);
 
+  assert.equal(actual, expected,
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne X`);
+});
+
+/* HERUNDER ER DER KUN GAMLE SAGER!!! */
 /* GAMMELT! Se kun i for at få inspiration */
 /* Functions ********************************************** */
 test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
@@ -85,17 +89,6 @@ test(`Kopier det nedenunder ind i Start Templaten`, async (assert) => {
   catch (error) {
     assert.false(false, `Async Funktionen resolvede ikke, men catchede: ${error}`);
   }
-});
-
-/* GAMMELT! Se kun i for at få inspiration */
-/* Promise **************************************************** */
-test(`Kopier det nedenunder ind i Start Templaten`, (assert) => {
-  expected = `forventet output`;
-
-  return Navn(`par/s`)
-    .then((actual) => assert.equal(actual, expected,
-      `{Forventet: ${expected} Reel: ${actual}} Promiset skal kunne X`))
-    .catch((error) => assert.false(false, `Promiset resolvede ikke, men catchede ${error}`));
 });
 
 /* Kilder **************************************************************** */
