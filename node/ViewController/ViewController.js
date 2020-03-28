@@ -120,7 +120,7 @@ class ViewController {
     const data = await doc.getAllSections();
     
     // parse data from sqlpacket to OUR packet type
-    mydata = parsesql(data);    
+    let mydata = parsesql(data);    
 
     // create HTML
     let listAllSections = createlist(mydata);
@@ -234,50 +234,21 @@ function createlist(elementList) {
 
   const HTMLEnd = `</div></div>`;
   
-  
-
-
   // eslint-disable-next-line no-restricted-syntax
   for (let index=0 ; index<elementList.length; index++){
     let keywords = ``;
 
     switch (elementList[index].elementtype) {
       case `section`:
-        HTML += `<a href="/rapport/${elementList[index].iddocument}" >`;
-        HTML += `<div class="card">`;
-        HTML += `<div class="elementType${elementList[index].elementtype}">${elementList[index].title}</div>`
-        HTML += `<div class="value">keywords:</div><div>`;
-        // console.log(elementList[index])
-
-        // elementList[index].keywords.forEach((key) => {
-        //   keywords += `<a>${key}  </a>`;
-        // });
-        HTML += `<div class="keywords">${keywords}</div></div>`;
-        HTML += `<div class="contentSection">${elementList[index].content}</div>`;
+        HTML += createSectionHTML(elementList[index]); 
         break;
 
       case `quiz`:
-        HTML += `<a href="/evalueringer/quiz/${elementList[index].iddocument}" >`;
-        HTML += `<div class="card">`;
-        HTML += `<div class="elementType${elementList[index].elementtype}${elementList[index].iddocument}">${elementList[index].title}</div>`;
-        HTML += `<div class="contentQuiz">${elementList[index].question}</div>`;
-        for (let i in elementList[index].answers){
-          HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#${i}:${elementList[index].answers[i]}</p></a>`;
-        }
+        HTML += createQuizHTML(elementList[index]);
         break;
 
       case `flashcard`:
-        elementList[index].keywords.forEach((key) => {
-          keywords += `<p>${key}</p>`;
-        });
-        // console.log(elementList[index].keywords)
-        HTML += `<a href="/evalueringer/flashcard/${elementList[index].iddocument}" >`;
-        HTML += `<div class="card">`;
-        HTML += `<div class="elementType${elementList[index].elementtype}${elementList[index].iddocument}">${elementList[index].title}</div>`;
-        HTML += `<div class="FlashcardBegreb">${keywords}</div>`;
-        HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`;
-        HTML += `<div class="FlashcardDefinition">${elementList[index].definition}</div>`;
-        // HTML += `<div class="contentFlashcard">${elementList[index].content}</div>`;
+        HTML += createSectionHTML(elementList[index]);
         break;
 
       default:  break;
@@ -287,5 +258,58 @@ function createlist(elementList) {
 
   HTML += HTMLEnd;
   // console.log(HTML);
+  return HTML;
+}
+
+function createFlashcardHTML(flashcardData){
+  let HTML =``;
+  let keywords = ``;
+
+  flashcardData.keywords.forEach((key) => {
+    keywords += `<p>${key}</p>`;
+  });
+  // console.log(flashcardData.keywords)
+  HTML += `<a href="/evalueringer/flashcard/${flashcardData.iddocument}" >`;
+  HTML += `<div class="card">`;
+  HTML += `<div class="elementType${flashcardData.elementtype}${flashcardData.iddocument}">${flashcardData.title}</div>`;
+  HTML += `<div class="FlashcardBegreb">${keywords}</div>`;
+  HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`;
+  HTML += `<div class="FlashcardDefinition">${flashcardData.definition}</div>`;
+  // HTML += `<div class="contentFlashcard">${flashcardData.content}</div>`;
+
+  return HTML;
+}
+
+function createQuizHTML(quizData){
+  let HTML =``;
+  let keywords = ``;
+
+  HTML += `<a href="/evalueringer/quiz/${quizData.iddocument}" >`;
+  HTML += `<div class="card">`;
+  HTML += `<div class="elementType${quizData.elementtype}${quizData.iddocument}">${quizData.title}</div>`;
+  HTML += `<div class="contentQuiz">${quizData.question}</div>`;
+  for (let i in quizData.answers){
+    HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#${i}:${quizData.answers[i]}</p></a>`;
+  }
+  return HTML;
+}
+
+
+function createSectionHTML(sectionData){
+  let HTML =``;
+  let keywords = ``;
+
+  HTML += `<a href="/rapport/${sectionData.iddocument}" >`;
+  HTML += `<div class="card">`;
+  HTML += `<div class="elementType${sectionData.elementtype}">${sectionData.title}</div>`
+  HTML += `<div class="value">keywords:</div><div>`;
+  // console.log(sectionData)
+
+  // sectionData.keywords.forEach((key) => {
+  //   keywords += `<a>${key}  </a>`;
+  // });
+  HTML += `<div class="keywords">${keywords}</div></div>`;
+  HTML += `<div class="contentSection">${sectionData.content}</div>`;
+
   return HTML;
 }
