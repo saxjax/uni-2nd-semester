@@ -1,6 +1,8 @@
+/* eslint-disable guard-for-in */
 /* eslint no-console: off */
 const path = require(`path`);
 const { Document } = require(`../Document/Document.js`);
+const { Evaluation } = require(`../Evaluation/Evaluation.js`);
 
 const { User } = require(`../User/User.js`);
 
@@ -64,18 +66,6 @@ const sectionDatabaseJakob = {
   },
 };
 
-// Mock data til test
-// var sectionDatabaseJakob = {
-//   2.1: { keywords: ['vidensdeling', 'feed-up', 'feed-forward'].toString() },
-//   2.2: { keywords: ['studier', 'evaluering', 'formativ', 'summativ'].toString() },
-//   2.3: { keywords: ['metoder', 'active recall', 'spaced repetition'].toString() },
-//   2.4: { keywords: ['blabla', 'jepjepjep', 'superdupersuperduper'].toString() },
-//   2.5: { keywords: ['SOTA', 'classkick', 'kahoot!'].toString() },
-//   2.6: { keywords: ['SOTA', 'classkick', 'kahoot!'].toString() },
-//   3.1: { keywords: ['SOTA', 'classkick', 'kahoot!'].toString() },
-//   3.2: { keywords: ['SOTA', 'classkick', 'kahoot!'].toString() },
-//   3.3: { keywords: ['SOTA', 'classkick', 'kahoot!'].toString() }
-// };
 
 const sections = [2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 3.1, 3.2, 3.3];
 
@@ -109,36 +99,39 @@ class ViewController {
     res.render(this.ejs);
   }
 
+  // viser alle oprettede evalueringer
   async evalueringerPage(req, res) {
-    // Mock data til test
-    // var sectionDatabaseJakob = [
-    //   { content: { section: 2.1, flashcard: `flashcard`, quiz: `quiz` } },
-    //   { content: { section: 2.2, flashcard: `flashcard`, quiz: `quiz` } },
-    //   { content: { section: 2.3, flashcard: `flashcard`, quiz: `quiz` } },
-    //   { content: { section: 2.4, flashcard: `flashcard`, quiz: `quiz` } },
-    // ];
+  //   // mock data
+  //  let mydata = sectionDatabaseJakob;
 
-    // const data = sectionDatabaseJakob;
+    // get data from database
+    const doc = new Evaluation();
+    const data = await doc.getAllEvaluations();
 
-    const doc = new Document();
-    const data = await doc.getAllSections();
+    // parse data from sqlpacket to OUR packet type
+    const mydata = parsesql(data);
 
+    // populate Quizzes and flashcards based on cardtype
     const Quizes = [];
     const Flashcards = [];
-
-    for (const section in data) {
-      if (data[section].elementType == `flashcard`) {
-        Flashcards.push(data[section]);
+    for (const index in mydata) {
+      if (mydata[index].elementtype == `flashcard`) {
+        Flashcards.push(mydata[index]);
       }
-      else if (data[section].elementType == `quiz`) {
-        Quizes.push(data[section]);
+      else if (mydata[index].elementtype == `quiz`) {
+        Quizes.push(mydata[index]);
       }
     }
+
+    // create HTML
     const listFlashcards = createlist(Flashcards);
     const listQuizes = createlist(Quizes);
+
+    // make flashcardlist and quizlist availabel as html on page
     this.ejs = path.join(`${this.root}/www/views/evalueringer1.ejs`);
     res.render(this.ejs, { listOfAllFlashcards: listFlashcards, listOfAllQuizes: listQuizes });
   }
+
 
   evalueringerTypePage(req, res) {
     if (req.params.type === `flashcard`) {
@@ -151,40 +144,47 @@ class ViewController {
     }
   }
 
-  elementList(req, res) {
-    this.ejs = path.join(`${this.root}/www/views/elementList.ejs`);
-    res.render(this.ejs);
-  }
-
+  // viser alle oprettede sections
   async rapportPage(req, res) {
-    // test data
-    const data = sectionDatabaseJakob;
-    // //data hentes fra DB
-    //   const doc = new Document();
-    //   const data = await doc.getAllSections();
+    // //test data
+    // let mydata = sectionDatabaseJakob
 
-
-    //   let sections = [];
-    //   for (const i in data) {
-    //       sections.push(data[i].iddocument);
-    //       console.log(data[i].iddocument)
-    //       console.log(data[i].creator)
-    //       console.log(data[i].title)
-    //       console.log(data[i].elementtype)
-    //       console.log(data[i].content)
-
-    //   sectionDatabaseJakob += {i:{iddocument: data[i].iddocument, elementType: data[i].elementtype,content: data[i].content, keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }}
+    // AAAARGHH//data hentes fra DB
+    const doc = new Document();
+    let mydata = [];
+    const data = await doc.getAllSections();
+    // try {
+    //   let data = await doc.getAllSections()
+    //   .catch(() => {this.mydata = sectionDatabaseJakob})
+    //   console.log(data);
+    //   if(data != null){mydata = parsesql(data);}
+    // } catch (error) {
+    //   console.log(`Lost connnection to DB mock data loaded`);
+    //   // console.log(mydata);
     // }
-    //   console.log(sectionDatabaseJakob);
-    const list1 = createlist(data);
+
+    // console.log(mydata);
+
+    // parse data from sqlpacket to OUR packet type
+    mydata = parsesql(data);
+
+    // create HTML
+    const listAllSections = createlist(mydata);
+
+    // make list of all sections availabel as html on page
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
-    res.render(this.ejs, { afsnit: sections, listOfAllReports: list1 });
+    res.render(this.ejs, { afsnit: sections, listOfAllReports: listAllSections });
   }
 
+  // viser én section
   async rapportSectionPage(req, res) {
-    // console.log(req.params.iddocument);
+    // get data from database
     const doc = new Document();
     const data = await doc.getKeywordsForSection(req.params.iddocument);
+
+    // parse data from sqlpacket to OUR packet type
+    const mydata = parsesql(data);
+
     const myKeywords = [];
     for (const i in data) {
       myKeywords.push(data[i].keyword);
@@ -210,69 +210,148 @@ module.exports = {
   ViewController,
 };
 
-
-function createlist(elementList) {
-  let HTML = `
-
-    <div class="deck"><h1>A Deck of Cards</h1>
-    <a href="javascript:void(0)" class="btn" onclick="shuffle()">Shuffle</a>
-    <div id="deck">`;
-  const HTMLEnd = `</div></div>`;
-  // console.log("length:"+ elementList.length);
-  // console.log(elementList);
-
-
-  for (const element in elementList) {
-    let keywords = ``;
-
-    switch (elementList[element].elementType) {
+function parsesql(data) {
+  const mydata = [];
+  for (let i = 0; i < data.length; i++) {
+    // console.log(data[i].elementtype);
+    switch (data[i].elementtype) {
       case `section`:
-        HTML += `<a href="/rapport/${elementList[element].iddocument}" >`;
-        HTML += `<div class="card">`;
-        HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].iddocument}">${elementList[element].elementType} ${elementList[element].iddocument}</div>`;
-        HTML += `<div class="value">keywords:</div><div>`;
-
-        elementList[element].keywords.forEach((key) => {
-          keywords += `<a>${key}  </a>`;
+        mydata.push({
+          elementtype: `${data[i].elementtype}`,
+          iddocument: `${data[i].iddocument}`,
+          title: `${data[i].title}`,
+          content: `${data[i].content}`,
+          // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }
         });
-        HTML += `<div class="keywords">${keywords}</div></div>`;
-        HTML += `<div class="contentSection">${elementList[element].content}</div>`;
         break;
 
       case `quiz`:
-        HTML += `<a href="/evalueringer/quiz/${elementList[element].iddocument}" >`;
-        HTML += `<div class="card">`;
-        HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].iddocument}">${elementList[element].elementType} ${elementList[element].iddocument}</div>`;
-        HTML += `<div class="contentQuiz">${elementList[element].question}</div>`;
-        HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#1:${elementList[element].answers[0]}</p></a>`;
-        HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#2${elementList[element].answers[1]}</p></a>`;
-        HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#3${elementList[element].answers[2]}</p></a>`;
-        HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#4 ${elementList[element].answers[3]}</p></a>`;
+        mydata.push({
+          elementtype: `${data[i].elementtype}`,
+          idquiz: `${data[i].idquiz}`,
+          iddocument: `${data[i].iddocument}`,
+          title: `${data[i].title}`,
+          question: `${data[i].question}`,
+          answers: [`${data[i].answer1}`, `${data[i].answer2}`, `${data[i].answer3}`, `${data[i].answer4}`],
+          correctness: `${data[i].correctness}`,
 
+          // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }
+        });
         break;
 
       case `flashcard`:
+        // mydata.push({
+        // elementtype : `${data[i].elementtype}`,
+        // iddocument : `${data[i].iddocument}`,
+        // title : `${data[i].title}`,
+        // entity: `${data[i].content}`,
+        // definition: [`${data[i].answer1}`,`${data[i].answer2}`,`${data[i].answer3}`,`${data[i].answer4}`],
+        // correctness: `${data[i].correctness}`
 
-        elementList[element].keywords.forEach((key) => {
-          // console.log(key)
-          keywords += `<p>${key}</p>`;
-        });
-        //   console.log(elementList[element].keywords)
-        HTML += `<a href="/evalueringer/flashcard/${elementList[element].iddocument}" >`;
-        HTML += `<div class="card">`;
-        HTML += `<div class="elementType${elementList[element].elementType}${elementList[element].iddocument}">${elementList[element].elementType} ${elementList[element].iddocument}</div>`;
-        HTML += `<div class="FlashcardBegreb">${keywords}</div>`;
-        HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`;
-        HTML += `<div class="FlashcardDefinition">${elementList[element].definition}</div>`;
-        // HTML += `<div class="contentFlashcard">${elementList[element].content}</div>`;
+        // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }
+        // })
+        break;
+
+      default:
+        break;
+    }
+  }
+  // console.log("parsed");
+  // console.log(mydata);
+  return mydata;
+}
+
+// convert card information to HTML
+// based on cardtype , section,quiz,Flashcards
+// input: list of cards (section-,quiz-,Flashcards-)
+// output: HTML
+function createlist(elementList) {
+  // console.log("create list:");
+  // console.log(elementList);
+
+  let HTML = `
+    <div class="deck"><h1>A Deck of Cards</h1>
+    <a href="javascript:void(0)" class="btn" onclick="shuffle()">Shuffle</a>
+    <div id="deck">`;
+
+  const HTMLEnd = `</div></div>`;
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (let index = 0; index < elementList.length; index++)  {
+    const keywords = ``;
+
+    switch (elementList[index].elementtype) {
+      case `section`:
+        HTML += createSectionHTML(elementList[index]);
+        break;
+
+      case `quiz`:
+        HTML += createQuizHTML(elementList[index]);
+        break;
+
+      case `flashcard`:
+        HTML += createSectionHTML(elementList[index]);
         break;
 
       default:  break;
     }
-
     HTML += `</div></a>`;
   }
 
   HTML += HTMLEnd;
+  // console.log(HTML);
+  return HTML;
+}
+
+function createFlashcardHTML(flashcardData) {
+  let HTML = ``;
+  let keywords = ``;
+
+  flashcardData.keywords.forEach((key) => {
+    keywords += `<p>${key}</p>`;
+  });
+  // console.log(flashcardData.keywords)
+  HTML += `<a href="/evalueringer/flashcard/${flashcardData.iddocument}" >`;
+  HTML += `<div class="card">`;
+  HTML += `<div class="elementType${flashcardData.elementtype}${flashcardData.iddocument}">${flashcardData.title}</div>`;
+  HTML += `<div class="FlashcardBegreb">${keywords}</div>`;
+  HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`;
+  HTML += `<div class="FlashcardDefinition">${flashcardData.definition}</div>`;
+  // HTML += `<div class="contentFlashcard">${flashcardData.content}</div>`;
+
+  return HTML;
+}
+
+function createQuizHTML(quizData) {
+  let HTML = ``;
+  const keywords = ``;
+
+  HTML += `<a href="/evalueringer/quiz/${quizData.iddocument}" >`;
+  HTML += `<div class="card">`;
+  HTML += `<div class="elementType${quizData.elementtype}${quizData.iddocument}">${quizData.title}</div>`;
+  HTML += `<div class="contentQuiz">${quizData.question}</div>`;
+  for (const i in quizData.answers) {
+    HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#${i}:${quizData.answers[i]}</p></a>`;
+  }
+  return HTML;
+}
+
+
+function createSectionHTML(sectionData) {
+  let HTML = ``;
+  const keywords = ``;
+
+  HTML += `<a href="/rapport/${sectionData.iddocument}" >`;
+  HTML += `<div class="card">`;
+  HTML += `<div class="elementType${sectionData.elementtype}">${sectionData.title}</div>`;
+  HTML += `<div class="value">keywords:</div><div>`;
+  // console.log(sectionData)
+
+  // sectionData.keywords.forEach((key) => {
+  //   keywords += `<a>${key}  </a>`;
+  // });
+  HTML += `<div class="keywords">${keywords}</div></div>`;
+  HTML += `<div class="contentSection">${sectionData.content}</div>`;
+
   return HTML;
 }
