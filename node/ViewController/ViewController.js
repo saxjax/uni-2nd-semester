@@ -8,30 +8,17 @@ const { User } = require(`../User/User.js`);
 
 // Mock Data
 let sectionDatabaseJakob = [
-  {iddocument: "83f5173d-685a-11ea-9793-00ff63f710b8", elementType: "section",title: "titel 1", content: "her er de første ti linier af en sektion", keywords: [`vidensdeling`, `feed-up`, `feed-forward`] },
-  {iddocument: "0f64f6b9-6dda-11ea-9983-2c4d54532c7a",  elementType: "section",title: "titel 1",content: "her er de første ti linier af en sektion",keywords: [`studier`, `evaluering`, `formativ`, `summativ`] },
-  {iddocument: "0f69a258-6dda-11ea-9983-2c4d54532c7a",  elementType: "section",title: "titel 1",content: "her er de første ti linier af en sektion",keywords: [`metoder`, `active recall`, `spaced repetition`] },
-  {iddocument: "0f6ed223-6dda-11ea-9983-2c4d54532c7a",  elementType: "flashcard",definition: "Et lyserødt dyr som spiser trøfler",keywords: [`Gris`] },
-  {iddocument: "0f734f32-6dda-11ea-9983-2c4d54532c7a",  elementType: "section",title: "titel 1",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
-  {iddocument: "2.6",  elementType: "section",title: "titel 1",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
-  {iddocument: "2.7",  elementType: "quiz",question: "Hvilket dyr er en mester til at finde trøfler?",answers:["min radiator", "en gris!","en ged", "et evalueringsværktøj"],correctness:[0,1,0,0] ,keywords: [`SOTA`, `classkick`, `kahoot!`] },
-  {iddocument: "2.8",  elementType: "section",title: "titel 1",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
-  {iddocument: "2.9",  elementType: "section",title: "titel 1",content: "her er de første ti linier af en sektion",keywords: [`SOTA`, `classkick`, `kahoot!`] },
+  { iddocument: `83f5173d-685a-11ea-9793-00ff63f710b8`, elementType: `section`,title: `titel 1`, content: `her er de første ti linier af en sektion`, keywords: [`vidensdeling`, `feed-up`, `feed-forward`] },
+  { iddocument: `0f64f6b9-6dda-11ea-9983-2c4d54532c7a`,  elementType: `section`,title: `titel 1`,content: `her er de første ti linier af en sektion`,keywords: [`studier`, `evaluering`, `formativ`, `summativ`] },
+  { iddocument: `0f69a258-6dda-11ea-9983-2c4d54532c7a`,  elementType: `section`,title: `titel 1`,content: `her er de første ti linier af en sektion`,keywords: [`metoder`, `active recall`, `spaced repetition`] },
+  { iddocument: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,  elementType: `flashcard`,definition: `Et lyserødt dyr som spiser trøfler`,keywords: [`Gris`] },
+  { iddocument: `0f734f32-6dda-11ea-9983-2c4d54532c7a`,  elementType: `section`,title: `titel 1`,content: `her er de første ti linier af en sektion`,keywords: [`SOTA`, `classkick`, `kahoot!`] },
+  { iddocument: `2.6`,  elementType: `section`, title: `titel 1`,content: `her er de første ti linier af en sektion`, keywords: [`SOTA`, `classkick`, `kahoot!`] },
+  { iddocument: `2.7`,  elementType: `quiz`,question: `Hvilket dyr er en mester til at finde trøfler?`, answers:[`min radiator`, `en gris!`,`en ged`, `et evalueringsværktøj`], correctness:[0,1,0,0] , keywords: [`SOTA`, `classkick`, `kahoot!`] },
+  { iddocument: `2.8`,  elementType: `section`, title: `titel 1`, content: `her er de første ti linier af en sektion`, keywords: [`SOTA`, `classkick`, `kahoot!`] }, 
+  { iddocument: `2.9`,  elementType: `section`, title: `titel 1`, content: `her er de første ti linier af en sektion`, keywords: [`SOTA`, `classkick`, `kahoot!`] }
 ];
 
-
-// Mock data til test
-// var sectionDatabaseJakob = {
-//   2.1: { keywords: ['vidensdeling', 'feed-up', 'feed-forward'].toString() },
-//   2.2: { keywords: ['studier', 'evaluering', 'formativ', 'summativ'].toString() },
-//   2.3: { keywords: ['metoder', 'active recall', 'spaced repetition'].toString() },
-//   2.4: { keywords: ['blabla', 'jepjepjep', 'superdupersuperduper'].toString() },
-//   2.5: { keywords: ['SOTA', 'classkick', 'kahoot!'].toString() },
-//   2.6: { keywords: ['SOTA', 'classkick', 'kahoot!'].toString() },
-//   3.1: { keywords: ['SOTA', 'classkick', 'kahoot!'].toString() },
-//   3.2: { keywords: ['SOTA', 'classkick', 'kahoot!'].toString() },
-//   3.3: { keywords: ['SOTA', 'classkick', 'kahoot!'].toString() }
-// };
 
 let sections = [2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 3.1, 3.2, 3.3];
 
@@ -79,7 +66,7 @@ class ViewController {
 
     // populate Quizzes and flashcards based on cardtype 
     let Quizes = [];
-    let Flashcards =[];
+    let Flashcards = [];
     for (const index in mydata) {
       if (mydata[index].elementtype == `flashcard`){
         Flashcards.push(mydata[index]);
@@ -115,12 +102,24 @@ class ViewController {
     // //test data
     // let mydata = sectionDatabaseJakob
 
-    //data hentes fra DB
+    // AAAARGHH//data hentes fra DB
     const doc = new Document();
+    let mydata = [];
     const data = await doc.getAllSections();
-    
+    // try {
+    //   let data = await doc.getAllSections()
+    //   .catch(() => {this.mydata = sectionDatabaseJakob})
+    //   console.log(data);
+    //   if(data != null){mydata = parsesql(data);}
+    // } catch (error) {
+    //   console.log(`Lost connnection to DB mock data loaded`);
+    //   // console.log(mydata);
+    // }
+
+    // console.log(mydata);
+
     // parse data from sqlpacket to OUR packet type
-    let mydata = parsesql(data);    
+    mydata = parsesql(data);
 
     // create HTML
     let listAllSections = createlist(mydata);
@@ -164,59 +163,55 @@ module.exports = {
   ViewController,
 };
 
-function parsesql(data){
-  
- let mydata = [];
-  for (let i=0 ; i<data.length; i++){
+function parsesql(data) {
+  let mydata = [];
+  for (let i = 0; i < data.length; i++) {
     // console.log(data[i].elementtype);
     switch (data[i].elementtype) {
       case `section`:
         mydata.push({
-          elementtype : `${data[i].elementtype}`,
-          iddocument : `${data[i].iddocument}`,
-          title : `${data[i].title}`, 
-          content: `${data[i].content}` 
+          elementtype: `${data[i].elementtype}`,
+          iddocument: `${data[i].iddocument}`,
+          title: `${data[i].title}`,
+          content: `${data[i].content}`,
           // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }
-          
-        })
+        });
         break;
 
-        case `quiz`:
-          mydata.push({
-            elementtype : `${data[i].elementtype}`,
-            idquiz :`${data[i].idquiz}`,
-            iddocument : `${data[i].iddocument}`,
-            title : `${data[i].title}`, 
-            question: `${data[i].question}`,
-            answers: [`${data[i].answer1}`,`${data[i].answer2}`,`${data[i].answer3}`,`${data[i].answer4}`],
-            correctness: `${data[i].correctness}`
+      case `quiz`:
+        mydata.push({
+          elementtype: `${data[i].elementtype}`,
+          idquiz: `${data[i].idquiz}`,
+          iddocument: `${data[i].iddocument}`,
+          title: `${data[i].title}`,
+          question: `${data[i].question}`,
+          answers: [`${data[i].answer1}`, `${data[i].answer2}`, `${data[i].answer3}`, `${data[i].answer4}`],
+          correctness: `${data[i].correctness}`,
 
-            // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }  
-          })
+          // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }  
+        });
         break;
 
-        case `flashcard`:
-          // mydata.push({
-          //   elementtype : `${data[i].elementtype}`,
-          //   iddocument : `${data[i].iddocument}`,
-          //   title : `${data[i].title}`, 
-          //   entity: `${data[i].content}`,
-          //   definition: [`${data[i].answer1}`,`${data[i].answer2}`,`${data[i].answer3}`,`${data[i].answer4}`],
-          //   correctness: `${data[i].correctness}`
+      case `flashcard`:
+        // mydata.push({
+        // elementtype : `${data[i].elementtype}`,
+        // iddocument : `${data[i].iddocument}`,
+        // title : `${data[i].title}`,
+        // entity: `${data[i].content}`,
+        // definition: [`${data[i].answer1}`,`${data[i].answer2}`,`${data[i].answer3}`,`${data[i].answer4}`],
+        // correctness: `${data[i].correctness}`
 
-            // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }  
-          // })
+        // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }
+        // })
         break;
-    
+
       default:
         break;
     }
-    
-    
   }
   // console.log("parsed");
   // console.log(mydata);
-  return mydata;  
+  return mydata;
 }
 
 // convert card information to HTML
@@ -233,9 +228,9 @@ function createlist(elementList) {
     <div id="deck">`;
 
   const HTMLEnd = `</div></div>`;
-  
+
   // eslint-disable-next-line no-restricted-syntax
-  for (let index=0 ; index<elementList.length; index++){
+  for (let index = 0; index < elementList.length; index++)  {
     let keywords = ``;
 
     switch (elementList[index].elementtype) {
@@ -261,8 +256,8 @@ function createlist(elementList) {
   return HTML;
 }
 
-function createFlashcardHTML(flashcardData){
-  let HTML =``;
+function createFlashcardHTML(flashcardData) {
+  let HTML = ``;
   let keywords = ``;
 
   flashcardData.keywords.forEach((key) => {
@@ -280,8 +275,8 @@ function createFlashcardHTML(flashcardData){
   return HTML;
 }
 
-function createQuizHTML(quizData){
-  let HTML =``;
+function createQuizHTML(quizData) {
+  let HTML = ``;
   let keywords = ``;
 
   HTML += `<a href="/evalueringer/quiz/${quizData.iddocument}" >`;
@@ -295,8 +290,8 @@ function createQuizHTML(quizData){
 }
 
 
-function createSectionHTML(sectionData){
-  let HTML =``;
+function createSectionHTML(sectionData) {
+  let HTML = ``;
   let keywords = ``;
 
   HTML += `<a href="/rapport/${sectionData.iddocument}" >`;

@@ -6,6 +6,9 @@ class Evaluation extends Database {
     this.name = `Evaluation`;
     this.table = `quiz`;
     this.request = request;
+    this.iddocument = "Not set";
+    this.elementtype = "Not set";
+    this.title = `Not set`;
   }
 
   async getAllEvaluations() {
@@ -29,7 +32,6 @@ class Evaluation extends Database {
     .then((result) => result)
     .catch((error) => error);
   }
-
 
 }
 
