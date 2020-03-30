@@ -58,7 +58,7 @@ const textoff = false;
   *     iddatabase test_option1 test_option2 test_option3 test_option4
   *     *          test1        test2        test3        null
   *     *          test4        test5        test6        null
-  *     *          test7        test8        test9        null
+  *     *          tes7        test8        test9        null
   *
   *    Størstedelen af tests vil foregå på test_option1-3,
   *    hvor test_option4 bruges til at teste funktionaliteter på ikke unikke operationer.
