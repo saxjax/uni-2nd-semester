@@ -11,13 +11,13 @@ class User extends Database {
     this.choice = `*`;
     this.queries = ``;
     this.objects = [];
+    this.username = req.body.username;
+    this.password = req.body.password;
     this.firstName = req.body.firstName;
     this.lastName = req.body.lastName;
     this.studySubject = req.body.studySubject;
-    this.semester = reg.body.semester;
-    this.password = req.body.password;
+    this.semester = req.body.semester;
     this.university = req.body.university;
-    this.email = req.body.email;
     this.email = req.body.email;
   }
 
