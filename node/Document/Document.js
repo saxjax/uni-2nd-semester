@@ -8,6 +8,7 @@ class Document extends Database {
     this.name = `Document`;
     this.table = `document`;
     this.request = request;
+    this.iddocument = `Not set`;
   }
 
   async getAllSections() {
@@ -24,10 +25,17 @@ class Document extends Database {
       .catch((error) => error);
   }
 
-  async getKeywordsForSection(id) {
+  async getSection(id) {
+    // console.log(`prøver at hente : `+ id);
+    return this.query(`SELECT *`, `iddocument = "${id}"`)
+      .then((result) => result)
+      .catch((error) => error);
+  }
+
+  async getKeywordsForEvaluation(id) {
     // console.log(`prøver at hente : ` + id);
     this.table = `document_keywords`;
-    return this.query(`SELECT *`, `iddocument = "${id}"`)
+    return this.query(`SELECT *`, `idevaluations = "${id}"`)
       .then((result) => result)
       .catch((error) => error);
   }

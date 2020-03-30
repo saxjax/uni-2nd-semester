@@ -3,6 +3,7 @@
 const path = require(`path`);
 const { Document } = require(`../Document/Document.js`);
 const { Evaluation } = require(`../Evaluation/Evaluation.js`);
+const { Keyword } = require(`../Document/Keyword.js`);
 
 const { User } = require(`../User/User.js`);
 
@@ -109,7 +110,7 @@ class ViewController {
     const data = await doc.getAllEvaluations();
 
     // parse data from sqlpacket to OUR packet type
-    const mydata = parsesql(data);
+    const mydata = await parsesql(data);
 
     // populate Quizzes and flashcards based on cardtype
     const Quizes = [];
@@ -157,7 +158,7 @@ class ViewController {
     //   let data = await doc.getAllSections()
     //   .catch(() => {this.mydata = sectionDatabaseJakob})
     //   console.log(data);
-    //   if(data != null){mydata = parsesql(data);}
+    //   if(data != null){mydata = await parsesql(data);}
     // } catch (error) {
     //   console.log(`Lost connnection to DB mock data loaded`);
     //   // console.log(mydata);
@@ -166,7 +167,7 @@ class ViewController {
     // console.log(mydata);
 
     // parse data from sqlpacket to OUR packet type
-    mydata = parsesql(data);
+    mydata = await parsesql(data);
 
     // create HTML
     const listAllSections = createlist(mydata);
@@ -180,18 +181,14 @@ class ViewController {
   async rapportSectionPage(req, res) {
     // get data from database
     const doc = new Document();
-    const data = await doc.getKeywordsForSection(req.params.iddocument);
+    const section = await doc.getSection(req.params.iddocument);
 
-    // parse data from sqlpacket to OUR packet type
-    const mydata = parsesql(data);
-
-    const myKeywords = [];
-    for (const i in data) {
-      myKeywords.push(data[i].keyword);
-    }
+    // parse data from sqlpacket to OUR packet type, defined in Document,Quiz, Flashcard
+    const mySection = await parsesql(section);
+    console.log(mySection);
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, { section: req.params.iddocument, keywords: myKeywords });
+    res.render(this.ejs, { section: mySection[0].title, keywords: mySection[0].keywords });
   }
 
   uploadPage(req, res) {
@@ -210,36 +207,58 @@ module.exports = {
   ViewController,
 };
 
-function parsesql(data) {
+async function parsesql(data) {
+  // const doc = new Document();
+  const keyw = new Keyword();
+
   const mydata = [];
+  let  keywords = [];
   for (let i = 0; i < data.length; i++) {
     // console.log(data[i].elementtype);
     switch (data[i].elementtype) {
       case `section`:
+        keywords = await keyw.getKeywordsForSection(data[i].iddocument);
+        keywords = parseKeywordsFromSql(keywords);
         mydata.push({
           elementtype: `${data[i].elementtype}`,
           iddocument: `${data[i].iddocument}`,
           title: `${data[i].title}`,
           content: `${data[i].content}`,
-          // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }
+          keywords: `${keywords}`,
         });
         break;
 
       case `quiz`:
+        keywords = await keyw.getKeywordsForEvaluation(data[i].idquiz);
+        keywords = parseKeywordsFromSql(keywords);
+        // .then((k) => parseKeywordsFromSql(k));
+        // const quiz = new Quiz(
+        //   this.elementtype = data[i].elementtype,
+        //   this.idquiz = data[i].idquiz,
+        //   this.iddocument = data[i].iddocuments,
+        //   this.title = data[i].title,
+        //   this.keywords = keywords,
+        //   this.Question = data[i].question,
+        //   this.Answer = [data[i].answer1, data[i].answer2, data[i].answer3, data[i].answer4],
+        //   // correctness er en binær repræsentation af svarernes sandhadsværdi "0001" betyder at answers[3] i er korrekt de andre er false!
+        //   this.correctness = data[i].correctness
+        // );
+
         mydata.push({
           elementtype: `${data[i].elementtype}`,
           idquiz: `${data[i].idquiz}`,
-          iddocument: `${data[i].iddocument}`,
+          iddocuments: `${data[i].iddocument}`,
           title: `${data[i].title}`,
           question: `${data[i].question}`,
           answers: [`${data[i].answer1}`, `${data[i].answer2}`, `${data[i].answer3}`, `${data[i].answer4}`],
           correctness: `${data[i].correctness}`,
-
-          // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }
+          keywords: `${keywords}`,
         });
         break;
 
       case `flashcard`:
+        keywords = await keyw.getKeywordsForEvaluation(data[i].idflashcard);
+        keywords = parseKeywordsFromSql(keywords);
         // mydata.push({
         // elementtype : `${data[i].elementtype}`,
         // iddocument : `${data[i].iddocument}`,
@@ -247,8 +266,7 @@ function parsesql(data) {
         // entity: `${data[i].content}`,
         // definition: [`${data[i].answer1}`,`${data[i].answer2}`,`${data[i].answer3}`,`${data[i].answer4}`],
         // correctness: `${data[i].correctness}`
-
-        // keywords: [`vidensdeling`, `feed-up`, `feed-forward`] }
+        // keywords: `${keywords}`,
         // })
         break;
 
@@ -256,9 +274,17 @@ function parsesql(data) {
         break;
     }
   }
-  // console.log("parsed");
+  // console.log(`parsed`);
   // console.log(mydata);
   return mydata;
+}
+
+function parseKeywordsFromSql(keywords) {
+  const myKeywords = [];
+  for (let i = 0; i < keywords.length; i++) {
+    myKeywords.push(keywords[i].keyword);
+  }
+  return myKeywords;
 }
 
 // convert card information to HTML
@@ -278,8 +304,6 @@ function createlist(elementList) {
 
   // eslint-disable-next-line no-restricted-syntax
   for (let index = 0; index < elementList.length; index++)  {
-    const keywords = ``;
-
     switch (elementList[index].elementtype) {
       case `section`:
         HTML += createSectionHTML(elementList[index]);
@@ -305,11 +329,6 @@ function createlist(elementList) {
 
 function createFlashcardHTML(flashcardData) {
   let HTML = ``;
-  let keywords = ``;
-
-  flashcardData.keywords.forEach((key) => {
-    keywords += `<p>${key}</p>`;
-  });
   // console.log(flashcardData.keywords)
   HTML += `<a href="/evalueringer/flashcard/${flashcardData.iddocument}" >`;
   HTML += `<div class="card">`;
@@ -324,11 +343,12 @@ function createFlashcardHTML(flashcardData) {
 
 function createQuizHTML(quizData) {
   let HTML = ``;
-  const keywords = ``;
 
   HTML += `<a href="/evalueringer/quiz/${quizData.iddocument}" >`;
   HTML += `<div class="card">`;
   HTML += `<div class="elementType${quizData.elementtype}${quizData.iddocument}">${quizData.title}</div>`;
+  HTML += `<div class="value">keywords:</div><div>`;
+  HTML += `<div class="keywords">${quizData.keywords}</div></div>`;
   HTML += `<div class="contentQuiz">${quizData.question}</div>`;
   for (const i in quizData.answers) {
     HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#${i}:${quizData.answers[i]}</p></a>`;
@@ -336,21 +356,14 @@ function createQuizHTML(quizData) {
   return HTML;
 }
 
-
 function createSectionHTML(sectionData) {
   let HTML = ``;
-  const keywords = ``;
 
   HTML += `<a href="/rapport/${sectionData.iddocument}" >`;
   HTML += `<div class="card">`;
   HTML += `<div class="elementType${sectionData.elementtype}">${sectionData.title}</div>`;
   HTML += `<div class="value">keywords:</div><div>`;
-  // console.log(sectionData)
-
-  // sectionData.keywords.forEach((key) => {
-  //   keywords += `<a>${key}  </a>`;
-  // });
-  HTML += `<div class="keywords">${keywords}</div></div>`;
+  HTML += `<div class="keywords">${sectionData.keywords}</div></div>`;
   HTML += `<div class="contentSection">${sectionData.content}</div>`;
 
   return HTML;
