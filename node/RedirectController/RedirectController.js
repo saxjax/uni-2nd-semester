@@ -1,6 +1,7 @@
 const path = require(`path`);
 
 const { User } = require(`../User/User.js`);
+let session = require(`express-session`);
 
 var sectionDatabase = {
   2.1:   {keywords: ['vidensdeling', 'feed-up', 'feed-forward'].toString()},
@@ -38,6 +39,8 @@ class RedirectController {
       res.redirect(`/dbdown`);
     }
     else if (this.data.length > 0) {
+      req.session.loggedin = true;
+      req.session.key = this.data[0].username;
       res.redirect(`/`);
     }
     else {

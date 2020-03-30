@@ -3,7 +3,7 @@
 const express = require(`express`);
 const bodyParser = require(`body-parser`);
 const { Database } = require(`../Database/Database.js`);
-
+let session = require(`express-session`);
 const { ViewController } = require(`../ViewController/ViewController`);
 const { RedirectController } = require(`../RedirectController/RedirectController`);
 const pad = require(`./pad`);
@@ -52,6 +52,7 @@ class Server {
   staticMiddleware() {
     this.app.use(express.static(`${this.root}/www`));
     this.app.use(this.logger);
+    this.app.use(session({key: 'user_sid', secret: '1234567890_RANDOM_HASH_CODE_BY_MIKE', resave: false, saveUninitialized: false, cookie: { maxAge: 600000 }}));
   }
 
   bodyParserMiddleware() {

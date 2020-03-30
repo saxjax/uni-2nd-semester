@@ -1,7 +1,6 @@
 /* eslint no-console: off */
 const path = require(`path`);
 const { Document } = require(`../Document/Document.js`);
-
 const { User } = require(`../User/User.js`);
 
 //Mock Data
@@ -48,7 +47,8 @@ class ViewController {
 
   registerPage(req, res) {
     const Registered = new User(req);
-    if (Registered.alreadyLoggedIn()) {
+    if (Registered.alreadyLoggedIn(req.session)) {
+      console.log("i was already logged in, no need to register");
       res.redirect(`/`);
     }
     else {
@@ -56,9 +56,15 @@ class ViewController {
       res.render(this.ejs);
     }
   }
-
+  
   loginPage(req, res) {
-    this.ejs = path.join(`${this.root}/www/views/login.ejs`);
+    if(req.session.loggedin){
+      this.ejs = path.join(`${this.root}/www/views/home.ejs`);
+      console.log(`You are already logged in as ${req.session.key} `)
+    }
+    else{
+      this.ejs = path.join(`${this.root}/www/views/login.ejs`);
+    }
     res.render(this.ejs);
   }
 

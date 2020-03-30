@@ -2,6 +2,7 @@
 
 const { Database } = require(`../Database/Database.js`);
 
+
 class User extends Database {
   constructor(req) {
     super();
@@ -24,9 +25,12 @@ class User extends Database {
   }
 
   /* Skal implementeres med sessions */
-  alreadyLoggedIn() {
-    this.cookie = false;
-    return this.cookie;
+  alreadyLoggedIn(user_session) {
+    let loggedin = false;
+    if(user_session.loggedin){
+      loggedin = true;
+    }
+    return loggedin;
   }
 }
 
