@@ -7,6 +7,7 @@ const { ViewController } = require(`../ViewController/ViewController`);
 const { RedirectController } = require(`../RedirectController/RedirectController`);
 const pad = require(`./Pad`);
 
+
 class Server {
   constructor() {
     this.name = `Server`;
@@ -42,7 +43,9 @@ class Server {
   redirectPatterns() {
     const Redirect = new RedirectController();
     this.app.get(`/dbdown`,                (req, res) => Redirect.dbdown(req, res));
-    this.app.post(`/auth`,                 (req, res) => Redirect.auth(req, res));
+    this.app.post(`/auth`,                 (req, res) => {
+      console.log(`request: ${req.body}`);
+      Redirect.auth(req, res)});
     this.app.post(`/upload/rapport`,       (req, res) => Redirect.UploadRapport(req, res));
     this.app.post(`/upload/evalueringer`,  (req, res) => Redirect.UploadEvalueringer(req, res));
   }

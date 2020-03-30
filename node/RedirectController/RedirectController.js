@@ -1,7 +1,6 @@
 /* eslint no-console: off */
 
 const path = require(`path`);
-
 const { User } = require(`../User/User.js`);
 
 const sectionDatabase = {
