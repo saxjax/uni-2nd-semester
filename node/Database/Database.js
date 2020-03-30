@@ -124,7 +124,9 @@ class Database {
           sql = `DELETE FROM ${this.database}.${this.table} WHERE ${data}`;
           break;
         case `CUSTOM`:
-          console.log(`Custom metode brugt. Se om den kan inkorperes i de andre metoder.\n`);
+          if (texton) {
+            console.log(`Custom metode brugt. Se om den kan inkorperes i de andre metoder.\n`);
+          }
           sql = data;
           break;
         default:
@@ -156,7 +158,10 @@ class Database {
 
     let dataValid = false;
     const dataRe = /^\w+ = /;
-    if (data === undefined || data === `` || dataRe.test(data)) {
+    if (/^CUSTOM$/.test(choice)) {
+      dataValid = true;
+    }
+    else if (data === undefined || data === `` || dataRe.test(data)) {
       dataValid = true;
     }
     else if (texton) {
