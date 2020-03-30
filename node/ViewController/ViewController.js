@@ -68,7 +68,6 @@ const sectionDatabaseJakob = {
 };
 
 
-const sections = [2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 3.1, 3.2, 3.3];
 
 class ViewController {
   constructor(req) {
@@ -102,46 +101,53 @@ class ViewController {
 
   // viser alle oprettede evalueringer
   async evalueringerPage(req, res) {
-  //   // mock data
-  //  let mydata = sectionDatabaseJakob;
 
     // get data from database
     const doc = new Evaluation();
     const data = await doc.getAllEvaluations();
 
     // parse data from sqlpacket to OUR packet type
-    const mydata = await parsesql(data);
+    const parsedData = await parsesql(data);
 
     // populate Quizzes and flashcards based on cardtype
-    const Quizes = [];
+    const Quizzes = [];
     const Flashcards = [];
-    for (const index in mydata) {
-      if (mydata[index].elementtype == `flashcard`) {
-        Flashcards.push(mydata[index]);
+
+    for (const index in parsedData) {
+      if (parsedData[index].elementtype == `flashcard`) {
+        Flashcards.push(parsedData[index]);
       }
-      else if (mydata[index].elementtype == `quiz`) {
-        Quizes.push(mydata[index]);
+      else if (parsedData[index].elementtype == `quiz`) {
+        Quizzes.push(parsedData[index]);
       }
     }
 
-    // create HTML
-    const listFlashcards = createlist(Flashcards);
-    const listQuizes = createlist(Quizes);
-
-    // make flashcardlist and quizlist availabel as html on page
-    this.ejs = path.join(`${this.root}/www/views/evalueringer1.ejs`);
-    res.render(this.ejs, { listOfAllFlashcards: listFlashcards, listOfAllQuizes: listQuizes });
+    // make flashcards and quizzes availabel to HTML page
+    this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
+    res.render(this.ejs, { Flashcards: Flashcards, Quizzes: Quizzes });
   }
 
 
-  evalueringerTypePage(req, res) {
+  async evalueringerTypePage(req, res) {
+    
+    let id = req.params.afsnit;
+    
+    const doc = new Evaluation();
+    let data = [];
+    let parsedData = [];
+  
     if (req.params.type === `flashcard`) {
+      data = await doc.getFlashcard(id);
+      parsedData = await parsesql(data);
+      
       this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
-      res.render(this.ejs, { section: req.params.afsnit });
+      res.render(this.ejs, { flashcard: parsedData });
     }
     else if (req.params.type === `quiz`) {
+      data = await doc.getQuiz(id);
+      parsedData = await parsesql(data);
       this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
-      res.render(this.ejs, { section: req.params.afsnit });
+      res.render(this.ejs, { quiz: parsedData });
     }
   }
 
@@ -150,31 +156,19 @@ class ViewController {
     // //test data
     // let mydata = sectionDatabaseJakob
 
-    // AAAARGHH//data hentes fra DB
     const doc = new Document();
     let mydata = [];
     const data = await doc.getAllSections();
-    // try {
-    //   let data = await doc.getAllSections()
-    //   .catch(() => {this.mydata = sectionDatabaseJakob})
-    //   console.log(data);
-    //   if(data != null){mydata = await parsesql(data);}
-    // } catch (error) {
-    //   console.log(`Lost connnection to DB mock data loaded`);
-    //   // console.log(mydata);
-    // }
-
-    // console.log(mydata);
-
+    
     // parse data from sqlpacket to OUR packet type
     mydata = await parsesql(data);
+    // console.log(mydata);
 
     // create HTML
     const listAllSections = createlist(mydata);
-
     // make list of all sections availabel as html on page
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
-    res.render(this.ejs, { afsnit: sections, listOfAllReports: listAllSections });
+    res.render(this.ejs, { Afsnit: mydata });
   }
 
   // viser én section
@@ -213,17 +207,22 @@ async function parsesql(data) {
 
   const mydata = [];
   let  keywords = [];
+  let teaser = ``;
   for (let i = 0; i < data.length; i++) {
     // console.log(data[i].elementtype);
     switch (data[i].elementtype) {
       case `section`:
         keywords = await keyw.getKeywordsForSection(data[i].iddocument);
         keywords = parseKeywordsFromSql(keywords);
+        if (data[i].teaser == null){
+        teaser = data[i].content.slice(0,200);
+        }
         mydata.push({
           elementtype: `${data[i].elementtype}`,
           iddocument: `${data[i].iddocument}`,
           title: `${data[i].title}`,
           content: `${data[i].content}`,
+          teaser: `${teaser}`,
           keywords: `${keywords}`,
         });
         break;
@@ -231,18 +230,6 @@ async function parsesql(data) {
       case `quiz`:
         keywords = await keyw.getKeywordsForEvaluation(data[i].idquiz);
         keywords = parseKeywordsFromSql(keywords);
-        // .then((k) => parseKeywordsFromSql(k));
-        // const quiz = new Quiz(
-        //   this.elementtype = data[i].elementtype,
-        //   this.idquiz = data[i].idquiz,
-        //   this.iddocument = data[i].iddocuments,
-        //   this.title = data[i].title,
-        //   this.keywords = keywords,
-        //   this.Question = data[i].question,
-        //   this.Answer = [data[i].answer1, data[i].answer2, data[i].answer3, data[i].answer4],
-        //   // correctness er en binær repræsentation af svarernes sandhadsværdi "0001" betyder at answers[3] i er korrekt de andre er false!
-        //   this.correctness = data[i].correctness
-        // );
 
         mydata.push({
           elementtype: `${data[i].elementtype}`,

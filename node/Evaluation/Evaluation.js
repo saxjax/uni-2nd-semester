@@ -25,6 +25,21 @@ class Evaluation extends Database {
       .catch((error) => error);
   }
 
+  async getQuiz(id) {
+    // console.log(`prøver at hente : `+ id);
+    return this.query(`SELECT *`, `idquiz = "${id}"`)
+      .then((result) => result)
+      .catch((error) => error);
+  }
+
+  async getFlashcard(id) {
+    // console.log(`prøver at hente : `+ id);
+    console.log(`Denne funktion er ikke implementeret endnu${id}`);
+    // return this.query(`SELECT *`, `idflashcard = "${id}"`)
+    //   .then((result) => result)
+    //   .catch((error) => error);
+  }
+
   async getKeywordsForSection(id) {
     // console.log(`prøver at hente : ` + id);
     this.table = `document_keywords`;
