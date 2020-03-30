@@ -77,7 +77,7 @@ class ViewController {
     this.root = __dirname.slice(0, -(`node/${this.name}`.length));
     this.request = req;
   }
-
+  
   homePage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs);
@@ -95,7 +95,12 @@ class ViewController {
   }
 
   loginPage(req, res) {
-    this.ejs = path.join(`${this.root}/www/views/login.ejs`);
+    if (req.session.loggedin === true) {
+      this.ejs = path.join(`${this.root}/www/views/home.ejs`);
+    }
+    else {
+      this.ejs = path.join(`${this.root}/www/views/login.ejs`);
+    }
     res.render(this.ejs);
   }
 

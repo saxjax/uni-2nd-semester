@@ -2,7 +2,7 @@
 
 const express = require(`express`);
 const bodyParser = require(`body-parser`);
-
+const session = require(`express-session`);
 const { ViewController } = require(`../ViewController/ViewController`);
 const { RedirectController } = require(`../RedirectController/RedirectController`);
 const pad = require(`./Pad`);
@@ -55,6 +55,8 @@ class Server {
   bodyParserMiddleware() {
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
+    this.app.use(session({
+      key: `user_sid`, secret: `SECRET_SALT_CODE_BY_MIKE123456789`, resave: false, saveUninitialized: false, cookie: { maxAge: 600000 }}));
   }
 
   logger(req, res, next) {
