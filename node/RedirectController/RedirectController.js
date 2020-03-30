@@ -40,9 +40,9 @@ class RedirectController {
       res.redirect(`/dbdown`);
     }
     else if (this.data.length > 0) {
-      res.redirect(`/`);
       req.session.loggedin = true;
-      req.session.key = this.data.username;
+      req.session.key = this.data[0].username;
+      res.redirect(`/`);
     }
     else {
       res.redirect(`/register`);

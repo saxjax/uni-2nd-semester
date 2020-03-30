@@ -78,7 +78,7 @@ class ViewController {
     this.root = __dirname.slice(0, -(`node/${this.name}`.length));
     this.request = req;
   }
-
+  
   homePage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs);
