@@ -1,7 +1,6 @@
 /* eslint no-console: off */
 
 const { Database } = require(`../Database/Database.js`);
-
 class User extends Database {
   constructor(req) {
     super();

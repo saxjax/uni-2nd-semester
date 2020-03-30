@@ -41,6 +41,8 @@ class RedirectController {
     }
     else if (this.data.length > 0) {
       res.redirect(`/`);
+      req.session.loggedin = true;
+      req.session.key = this.data.username;
     }
     else {
       res.redirect(`/register`);

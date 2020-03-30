@@ -96,7 +96,12 @@ class ViewController {
   }
 
   loginPage(req, res) {
-    this.ejs = path.join(`${this.root}/www/views/login.ejs`);
+    if (req.session.loggedin === true) {
+      this.ejs = path.join(`${this.root}/www/views/home.ejs`);
+    }
+    else {
+      this.ejs = path.join(`${this.root}/www/views/login.ejs`);
+    }
     res.render(this.ejs);
   }
 
