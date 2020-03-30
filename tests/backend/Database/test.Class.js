@@ -40,6 +40,7 @@ const textoff = false;
  * 4.4 : Databasen skal kunne hente en serie af rows fra databasen
  * 4.5 : Databasen skal kunne hente en serie af columns fra databasen
  * 4.6 : Databasen skal kunne hente en hel tabel fra databasen
+ * 4.7 : Databasen skal kunne hente ints og floats fra databasen.
  * Post Metoden
  * 5.1 : Databasen skal kunne oprette en ny row i databasen ud fra fuldstændig information
  * 5.2 : Databasen skal kunne oprette en ny row i databasen ud fra ufuldstændig information
@@ -52,13 +53,15 @@ const textoff = false;
  * Delete Metoden
  * 7.1 : Databasen skal kunne slette en row i databasen
  * 7.2 : Databasen skal kunne give en fejlmeddelse, hvis dataene der ønskes slettet ikke findes
+ * Custom Metoden
+ * 8.1 : Databasen skal kunne parse ren SQL kode videre til databasen.
  */
 
 /* Denne test gør brug af pregenereret data i MySQL databasen som er:
-  *     iddatabase test_option1 test_option2 test_option3 test_option4
-  *     *          test1        test2        test3        null
-  *     *          test4        test5        test6        null
-  *     *          test7        test8        test9        null
+  *     iddatabase test_option1 test_option2 test_option3 test_option4 test_option5_float
+  *     *          test1        test2        test3        null         1
+  *     *          test4        test5        test6        null         1.2
+  *     *          test7        test8        test9        null         -123
   *
   *    Størstedelen af tests vil foregå på test_option1-3,
   *    hvor test_option4 bruges til at teste funktionaliteter på ikke unikke operationer.
@@ -280,9 +283,28 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     assert.equal(actual, expected,
       `(4.6.9) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en hel tabel fra databasen`);
 
+    /* 4.7 */
+    actualObject = await object.query(`SELECT test_option5_float`);
+
+    expected = 1;
+    actual = actualObject[0].test_option5_float;
+    assert.equal(actual, expected,
+      `(4.7.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente ints og floats fra databasen.`);
+
+    expected = 1.2;
+    actual = actualObject[1].test_option5_float;
+    assert.equal(actual, expected,
+      `(4.7.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente ints og floats fra databasen.`);
+
+    expected = -123;
+    actual = actualObject[2].test_option5_float;
+    assert.equal(actual, expected,
+      `(4.7.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente ints og floats fra databasen.`);
+
     /* 5.1  */
     try {
-      await object.query(`INSERT`, `test_option1 = "test10" AND test_option2 = "test11" AND test_option3 = "test12"`);
+      await object.query(`INSERT`, `test_option1 = "test10" AND test_option2 = "test11" AND test_option3 = "test12" 
+                         AND test_option4 = "ikkeNull" AND test_option5_float = 1.42`);
     }
     catch (error) {
       console.log(`TEST FORKERT IMPLEMENTERET PGA: ${error}`);
@@ -453,10 +475,33 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     }
     assert.equal(actual, expected,
       `(7.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne give en fejlmeddelse, hvis dataene der ønskes slettet ikke findes`);
+
+    /* 8.1 */
+    try {
+      actualObject = await object.query(`CUSTOM`, `SELECT test_option1,concat("CustomText",test_option2) as concat,(test_option5_float + 1) as addition FROM p2.database`, textoff);
+    }
+    catch (error) {
+      console.log(`TEST FORKERT IMPLEMENTERET PGA: ${error}`);
+    }
+    expected = `test1`;
+    actual = actualObject[0].test_option1;
+    assert.equal(actual, expected,
+      `(8.1.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne parse ren SQL kode videre til databasen.`);
+
+    expected = `CustomTexttest2`;
+    actual = actualObject[0].concat;
+    assert.equal(actual, expected,
+      `(8.1.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne parse ren SQL kode videre til databasen.`);
+
+    expected = 2;
+    actual = actualObject[0].addition;
+    assert.equal(actual, expected,
+      `(8.1.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne parse ren SQL kode videre til databasen.`);
   }
   catch (error) {
     assert.false(true, `Database Tests resolvede kun delvist eller slet ikke og catchede:\n ${error}`);
   }
+
 
   object.connect.end();
 
