@@ -476,7 +476,8 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
         `(7.1.1) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
     }
     catch (error) {
-      console.log(`7.1 Head metoden er IKKE implementeret endnu!`);
+      assert.true(false,
+        `7.1 Head metoden er IKKE implementeret endnu!`);
     }
 
     /* 8.1 */
