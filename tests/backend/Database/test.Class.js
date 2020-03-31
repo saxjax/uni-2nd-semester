@@ -90,22 +90,27 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
       expected = `SELECT * FROM ${object.database}.${object.table} WHERE testfield = "test"`;
       actual = object.parser(`SELECT *`, `testfield = "test"`);
       assert.equal(actual, expected,
-        `(2.2.1) {Forventet: ${expected} Reel: ${actual}} (get) Databasen skal kunne omskrive formattet til en valid SQL streng`);
+        `(2.2.1) (get) Databasen skal kunne omskrive formattet til en valid SQL streng`);
 
       expected = `INSERT INTO ${object.database}.${object.table} (testfield1, testfield2) VALUES ("test1", "test2")`;
       actual = object.parser(`INSERT`, `testfield1 = "test1" AND testfield2 = "test2"`);
       assert.equal(actual, expected,
-        `(2.2.2) {Forventet: ${expected} Reel: ${actual}} (post) Databasen skal kunne omskrive formattet til en valid SQL streng`);
+        `(2.2.2) (post) Databasen skal kunne omskrive formattet til en valid SQL streng`);
 
       expected = `UPDATE ${object.database}.${object.table} SET testfield1 = "test2" WHERE testfield1 = "test1"`;
       actual = object.parser(`UPDATE`, `testfield1 = "test2" WHERE testfield1 = "test1"`);
       assert.equal(actual, expected,
-        `(2.2.3) {Forventet: ${expected} Reel: ${actual}} (put) Databasen skal kunne omskrive formattet til en valid SQL streng`);
+        `(2.2.3) (put) Databasen skal kunne omskrive formattet til en valid SQL streng`);
 
       expected = `DELETE FROM ${object.database}.${object.table} WHERE testfield1 = "test1"`;
       actual = object.parser(`DELETE`, `testfield1 = "test1"`);
       assert.equal(actual, expected,
-        `(2.2.4) {Forventet: ${expected} Reel: ${actual}} (delete) Databasen skal kunne omskrive formattet til en valid SQL streng`);
+        `(2.2.4) (delete) Databasen skal kunne omskrive formattet til en valid SQL streng`);
+
+      expected = `SELECT * FROM information_schema.columns WHERE table_schema = "${object.database}" AND table_name = "${object.table}"`;
+      actual = object.parser(`HEAD`);
+      assert.equal(actual, expected,
+        `(2.2.5) (head) Databasen skal kunne omskrive formattet til en valid SQL streng`);
     }
     catch (err) {
       assert.false(true,
@@ -545,13 +550,13 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
 
     /* 9.1 */
     try {
-      actualObject = await object.query(`CUSTOM`, `SELECT test_option1,concat("CustomText",test_option2) as concat,(test_option5_float + 1) as addition FROM p2.database`, textoff);
+        actualObject = await object.query(`CUSTOM`, `SELECT test_option1,concat("CustomText",test_option2) as concat,(test_option5_float + 1) as addition FROM p2.database`, textoff);
     }
     catch (error) {
       console.log(`TEST FORKERT IMPLEMENTERET PGA: ${error}`);
     }
-    expected = undefined;
-    actual = actualObject[0].test_option4;
+    expected = `test1_modificeret`;
+    actual = actualObject[0].test_option1;
     assert.equal(actual, expected,
       `(9.1.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne parse ren SQL kode videre til databasen.`);
 
