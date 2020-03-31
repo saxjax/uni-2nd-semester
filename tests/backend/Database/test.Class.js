@@ -440,6 +440,18 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     assert.equal(actual, expected,
       `(6.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne give en fejlmeddelse, hvis dataene der ønskes slettet ikke findes`);
 
+    /* 6.3 */
+    try {
+      await object.parser(`DELETE`, ``, textoff);
+      actual = false;
+    }
+    catch (error) {
+      actual = true;
+    }
+    assert.equal(actual, expected,
+      `(6.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal ikke kunne slette en hel tabel.`);
+  
+
     /* 7.1 */
     try {
       actualObject = await object.query(`HEAD METODEN`);
@@ -452,28 +464,28 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
       expected = `test_option1`;
       actual = actualObject[0];
       assert.equal(actual, expected,
-        `(7.1.1) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+        `(7.1.2) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
 
 
       expected = `test_option2`;
       actual = actualObject[0];
       assert.equal(actual, expected,
-        `(7.1.1) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+        `(7.1.3) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
 
       expected = `test_option3`;
       actual = actualObject[0];
       assert.equal(actual, expected,
-        `(7.1.1) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+        `(7.1.4) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
 
       expected = `test_option4`;
       actual = actualObject[0];
       assert.equal(actual, expected,
-        `(7.1.1) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+        `(7.1.5) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
 
       expected = `test_option5_float`;
       actual = actualObject[0];
       assert.equal(actual, expected,
-        `(7.1.1) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+        `(7.1.6) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
     }
     catch (error) {
       assert.true(false,
