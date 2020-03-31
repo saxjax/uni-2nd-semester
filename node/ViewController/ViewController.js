@@ -144,7 +144,6 @@ class ViewController {
     if (req.params.type === `flashcard`) {
       data = await doc.getFlashcard(id);
       parsedData = await parsesql(data);
-      
       this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
       res.render(this.ejs, { flashcard: parsedData });
     }
@@ -168,9 +167,7 @@ class ViewController {
     // parse data from sqlpacket to OUR packet type
     mydata = await parsesql(data);
     // console.log(mydata);
-
-    // create HTML
-    const listAllSections = createlist(mydata);
+   
     // make list of all sections availabel as html on page
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
     res.render(this.ejs, { Afsnit: mydata });
