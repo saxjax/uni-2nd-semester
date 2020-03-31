@@ -450,7 +450,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     }
     assert.equal(actual, expected,
       `(6.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal ikke kunne slette en hel tabel.`);
-  
+
 
     /* 7.1 */
     try {
