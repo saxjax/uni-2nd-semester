@@ -46,8 +46,16 @@ class RedirectController {
     }
   }
 
+  async RegisterNewUser(req, res){
+    const newUser = new User(req);
+    //check if user is already registered
+    res.send("hello");
+    console.log(`body is: ${newUser}`)
+  }
+
   UploadRapport(req, res) {
     const newKeywords = [req.body.keyword_1, req.body.keyword_2, req.body.keyword_3].toString();
+    console.log(req.body);
     const newSection = req.body.name_of_section;
     // sectionDatabase[newSection] = {};
     // sectionDatabase[newSection]['keywords'] = newKeywords;
