@@ -23,40 +23,8 @@ const textoff = false;
  * head     (dvs. få information om resourcerne i SQLdatabasen.)
  * options: (dvs. få information om brugen af databasen og dens resourcer.)
  *
- * Ud fra disse krav, opstilles der følgende kravsspecifikationer der skal testes for:
- *
- * Database adgang
- * 1.1 : Databasen skal have adgang til SQL databasen.
- * Databasens Format / Parser metoden
- * 2.1 : Databasen skal have et uniformt format for alle queries
- * 2.2 : Databasen skal kunne omskrive formattet til en valid SQL streng efter metodevalg
- * 2.3 : Databasen skal give en fejlmeddelse, hvis en query ikke følger formattet.
- * Get metoden
- * 3.1 : Databasen skal kunne hente 1 specifikt datapunkt fra databasen
- * 3.2 : Databasen skal kunne hente 1 row af data fra database
- * 3.3 : Databasen skal kunne hente 1 column af data fra databasen
- * 3.4 : Databasen skal kunne hente en serie af rows fra databasen
- * 3.5 : Databasen skal kunne hente en serie af columns fra databasen
- * 3.6 : Databasen skal kunne hente en hel tabel fra databasen
- * 3.7 : Databasen skal kunne hente ints og floats fra databasen.
- * Post Metoden
- * 4.1 : Databasen skal kunne oprette en ny row i databasen ud fra fuldstændig information
- * 4.2 : Databasen skal kunne oprette en ny row i databasen ud fra ufuldstændig information
- * 4.3 : Databasen skal kunne give en fejlmeddelse, hvis der gemmes duplikeret data i en unique column
- * Put Metoden
- * 5.1 : Databasen skal kunne modificere 1 specifikt datapunkt fra databasen
- * 5.2 : Databasen skal kunne modificere 1 row af data fra database
- * 5.3 : Databasen skal kunne modificere en hel column fra databasen
- * 5.4 : Databasen skal kunne give en fejlmeddelse, hvis dataene der ønskes opdateret ikke findes
- * Delete Metoden
- * 6.1 : Databasen skal kunne slette en row i databasen
- * 6.2 : Databasen skal kunne give en fejlmeddelse, hvis dataene der ønskes slettet ikke findes
- * Head Metoden
- * 7.1
- * Options Metoden
- * 8.1 : Databasen skal have en informations metode til hvordan den bruges
- * Custom Metoden
- * 9.1 : Databasen skal kunne parse ren SQL kode videre til databasen.
+ * KRAVSSPECIFIKATIONER FINDES PÅ OVERLEAF!
+ * Se under 4_Design/Database.tex nederst på siden.
  */
 
 /* Denne test gør brug af pregenereret data i MySQL databasen som er:
@@ -473,6 +441,43 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
       `(6.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne give en fejlmeddelse, hvis dataene der ønskes slettet ikke findes`);
 
     /* 7.1 */
+    try {
+      actualObject = await object.query(`HEAD METODEN`);
+
+      expected = `iddatabase`;
+      actual = actualObject[0];
+      assert.equal(actual, expected,
+        `(7.1.1) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+
+      expected = `test_option1`;
+      actual = actualObject[0];
+      assert.equal(actual, expected,
+        `(7.1.1) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+
+
+      expected = `test_option2`;
+      actual = actualObject[0];
+      assert.equal(actual, expected,
+        `(7.1.1) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+
+      expected = `test_option3`;
+      actual = actualObject[0];
+      assert.equal(actual, expected,
+        `(7.1.1) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+
+      expected = `test_option4`;
+      actual = actualObject[0];
+      assert.equal(actual, expected,
+        `(7.1.1) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+
+      expected = `test_option5_float`;
+      actual = actualObject[0];
+      assert.equal(actual, expected,
+        `(7.1.1) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+    }
+    catch (error) {
+      console.log(`7.1 Head metoden er IKKE implementeret endnu!`);
+    }
 
     /* 8.1 */
     expected = true;
