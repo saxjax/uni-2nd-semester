@@ -37,15 +37,14 @@
               <div class="quizzes">
                 <h2> QUIZ </h2>
                 <% Quizzes.forEach(element =>{ %>
-                <a href="/evalueringer/<%= element.elementtype %>/<%= element.idquiz %>"> 
-                  <div class="card">
+                  <a href="/evalueringer/<%= element.elementtype %>/<%= element.idquiz %>"> 
+                    <div class="card">
                     <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>
                     <div>keywords:</div>
                     <div class="sectinKeywords"><%= element.keywords %> </div>
                     <div class="question"><%= element.question %></div>
-                    
-                </div>    
-                </a>
+                    </div>    
+                  </a>
                 <% }) %>
               </div>
             </div>
@@ -55,14 +54,13 @@
                 <% Flashcards.forEach(element =>{ %>
                   <a href="/evalueringer/<%= element.elementtype %>/<%= element.idflashcard %>"> 
                     <div class="card">
-                      <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>
-                      <div>keywords:</div>
-                      <div class="sectinKeywords"><%= element.keywords %> </div>
-                      <div class="notion"><%= element.notion %></div>
-                      
-                  </div>    
+                    <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>
+                    <div>keywords:</div>
+                    <div class="sectinKeywords"><%= element.keywords %> </div>
+                    <div class="notion"><%= element.notion %></div>
+                    </div>    
                   </a>
-                  <% }) %>
+                <% }) %>
               </div>
             </div>
           </div>

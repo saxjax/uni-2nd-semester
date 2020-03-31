@@ -1,7 +1,7 @@
 /* eslint-disable guard-for-in */
 /* eslint no-console: off */
 const path = require(`path`);
-const { Document } = require(`../Document/Document.js`);
+const { Section } = require(`../Section/Section.js`);
 const { Evaluation } = require(`../Evaluation/Evaluation.js`);
 const { Keyword } = require(`../Document/Keyword.js`);
 
@@ -144,7 +144,6 @@ class ViewController {
     if (req.params.type === `flashcard`) {
       data = await doc.getFlashcard(id);
       parsedData = await parsesql(data);
-      
       this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
       res.render(this.ejs, { flashcard: parsedData });
     }
@@ -161,16 +160,15 @@ class ViewController {
     // //test data
     // let mydata = sectionDatabaseJakob
 
-    const doc = new Document();
+    const sec = new Section();
     let mydata = [];
-    const data = await doc.getAllSections();
+    const data = await sec.getAllSections();
+    console.log(data);
     
     // parse data from sqlpacket to OUR packet type
     mydata = await parsesql(data);
-    // console.log(mydata);
-
-    // create HTML
-    const listAllSections = createlist(mydata);
+    console.log(mydata);
+   
     // make list of all sections availabel as html on page
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
     res.render(this.ejs, { Afsnit: mydata });
@@ -179,8 +177,9 @@ class ViewController {
   // viser én section
   async rapportSectionPage(req, res) {
     // get data from database
-    const doc = new Document();
-    const section = await doc.getSection(req.params.iddocument);
+    const id = req.params.iddocument;
+    const sec = new Section();
+    const section = await sec.getSection(id);
 
     // parse data from sqlpacket to OUR packet type, defined in Document,Quiz, Flashcard
     const mySection = await parsesql(section);
@@ -212,22 +211,25 @@ async function parsesql(data) {
 
   const mydata = [];
   let  keywords = [];
-  let teaser = ``;
+  let section_teaser = ``;
   for (let i = 0; i < data.length; i++) {
     // console.log(data[i].elementtype);
     switch (data[i].elementtype) {
       case `section`:
-        keywords = await keyw.getKeywordsForSection(data[i].iddocument);
+        keywords = await keyw.getKeywordsForSection(data[i].iddocument_section);
         keywords = parseKeywordsFromSql(keywords);
-        if (data[i].teaser == null){
-        teaser = data[i].content.slice(0,200);
+        if (data[i].section_teaser === null){
+          section_teaser = data[i].section_content.slice(0,200);
+        } else {
+          section_teaser = data[i].section_teaser;
         }
         mydata.push({
           elementtype: `${data[i].elementtype}`,
           iddocument: `${data[i].iddocument}`,
-          title: `${data[i].title}`,
-          content: `${data[i].content}`,
-          teaser: `${teaser}`,
+          iddocument_section: `${data[i].iddocument_section}`,
+          section_title: `${data[i].section_title}`,
+          section_content: `${data[i].section_content}`,
+          section_teaser: `${section_teaser}`,
           keywords: `${keywords}`,
         });
         break;
