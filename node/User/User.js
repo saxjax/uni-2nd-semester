@@ -34,6 +34,13 @@ class User extends Database {
     this.cookie = false;
     return this.cookie;
   }
+
+  validateRegister() {                                                                                          // wanted to use typeof, but did not work...
+    if (isNaN(this.firstName) && isNaN(this.lastName) && isNaN(this.studySubject) && isNaN(this.university) && !(isNaN(this.semester))) {
+      return true;
+    }
+    return false;
+  }
 }
 
 module.exports = {

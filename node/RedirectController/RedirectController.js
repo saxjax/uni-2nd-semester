@@ -46,12 +46,23 @@ class RedirectController {
     }
   }
 
-  async RegisterNewUser(req, res){
+  async RegisterNewUser(req, res) {
     const newUser = new User(req);
-    //check if user is already registered
-    res.send("hello");
-    console.log(`body is: ${newUser}`)
+    // validate register here:
+    if (newUser.validateRegister()) {
+      console.log(`user is validated`);
+      // Post newUser to database
+      res.redirect(`/`);
+    }
+    else {
+      console.log(`user is not validated`);
+      // send error
+      res.redirect(`/register`);
+    }
+    // console.log(`user is: ${newUser.username}`);
+    // res.send(`hello`);
   }
+
 
   UploadRapport(req, res) {
     const newKeywords = [req.body.keyword_1, req.body.keyword_2, req.body.keyword_3].toString();
