@@ -23,7 +23,6 @@ class Database {
       database: this.database,
     });
     this.table = `database`;
-    this.choiceValgmuligheder = `SELECT {noget}/UPDATE/INSERT/DELETE & CUSTOM`;
   }
   /* Input:  Metoden modtager et optional texton variabel, som defaulter til true hvis den ikke medsendes.
    * Output: Metoden har som (primaer) sideeffect information om hvordan querymetoden bruges.
@@ -75,7 +74,7 @@ class Database {
           if (error) {
             if (texton) {
               console.log(`Here at node/Database/Database.js-data the error \n${error.code}\n
-              and ${error.stack} should be saved in the Database`);
+              and ${error.stack}`);
             }
             reject(error);
           }

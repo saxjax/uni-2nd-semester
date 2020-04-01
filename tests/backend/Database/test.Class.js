@@ -80,44 +80,38 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
       `(1.1) {Altid true hvis der IKKE sker en error} Databasen skal have adgang til SQL databasen.`);
 
     /* 2.1 */
-    expected = `SELECT {noget}/UPDATE/INSERT/DELETE & CUSTOM`;
-    actual = object.choiceValgmuligheder;
-    assert.equal(actual, expected,
-      `(2.1) {Query formattet er pt: ${expected}} Databasen skal have et uniformt format for alle queries`);
-
-    /* 2.2 */
     try {
       expected = `SELECT * FROM ${object.database}.${object.table} WHERE testfield = "test"`;
       actual = object.parser(`SELECT *`, `testfield = "test"`);
       assert.equal(actual, expected,
-        `(2.2.1) (get) Databasen skal kunne omskrive formattet til en valid SQL streng`);
+        `(2.1.1) (get) Databasen skal kunne omskrive sit input til en valid SQL streng efter metodevalg`);
 
       expected = `INSERT INTO ${object.database}.${object.table} (testfield1, testfield2) VALUES ("test1", "test2")`;
       actual = object.parser(`INSERT`, `testfield1 = "test1" AND testfield2 = "test2"`);
       assert.equal(actual, expected,
-        `(2.2.2) (post) Databasen skal kunne omskrive formattet til en valid SQL streng`);
+        `(2.1.2) (post) Databasen skal kunne omskrive sit input til en valid SQL streng efter metodevalg`);
 
       expected = `UPDATE ${object.database}.${object.table} SET testfield1 = "test2" WHERE testfield1 = "test1"`;
       actual = object.parser(`UPDATE`, `testfield1 = "test2" WHERE testfield1 = "test1"`);
       assert.equal(actual, expected,
-        `(2.2.3) (put) Databasen skal kunne omskrive formattet til en valid SQL streng`);
+        `(2.1.3) (put) Databasen skal kunne omskrive sit input til en valid SQL streng efter metodevalg`);
 
       expected = `DELETE FROM ${object.database}.${object.table} WHERE testfield1 = "test1"`;
       actual = object.parser(`DELETE`, `testfield1 = "test1"`);
       assert.equal(actual, expected,
-        `(2.2.4) (delete) Databasen skal kunne omskrive formattet til en valid SQL streng`);
+        `(2.1.4) (delete) Databasen skal kunne omskrive sit input til en valid SQL streng efter metodevalg`);
 
       expected = `SELECT * FROM information_schema.columns WHERE table_schema = "${object.database}" AND table_name = "${object.table}"`;
       actual = object.parser(`HEAD`);
       assert.equal(actual, expected,
-        `(2.2.5) (head) Databasen skal kunne omskrive formattet til en valid SQL streng`);
+        `(2.1.5) (head) Databasen skal kunne omskrive sit input til en valid SQL streng efter metodevalg`);
     }
     catch (err) {
       assert.false(true,
-        `(2.2) Resolvede ikke eller kun delvist med fejlen: ${err}`);
+        `(2.1) Resolvede ikke eller kun delvist med fejlen: ${err}`);
     }
 
-    /* 2.3 */
+    /* 2.2 */
     try {
       actual = await object.query(`THIS IS NOT A VALID QUERY`, `NO IT IS NOT`, textoff);
       actual = false;
@@ -126,7 +120,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
       actual = true;
     }
     assert.true(actual,
-      `(2.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal give en fejlmeddelse, hvis en query ikke følger formattet.`);
+      `(2.2) Databasen skal give en fejlmeddelse, hvis et input ikke kan omskrives til en valid SQL streng.`);
 
     /* 3.1 */
     try {
