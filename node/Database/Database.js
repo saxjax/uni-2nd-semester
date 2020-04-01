@@ -124,6 +124,9 @@ class Database {
         case `DELETE`:
           sql = `DELETE FROM ${this.database}.${this.table} WHERE ${data}`;
           break;
+        case `HEAD`:
+          sql = `SELECT * FROM information_schema.columns WHERE table_schema = "${this.database}" AND table_name = "${this.table}"`;
+          break;
         case `CUSTOM`:
           if (texton) {
             console.log(`Custom metode brugt. Se om den kan inkorperes i de andre metoder.\n`);
@@ -150,6 +153,7 @@ class Database {
        || /^INSERT$/.test(choice)
        || /^UPDATE$/.test(choice)
        || /^DELETE$/.test(choice)
+       || /^HEAD$/.test(choice)
        || /^CUSTOM$/.test(choice)) {
       choiceValid = true;
     }
@@ -165,6 +169,9 @@ class Database {
     }
     else if (/^DELETE$/.test(choice) && dataEmpty) {
       throw (new Error(`ERROR!: En hel tabel maa IKKE slettes! Husk at angiv en parameter`));
+    }
+    else if (/^UPDATE$/.test(choice) && data.search(`WHERE`) === -1) {
+      throw (new Error(`ERROR!: En hel column maa IKKE opdateres med samme vaerdi! Husk at angiv hvilken row der skal opdateres`));
     }
     else if (dataEmpty || dataRe.test(data)) {
       dataValid = true;
