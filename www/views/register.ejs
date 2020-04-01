@@ -10,9 +10,15 @@
     <div class="container">
   	  <div class="login-form">
   		  <h1>Register</h1>
-  		  <form action="auth" method="POST">
-  		    <input type="text" name="username" placeholder="Username" required>
-  		    <input type="password" name="password" placeholder="Password" required>
+  		  <form action="register" method="POST">
+			    <input type="text" name="username" placeholder="username" required>
+			    <input type="password" name="password" placeholder="Password" required>	
+			    <input type="text" name="firstName" placeholder="First name" required>
+			    <input type="text" name="lastName" placeholder="Last name" required>
+			    <input type="text" name="studySubject" placeholder="Study subject" required>
+			    <input type="number" name="semester" placeholder="semester" required>
+			    <input type="text" name="university" placeholder="University" required>
+			    <input type="email" name="email" placeholder="Email" required>
   		    <input type="submit">
 		    </form>
 		    <p>

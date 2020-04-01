@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<title>chart</title>
+	<meta name="viewport" content="width=device-width"/>
+	<link rel="stylesheet" href="./css/index.css"/>
+</head>
+<body>
+
+	<span class="chart" data-percent="86">
+		<span class="percent"></span>
+	</span>
+
+	<script src="easypiechart.js"></script>
+	<script>
+	const element = document.querySelector('.chart');
+	let percent = document.querySelector(".data-percent")
+    const chart = new EasyPieChart(element, {
+        easing: 'easeOutElastic',
+		delay: 3000,
+		barColor: '#69c',
+		trackColor: '#ace',
+		scaleColor: false,
+		lineWidth: 20,
+		trackWidth: 16,
+		lineCap: 'butt',
+		onStep: function(from, to, percent) {
+			this.el.children[0].innerHTML = Math.round(percent);
+        }
+	});
+	
+	//to update percent in chart (int should be percent):
+	//chart.update(int)
+
+	</script>
+</body>
+</html>
