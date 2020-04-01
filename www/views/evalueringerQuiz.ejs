@@ -16,23 +16,37 @@
                 <div class="col-12">
                     <h1> HER KOMMER QUIZ FOR AFSNIT:  </h1>
                         <div class="card">
-                        <div class="elementType<%= quiz[0].elementtype %>">title: <%= quiz[0].title %></div>
+                        <div class="elementType<%= quiz[0].elementtype %>">title: <%= quiz[0].idquiz %></div>
                         <div>keywords:</div>
-                        <div class="sectinKeywords"><%= quiz[0].keywords %> </div>
-                        <div class="question"><%= quiz[0].question %></div>
-                        <div class="answer1">answers</div>
+                        <!-- <div class="sectinKeywords"><%= quiz[0].keywords %> </div> -->
                         <form action="" method="POST">
+                        <% quiz.forEach( (element) => { %>
+                            <div class="question"><%= element.question %></div>
+                            <div class="answer1">answers</div>
+                       
+                            <div>
+                                <input type="checkbox" name="answer1" id="answer1" name="answer1"  >
+                                <label for="answer1"><%= element.answer1 %></label>
+                            </div>
                             
-                            <input type="checkbox" name="answer1" id="answer1" name="answer1"  >
-                            <label for="answer1"><%= quiz[0].answers[0] %></label>
-                            <input type="checkbox" name="answer2" id="answer2" name="answer2"  >
-                            <label for="answer2"><%= quiz[0].answers[1] %></label>
-                            <input type="checkbox" name="answer3" id="answer3" name="answer3"  >
-                            <label for="answer3"><%= quiz[0].answers[2] %></label>
-                            <input type="checkbox" name="answer4" id="answer4" name="answer4"  >
-                            <label for="answer4"><%= quiz[0].answers[3] %></label>
-                            <input type="submit" value="svar!">
-                            </form>
+                            <div> 
+                                <input type="checkbox" name="answer2" id="answer2" name="answer2"  >
+                                <label for="answer2"><%= element.answer2 %></label>
+                            </div>
+                            
+                            <div> 
+                                <input type="checkbox" name="answer3" id="answer3" name="answer3"  >
+                                <label for="answer3"><%= element.answer3 %></label>
+                            </div>
+                            
+                            <div>
+                                <input type="checkbox" name="answer4" id="answer4" name="answer4"  >
+                                <label for="answer4"><%= element.answer4 %></label>
+                            </div>
+                        <% }) %>
+                        <input type="submit" value="svar!">
+                    </form>
+                        
                         
                         
                     </div>    

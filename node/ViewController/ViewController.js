@@ -134,22 +134,26 @@ class ViewController {
 
 
   async evalueringerTypePage(req, res) {
-    
-    let id = req.params.afsnit;
-    
     const doc = new Evaluation();
     let data = [];
     let parsedData = [];
   
     if (req.params.type === `flashcard`) {
+      let id = req.params.idflashcard;
       data = await doc.getFlashcard(id);
       parsedData = await parsesql(data);
       this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
       res.render(this.ejs, { flashcard: parsedData });
     }
     else if (req.params.type === `quiz`) {
+      let id = req.params.idquiz;
+      console.log(id);
       data = await doc.getQuiz(id);
+      console.log("Her kommer data:\n");
+      console.log(data);
       parsedData = await parsesql(data);
+      console.log("Her kommer parsed data:\n");
+      console.log(parsedData);
       this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
       res.render(this.ejs, { quiz: parsedData });
     }
@@ -252,6 +256,19 @@ async function parsesql(data) {
           iddocument: `${data[i].iddocument}`,
           title: `${data[i].section_title}`,
           keywords: `${keywords}`,
+        });
+        break;
+
+      case `quiz_question`:
+        mydata.push({
+          idquestion: `${data[i].idquiz_question}`,
+          idquiz: `${data[i].idquiz}`,
+          question: `${data[i].question}`,
+          answer1: `${data[i].answer1}`,
+          answer2: `${data[i].answer2}`,
+          answer3: `${data[i].answer3}`,
+          answer4: `${data[i].answer4}`,
+          correctness: `${data[i].correct_answer}`
         });
         break;
 
