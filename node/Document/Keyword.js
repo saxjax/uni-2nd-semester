@@ -5,7 +5,7 @@ class Keyword extends Database {
   constructor(request) {
     super();
     this.name = `Keyword`;
-    this.table = `document_keywords`;
+    this.table = `document_keyword`;
     this.request = request;
     this.idkeyword = `Not set`;
     this.iddocuments = [];
@@ -16,14 +16,14 @@ class Keyword extends Database {
 
   async getKeywordsForSection(id) {
     // console.log(`prøver at hente : ` + id);
-    return this.query(`SELECT *`, `iddocuments = "${id}"`)
+    return this.query(`SELECT *`, `iddocument_section = "${id}"`)
       .then((result) => result)
       .catch((error) => error);
   }
 
   async getKeywordsForEvaluation(id) {
     // console.log(`prøver at hente : ` + id);
-    return this.query(`SELECT *`, `idevaluations = "${id}"`)
+    return this.query(`SELECT *`, `iddocument_section = "${id}"`)
       .then((result) => result)
       .catch((error) => error);
   }
