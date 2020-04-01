@@ -14,18 +14,22 @@
                     </nav> 
                 </div>
                 <div class="col-12">
-                    <h1> Afsnit: <%= section %></h1><br>
-                    <p> Keywords for afsnit: <%= keywords %> </p>
+                    <h1> Afsnit: <%= section[0].title %></h1><br>
+                    <p> Keywords for afsnit: <%= section[0].keywords %> </p>
                     <br>
                 </div>
                 <section>
                     <H2> EVALUERINGER FOR AFSNITTET</H2><br>
-                    <a href="/evalueringer/quiz/<%= section %>">
-                        <img id="quiz_for_section" src="/img/Design/quiz.png"><br>
-                    </a>
-                    <a href="/evalueringer/flashcard/<%= section %>">
-                        <img id="flashcard_for_section" src="/img/Design/flashcard.png">
-                    </a>
+                    <% section.forEach( (element) => { %>
+                        <p> Titel: <%= element.title %></p>
+                        <a href="/evalueringer/quiz/<%= element.idquiz %>">
+                            <img id="quiz_for_section" src="/img/Design/quiz.png"><br>
+                        </a>
+                    <% }) %>
+                        
+                        <a href="/evalueringer/flashcard/<%= section[0].iddocument_section %>">
+                            <img id="flashcard_for_section" src="/img/Design/flashcard.png">
+                        </a>
                 </section>
             </div>
         </div>

@@ -6,7 +6,7 @@ class Section extends Database {
   constructor(request) {
     super();
     this.name = `Section`;
-    this.table = `document_sections`;
+    this.table = `document_section`;
     // this.iddocument = `not set`;
     // this.iddocument_section = `not set`;
     // this.section_number = `not set`;
@@ -25,14 +25,14 @@ class Section extends Database {
 
   async getSectionContent(id) {
     // console.log(`prøver at hente : `+ id);
-    return this.query(`SELECT content`, `iddocument = "${id}"`)
+    return this.query(`SELECT content`, `iddocument_section = "${id}"`)
       .then((result) => result)
       .catch((error) => error);
   }
 
   async getSection(id) {
     // console.log(`prøver at hente : `+ id);
-    return this.query(`SELECT *`, `iddocument = "${id}"`)
+    return this.query(`SELECT *`, `iddocument_section = "${id}"`)
       .then((result) => result)
       .catch((error) => error);
   }

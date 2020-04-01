@@ -20,15 +20,16 @@ class Evaluation extends Database {
 
   async getEvalForSection(id) {
     // console.log(`prøver at hente : `+ id);
-    return this.query(`SELECT *`, `iddocument = "${id}"`)
+    return this.query(`SELECT *`, `iddocument_section = "${id}"`)
       .then((result) => result)
       .catch((error) => error);
   }
 
   async getQuiz(id) {
     // console.log(`prøver at hente : `+ id);
+    this.table = `quiz_question`;
     return this.query(`SELECT *`, `idquiz = "${id}"`)
-      .then((result) => result)
+      .then((result) => result).then( this.table = `quiz`)
       .catch((error) => error);
   }
 

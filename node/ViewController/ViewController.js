@@ -134,22 +134,26 @@ class ViewController {
 
 
   async evalueringerTypePage(req, res) {
-    
-    let id = req.params.afsnit;
-    
     const doc = new Evaluation();
     let data = [];
     let parsedData = [];
   
     if (req.params.type === `flashcard`) {
+      let id = req.params.idflashcard;
       data = await doc.getFlashcard(id);
       parsedData = await parsesql(data);
       this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
       res.render(this.ejs, { flashcard: parsedData });
     }
     else if (req.params.type === `quiz`) {
+      let id = req.params.idquiz;
+      console.log(id);
       data = await doc.getQuiz(id);
+      console.log("Her kommer data:\n");
+      console.log(data);
       parsedData = await parsesql(data);
+      console.log("Her kommer parsed data:\n");
+      console.log(parsedData);
       this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
       res.render(this.ejs, { quiz: parsedData });
     }
@@ -177,16 +181,24 @@ class ViewController {
   // viser én section
   async rapportSectionPage(req, res) {
     // get data from database
-    const id = req.params.iddocument;
-    const sec = new Section();
-    const section = await sec.getSection(id);
+    const id = req.params.iddocument_section;
+    console.log(id);
+    // const sec = new Section();
+    // const section = await sec.getSection(id);
+    // console.log(section);
 
-    // parse data from sqlpacket to OUR packet type, defined in Document,Quiz, Flashcard
-    const mySection = await parsesql(section);
-    console.log(mySection);
+    // // parse data from sqlpacket to OUR packet type, defined in Document,Quiz, Flashcard
+    // const mySection = await parsesql(section);
+    // console.log(mySection);
+
+    const evaluering = new Evaluation();
+    const evaluations = await evaluering.getEvalForSection(id);
+    console.log(evaluations);
+    const parsed_evaluations = await parsesql(evaluations);
+    console.log(parsed_evaluations);
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, { section: mySection[0].title, keywords: mySection[0].keywords });
+    res.render(this.ejs, { section: parsed_evaluations });
   }
 
   uploadPage(req, res) {
@@ -211,7 +223,7 @@ async function parsesql(data) {
 
   const mydata = [];
   let  keywords = [];
-  let section_teaser = ``;
+  let teaser = ``;
   for (let i = 0; i < data.length; i++) {
     // console.log(data[i].elementtype);
     switch (data[i].elementtype) {
@@ -219,34 +231,44 @@ async function parsesql(data) {
         keywords = await keyw.getKeywordsForSection(data[i].iddocument_section);
         keywords = parseKeywordsFromSql(keywords);
         if (data[i].section_teaser === null){
-          section_teaser = data[i].section_content.slice(0,200);
+          teaser = data[i].section_content.slice(0,200);
         } else {
-          section_teaser = data[i].section_teaser;
+          teaser = data[i].section_teaser;
         }
         mydata.push({
           elementtype: `${data[i].elementtype}`,
           iddocument: `${data[i].iddocument}`,
           iddocument_section: `${data[i].iddocument_section}`,
-          section_title: `${data[i].section_title}`,
-          section_content: `${data[i].section_content}`,
-          section_teaser: `${section_teaser}`,
+          title: `${data[i].section_title}`,
+          content: `${data[i].section_content}`,
+          teaser: `${teaser}`,
           keywords: `${keywords}`,
         });
         break;
 
       case `quiz`:
-        keywords = await keyw.getKeywordsForEvaluation(data[i].idquiz);
+        keywords = await keyw.getKeywordsForEvaluation(data[i].iddocument_section);
         keywords = parseKeywordsFromSql(keywords);
 
         mydata.push({
           elementtype: `${data[i].elementtype}`,
           idquiz: `${data[i].idquiz}`,
-          iddocuments: `${data[i].iddocument}`,
-          title: `${data[i].title}`,
-          question: `${data[i].question}`,
-          answers: [`${data[i].answer1}`, `${data[i].answer2}`, `${data[i].answer3}`, `${data[i].answer4}`],
-          correctness: `${data[i].correctness}`,
+          iddocument: `${data[i].iddocument}`,
+          title: `${data[i].section_title}`,
           keywords: `${keywords}`,
+        });
+        break;
+
+      case `quiz_question`:
+        mydata.push({
+          idquestion: `${data[i].idquiz_question}`,
+          idquiz: `${data[i].idquiz}`,
+          question: `${data[i].question}`,
+          answer1: `${data[i].answer1}`,
+          answer2: `${data[i].answer2}`,
+          answer3: `${data[i].answer3}`,
+          answer4: `${data[i].answer4}`,
+          correctness: `${data[i].correct_answer}`
         });
         break;
 

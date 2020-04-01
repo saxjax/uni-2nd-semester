@@ -7,6 +7,7 @@ const { ViewController } = require(`../ViewController/ViewController`);
 const { RedirectController } = require(`../RedirectController/RedirectController`);
 const pad = require(`./Pad`);
 
+
 class Server {
   constructor() {
     this.name = `Server`;
@@ -32,9 +33,9 @@ class Server {
     this.app.get(`/login`,                        (req, res) => Show.loginPage(req, res));
     this.app.get(`/evalueringer`,                 (req, res) => Show.evalueringerPage(req, res));
     this.app.get(`/evalueringer/:type`,           (req, res) => Show.evalueringerTypePage(req, res));
-    this.app.get(`/evalueringer/:type/:afsnit`,   (req, res) => Show.evalueringerTypePage(req, res));
+    this.app.get(`/evalueringer/:type/:idquiz`,   (req, res) => Show.evalueringerTypePage(req, res));
     this.app.get(`/rapport`,                      (req, res) => Show.rapportPage(req, res));
-    this.app.get(`/rapport/:iddocument`,          (req, res) => Show.rapportSectionPage(req, res));
+    this.app.get(`/rapport/:iddocument_section`,  (req, res) => Show.rapportSectionPage(req, res));
     this.app.get(`/elementList`,                  (req, res) => Show.elementList(req, res));
     this.app.get(`/upload/:type`,                 (req, res) => Show.uploadPage(req, res));
   }
@@ -45,6 +46,7 @@ class Server {
     this.app.post(`/auth`,                 (req, res) => Redirect.auth(req, res));
     this.app.post(`/upload/rapport`,       (req, res) => Redirect.UploadRapport(req, res));
     this.app.post(`/upload/evalueringer`,  (req, res) => Redirect.UploadEvalueringer(req, res));
+    this.app.post(`/register`,             (req, res) => Redirect.RegisterNewUser(req, res));
   }
 
   staticMiddleware() {

@@ -1,7 +1,6 @@
 /* eslint no-console: off */
 
 const path = require(`path`);
-
 const { User } = require(`../User/User.js`);
 
 const sectionDatabase = {
@@ -49,8 +48,28 @@ class RedirectController {
     }
   }
 
+  async RegisterNewUser(req, res) {
+    console.log(req.body);
+    const newUser = new User(req);
+    // validate register here:
+    if (newUser.validateRegister()) {
+      console.log(`user is validated`);
+      // Post newUser to database
+      res.redirect(`/`);
+    }
+    else {
+      console.log(`user is not validated`);
+      // send error
+      res.redirect(`/register`);
+    }
+    // console.log(`user is: ${newUser.username}`);
+    // res.send(`hello`);
+  }
+
+
   UploadRapport(req, res) {
     const newKeywords = [req.body.keyword_1, req.body.keyword_2, req.body.keyword_3].toString();
+    console.log(req.body);
     const newSection = req.body.name_of_section;
     // sectionDatabase[newSection] = {};
     // sectionDatabase[newSection]['keywords'] = newKeywords;
