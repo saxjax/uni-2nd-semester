@@ -47,6 +47,7 @@ class RedirectController {
   }
 
   async RegisterNewUser(req, res) {
+    console.log(req.body);
     const newUser = new User(req);
     // validate register here:
     if (newUser.validateRegister()) {
