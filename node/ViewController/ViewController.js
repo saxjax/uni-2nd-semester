@@ -3,7 +3,7 @@
 const path = require(`path`);
 const { Section } = require(`../Section/Section.js`);
 const { Evaluation } = require(`../Evaluation/Evaluation.js`);
-const parseSql = require(`../Database/ParseSQL`);
+const { ParseSql } = require(`../Database/ParseSQL`);
 const { User } = require(`../User/User.js`);
 
 // Mock Data
@@ -106,6 +106,7 @@ class ViewController {
   async evalueringerPage(req, res) {
     // get data from database
     const doc = new Evaluation();
+    const parseSql = new ParseSql();
     const data = await doc.getAllEvaluations();
 
     // parse data from sqlpacket to OUR packet type
@@ -132,6 +133,7 @@ class ViewController {
 
   async evalueringerTypePage(req, res) {
     const doc = new Evaluation();
+    const parseSql = new ParseSql();
     let data = [];
     let parsedData = [];
 
@@ -156,10 +158,10 @@ class ViewController {
   async rapportPage(req, res) {
     // //test data
     // let mydata = sectionDatabaseJakob
-
     const sec = new Section();
     let mydata = [];
     const data = await sec.getAllSections();
+    const parseSql = new ParseSql();
 
     // parse data from sqlpacket to OUR packet type
     mydata = await parseSql.parser(data);
@@ -172,6 +174,7 @@ class ViewController {
   // viser én section
   async rapportSectionPage(req, res) {
     // get data from database
+    const parseSql = new ParseSql();
     const id = req.params.iddocument_section;
     console.log(id);
     const section = new Section();

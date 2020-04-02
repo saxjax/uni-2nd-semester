@@ -18,7 +18,7 @@ class ParseSql {
       switch (data[i].elementtype) {
         case `section`:       this.promiseArray.push(this.parseSection(data[i]));   break;
         case `quiz`:          this.promiseArray.push(this.parseQuiz(data[i]));      break;
-        case `quiz_question`: this.parseQuizQuestion(data[i]);                      break;
+        case `quiz_question`: this.mydata.push(this.parseQuizQuestion(data[i]));    break;
         case `flashcard`:     this.promiseArray.push(this.parseFlashcard(data[i])); break;
         default:                                                                    break;
       }
@@ -77,7 +77,7 @@ class ParseSql {
   }
 
   parseQuizQuestion(data) {
-    this.mydata.push({
+    return {
       idquestion: `${data.idquiz_question}`,
       idquiz: `${data.idquiz}`,
       question: `${data.question}`,
@@ -86,7 +86,7 @@ class ParseSql {
       answer3: `${data.answer3}`,
       answer4: `${data.answer4}`,
       correctness: `${data.correct_answer}`,
-    });
+    };
   }
 
   async parseFlashcard(data) {
@@ -104,4 +104,6 @@ class ParseSql {
   }
 }
 
-module.exports = new ParseSql();
+module.exports = {
+  ParseSql,
+};
