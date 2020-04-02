@@ -8,66 +8,6 @@ const { Keyword } = require(`../Document/Keyword.js`);
 
 const { User } = require(`../User/User.js`);
 
-// Mock Data
-const sectionDatabaseJakob = {
-  2.1: {
-    iddocument: `83f5173d-685a-11ea-9793-00ff63f710b8`,
-    elementType: `section`,
-    content: `her er de første ti linier af en sektion`,
-    keywords: [`vidensdeling`, `feed-up`, `feed-forward`],
-  },
-  2.2: {
-    iddocument: `0f64f6b9-6dda-11ea-9983-2c4d54532c7a`,
-    elementType: `section`,
-    content: `her er de første ti linier af en sektion`,
-    keywords: [`studier`, `evaluering`, `formativ`, `summativ`],
-  },
-  2.3: {
-    iddocument: `0f69a258-6dda-11ea-9983-2c4d54532c7a`,
-    elementType: `section`,
-    content: `her er de første ti linier af en sektion`,
-    keywords: [`metoder`, `active recall`, `spaced repetition`],
-  },
-  2.4: {
-    iddocument: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
-    elementType: `flashcard`,
-    definition: `Et lyserødt dyr som spiser trøfler`,
-    keywords: [`Gris`],
-  },
-  2.5: {
-    iddocument: `0f734f32-6dda-11ea-9983-2c4d54532c7a`,
-    elementType: `section`,
-    content: `her er de første ti linier af en sektion`,
-    keywords: [`SOTA`, `classkick`, `kahoot!`],
-  },
-  2.6: {
-    iddocument: `2.6`,
-    elementType: `section`,
-    content: `her er de første ti linier af en sektion`,
-    keywords: [`SOTA`, `classkick`, `kahoot!`],
-  },
-  2.7: {
-    iddocument: `2.7`,
-    elementType: `quiz`,
-    question: `Hvilket dyr er en mester til at finde trøfler?`,
-    answers: [`min radiator`, `en gris!`, `en ged`, `et evalueringsværktøj`],
-    correctness: [0, 1, 0, 0],
-    keywords: [`SOTA`, `classkick`, `kahoot!`],
-  },
-  2.8: {
-    iddocument: `2.8`,
-    elementType: `section`,
-    content: `her er de første ti linier af en sektion`,
-    keywords: [`SOTA`, `classkick`, `kahoot!`],
-  },
-  2.9: {
-    iddocument: `2.9`,
-    elementType: `section`,
-    content: `her er de første ti linier af en sektion`,
-    keywords: [`SOTA`, `classkick`, `kahoot!`],
-  },
-};
-
 
 class ViewController {
   constructor(req) {
