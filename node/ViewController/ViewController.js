@@ -273,8 +273,8 @@ async function parsesql(data) {
         break;
 
       case `flashcard`:
-        keywords = await keyw.getKeywordsForEvaluation(data[i].idflashcard);
-        keywords = parseKeywordsFromSql(keywords);
+        // keywords = await keyw.getKeywordsForEvaluation(data[i].idflashcard);
+        // keywords = parseKeywordsFromSql(keywords);
         // mydata.push({
         // elementtype : `${data[i].elementtype}`,
         // iddocument : `${data[i].iddocument}`,

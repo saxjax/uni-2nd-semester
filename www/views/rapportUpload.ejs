@@ -14,16 +14,25 @@
         </div>
       </div>
       <div class ="col-12">
-        <form action="/upload/rapport" method="POST">
-          <p> Tilføj afsnittets nummer </p>
-          <input type="text" id="name_of_section" name="name_of_section">
-          <p> Tilføj keywords til afsnittet </p>
-          <input type="text" id="keyword1" name="keyword_1"><br>
-          <input type="text" id="keyword2" name="keyword_2"><br>
-          <input type="text" id="keyword3" name="keyword_3"><br>
-          <input type="file" id="section" name="filename">
-          <input type="submit" id="submitknap">
-        </form>
+      <form action="/upload/rapport" method="POST">
+        <label for="dokumenter">Vælg dokument</label>
+        <select id="dokumenter" name="dokumenter">
+        <option value="volvo">P2 Projekt</option>
+        <option value="saab">Algoritmer og Datastrukturer</option>
+        <option value="fiat">Lineær Algebra</option>
+        <option value="audi">IWP</option>
+
+        <label for="name_of_section">Vælg rapportafsnit</label>
+        <input type="text" id="name_of_section" name="name_of_section">
+
+
+        <p> Tilføj keywords til afsnittet </p>
+        <input type="text" id="keyword1" name="keyword_1"><br>
+        <input type="text" id="keyword2" name="keyword_2"><br>
+        <input type="text" id="keyword3" name="keyword_3"><br>
+        <input type="file" id="section" name="filename">
+        <input type="submit" id="submitknap">
+      </form>
       </div>
     </div>
     <%- include('meta/footer') %> 
