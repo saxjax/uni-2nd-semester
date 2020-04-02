@@ -160,11 +160,9 @@ class ViewController {
     const sec = new Section();
     let mydata = [];
     const data = await sec.getAllSections();
-    console.log(data);
 
     // parse data from sqlpacket to OUR packet type
     mydata = await parseSql.parser(data);
-    console.log(mydata);
 
     // make list of all sections availabel as html on page
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
