@@ -8,32 +8,33 @@
   <body>
     <%- include('meta/navbar') %> 
     <div class="container" id="content">
-      <div class="row">
-        <div class="col-12">    
-          <h1> Upload afsnit fra rapporten</h1>
+        <div class="row">
+          <div class="col-12">    
+            <h1> Upload afsnit fra rapporten</h1>
+          </div>
         </div>
-      </div>
-      <div class ="col-12">
-      <form action="/upload/rapport" method="POST">
-        <label for="dokumenter">Vælg dokument</label>
-        <select id="dokumenter" name="dokumenter">
-        <option value="volvo">P2 Projekt</option>
-        <option value="saab">Algoritmer og Datastrukturer</option>
-        <option value="fiat">Lineær Algebra</option>
-        <option value="audi">IWP</option>
-
-        <label for="name_of_section">Vælg rapportafsnit</label>
-        <input type="text" id="name_of_section" name="name_of_section">
-
-
-        <p> Tilføj keywords til afsnittet </p>
-        <input type="text" id="keyword1" name="keyword_1"><br>
-        <input type="text" id="keyword2" name="keyword_2"><br>
-        <input type="text" id="keyword3" name="keyword_3"><br>
-        <input type="file" id="section" name="filename">
-        <input type="submit" id="submitknap">
-      </form>
-      </div>
+      <br><br>
+      <section>
+        <form action="/upload/rapport" method="POST">
+          <label>Vælg dokument </label>
+          <select id="dokumenter" name="dokumenter"><br><br>
+            <option value="volvo">P2 Projekt</option>
+            <option value="saab">Algoritmer og Datastrukturer</option>
+            <option value="fiat">Lineær Algebra</option>
+            <option value="audi">IWP</option> 
+          </select><br><br>
+          <label for="fname">Vælg rapportafsnit </label>
+          <input type="text" id="fname" name="fname"><br><br>
+          <label for="lname">Vælg Keyword1 </label>
+          <input type="text" id="lname" name="lname"><br><br>
+          <label for="lname">Vælg Keyword3 </label>
+          <input type="text" id="lname" name="lname"><br><br>
+          <label for="lname">Vælg Keyword4 </label>
+          <input type="text" id="lname" name="lname"><br><br>
+          <input type="file" id="section" name="filename"><br>
+          <input type="submit" value="Submit">
+        </form>
+      </section>
     </div>
     <%- include('meta/footer') %> 
   </body>
