@@ -52,13 +52,13 @@ class RedirectController {
     console.log(req.body);
     const newUser = new User(req);
     // validate register here:
-    if (newUser.validateRegister()) {
-      console.log(`user is validated`);
+    if (await newUser.validateRegister()) {
+      console.log(`User created`);
       // Post newUser to database
       res.redirect(`/`);
     }
     else {
-      console.log(`user is not validated`);
+      console.log(`User could not be validated`);
       // send error
       res.redirect(`/register`);
     }
