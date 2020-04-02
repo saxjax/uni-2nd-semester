@@ -3,9 +3,7 @@
 const path = require(`path`);
 const { Section } = require(`../Section/Section.js`);
 const { Evaluation } = require(`../Evaluation/Evaluation.js`);
-const { Flashcard } = require(`../Evaluation/Flashcard.js`);
-const { Keyword } = require(`../Document/Keyword.js`);
-
+const { ParseSql } = require(`../Database/ParseSQL`);
 const { User } = require(`../User/User.js`);
 
 
@@ -48,10 +46,11 @@ class ViewController {
   async evalueringerPage(req, res) {
     // get data from database
     const doc = new Evaluation();
+    const parseSql = new ParseSql();
     const data = await doc.getAllEvaluations();
 
     // parse data from sqlpacket to OUR packet type
-    const parsedData = await parsesql(data);
+    const parsedData = await parseSql.parser(data);
 
     // populate Quizzes and flashcards based on cardtype
     const Quizzes = [];
@@ -74,20 +73,21 @@ class ViewController {
 
   async evalueringerTypePage(req, res) {
     const doc = new Evaluation();
+    const parseSql = new ParseSql();
     let data = [];
     let parsedData = [];
 
     if (req.params.type === `flashcard`) {
       const id = req.params.idflashcard;
       data = await doc.getFlashcard(id);
-      parsedData = await parsesql(data);
+      parsedData = await parseSql.parser(data);
       this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
       res.render(this.ejs, { flashcard: parsedData });
     }
     else if (req.params.type === `quiz`) {
       const id = req.params.idquiz;
       data = await doc.getQuiz(id);
-      parsedData = await parsesql(data);
+      parsedData = await parseSql.parser(data);
 
       this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
       res.render(this.ejs, { quiz: parsedData });
@@ -98,15 +98,13 @@ class ViewController {
   async rapportPage(req, res) {
     // //test data
     // let mydata = sectionDatabaseJakob
-
     const sec = new Section();
     let mydata = [];
     const data = await sec.getAllSections();
-    console.log(data);
+    const parseSql = new ParseSql();
 
     // parse data from sqlpacket to OUR packet type
-    mydata = await parsesql(data);
-    console.log(mydata);
+    mydata = await parseSql.parser(data);
 
     // make list of all sections availabel as html on page
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
@@ -116,17 +114,18 @@ class ViewController {
   // viser én section
   async rapportSectionPage(req, res) {
     // get data from database
+    const parseSql = new ParseSql();
     const id = req.params.iddocument_section;
     console.log(id);
     const section = new Section();
     const evaluering = new Evaluation();
     const evaluations = await evaluering.getEvalForSection(id);
-    const parsedEvaluations = await parsesql(evaluations);
+    const parsedEvaluations = await parseSql.parser(evaluations);
 
     const currentSection = await section.getSection(id);
     console.log(`linie 186`);
     console.log(currentSection);
-    const parsedSection = await parsesql(currentSection);
+    const parsedSection = await parseSql.parser(currentSection);
     console.log(parsedSection);
     console.log(`parsed`);
 
@@ -150,94 +149,6 @@ class ViewController {
 module.exports = {
   ViewController,
 };
-
-async function parsesql(data) {
-  // const doc = new Document();
-  const keyw = new Keyword();
-
-  const mydata = [];
-  let  keywords = [];
-  let teaser = ``;
-  for (let i = 0; i < data.length; i++) {
-    // console.log(data[i].elementtype);
-    switch (data[i].elementtype) {
-      case `section`:
-        keywords = await keyw.getKeywordsForSection(data[i].iddocument_section);
-        keywords = parseKeywordsFromSql(keywords);
-        if (data[i].section_teaser === null) {
-          teaser = data[i].section_content.slice(0, 200);
-        }
-        else {
-          teaser = data[i].section_teaser;
-        }
-        mydata.push({
-          elementtype: `${data[i].elementtype}`,
-          iddocument: `${data[i].iddocument}`,
-          iddocument_section: `${data[i].iddocument_section}`,
-          section_number: `${data[i].section_number}`,
-          title: `${data[i].section_title}`,
-          content: `${data[i].section_content}`,
-          teaser: `${teaser}`,
-          keywords: `${keywords}`,
-        });
-        break;
-
-      case `quiz`:
-        keywords = await keyw.getKeywordsForEvaluation(data[i].iddocument_section);
-        keywords = parseKeywordsFromSql(keywords);
-
-        mydata.push({
-          elementtype: `${data[i].elementtype}`,
-          idquiz: `${data[i].idquiz}`,
-          iddocument: `${data[i].iddocument}`,
-          title: `${data[i].section_title}`,
-          keywords: `${keywords}`,
-        });
-        break;
-
-      case `quiz_question`:
-        mydata.push({
-          idquestion: `${data[i].idquiz_question}`,
-          idquiz: `${data[i].idquiz}`,
-          question: `${data[i].question}`,
-          answer1: `${data[i].answer1}`,
-          answer2: `${data[i].answer2}`,
-          answer3: `${data[i].answer3}`,
-          answer4: `${data[i].answer4}`,
-          correctness: `${data[i].correct_answer}`,
-        });
-        break;
-
-      case `flashcard`:
-        // keywords = await keyw.getKeywordsForEvaluation(data[i].idflashcard);
-        // keywords = parseKeywordsFromSql(keywords);
-        // mydata.push({
-        // elementtype : `${data[i].elementtype}`,
-        // iddocument : `${data[i].iddocument}`,
-        // title : `${data[i].title}`,
-        // entity: `${data[i].content}`,
-        // definition: [`${data[i].answer1}`,`${data[i].answer2}`,`${data[i].answer3}`,`${data[i].answer4}`],
-        // correctness: `${data[i].correctness}`
-        // keywords: `${keywords}`,
-        // })
-        break;
-
-      default:
-        break;
-    }
-  }
-  // console.log(`parsed`);
-  // console.log(mydata);
-  return mydata;
-}
-
-function parseKeywordsFromSql(keywords) {
-  const myKeywords = [];
-  for (let i = 0; i < keywords.length; i++) {
-    myKeywords.push(keywords[i].keyword);
-  }
-  return myKeywords;
-}
 
 // convert card information to HTML
 // based on cardtype , section,quiz,Flashcards

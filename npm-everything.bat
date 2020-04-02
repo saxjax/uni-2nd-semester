@@ -33,6 +33,9 @@ call npm install path --save
 echo =====================================================================================
 echo Installing EJS 
 call npm install ejs --save
+echo =====================================================================================
+echo Installing EXPRESS-SESSION 
+call npm install express-session --save
 
 :: Installing dev-dependencies
 echo =====================================================================================
@@ -71,4 +74,5 @@ IF errorlevel 1 (
 echo =====================================================================================
 
 echo Done!
+echo You can safely close this window now.
 pause
