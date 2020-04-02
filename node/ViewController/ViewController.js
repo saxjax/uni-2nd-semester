@@ -117,10 +117,10 @@ class ViewController {
     const Flashcards = [];
 
     for (const index in parsedData) {
-      if (parsedData[index].elementtype == `flashcard`) {
+      if (parsedData[index].elementtype === `flashcard`) {
         Flashcards.push(parsedData[index]);
       }
-      else if (parsedData[index].elementtype == `quiz`) {
+      else if (parsedData[index].elementtype === `quiz`) {
         Quizzes.push(parsedData[index]);
       }
     }
