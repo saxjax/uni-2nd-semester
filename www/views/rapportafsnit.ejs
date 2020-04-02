@@ -6,33 +6,39 @@
     </head>
     <body>
         <%- include('meta/navbar') %> 
-        <div class="container" id="content">
-            <div class="row">
-                <div class="col-5">  
-                    <nav>
-                        <a href="/rapport">Rapport</a>
-                    </nav> 
+        <div class="container" id="content">    
+            <h1> Afsnit: <%= section[0].section_number %></h1><br>
+            <p> Keywords for afsnit: <%= evaluations[0].keywords %> </p>
+            <br>
+                <div class = "row">
+                    <div class="col">
+                        <div class = "leftside"> 
+                
+                            <H2> EVALUERINGER FOR AFSNITTET</H2><br>
+                            <% evaluations.forEach( (element) => { %>
+                                <p> Titel: <%= element.title %></p>
+                                <a href="/evalueringer/quiz/<%= element.idquiz %>">
+                                    <img id="quiz_for_section" src="/img/Design/quiz.png"><br>
+                                </a>
+                            <% }) %>
+                                
+                                <a href="/evalueringer/flashcard/<%= evaluations[0].iddocument_section %>">
+                                    <img id="flashcard_for_section" src="/img/Design/flashcard.png">
+                                </a>
+                        </div>
+                    </div>
+                    <div class = "col">
+                        <div class="rightside">
+                            <div class = "card">
+                                <div>
+                                    <h1><%= section[0].title %></h1>
+                                    <%= section[0].content %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12">
-                    <h1> Afsnit: <%= section[0].title %></h1><br>
-                    <p> Keywords for afsnit: <%= section[0].keywords %> </p>
-                    <br>
-                </div>
-                <section>
-                    <H2> EVALUERINGER FOR AFSNITTET</H2><br>
-                    <% section.forEach( (element) => { %>
-                        <p> Titel: <%= element.title %></p>
-                        <a href="/evalueringer/quiz/<%= element.idquiz %>">
-                            <img id="quiz_for_section" src="/img/Design/quiz.png"><br>
-                        </a>
-                    <% }) %>
-                        
-                        <a href="/evalueringer/flashcard/<%= section[0].iddocument_section %>">
-                            <img id="flashcard_for_section" src="/img/Design/flashcard.png">
-                        </a>
-                </section>
-            </div>
-        </div>
+        </div>    
         <%- include('meta/footer') %> 
     </body>
 </html>

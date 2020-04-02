@@ -145,13 +145,9 @@ class ViewController {
     }
     else if (req.params.type === `quiz`) {
       const id = req.params.idquiz;
-      console.log(id);
       data = await doc.getQuiz(id);
-      console.log(`Her kommer data:\n`);
-      console.log(data);
       parsedData = await parsesql(data);
-      console.log(`Her kommer parsed data:\n`);
-      console.log(parsedData);
+
       this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
       res.render(this.ejs, { quiz: parsedData });
     }
@@ -181,22 +177,21 @@ class ViewController {
     // get data from database
     const id = req.params.iddocument_section;
     console.log(id);
-    // const sec = new Section();
-    // const section = await sec.getSection(id);
-    // console.log(section);
-
-    // // parse data from sqlpacket to OUR packet type, defined in Document,Quiz, Flashcard
-    // const mySection = await parsesql(section);
-    // console.log(mySection);
-
+    const section = new Section();
     const evaluering = new Evaluation();
     const evaluations = await evaluering.getEvalForSection(id);
-    console.log(evaluations);
-    const parsed_evaluations = await parsesql(evaluations);
-    console.log(parsed_evaluations);
+    const parsedEvaluations = await parsesql(evaluations);
+
+    const currentSection = await section.getSection(id);
+    console.log(`linie 186`);
+    console.log(currentSection);
+    const parsedSection = await parsesql(currentSection);
+    console.log(parsedSection);
+    console.log(`parsed`);
+
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, { section: parsed_evaluations });
+    res.render(this.ejs, { evaluations: parsedEvaluations, section: parsedSection  });
   }
 
   uploadPage(req, res) {
@@ -238,6 +233,7 @@ async function parsesql(data) {
           elementtype: `${data[i].elementtype}`,
           iddocument: `${data[i].iddocument}`,
           iddocument_section: `${data[i].iddocument_section}`,
+          section_number: `${data[i].section_number}`,
           title: `${data[i].section_title}`,
           content: `${data[i].section_content}`,
           teaser: `${teaser}`,
