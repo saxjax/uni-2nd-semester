@@ -68,7 +68,6 @@ const sectionDatabaseJakob = {
 };
 
 
-
 class ViewController {
   constructor(req) {
     this.name = `ViewController`;
@@ -77,7 +76,7 @@ class ViewController {
     this.root = __dirname.slice(0, -(`node/${this.name}`.length));
     this.request = req;
   }
-  
+
   homePage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs);
@@ -106,7 +105,6 @@ class ViewController {
 
   // viser alle oprettede evalueringer
   async evalueringerPage(req, res) {
-
     // get data from database
     const doc = new Evaluation();
     const data = await doc.getAllEvaluations();
@@ -129,7 +127,7 @@ class ViewController {
 
     // make flashcards and quizzes availabel to HTML page
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-    res.render(this.ejs, { Flashcards: Flashcards, Quizzes: Quizzes });
+    res.render(this.ejs, { Flashcards, Quizzes });
   }
 
 
@@ -137,22 +135,22 @@ class ViewController {
     const doc = new Evaluation();
     let data = [];
     let parsedData = [];
-  
+
     if (req.params.type === `flashcard`) {
-      let id = req.params.idflashcard;
+      const id = req.params.idflashcard;
       data = await doc.getFlashcard(id);
       parsedData = await parsesql(data);
       this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
       res.render(this.ejs, { flashcard: parsedData });
     }
     else if (req.params.type === `quiz`) {
-      let id = req.params.idquiz;
+      const id = req.params.idquiz;
       console.log(id);
       data = await doc.getQuiz(id);
-      console.log("Her kommer data:\n");
+      console.log(`Her kommer data:\n`);
       console.log(data);
       parsedData = await parsesql(data);
-      console.log("Her kommer parsed data:\n");
+      console.log(`Her kommer parsed data:\n`);
       console.log(parsedData);
       this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
       res.render(this.ejs, { quiz: parsedData });
@@ -168,11 +166,11 @@ class ViewController {
     let mydata = [];
     const data = await sec.getAllSections();
     console.log(data);
-    
+
     // parse data from sqlpacket to OUR packet type
     mydata = await parsesql(data);
     console.log(mydata);
-   
+
     // make list of all sections availabel as html on page
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
     res.render(this.ejs, { Afsnit: mydata });
@@ -230,9 +228,10 @@ async function parsesql(data) {
       case `section`:
         keywords = await keyw.getKeywordsForSection(data[i].iddocument_section);
         keywords = parseKeywordsFromSql(keywords);
-        if (data[i].section_teaser === null){
-          teaser = data[i].section_content.slice(0,200);
-        } else {
+        if (data[i].section_teaser === null) {
+          teaser = data[i].section_content.slice(0, 200);
+        }
+        else {
           teaser = data[i].section_teaser;
         }
         mydata.push({
@@ -268,7 +267,7 @@ async function parsesql(data) {
           answer2: `${data[i].answer2}`,
           answer3: `${data[i].answer3}`,
           answer4: `${data[i].answer4}`,
-          correctness: `${data[i].correct_answer}`
+          correctness: `${data[i].correct_answer}`,
         });
         break;
 
