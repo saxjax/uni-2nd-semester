@@ -1,6 +1,7 @@
 /* eslint no-console: off */
 
 const { Keyword } = require(`../Document/Keyword.js`);
+const { Flashcard } = require(`../Evaluation/Flashcard.js`);
 const keyw = new Keyword();
 
 class ParseSql {
@@ -18,8 +19,8 @@ class ParseSql {
       switch (data[i].elementtype) {
         case `section`:       this.promiseArray.push(this.parseSection(data[i]));   break;
         case `quiz`:          this.promiseArray.push(this.parseQuiz(data[i]));      break;
-        case `quiz_question`: this.mydata.push(this.parseQuizQuestion(data[i]));    break;
         case `flashcard`:     this.promiseArray.push(this.parseFlashcard(data[i])); break;
+        case `quiz_question`: this.mydata.push(this.parseQuizQuestion(data[i]));    break;
         default:                                                                    break;
       }
     }
