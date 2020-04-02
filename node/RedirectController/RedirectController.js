@@ -2,6 +2,7 @@
 
 const path = require(`path`);
 const { User } = require(`../User/User.js`);
+const { Quiz } = require(`../Evaluation/Quiz.js`);
 
 const sectionDatabase = {
   2.1: { keywords: [`vidensdeling`, `feed-up`, `feed-forward`].toString() },
@@ -28,7 +29,7 @@ class RedirectController {
   }
 
   dbdown(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/database_down.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/dbdown.ejs`);
     res.render(this.ejs);
   }
 
@@ -82,8 +83,31 @@ class RedirectController {
 
   UploadEvalueringer(req, res) {
     console.log(req.body);
-    this.ejs = path.join(`${this.root}/www/views/evalueringerUpload.ejs`);
+    if (req.body.evaluering === `quiz`) {
+      this.ejs = path.join(`${this.root}/www/views/evalueringQuizUpload.ejs`);
+    }
+    else if (req.body.evaluering === `flashcard`) {
+      this.ejs = path.join(`${this.root}/www/views/evalueringFlashcardUpload.ejs`);
+    }
+    else {        // fejlen er ikke nødvendigvis pga database nede, men bruges som 404 indtil videre
+      res.redirect(`/dbdown`);
+    }
     res.render(this.ejs);
+  }
+
+  UploadQuiz(req, res) {
+    console.log(req.body);
+    const newQuiz = new Quiz(req);
+    console.log(newQuiz.correctness);
+    // newQuiz.saveQuiz();
+
+    /* if (newQuiz.getQuiz() === true) {
+      this.ejs = path.join(`${this.root}/www/views/evalueringer/quiz/${newQuiz.idquiz}`);
+    }
+    else {        // fejlen er ikke nødvendigvis pga database nede, men bruges som 404 indtil videre
+      res.redirect(`/dbdown`);
+    }
+    res.render(this.ejs); */
   }
 }
 

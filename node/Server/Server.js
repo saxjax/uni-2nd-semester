@@ -47,6 +47,7 @@ class Server {
     this.app.post(`/upload/rapport`,       (req, res) => Redirect.UploadRapport(req, res));
     this.app.post(`/upload/evalueringer`,  (req, res) => Redirect.UploadEvalueringer(req, res));
     this.app.post(`/register`,             (req, res) => Redirect.RegisterNewUser(req, res));
+    this.app.post(`/upload/quiz`,          (req, res) => Redirect.UploadQuiz(req, res));  
   }
 
   staticMiddleware() {
