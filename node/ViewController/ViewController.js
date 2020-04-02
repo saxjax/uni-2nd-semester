@@ -3,70 +3,10 @@
 const path = require(`path`);
 const { Section } = require(`../Section/Section.js`);
 const { Evaluation } = require(`../Evaluation/Evaluation.js`);
+const { Flashcard } = require(`../Evaluation/Flashcard.js`);
 const { Keyword } = require(`../Document/Keyword.js`);
 
 const { User } = require(`../User/User.js`);
-
-// Mock Data
-const sectionDatabaseJakob = {
-  2.1: {
-    iddocument: `83f5173d-685a-11ea-9793-00ff63f710b8`,
-    elementType: `section`,
-    content: `her er de første ti linier af en sektion`,
-    keywords: [`vidensdeling`, `feed-up`, `feed-forward`],
-  },
-  2.2: {
-    iddocument: `0f64f6b9-6dda-11ea-9983-2c4d54532c7a`,
-    elementType: `section`,
-    content: `her er de første ti linier af en sektion`,
-    keywords: [`studier`, `evaluering`, `formativ`, `summativ`],
-  },
-  2.3: {
-    iddocument: `0f69a258-6dda-11ea-9983-2c4d54532c7a`,
-    elementType: `section`,
-    content: `her er de første ti linier af en sektion`,
-    keywords: [`metoder`, `active recall`, `spaced repetition`],
-  },
-  2.4: {
-    iddocument: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
-    elementType: `flashcard`,
-    definition: `Et lyserødt dyr som spiser trøfler`,
-    keywords: [`Gris`],
-  },
-  2.5: {
-    iddocument: `0f734f32-6dda-11ea-9983-2c4d54532c7a`,
-    elementType: `section`,
-    content: `her er de første ti linier af en sektion`,
-    keywords: [`SOTA`, `classkick`, `kahoot!`],
-  },
-  2.6: {
-    iddocument: `2.6`,
-    elementType: `section`,
-    content: `her er de første ti linier af en sektion`,
-    keywords: [`SOTA`, `classkick`, `kahoot!`],
-  },
-  2.7: {
-    iddocument: `2.7`,
-    elementType: `quiz`,
-    question: `Hvilket dyr er en mester til at finde trøfler?`,
-    answers: [`min radiator`, `en gris!`, `en ged`, `et evalueringsværktøj`],
-    correctness: [0, 1, 0, 0],
-    keywords: [`SOTA`, `classkick`, `kahoot!`],
-  },
-  2.8: {
-    iddocument: `2.8`,
-    elementType: `section`,
-    content: `her er de første ti linier af en sektion`,
-    keywords: [`SOTA`, `classkick`, `kahoot!`],
-  },
-  2.9: {
-    iddocument: `2.9`,
-    elementType: `section`,
-    content: `her er de første ti linier af en sektion`,
-    keywords: [`SOTA`, `classkick`, `kahoot!`],
-  },
-};
-
 
 class ViewController {
   constructor(req) {
@@ -179,19 +119,23 @@ class ViewController {
     console.log(id);
     const section = new Section();
     const evaluering = new Evaluation();
+    const flashcard = new Flashcard();
     const evaluations = await evaluering.getEvalForSection(id);
     const parsedEvaluations = await parsesql(evaluations);
+    const flashcards = await flashcard.getEvalForSection(id);
+    console.log(flashcards);
+    const parsedFlashcards = parsesql(flashcards);
 
     const currentSection = await section.getSection(id);
-    console.log(`linie 186`);
-    console.log(currentSection);
+    // console.log(`linie 186`);
+    // console.log(currentSection);
     const parsedSection = await parsesql(currentSection);
-    console.log(parsedSection);
-    console.log(`parsed`);
+    // console.log(parsedSection);
+    // console.log(`parsed`);
 
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, { evaluations: parsedEvaluations, section: parsedSection  });
+    res.render(this.ejs, { flashcards: parsedFlashcards, evaluations: parsedEvaluations, section: parsedSection  });
   }
 
   uploadPage(req, res) {
@@ -249,6 +193,7 @@ async function parsesql(data) {
           elementtype: `${data[i].elementtype}`,
           idquiz: `${data[i].idquiz}`,
           iddocument: `${data[i].iddocument}`,
+          iddocument_section: `${data[i].iddocument_section}`,
           title: `${data[i].section_title}`,
           keywords: `${keywords}`,
         });
@@ -268,6 +213,7 @@ async function parsesql(data) {
         break;
 
       case `flashcard`:
+<<<<<<< Updated upstream
         keywords = await keyw.getKeywordsForEvaluation(data[i].idflashcard);
         keywords = parseKeywordsFromSql(keywords);
         // mydata.push({
@@ -279,6 +225,15 @@ async function parsesql(data) {
         // correctness: `${data[i].correctness}`
         // keywords: `${keywords}`,
         // })
+=======
+        mydata.push({
+          elementtype: `${data[i].elementtype}`,
+          idflashcard: `${data[i].idflashcard}`,
+          iddocument: `${data[i].iddocument}`,
+          iddocument_section: `${data[i].iddocument_section}`,
+          title: `${data[i].section_title}`,
+        });
+>>>>>>> Stashed changes
         break;
 
       default:
