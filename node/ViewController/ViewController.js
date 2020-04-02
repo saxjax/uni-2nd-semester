@@ -3,6 +3,7 @@
 const path = require(`path`);
 const { Section } = require(`../Section/Section.js`);
 const { Evaluation } = require(`../Evaluation/Evaluation.js`);
+const { Flashcard } = require(`../Evaluation/Flashcard.js`);
 const { Keyword } = require(`../Document/Keyword.js`);
 
 const { User } = require(`../User/User.js`);

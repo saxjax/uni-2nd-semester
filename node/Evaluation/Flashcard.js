@@ -1,4 +1,4 @@
-const { Evaluation } = require(`/Evaluation/Evaluation.js`);
+const { Evaluation } = require(`../Evaluation/Evaluation.js`);
 
 class Flashcard extends Evaluation {
   constructor(request) {
