@@ -29,7 +29,7 @@ class Evaluation extends Database {
     // console.log(`prøver at hente : `+ id);
     this.table = `quiz_question`;
     return this.query(`SELECT *`, `idquiz = "${id}"`)
-      .then((result) => result).then( this.table = `quiz`)
+      .then((result) => result).then(this.table = `quiz`)
       .catch((error) => error);
   }
 

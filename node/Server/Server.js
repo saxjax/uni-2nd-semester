@@ -58,11 +58,15 @@ class Server {
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
     this.app.use(session({
-      key: `user_sid`, secret: `SECRET_SALT_CODE_BY_MIKE123456789`, resave: false, saveUninitialized: false, cookie: { maxAge: 600000 }}));
+      key: `user_sid`, secret: `SECRET_SALT_CODE_BY_MIKE123456789`, resave: false, saveUninitialized: false, cookie: { maxAge: 600000 },
+    }));
   }
 
   logger(req, res, next) {
-    console.log(`GOT ${pad(req.method, -6, ` `)}: ${req.protocol}://${req.get(`host`)}${req.originalUrl} -- ${(new Date()).toUTCString()}`);
+    const reqMethod = pad(req.method, -6, ` `);
+    const reqUrl = pad(`${req.protocol}://${req.get(`host`)}${req.originalUrl}`, 41, ` `);
+    const date = `${(new Date()).toUTCString()}`;
+    console.log(`GOT ${reqMethod}: ${reqUrl} -- ${date}`);
     next();
   }
 }
