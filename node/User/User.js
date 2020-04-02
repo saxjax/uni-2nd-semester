@@ -5,7 +5,7 @@ class User extends Database {
   constructor(req) {
     super();
     this.name = `User`;
-    this.table = `users`;
+    this.table = `user`;
     this.data = ``;
     this.choice = `*`;
     this.queries = ``;
@@ -34,11 +34,19 @@ class User extends Database {
     return this.cookie;
   }
 
-  validateRegister() {                                                                                          // wanted to use typeof, but did not work...
+  async validateRegister() {
+    let validationCheck = true;                                                                               // wanted to use typeof, but did not work...
     if (isNaN(this.firstName) && isNaN(this.lastName) && isNaN(this.studySubject) && isNaN(this.university) && !(isNaN(this.semester))) {
-      return true;
+      this.data = await this.query(`SELECT *`, `username = "${this.username}" OR email = "${this.email}"`);
+      if (this.data.length > 0) {
+        console.log(`User already registered`);
+        validationCheck = false;
+      }
+      else {
+        this.register_data = await this.query(`INSERT`, `username = "${this.username}" AND password = "${this.password}" AND firstname = "${this.firstName}" AND lastname = "${this.lastName}" AND university = "${this.university}" AND studysubject = "${this.studySubject}" AND semester = "${this.semester}"`);
+      }
     }
-    return false;
+    return validationCheck;
   }
 }
 
