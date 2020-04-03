@@ -1,8 +1,9 @@
 /* eslint no-console: off */
 
 const express = require(`express`);
-const bodyParser = require(`body-parser`);
+const upload = require(`express-fileupload`);
 const session = require(`express-session`);
+const bodyParser = require(`body-parser`);
 const { ViewController } = require(`../ViewController/ViewController`);
 const { RedirectController } = require(`../RedirectController/RedirectController`);
 const pad = require(`./Pad`);
@@ -55,6 +56,7 @@ class Server {
   }
 
   bodyParserMiddleware() {
+    this.app.use(upload());
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
     this.app.use(session({
