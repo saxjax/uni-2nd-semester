@@ -6,6 +6,7 @@ const { Evaluation } = require(`../Evaluation/Evaluation.js`);
 const { ParseSql } = require(`../Database/ParseSQL`);
 const { User } = require(`../User/User.js`);
 
+
 class ViewController {
   constructor(req) {
     this.name = `ViewController`;
@@ -131,8 +132,7 @@ class ViewController {
 
     const currentSection = await section.getSection(id);
     const parsedSection = await parseSql.parser(currentSection);
-
-    console.log(parsedSection);
+    // const parsedSection = await parsesql(currentSection);
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
     res.render(this.ejs, {  flashcards: parsedFlashcards,  evaluations: parsedEvaluations, section: parsedSection  });
@@ -153,170 +153,3 @@ class ViewController {
 module.exports = {
   ViewController,
 };
-
-async function parsesql(data) {
-  // const doc = new Document();
-  const keyw = new Keyword();
-
-  const mydata = [];
-  let  keywords = [];
-  let teaser = ``;
-  for (let i = 0; i < data.length; i++) {
-    // console.log(data[i].elementtype);
-    switch (data[i].elementtype) {
-      case `section`:
-        keywords = await keyw.getKeywordsForSection(data[i].iddocument_section);
-        keywords = parseKeywordsFromSql(keywords);
-        if (data[i].section_teaser === null) {
-          teaser = data[i].section_content.slice(0, 200);
-        }
-        else {
-          teaser = data[i].section_teaser;
-        }
-        mydata.push({
-          elementtype: `${data[i].elementtype}`,
-          iddocument: `${data[i].iddocument}`,
-          iddocument_section: `${data[i].iddocument_section}`,
-          section_number: `${data[i].section_number}`,
-          title: `${data[i].section_title}`,
-          content: `${data[i].section_content}`,
-          teaser: `${teaser}`,
-          keywords: `${keywords}`,
-        });
-        break;
-
-      case `quiz`:
-        keywords = await keyw.getKeywordsForEvaluation(data[i].iddocument_section);
-        keywords = parseKeywordsFromSql(keywords);
-
-        mydata.push({
-          elementtype: `${data[i].elementtype}`,
-          idquiz: `${data[i].idquiz}`,
-          iddocument: `${data[i].iddocument}`,
-          iddocument_section: `${data[i].iddocument_section}`,
-          title: `${data[i].section_title}`,
-          keywords: `${keywords}`,
-        });
-        break;
-
-      case `quiz_question`:
-        mydata.push({
-          idquestion: `${data[i].idquiz_question}`,
-          idquiz: `${data[i].idquiz}`,
-          question: `${data[i].question}`,
-          answer1: `${data[i].answer1}`,
-          answer2: `${data[i].answer2}`,
-          answer3: `${data[i].answer3}`,
-          answer4: `${data[i].answer4}`,
-          correctness: `${data[i].correct_answer}`,
-        });
-        break;
-
-      case `flashcard`:
-        mydata.push({
-          elementtype: `${data[i].elementtype}`,
-          idflashcard: `${data[i].idflashcard}`,
-          iddocument: `${data[i].iddocument}`,
-          iddocument_section: `${data[i].iddocument_section}`,
-          title: `${data[i].section_title}`,
-        });
-        break;
-
-      default:
-        break;
-    }
-  }
-  // console.log(`parsed`);
-  // console.log(mydata);
-  return mydata;
-}
-
-function parseKeywordsFromSql(keywords) {
-  const myKeywords = [];
-  for (let i = 0; i < keywords.length; i++) {
-    myKeywords.push(keywords[i].keyword);
-  }
-  return myKeywords;
-}
-
-// convert card information to HTML
-// based on cardtype , section,quiz,Flashcards
-// input: list of cards (section-,quiz-,Flashcards-)
-// output: HTML
-function createlist(elementList) {
-  // console.log("create list:");
-  // console.log(elementList);
-
-  let HTML = `
-    <div class="deck"><h1>A Deck of Cards</h1>
-    <a href="javascript:void(0)" class="btn" onclick="shuffle()">Shuffle</a>
-    <div id="deck">`;
-
-  const HTMLEnd = `</div></div>`;
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (let index = 0; index < elementList.length; index++)  {
-    switch (elementList[index].elementtype) {
-      case `section`:
-        HTML += createSectionHTML(elementList[index]);
-        break;
-
-      case `quiz`:
-        HTML += createQuizHTML(elementList[index]);
-        break;
-
-      case `flashcard`:
-        HTML += createSectionHTML(elementList[index]);
-        break;
-
-      default:  break;
-    }
-    HTML += `</div></a>`;
-  }
-
-  HTML += HTMLEnd;
-  // console.log(HTML);
-  return HTML;
-}
-
-// function createFlashcardHTML(flashcardData) {
-//   let HTML = ``;
-//   // console.log(flashcardData.keywords)
-//   HTML += `<a href="/evalueringer/flashcard/${flashcardData.iddocument}" >`;
-//   HTML += `<div class="card">`;
-//   HTML += `<div class="elementType${flashcardData.elementtype}${flashcardData.iddocument}">${flashcardData.title}</div>`;
-//   HTML += `<div class="FlashcardBegreb">${keywords}</div>`;
-//   HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`;
-//   HTML += `<div class="FlashcardDefinition">${flashcardData.definition}</div>`;
-//   // HTML += `<div class="contentFlashcard">${flashcardData.content}</div>`;
-
-//   return HTML;
-// }
-
-// function createQuizHTML(quizData) {
-//   let HTML = ``;
-
-//   HTML += `<a href="/evalueringer/quiz/${quizData.iddocument}" >`;
-//   HTML += `<div class="card">`;
-//   HTML += `<div class="elementType${quizData.elementtype}${quizData.iddocument}">${quizData.title}</div>`;
-//   HTML += `<div class="value">keywords:</div><div>`;
-//   HTML += `<div class="keywords">${quizData.keywords}</div></div>`;
-//   HTML += `<div class="contentQuiz">${quizData.question}</div>`;
-//   for (const i in quizData.answers) {
-//     HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#${i}:${quizData.answers[i]}</p></a>`;
-//   }
-//   return HTML;
-// }
-
-// function createSectionHTML(sectionData) {
-//   let HTML = ``;
-
-//   HTML += `<a href="/rapport/${sectionData.iddocument}" >`;
-//   HTML += `<div class="card">`;
-//   HTML += `<div class="elementType${sectionData.elementtype}">${sectionData.title}</div>`;
-//   HTML += `<div class="value">keywords:</div><div>`;
-//   HTML += `<div class="keywords">${sectionData.keywords}</div></div>`;
-//   HTML += `<div class="contentSection">${sectionData.content}</div>`;
-
-//   return HTML;
-// }
