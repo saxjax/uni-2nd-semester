@@ -8,23 +8,33 @@
   <body>
     <%- include('meta/navbar') %> 
     <div class="container" id="content">
-      <div class="row">
-        <div class="col-12">    
-          <h1> Upload afsnit fra rapporten</h1>
+        <div class="row">
+          <div class="col-12">    
+            <h1> Upload afsnit fra rapporten</h1>
+          </div>
         </div>
-      </div>
-      <div class ="col-12">
+      <br><br>
+      <section>
         <form action="/upload/rapport" method="POST">
-          <p> Tilføj afsnittets nummer </p>
-          <input type="text" id="name_of_section" name="name_of_section">
-          <p> Tilføj keywords til afsnittet </p>
-          <input type="text" id="keyword1" name="keyword_1"><br>
-          <input type="text" id="keyword2" name="keyword_2"><br>
-          <input type="text" id="keyword3" name="keyword_3"><br>
-          <input type="file" id="section" name="filename">
-          <input type="submit" id="submitknap">
+          <label>Vælg dokument </label>
+          <select id="dokumenter" name="dokumenter"><br><br>
+            <option value="projekt">P2 Projekt</option>
+            <option value="fag1">Algoritmer og Datastrukturer</option>
+            <option value="fag2">Lineær Algebra</option>
+            <option value="fag3">IWP</option> 
+          </select><br><br>
+          <label for="section">Vælg rapportafsnit </label>
+          <input type="text" id="section" name="section"><br><br>
+          <label for="keyword1">Vælg Keyword1 </label>
+          <input type="text" id="keyword1" name="keyword1"><br><br>
+          <label for="keyword2">Vælg Keyword2 </label>
+          <input type="text" id="keyword2" name="keyword2"><br><br>
+          <label for="keyword3">Vælg Keyword3 </label>
+          <input type="text" id="keyword3" name="keyword3"><br><br>
+          <input type="file" id="section_file" name="section_file"><br>
+          <input type="submit" value="Submit">
         </form>
-      </div>
+      </section>
     </div>
     <%- include('meta/footer') %> 
   </body>

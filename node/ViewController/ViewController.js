@@ -3,10 +3,13 @@
 const path = require(`path`);
 const { Section } = require(`../Section/Section.js`);
 const { Evaluation } = require(`../Evaluation/Evaluation.js`);
-const { Keyword } = require(`../Document/Keyword.js`);
-
+const { ParseSql } = require(`../Database/ParseSQL`);
 const { User } = require(`../User/User.js`);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 class ViewController {
   constructor(req) {
     this.name = `ViewController`;
@@ -46,20 +49,21 @@ class ViewController {
   async evalueringerPage(req, res) {
     // get data from database
     const doc = new Evaluation();
+    const parseSql = new ParseSql();
     const data = await doc.getAllEvaluations();
 
     // parse data from sqlpacket to OUR packet type
-    const parsedData = await parsesql(data);
+    const parsedData = await parseSql.parser(data);
 
     // populate Quizzes and flashcards based on cardtype
     const Quizzes = [];
     const Flashcards = [];
 
     for (const index in parsedData) {
-      if (parsedData[index].elementtype == `flashcard`) {
+      if (parsedData[index].elementtype === `flashcard`) {
         Flashcards.push(parsedData[index]);
       }
-      else if (parsedData[index].elementtype == `quiz`) {
+      else if (parsedData[index].elementtype === `quiz`) {
         Quizzes.push(parsedData[index]);
       }
     }
@@ -72,20 +76,21 @@ class ViewController {
 
   async evalueringerTypePage(req, res) {
     const doc = new Evaluation();
+    const parseSql = new ParseSql();
     let data = [];
     let parsedData = [];
 
     if (req.params.type === `flashcard`) {
       const id = req.params.idflashcard;
       data = await doc.getFlashcard(id);
-      parsedData = await parsesql(data);
+      parsedData = await parseSql.parser(data);
       this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
       res.render(this.ejs, { flashcard: parsedData });
     }
     else if (req.params.type === `quiz`) {
       const id = req.params.idquiz;
       data = await doc.getQuiz(id);
-      parsedData = await parsesql(data);
+      parsedData = await parseSql.parser(data);
 
       this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
       res.render(this.ejs, { quiz: parsedData });
@@ -96,13 +101,19 @@ class ViewController {
   async rapportPage(req, res) {
     // //test data
     // let mydata = sectionDatabaseJakob
-
     const sec = new Section();
     let mydata = [];
     const data = await sec.getAllSections();
+<<<<<<< HEAD
 
     // parse data from sqlpacket to OUR packet type
     mydata = await parsesql(data);
+=======
+    const parseSql = new ParseSql();
+
+    // parse data from sqlpacket to OUR packet type
+    mydata = await parseSql.parser(data);
+>>>>>>> master
 
     // make list of all sections availabel as html on page
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
@@ -112,12 +123,14 @@ class ViewController {
   // viser én section
   async rapportSectionPage(req, res) {
     // get data from database
+    const parseSql = new ParseSql();
     const id = req.params.iddocument_section;
     console.log(id);
     const section = new Section();
     const evaluering = new Evaluation();
     evaluering.table = `quiz`;
     const evaluations = await evaluering.getEvalForSection(id);
+<<<<<<< HEAD
     const parsedEvaluations = await parsesql(evaluations);
     console.log(parsedEvaluations);
     evaluering.table = `flashcard`;
@@ -132,6 +145,16 @@ class ViewController {
     const parsedSection = await parsesql(currentSection);
     // console.log(parsedSection);
     // console.log(`parsed`);
+=======
+    const parsedEvaluations = await parseSql.parser(evaluations);
+
+    const currentSection = await section.getSection(id);
+    console.log(`linie 186`);
+    console.log(currentSection);
+    const parsedSection = await parseSql.parser(currentSection);
+    console.log(parsedSection);
+    console.log(`parsed`);
+>>>>>>> master
 
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
@@ -154,6 +177,7 @@ module.exports = {
   ViewController,
 };
 
+<<<<<<< HEAD
 async function parsesql(data) {
   // const doc = new Document();
   const keyw = new Keyword();
@@ -239,6 +263,8 @@ function parseKeywordsFromSql(keywords) {
   return myKeywords;
 }
 
+=======
+>>>>>>> master
 // convert card information to HTML
 // based on cardtype , section,quiz,Flashcards
 // input: list of cards (section-,quiz-,Flashcards-)
