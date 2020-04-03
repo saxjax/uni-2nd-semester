@@ -3,7 +3,6 @@
 const path = require(`path`);
 const { Section } = require(`../Section/Section.js`);
 const { Evaluation } = require(`../Evaluation/Evaluation.js`);
-const { Flashcard } = require(`../Evaluation/Flashcard.js`);
 const { Keyword } = require(`../Document/Keyword.js`);
 
 const { User } = require(`../User/User.js`);
@@ -101,11 +100,9 @@ class ViewController {
     const sec = new Section();
     let mydata = [];
     const data = await sec.getAllSections();
-    console.log(data);
 
     // parse data from sqlpacket to OUR packet type
     mydata = await parsesql(data);
-    console.log(mydata);
 
     // make list of all sections availabel as html on page
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
@@ -119,12 +116,15 @@ class ViewController {
     console.log(id);
     const section = new Section();
     const evaluering = new Evaluation();
-    const flashcard = new Flashcard();
+    evaluering.table = `quiz`;
     const evaluations = await evaluering.getEvalForSection(id);
     const parsedEvaluations = await parsesql(evaluations);
-    const flashcards = await flashcard.getEvalForSection(id);
+    console.log(parsedEvaluations);
+    evaluering.table = `flashcard`;
+    const flashcards = await evaluering.getEvalForSection(id);
     console.log(flashcards);
-    const parsedFlashcards = parsesql(flashcards);
+    const parsedFlashcards = await parsesql(flashcards);
+    console.log(parsedFlashcards);
 
     const currentSection = await section.getSection(id);
     // console.log(`linie 186`);
@@ -135,7 +135,7 @@ class ViewController {
 
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, { flashcards: parsedFlashcards, evaluations: parsedEvaluations, section: parsedSection  });
+    res.render(this.ejs, {  flashcards: parsedFlashcards,  evaluations: parsedEvaluations, section: parsedSection  });
   }
 
   uploadPage(req, res) {
@@ -213,19 +213,6 @@ async function parsesql(data) {
         break;
 
       case `flashcard`:
-<<<<<<< Updated upstream
-        keywords = await keyw.getKeywordsForEvaluation(data[i].idflashcard);
-        keywords = parseKeywordsFromSql(keywords);
-        // mydata.push({
-        // elementtype : `${data[i].elementtype}`,
-        // iddocument : `${data[i].iddocument}`,
-        // title : `${data[i].title}`,
-        // entity: `${data[i].content}`,
-        // definition: [`${data[i].answer1}`,`${data[i].answer2}`,`${data[i].answer3}`,`${data[i].answer4}`],
-        // correctness: `${data[i].correctness}`
-        // keywords: `${keywords}`,
-        // })
-=======
         mydata.push({
           elementtype: `${data[i].elementtype}`,
           idflashcard: `${data[i].idflashcard}`,
@@ -233,7 +220,6 @@ async function parsesql(data) {
           iddocument_section: `${data[i].iddocument_section}`,
           title: `${data[i].section_title}`,
         });
->>>>>>> Stashed changes
         break;
 
       default:
@@ -293,44 +279,44 @@ function createlist(elementList) {
   return HTML;
 }
 
-function createFlashcardHTML(flashcardData) {
-  let HTML = ``;
-  // console.log(flashcardData.keywords)
-  HTML += `<a href="/evalueringer/flashcard/${flashcardData.iddocument}" >`;
-  HTML += `<div class="card">`;
-  HTML += `<div class="elementType${flashcardData.elementtype}${flashcardData.iddocument}">${flashcardData.title}</div>`;
-  HTML += `<div class="FlashcardBegreb">${keywords}</div>`;
-  HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`;
-  HTML += `<div class="FlashcardDefinition">${flashcardData.definition}</div>`;
-  // HTML += `<div class="contentFlashcard">${flashcardData.content}</div>`;
+// function createFlashcardHTML(flashcardData) {
+//   let HTML = ``;
+//   // console.log(flashcardData.keywords)
+//   HTML += `<a href="/evalueringer/flashcard/${flashcardData.iddocument}" >`;
+//   HTML += `<div class="card">`;
+//   HTML += `<div class="elementType${flashcardData.elementtype}${flashcardData.iddocument}">${flashcardData.title}</div>`;
+//   HTML += `<div class="FlashcardBegreb">${keywords}</div>`;
+//   HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`;
+//   HTML += `<div class="FlashcardDefinition">${flashcardData.definition}</div>`;
+//   // HTML += `<div class="contentFlashcard">${flashcardData.content}</div>`;
 
-  return HTML;
-}
+//   return HTML;
+// }
 
-function createQuizHTML(quizData) {
-  let HTML = ``;
+// function createQuizHTML(quizData) {
+//   let HTML = ``;
 
-  HTML += `<a href="/evalueringer/quiz/${quizData.iddocument}" >`;
-  HTML += `<div class="card">`;
-  HTML += `<div class="elementType${quizData.elementtype}${quizData.iddocument}">${quizData.title}</div>`;
-  HTML += `<div class="value">keywords:</div><div>`;
-  HTML += `<div class="keywords">${quizData.keywords}</div></div>`;
-  HTML += `<div class="contentQuiz">${quizData.question}</div>`;
-  for (const i in quizData.answers) {
-    HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#${i}:${quizData.answers[i]}</p></a>`;
-  }
-  return HTML;
-}
+//   HTML += `<a href="/evalueringer/quiz/${quizData.iddocument}" >`;
+//   HTML += `<div class="card">`;
+//   HTML += `<div class="elementType${quizData.elementtype}${quizData.iddocument}">${quizData.title}</div>`;
+//   HTML += `<div class="value">keywords:</div><div>`;
+//   HTML += `<div class="keywords">${quizData.keywords}</div></div>`;
+//   HTML += `<div class="contentQuiz">${quizData.question}</div>`;
+//   for (const i in quizData.answers) {
+//     HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#${i}:${quizData.answers[i]}</p></a>`;
+//   }
+//   return HTML;
+// }
 
-function createSectionHTML(sectionData) {
-  let HTML = ``;
+// function createSectionHTML(sectionData) {
+//   let HTML = ``;
 
-  HTML += `<a href="/rapport/${sectionData.iddocument}" >`;
-  HTML += `<div class="card">`;
-  HTML += `<div class="elementType${sectionData.elementtype}">${sectionData.title}</div>`;
-  HTML += `<div class="value">keywords:</div><div>`;
-  HTML += `<div class="keywords">${sectionData.keywords}</div></div>`;
-  HTML += `<div class="contentSection">${sectionData.content}</div>`;
+//   HTML += `<a href="/rapport/${sectionData.iddocument}" >`;
+//   HTML += `<div class="card">`;
+//   HTML += `<div class="elementType${sectionData.elementtype}">${sectionData.title}</div>`;
+//   HTML += `<div class="value">keywords:</div><div>`;
+//   HTML += `<div class="keywords">${sectionData.keywords}</div></div>`;
+//   HTML += `<div class="contentSection">${sectionData.content}</div>`;
 
-  return HTML;
-}
+//   return HTML;
+// }

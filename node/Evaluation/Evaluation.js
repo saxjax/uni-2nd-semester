@@ -4,7 +4,7 @@ class Evaluation extends Database {
   constructor(request) {
     super();
     this.name = `Evaluation`;
-    this.table = `flashcard`;
+    this.table = `quiz`;
     this.request = request;
     this.iddocument = `Not set`;
     this.elementtype = `Not set`;
