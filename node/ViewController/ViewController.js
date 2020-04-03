@@ -117,21 +117,25 @@ class ViewController {
     const parseSql = new ParseSql();
     const id = req.params.iddocument_section;
     console.log(id);
+
     const section = new Section();
     const evaluering = new Evaluation();
+
+    evaluering.table = `quiz`;
     const evaluations = await evaluering.getEvalForSection(id);
     const parsedEvaluations = await parseSql.parser(evaluations);
 
-    const currentSection = await section.getSection(id);
-    console.log(`linie 186`);
-    console.log(currentSection);
-    const parsedSection = await parseSql.parser(currentSection);
-    console.log(parsedSection);
-    console.log(`parsed`);
 
+    evaluering.table = `flashcard`;
+    const flashcards = await evaluering.getEvalForSection(id);
+    const parsedFlashcards = await parseSql.parser(flashcards);
+
+    const currentSection = await section.getSection(id);
+    const parsedSection = await parseSql.parser(currentSection);
+    // const parsedSection = await parsesql(currentSection);
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, { evaluations: parsedEvaluations, section: parsedSection  });
+    res.render(this.ejs, {  flashcards: parsedFlashcards,  evaluations: parsedEvaluations, section: parsedSection  });
   }
 
   uploadPage(req, res) {
@@ -149,85 +153,3 @@ class ViewController {
 module.exports = {
   ViewController,
 };
-
-// convert card information to HTML
-// based on cardtype , section,quiz,Flashcards
-// input: list of cards (section-,quiz-,Flashcards-)
-// output: HTML
-function createlist(elementList) {
-  // console.log("create list:");
-  // console.log(elementList);
-
-  let HTML = `
-    <div class="deck"><h1>A Deck of Cards</h1>
-    <a href="javascript:void(0)" class="btn" onclick="shuffle()">Shuffle</a>
-    <div id="deck">`;
-
-  const HTMLEnd = `</div></div>`;
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (let index = 0; index < elementList.length; index++)  {
-    switch (elementList[index].elementtype) {
-      case `section`:
-        HTML += createSectionHTML(elementList[index]);
-        break;
-
-      case `quiz`:
-        HTML += createQuizHTML(elementList[index]);
-        break;
-
-      case `flashcard`:
-        HTML += createSectionHTML(elementList[index]);
-        break;
-
-      default:  break;
-    }
-    HTML += `</div></a>`;
-  }
-
-  HTML += HTMLEnd;
-  // console.log(HTML);
-  return HTML;
-}
-
-function createFlashcardHTML(flashcardData) {
-  let HTML = ``;
-  // console.log(flashcardData.keywords)
-  HTML += `<a href="/evalueringer/flashcard/${flashcardData.iddocument}" >`;
-  HTML += `<div class="card">`;
-  HTML += `<div class="elementType${flashcardData.elementtype}${flashcardData.iddocument}">${flashcardData.title}</div>`;
-  HTML += `<div class="FlashcardBegreb">${keywords}</div>`;
-  HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`;
-  HTML += `<div class="FlashcardDefinition">${flashcardData.definition}</div>`;
-  // HTML += `<div class="contentFlashcard">${flashcardData.content}</div>`;
-
-  return HTML;
-}
-
-function createQuizHTML(quizData) {
-  let HTML = ``;
-
-  HTML += `<a href="/evalueringer/quiz/${quizData.iddocument}" >`;
-  HTML += `<div class="card">`;
-  HTML += `<div class="elementType${quizData.elementtype}${quizData.iddocument}">${quizData.title}</div>`;
-  HTML += `<div class="value">keywords:</div><div>`;
-  HTML += `<div class="keywords">${quizData.keywords}</div></div>`;
-  HTML += `<div class="contentQuiz">${quizData.question}</div>`;
-  for (const i in quizData.answers) {
-    HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#${i}:${quizData.answers[i]}</p></a>`;
-  }
-  return HTML;
-}
-
-function createSectionHTML(sectionData) {
-  let HTML = ``;
-
-  HTML += `<a href="/rapport/${sectionData.iddocument}" >`;
-  HTML += `<div class="card">`;
-  HTML += `<div class="elementType${sectionData.elementtype}">${sectionData.title}</div>`;
-  HTML += `<div class="value">keywords:</div><div>`;
-  HTML += `<div class="keywords">${sectionData.keywords}</div></div>`;
-  HTML += `<div class="contentSection">${sectionData.content}</div>`;
-
-  return HTML;
-}

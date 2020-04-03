@@ -13,6 +13,13 @@ class ParseSql {
     this.promiseArray = [];
   }
 
+  reset() {
+    this.mydata = [];
+    this.keywords = [];
+    this.teaser = ``;
+    this.promiseArray = [];
+  }
+
   async parser(data) {
     for (let i = 0; i < data.length; i++) {
       // console.log(data[i].elementtype);
@@ -32,7 +39,9 @@ class ParseSql {
     catch (e) {
       console.log(e.message);
     }
-    return this.mydata;
+    const tempdata = this.mydata;
+    this.reset();
+    return tempdata;
   }
 
   parseKeywordsFromSql(keywords) {
@@ -91,17 +100,13 @@ class ParseSql {
   }
 
   async parseFlashcard(data) {
-    // this.keywords = await keyw.getKeywordsForEvaluation(data.idflashcard);
-    // this.keywords = parseKeywordsFromSql(keywords);
-    // this.mydata.push({
-    // elementtype : `${data.elementtype}`,
-    // iddocument : `${data.iddocument}`,
-    // title : `${data.title}`,
-    // entity: `${data.content}`,
-    // definition: [`${data.answer1}`,`${data.answer2}`,`${data.answer3}`,`${data.answer4}`],
-    // correctness: `${data.correctness}`
-    // keywords: `${keywords}`,
-    // })
+    this.mydata.push({
+      elementtype: `${data.elementtype}`,
+      idflashcard: `${data.idflashcard}`,
+      iddocument: `${data.iddocument}`,
+      iddocument_section: `${data.iddocument_section}`,
+      title: `${data.section_title}`,
+    });
   }
 }
 
