@@ -15,7 +15,7 @@
         </div>
       <br><br>
       <section>
-        <form action="/upload/rapport" method="POST">
+        <form action="/upload/rapport" method="POST" enctype="multipart/form-data">
           <label>Vælg dokument </label>
           <select id="dokumenter" name="dokumenter"><br><br>
             <option value="projekt">P2 Projekt</option>
@@ -32,7 +32,7 @@
           <label for="keyword3">Vælg Keyword3 </label>
           <input type="text" id="keyword3" name="keyword3"><br><br>
           <input type="file" id="section_file" name="section_file"><br>
-          <input type="submit" value="Submit">
+          <input type="submit" value="Upload">
         </form>
       </section>
     </div>
