@@ -82,9 +82,6 @@ class ViewController {
     res.render(this.ejs, { Flashcards: parsedFlashcards, Quizzes: parsedEvaluations });
   }
 
-  
-
-
   async evalueringerTypePage(req, res) {
     const evaluering = new Evaluation();
     const parseSql = new ParseSql();
@@ -101,6 +98,7 @@ class ViewController {
     }
     else if (req.params.type === `quiz`) {
       const id = req.params.idquiz;
+      console.log(id);
       data = await evaluering.getQuiz(id);
       parsedData = await parseSql.parser(data);
 
@@ -150,7 +148,7 @@ class ViewController {
     // const parsedSection = await parsesql(currentSection);
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, {  flashcards: parsedFlashcards,  evaluations: parsedEvaluations, section: parsedSection  });
+    res.render(this.ejs, {  flashcards: parsedFlashcards,  quizzes: parsedEvaluations, section: parsedSection  });
   }
 
   uploadPage(req, res) {
