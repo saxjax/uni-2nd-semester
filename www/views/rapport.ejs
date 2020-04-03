@@ -22,19 +22,22 @@
                         </button>
                     </nav> 
                 </div>
-                <div class="col-12">
-                    <h1> RAPPORT </h1>
-                    <%  Afsnit.forEach( (element) => { %>
-                        <a href="/rapport/<%= element.iddocument_section %>" >
-                            <div class="card">
-                            <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>
-                            <div>keywords:</div>
-                            <div class="sectinKeywords"><%= element.keywords %> </div>
-                            <div class="sectionContent"><%= element.teaser %></div>
-                            </div>    
-                        </a>
-                     <% }); %> 
-                </div>
+                    <div class="col-12">
+                        <h1> RAPPORT </h1>
+                    </div>
+                        <div class="section_list">
+                            <%  Afsnit.forEach( (element) => { %>
+                                <a href="/rapport/<%= element.iddocument_section %>" >
+                                    <div class="card">
+                                    <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>
+                                    <div>keywords:</div>
+                                    <div class="sectinKeywords"><%= element.keywords %> </div>
+                                    <div class="sectionContent"><%= element.teaser %></div>
+                                    </div>    
+                                </a>
+                            <% }); %> 
+                        </div>
+                
             </div>
                 <div class="col-10">
                     <button id="design-rapport"> Tryk for design </button><br>

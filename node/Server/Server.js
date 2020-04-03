@@ -33,7 +33,7 @@ class Server {
     this.app.get(`/register`,                     (req, res) => Show.registerPage(req, res));
     this.app.get(`/login`,                        (req, res) => Show.loginPage(req, res));
     this.app.get(`/evalueringer`,                 (req, res) => Show.evalueringerPage(req, res));
-    this.app.get(`/evalueringer/:type`,           (req, res) => Show.evalueringerTypePage(req, res));
+    this.app.get(`/evalueringer/:type/:idflashcard`,           (req, res) => Show.evalueringerTypePage(req, res));
     this.app.get(`/evalueringer/:type/:idquiz`,   (req, res) => Show.evalueringerTypePage(req, res));
     this.app.get(`/rapport`,                      (req, res) => Show.rapportPage(req, res));
     this.app.get(`/rapport/:iddocument_section`,  (req, res) => Show.rapportSectionPage(req, res));
