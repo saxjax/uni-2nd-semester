@@ -6,10 +6,6 @@ const { Evaluation } = require(`../Evaluation/Evaluation.js`);
 const { ParseSql } = require(`../Database/ParseSQL`);
 const { User } = require(`../User/User.js`);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 class ViewController {
   constructor(req) {
     this.name = `ViewController`;
@@ -104,16 +100,10 @@ class ViewController {
     const sec = new Section();
     let mydata = [];
     const data = await sec.getAllSections();
-<<<<<<< HEAD
-
-    // parse data from sqlpacket to OUR packet type
-    mydata = await parsesql(data);
-=======
     const parseSql = new ParseSql();
 
     // parse data from sqlpacket to OUR packet type
     mydata = await parseSql.parser(data);
->>>>>>> master
 
     // make list of all sections availabel as html on page
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
@@ -126,36 +116,23 @@ class ViewController {
     const parseSql = new ParseSql();
     const id = req.params.iddocument_section;
     console.log(id);
+
     const section = new Section();
     const evaluering = new Evaluation();
+
     evaluering.table = `quiz`;
     const evaluations = await evaluering.getEvalForSection(id);
-<<<<<<< HEAD
-    const parsedEvaluations = await parsesql(evaluations);
-    console.log(parsedEvaluations);
-    evaluering.table = `flashcard`;
-    const flashcards = await evaluering.getEvalForSection(id);
-    console.log(flashcards);
-    const parsedFlashcards = await parsesql(flashcards);
-    console.log(parsedFlashcards);
-
-    const currentSection = await section.getSection(id);
-    // console.log(`linie 186`);
-    // console.log(currentSection);
-    const parsedSection = await parsesql(currentSection);
-    // console.log(parsedSection);
-    // console.log(`parsed`);
-=======
     const parsedEvaluations = await parseSql.parser(evaluations);
 
-    const currentSection = await section.getSection(id);
-    console.log(`linie 186`);
-    console.log(currentSection);
-    const parsedSection = await parseSql.parser(currentSection);
-    console.log(parsedSection);
-    console.log(`parsed`);
->>>>>>> master
 
+    evaluering.table = `flashcard`;
+    const flashcards = await evaluering.getEvalForSection(id);
+    const parsedFlashcards = await parseSql.parser(flashcards);
+
+    const currentSection = await section.getSection(id);
+    const parsedSection = await parseSql.parser(currentSection);
+
+    console.log(parsedSection);
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
     res.render(this.ejs, {  flashcards: parsedFlashcards,  evaluations: parsedEvaluations, section: parsedSection  });
@@ -177,7 +154,6 @@ module.exports = {
   ViewController,
 };
 
-<<<<<<< HEAD
 async function parsesql(data) {
   // const doc = new Document();
   const keyw = new Keyword();
@@ -263,8 +239,6 @@ function parseKeywordsFromSql(keywords) {
   return myKeywords;
 }
 
-=======
->>>>>>> master
 // convert card information to HTML
 // based on cardtype , section,quiz,Flashcards
 // input: list of cards (section-,quiz-,Flashcards-)
