@@ -395,6 +395,17 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     assert.true(actual,
       `(4.3) Databasen skal kunne give en fejlmeddelse, hvis der gemmes duplikeret data i en unique column`);
 
+    /* 4.4 */
+    try {
+      actualObject = await object.query(`INSERT`, `test_option1 = "test@test.dk"`, textoff);
+      actual = false;
+    }
+    catch (error) {
+      actual = true;
+    }
+    assert.true(actual,
+      `(4.4) Databasen skal kunne gemme emails.`);
+
     /* 5.1 */
     try {
       await object.query(`UPDATE`, `test_option1 = "test1_modificeret" WHERE test_option1 = "test1"`);
@@ -544,7 +555,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
 
     /* 9.1 */
     try {
-        actualObject = await object.query(`CUSTOM`, `SELECT test_option1,concat("CustomText",test_option2) as concat,(test_option5_float + 1) as addition FROM p2.database`, textoff);
+      actualObject = await object.query(`CUSTOM`, `SELECT test_option1,concat("CustomText",test_option2) as concat,(test_option5_float + 1) as addition FROM p2.database`, textoff);
     }
     catch (error) {
       console.log(`TEST FORKERT IMPLEMENTERET PGA: ${error}`);
