@@ -66,23 +66,26 @@ class Database {
    * Formaal: Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overridet.
    *         Dette oger kode genbrug, samt sikre fornuftig testning paa tvaers af hele programmet i forhold til databasen.
    */
-  query(choice, data, texton = true) {
+  async query(choice, data, texton = true) {
     this.sql = this.parser(choice, data, texton);
-    return new Promise((resolve, reject) => {
-      this.connect.query(this.sql,
-        (error, result) => {
-          if (error) {
-            if (texton) {
-              console.log(`Here at node/Database/Database.js-data the error \n${error.code}\n
-              and ${error.stack}`);
+    try {
+      const a = await this.connect.query(this.sql,
+          (error, result) => {
+            if (error) {
+              if (texton) {
+                console.log(`Here at node/Database/Database.js-data the error \n${error.code}\n
+                and ${error.stack}`);
+              }
+              reject(error);
             }
-            reject(error);
-          }
-          else {
-            resolve(result);
-          }
-        });
-    });
+            else {
+              resolve(result);
+            }
+          });
+      }
+    catch (error) {
+      console.log(`Fejl!`);
+    }
   }
 
   /* Input:  Metoden modtager de valg som brugeren har lavet

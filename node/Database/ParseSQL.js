@@ -2,7 +2,6 @@
 
 const { Keyword } = require(`../Document/Keyword.js`);
 const { Flashcard } = require(`../Evaluation/Flashcard.js`);
-const keyw = new Keyword();
 
 class ParseSql {
   constructor() {
@@ -20,8 +19,8 @@ class ParseSql {
         case `section`:       this.promiseArray.push(this.parseSection(data[i]));   break;
         case `quiz`:          this.promiseArray.push(this.parseQuiz(data[i]));      break;
         case `flashcard`:     this.promiseArray.push(this.parseFlashcard(data[i])); break;
-        case `quiz_question`: this.mydata.push(this.parseQuizQuestion(data[i]));    break;
-        default:                                                                    break;
+        case `quiz_question`: this.parseQuizQuestion(data[i]);                      break;
+        default:              this.mydata.push(data[i]);                            break;
       }
     }
     // console.log(`parsed`);
@@ -44,6 +43,7 @@ class ParseSql {
   }
 
   async parseSection(data) {
+    const keyw = new Keyword();
     this.keywords = await keyw.getKeywordsForSection(data.iddocument_section);
     this.keywords = this.parseKeywordsFromSql(this.keywords);
     if (data.section_teaser === null) {
@@ -65,6 +65,7 @@ class ParseSql {
   }
 
   async parseQuiz(data) {
+    const keyw = new Keyword();
     this.keywords = await keyw.getKeywordsForEvaluation(data.iddocument_section);
     this.keywords = this.parseKeywordsFromSql(this.keywords);
 
@@ -78,7 +79,7 @@ class ParseSql {
   }
 
   parseQuizQuestion(data) {
-    return {
+    this.mydata.push({
       idquestion: `${data.idquiz_question}`,
       idquiz: `${data.idquiz}`,
       question: `${data.question}`,
@@ -87,10 +88,11 @@ class ParseSql {
       answer3: `${data.answer3}`,
       answer4: `${data.answer4}`,
       correctness: `${data.correct_answer}`,
-    };
+    });
   }
 
   async parseFlashcard(data) {
+    // const keyw = new Keyword();
     // this.keywords = await keyw.getKeywordsForEvaluation(data.idflashcard);
     // this.keywords = parseKeywordsFromSql(keywords);
     // this.mydata.push({
