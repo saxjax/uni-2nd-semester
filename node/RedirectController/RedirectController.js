@@ -64,6 +64,22 @@ class RedirectController {
 
 
   UploadRapport(req, res) {
+    if (req.files) {
+      console.log(req.files);
+      const file = req.files.section_file;
+      const filename = file.name;
+      console.log(`This is the file name: ${filename}`);
+
+      file.mv(`./node/File_uploads/${filename}`, (err) => {
+        if (err) {
+          console.log(err);
+        }
+        else {
+          console.log(`File Uploaded`);
+        }
+      });
+    }
+
     const newKeywords = [req.body.keyword_1, req.body.keyword_2, req.body.keyword_3].toString();
     console.log(req.body);
     const newSection = req.body.name_of_section;
