@@ -45,9 +45,9 @@ class ViewController {
   // viser alle oprettede evalueringer
   async evalueringerPage(req, res) {
     // get data from database
-    const doc = new Evaluation();
+    const eval = new Evaluation();
     const parseSql = new ParseSql();
-    const data = await doc.getAllEvaluations();
+    const data = await eval.getAllEvaluations();
 
     // parse data from sqlpacket to OUR packet type
     const parsedData = await parseSql.parser(data);
