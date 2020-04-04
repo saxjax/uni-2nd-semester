@@ -98,9 +98,12 @@ class ViewController {
     }
     else if (req.params.type === `quiz`) {
       const id = req.params.idquiz;
+      console.log("ID: \n");
       console.log(id);
       data = await evaluering.getQuiz(id);
       parsedData = await parseSql.parser(data);
+
+      console.log(data);
 
       this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
       res.render(this.ejs, { quiz: parsedData });
@@ -129,6 +132,7 @@ class ViewController {
     // get data from database
     const parseSql = new ParseSql();
     const id = req.params.iddocument_section;
+    console.log("Id document section: \n");
     console.log(id);
 
     const section = new Section();
@@ -137,7 +141,6 @@ class ViewController {
     evaluering.table = `quiz`;
     const evaluations = await evaluering.getEvalForSection(id);
     const parsedEvaluations = await parseSql.parser(evaluations);
-
 
     evaluering.table = `flashcard`;
     const flashcards = await evaluering.getEvalForSection(id);
