@@ -16,8 +16,10 @@ class Section extends Database {
     this.request = request;
   }
 
+  // Henter alle sections i this.table på databasen
+  // input: non
+  // output: array af samtlige tilgængelige elementer i den pågældende table.
   async getAllSections() {
-    // console.log(`prøver at hente : `+ id);
     return this.query(`SELECT *`)
       .then((result) => result)
       .catch((error) => error);

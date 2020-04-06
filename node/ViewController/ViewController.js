@@ -41,51 +41,49 @@ class ViewController {
     res.render(this.ejs);
   }
 
-  // viser alle oprettede evalueringer
+  // viser alle tilgængelige evalueringer fra databasen på siden evalueringer.ejs
+  // input : non
+  // output: Array af Alle tilgængelige evalueringer i databasen både quizzes og flashcards sendes som
+  //         arrays :flashcards og quizzes til /www/views/evalueringer.ejs
   async evalueringerPage(req, res) {
-    // get data from database
-    const doc = new Evaluation();
+    const evalu = new Evaluation();
     const parseSql = new ParseSql();
-    const data = await doc.getAllEvaluations();
 
-    // parse data from sqlpacket to OUR packet type
-    const parsedData = await parseSql.parser(data);
+    evalu.table = `quiz`;
+    const quizData = await evalu.getAllEvaluations();
+    const parsedQuizData = await parseSql.parser(quizData);
 
-    // populate Quizzes and flashcards based on cardtype
-    const Quizzes = [];
-    const Flashcards = [];
+    evalu.table = `flashcard`;
+    const flashcardData = await evalu.getAllEvaluations();
+    const parsedFlashcardData = await parseSql.parser(flashcardData);
 
-    for (const index in parsedData) {
-      if (parsedData[index].elementtype === `flashcard`) {
-        Flashcards.push(parsedData[index]);
-      }
-      else if (parsedData[index].elementtype === `quiz`) {
-        Quizzes.push(parsedData[index]);
-      }
-    }
-
-    // make flashcards and quizzes availabel to HTML page
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-    res.render(this.ejs, { Flashcards, Quizzes });
+    res.render(this.ejs, { flashcards: parsedFlashcardData, quizzes: parsedQuizData });
   }
 
-
+  // viser indholdet af enten et flashcard eller en quizz vha. siden evalueringerFlashcard.ejs eller
+  // evalueringerQuiz.ejs.
+  // input: id og en type(flashcard eller quiz) (id'et er hhv idflashcard og idquiz alt efter typen)
+  // alt efter typen så hentes quiz questions eller flashcards knyttet til det specifikke idflashcard eller idquiz.
+  // output: Array hvor index 0 indeholder flashcard_data eller quiz_question data, hvilket sendes til
+  // hhv /www/views/evalueringerFlashcard.ejs eller /www/views/evalueringerQuiz.ejs
   async evalueringerTypePage(req, res) {
-    const doc = new Evaluation();
+    console.log(req.params);
+    const evalu = new Evaluation();
     const parseSql = new ParseSql();
     let data = [];
     let parsedData = [];
 
     if (req.params.type === `flashcard`) {
-      const id = req.params.idflashcard;
-      data = await doc.getFlashcard(id);
+      const { id } = req.params;
+      data = await evalu.getFlashcard(id);
       parsedData = await parseSql.parser(data);
       this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
       res.render(this.ejs, { flashcard: parsedData });
     }
     else if (req.params.type === `quiz`) {
-      const id = req.params.idquiz;
-      data = await doc.getQuiz(id);
+      const { id } = req.params;
+      data = await evalu.getQuiz(id);
       parsedData = await parseSql.parser(data);
 
       this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
@@ -93,44 +91,48 @@ class ViewController {
     }
   }
 
-  // viser alle oprettede sections
+  // viser alle tilgængelige sections fra databasen på siden rapport.ejs
+  // input : non
+  // output: Array af Alle tilgængelige sections i databasen sendes som
+  //         array: afsnit til /www/views/rapport.ejs
   async rapportPage(req, res) {
-    // //test data
-    // let mydata = sectionDatabaseJakob
     const sec = new Section();
     let mydata = [];
     const data = await sec.getAllSections();
     const parseSql = new ParseSql();
 
-    // parse data from sqlpacket to OUR packet type
     mydata = await parseSql.parser(data);
 
-    // make list of all sections availabel as html on page
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
-    res.render(this.ejs, { Afsnit: mydata });
+    res.render(this.ejs, { afsnit: mydata });
   }
 
-  // viser Ã©n section
+  // viser alle tilgængelige evaluations knyttet til en bestemt section på siden rapportafsnit.ejs
+  // input : iddocument_section
+  // output: Array af Alle evalueringer samt content fra en section tilknyttet en section med id = iddocument_section
+  // sendes som arrays: flashcards, quizzes, section til /www/views/rapportafsnit.ejs
   async rapportSectionPage(req, res) {
-    // get data from database
-    const parseSql = new ParseSql();
     const id = req.params.iddocument_section;
-    console.log(id);
+    const parseSql = new ParseSql();
+
     const section = new Section();
     const evaluering = new Evaluation();
+
+    evaluering.table = `quiz`;
     const evaluations = await evaluering.getEvalForSection(id);
     const parsedEvaluations = await parseSql.parser(evaluations);
+    console.log(parsedEvaluations);
+
+
+    evaluering.table = `flashcard`;
+    const flashcards = await evaluering.getEvalForSection(id);
+    const parsedFlashcards = await parseSql.parser(flashcards);
 
     const currentSection = await section.getSection(id);
-    console.log(`linie 186`);
-    console.log(currentSection);
     const parsedSection = await parseSql.parser(currentSection);
-    console.log(parsedSection);
-    console.log(`parsed`);
-
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, { evaluations: parsedEvaluations, section: parsedSection  });
+    res.render(this.ejs, {  flashcards: parsedFlashcards,  quizzes: parsedEvaluations, section: parsedSection  });
   }
 
   uploadPage(req, res) {
@@ -148,85 +150,3 @@ class ViewController {
 module.exports = {
   ViewController,
 };
-
-// convert card information to HTML
-// based on cardtype , section,quiz,Flashcards
-// input: list of cards (section-,quiz-,Flashcards-)
-// output: HTML
-function createlist(elementList) {
-  // console.log("create list:");
-  // console.log(elementList);
-
-  let HTML = `
-    <div class="deck"><h1>A Deck of Cards</h1>
-    <a href="javascript:void(0)" class="btn" onclick="shuffle()">Shuffle</a>
-    <div id="deck">`;
-
-  const HTMLEnd = `</div></div>`;
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (let index = 0; index < elementList.length; index++)  {
-    switch (elementList[index].elementtype) {
-      case `section`:
-        HTML += createSectionHTML(elementList[index]);
-        break;
-
-      case `quiz`:
-        HTML += createQuizHTML(elementList[index]);
-        break;
-
-      case `flashcard`:
-        HTML += createSectionHTML(elementList[index]);
-        break;
-
-      default:  break;
-    }
-    HTML += `</div></a>`;
-  }
-
-  HTML += HTMLEnd;
-  // console.log(HTML);
-  return HTML;
-}
-
-function createFlashcardHTML(flashcardData) {
-  let HTML = ``;
-  // console.log(flashcardData.keywords)
-  HTML += `<a href="/evalueringer/flashcard/${flashcardData.iddocument}" >`;
-  HTML += `<div class="card">`;
-  HTML += `<div class="elementType${flashcardData.elementtype}${flashcardData.iddocument}">${flashcardData.title}</div>`;
-  HTML += `<div class="FlashcardBegreb">${keywords}</div>`;
-  HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()">Turn Card</a>`;
-  HTML += `<div class="FlashcardDefinition">${flashcardData.definition}</div>`;
-  // HTML += `<div class="contentFlashcard">${flashcardData.content}</div>`;
-
-  return HTML;
-}
-
-function createQuizHTML(quizData) {
-  let HTML = ``;
-
-  HTML += `<a href="/evalueringer/quiz/${quizData.iddocument}" >`;
-  HTML += `<div class="card">`;
-  HTML += `<div class="elementType${quizData.elementtype}${quizData.iddocument}">${quizData.title}</div>`;
-  HTML += `<div class="value">keywords:</div><div>`;
-  HTML += `<div class="keywords">${quizData.keywords}</div></div>`;
-  HTML += `<div class="contentQuiz">${quizData.question}</div>`;
-  for (const i in quizData.answers) {
-    HTML += `<a href="javascript:void(0)" class="btn" onclick="ShowFlashcardDefinition()"><p>Answer#${i}:${quizData.answers[i]}</p></a>`;
-  }
-  return HTML;
-}
-
-function createSectionHTML(sectionData) {
-  let HTML = ``;
-
-  HTML += `<a href="/rapport/${sectionData.iddocument}" >`;
-  HTML += `<div class="card">`;
-  HTML += `<div class="elementType${sectionData.elementtype}">${sectionData.title}</div>`;
-  HTML += `<div class="value">keywords:</div><div>`;
-  HTML += `<div class="keywords">${sectionData.keywords}</div></div>`;
-  HTML += `<div class="contentSection">${sectionData.content}</div>`;
-
-  return HTML;
-}

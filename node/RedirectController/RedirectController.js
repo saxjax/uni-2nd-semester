@@ -51,23 +51,35 @@ class RedirectController {
   async RegisterNewUser(req, res) {
     console.log(req.body);
     const newUser = new User(req);
-    // validate register here:
     if (await newUser.validateRegister()) {
+      await newUser.createUser();
       console.log(`User created`);
-      // Post newUser to database
       res.redirect(`/`);
     }
     else {
       console.log(`User could not be validated`);
-      // send error
       res.redirect(`/register`);
     }
-    // console.log(`user is: ${newUser.username}`);
-    // res.send(`hello`);
   }
 
 
   UploadRapport(req, res) {
+    if (req.files) {
+      console.log(req.files);
+      const file = req.files.section_file;
+      const filename = file.name;
+      console.log(`This is the file name: ${filename}`);
+
+      file.mv(`./node/File_uploads/${filename}`, (err) => {
+        if (err) {
+          console.log(err);
+        }
+        else {
+          console.log(`File Uploaded`);
+        }
+      });
+    }
+
     const newKeywords = [req.body.keyword_1, req.body.keyword_2, req.body.keyword_3].toString();
     console.log(req.body);
     const newSection = req.body.name_of_section;

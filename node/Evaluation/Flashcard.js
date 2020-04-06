@@ -8,7 +8,7 @@ class Flashcard extends Evaluation {
     this.request = request;
     this.idfalshcard = `Not set`;
     this.elementtype = `flashcard`;
-    this.notion = `Not set`;// begreb
+    this.concept = `Not set`;// begreb
     this.definition = `Not set`;
     // correctness er en binær repræsentation af svarernes sandhadsværdi "0001" betyder at answers[3] i er korrekt de andre er false!
   }

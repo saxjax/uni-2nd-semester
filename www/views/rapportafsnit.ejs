@@ -8,23 +8,25 @@
         <%- include('meta/navbar') %> 
         <div class="container" id="content">    
             <h1> Afsnit: <%= section[0].section_number %></h1><br>
-            <p> Keywords for afsnit: <%= evaluations[0].keywords %> </p>
+            <p> Keywords for afsnit: <%= section[0].keywords %> </p>
             <br>
                 <div class = "row">
                     <div class="col">
                         <div class = "leftside"> 
                 
                             <H2> EVALUERINGER FOR AFSNITTET</H2><br>
-                            <% evaluations.forEach( (element) => { %>
+                            <% quizzes.forEach( (element) => { %>
                                 <p> Titel: <%= element.title %></p>
                                 <a href="/evalueringer/quiz/<%= element.idquiz %>">
                                     <img id="quiz_for_section" src="/img/Design/quiz.png"><br>
                                 </a>
                             <% }) %>
-                                
-                                <a href="/evalueringer/flashcard/<%= evaluations[0].iddocument_section %>">
+                            <% flashcards.forEach( (element) => { %>
+                                <p><%= element.title %>  </p>
+                                <a href="/evalueringer/flashcard/<%= element.idflashcard %>">
                                     <img id="flashcard_for_section" src="/img/Design/flashcard.png">
                                 </a>
+                            <% }) %>
                         </div>
                     </div>
                     <div class = "col">

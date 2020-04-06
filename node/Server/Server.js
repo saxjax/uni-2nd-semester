@@ -1,8 +1,9 @@
 /* eslint no-console: off */
 
 const express = require(`express`);
-const bodyParser = require(`body-parser`);
+const upload = require(`express-fileupload`);
 const session = require(`express-session`);
+const bodyParser = require(`body-parser`);
 const { ViewController } = require(`../ViewController/ViewController`);
 const { RedirectController } = require(`../RedirectController/RedirectController`);
 const pad = require(`./Pad`);
@@ -32,8 +33,8 @@ class Server {
     this.app.get(`/register`,                     (req, res) => Show.registerPage(req, res));
     this.app.get(`/login`,                        (req, res) => Show.loginPage(req, res));
     this.app.get(`/evalueringer`,                 (req, res) => Show.evalueringerPage(req, res));
-    this.app.get(`/evalueringer/:type`,           (req, res) => Show.evalueringerTypePage(req, res));
-    this.app.get(`/evalueringer/:type/:idquiz`,   (req, res) => Show.evalueringerTypePage(req, res));
+    this.app.get(`/evalueringer/:type/:id`,           (req, res) => Show.evalueringerTypePage(req, res));
+    // this.app.get(`/evalueringer/:type/:idquiz`,   (req, res) => Show.evalueringerTypePage(req, res));
     this.app.get(`/rapport`,                      (req, res) => Show.rapportPage(req, res));
     this.app.get(`/rapport/:iddocument_section`,  (req, res) => Show.rapportSectionPage(req, res));
     this.app.get(`/elementList`,                  (req, res) => Show.elementList(req, res));
@@ -55,6 +56,7 @@ class Server {
   }
 
   bodyParserMiddleware() {
+    this.app.use(upload());
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
     this.app.use(session({
