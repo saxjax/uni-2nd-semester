@@ -42,9 +42,11 @@ class ViewController {
     res.render(this.ejs);
   }
 
-  // viser alle oprettede evalueringer
+  // viser alle tilgængelige evalueringer fra databasen på siden evalueringer.ejs
+  // input : non
+  // output: Array af Alle tilgængelige evalueringer i databasen både quizzes og flashcards sendes som
+  //         arrays :flashcards og quizzes til /www/views/evalueringer.ejs
   async evalueringerPage(req, res) {
-    // get data from database
     const evalu = new Evaluation();
     const parseSql = new ParseSql();
 
@@ -56,34 +58,33 @@ class ViewController {
     const flashcardData = await evalu.getAllEvaluations();
     const parsedFlashcardData = await parseSql.parser(flashcardData);
 
-    // make flashcards and quizzes availabel to HTML page
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
     res.render(this.ejs, { flashcards: parsedFlashcardData, quizzes: parsedQuizData });
   }
 
-  /*
-input: id og en type(flashcard eller quiz) (id'et er hhv idflashcard og idquiz alt efter typen)
-alt efter typen så hentes quiz questions eller flashcards knyttet til det specifikke idflashcard eller idquiz.
-output: Array hvor index 0 indeholder flashcard_data eller quiz_question data, hvilket sendes til
-hhv /www/views/evalueringerFlashcard.ejs eller /www/views/evalueringerQuiz.ejs
-*/
+  // viser indholdet af enten et flashcard eller en quizz vha. siden evalueringerFlashcard.ejs eller
+  // evalueringerQuiz.ejs.
+  // input: id og en type(flashcard eller quiz) (id'et er hhv idflashcard og idquiz alt efter typen)
+  // alt efter typen så hentes quiz questions eller flashcards knyttet til det specifikke idflashcard eller idquiz.
+  // output: Array hvor index 0 indeholder flashcard_data eller quiz_question data, hvilket sendes til
+  // hhv /www/views/evalueringerFlashcard.ejs eller /www/views/evalueringerQuiz.ejs
   async evalueringerTypePage(req, res) {
     console.log(req.params);
-    const evaluations = new Evaluation();
+    const evalu = new Evaluation();
     const parseSql = new ParseSql();
     let data = [];
     let parsedData = [];
 
     if (req.params.type === `flashcard`) {
       const { id } = req.params;
-      data = await evaluations.getFlashcard(id);
+      data = await evalu.getFlashcard(id);
       parsedData = await parseSql.parser(data);
       this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
       res.render(this.ejs, { flashcard: parsedData });
     }
     else if (req.params.type === `quiz`) {
       const { id } = req.params;
-      data = await evaluations.getQuiz(id);
+      data = await evalu.getQuiz(id);
       parsedData = await parseSql.parser(data);
 
       this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
@@ -91,29 +92,29 @@ hhv /www/views/evalueringerFlashcard.ejs eller /www/views/evalueringerQuiz.ejs
     }
   }
 
-  // viser alle oprettede sections
+  // viser alle tilgængelige sections fra databasen på siden rapport.ejs
+  // input : non
+  // output: Array af Alle tilgængelige sections i databasen sendes som
+  //         array: afsnit til /www/views/rapport.ejs
   async rapportPage(req, res) {
-    // //test data
-    // let mydata = sectionDatabaseJakob
     const sec = new Section();
     let mydata = [];
     const data = await sec.getAllSections();
     const parseSql = new ParseSql();
 
-    // parse data from sqlpacket to OUR packet type
     mydata = await parseSql.parser(data);
 
-    // make list of all sections availabel as html on page
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
-    res.render(this.ejs, { Afsnit: mydata });
+    res.render(this.ejs, { afsnit: mydata });
   }
 
-  // viser Ã©n section
+  // viser alle tilgængelige evaluations knyttet til en bestemt section på siden rapportafsnit.ejs
+  // input : iddocument_section
+  // output: Array af Alle evalueringer samt content fra en section tilknyttet en section med id = iddocument_section
+  // sendes som arrays: flashcards, quizzes, section til /www/views/rapportafsnit.ejs
   async rapportSectionPage(req, res) {
-    // get data from database
-    const parseSql = new ParseSql();
     const id = req.params.iddocument_section;
-    console.log(id);
+    const parseSql = new ParseSql();
 
     const section = new Section();
     const evaluering = new Evaluation();
@@ -130,7 +131,6 @@ hhv /www/views/evalueringerFlashcard.ejs eller /www/views/evalueringerQuiz.ejs
 
     const currentSection = await section.getSection(id);
     const parsedSection = await parseSql.parser(currentSection);
-    // const parsedSection = await parsesql(currentSection);
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
     res.render(this.ejs, {  flashcards: parsedFlashcards,  quizzes: parsedEvaluations, section: parsedSection  });
