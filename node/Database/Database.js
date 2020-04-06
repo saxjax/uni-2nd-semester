@@ -14,7 +14,7 @@ const { ParseSql } = require(`./ParseSQL`);
  */
 
 class Database {
-  constructor() {
+  constructor(request) {
     this.database = `p2`;
     this.connect = mysql.createConnection({
       host: `213.32.247.201`,
@@ -24,6 +24,8 @@ class Database {
       database: this.database,
     });
     this.table = `database`;
+    this.request = request;
+    this.queryId = request.params.queryId;
   }
   /* Input:  Metoden modtager et optional texton variabel, som defaulter til true hvis den ikke medsendes.
    * Output: Metoden har som (primaer) sideeffect information om hvordan querymetoden bruges.
@@ -218,6 +220,7 @@ class Database {
 
     return dataArr;
   }
+
   /* Metoden insertSplitter bliver her beskrevet mere i detaljen for dem der ikke kender saa meget til regular expressions.
            * Lokken har til formaal at opsplitte "col = var" grupper i kolonner og variable, saa de kan bruges som INSERT SQL
            * Der initialiseres en "done" variabel der returnere true naar der ikke er flere ´col = var´ grupper tilbage
@@ -232,6 +235,15 @@ class Database {
            * Er der ikke flere elementer, dvs. der er ikke flere "col = var" der skal postes, saa giver det den fornaevnte typefejl.
            * Inden der returnes true sikrer vi os at det rent faktisk er en typefejl, og ikke alt muligt andet der kunne vaere gaaet galt.
            */
+
+  // Henter al data for this.table på databasen
+  // input: non
+  // output: array af samtlige tilgængelige elementer i den pågældende table.
+  async getEverything() {
+    return this.query(`SELECT *`)
+      .then((result) => result)
+      .catch((error) => error);
+  }
 }
 
 

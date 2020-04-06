@@ -1,9 +1,10 @@
 /* eslint-disable guard-for-in */
 /* eslint no-console: off */
 const path = require(`path`);
-const { Section } = require(`../Section/Section.js`);
-const { Evaluation } = require(`../Evaluation/Evaluation.js`);
-const { User } = require(`../User/User.js`);
+const { Section } = require(`../Section/Section`);
+const { Quiz } = require(`../Evaluation/Quiz`);
+const { Flashcard } = require(`../Evaluation/Flashcard`);
+const { User } = require(`../User/User`);
 
 
 class ViewController {
@@ -41,109 +42,78 @@ class ViewController {
     res.render(this.ejs);
   }
 
-  // viser alle tilgængelige evalueringer fra databasen på siden evalueringer.ejs
+  // viser alle tilgï¿½ngelige evalueringer fra databasen pï¿½ siden evalueringer.ejs
   // input : non
-  // output: Array af Alle tilgængelige evalueringer i databasen både quizzes og flashcards sendes som
+  // output: Array af Alle tilgï¿½ngelige evalueringer i databasen bï¿½de quizzes og flashcards sendes som
   //         arrays :flashcards og quizzes til /www/views/evalueringer.ejs
   async evalueringerPage(req, res) {
-    const evalu = new Evaluation();
-    const parseSql = new ParseSql();
+    const quiz = new Quiz(req);
+    const quizData = await quiz.getEverything();
 
-    evalu.table = `quiz`;
-    const quizData = await evalu.getAllEvaluations();
-    const parsedQuizData = await parseSql.parser(quizData);
-
-    evalu.table = `flashcard`;
-    const flashcardData = await evalu.getAllEvaluations();
-    const parsedFlashcardData = await parseSql.parser(flashcardData);
+    const flashcard = new Flashcard(req);
+    const flashcardData = await flashcard.getEverything();
 
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-    res.render(this.ejs, { flashcards: parsedFlashcardData, quizzes: parsedQuizData });
+    res.render(this.ejs, { flashcards: flashcardData, quizzes: quizData });
   }
 
   // viser indholdet af enten et flashcard eller en quizz vha. siden evalueringerFlashcard.ejs eller
   // evalueringerQuiz.ejs.
   // input: id og en type(flashcard eller quiz) (id'et er hhv idflashcard og idquiz alt efter typen)
-  // alt efter typen så hentes quiz questions eller flashcards knyttet til det specifikke idflashcard eller idquiz.
+  // alt efter typen sï¿½ hentes quiz questions eller flashcards knyttet til det specifikke idflashcard eller idquiz.
   // output: Array hvor index 0 indeholder flashcard_data eller quiz_question data, hvilket sendes til
   // hhv /www/views/evalueringerFlashcard.ejs eller /www/views/evalueringerQuiz.ejs
-  async evalueringerTypePage(req, res) {
-    console.log(req.params);
-    const evalu = new Evaluation();
-    const parseSql = new ParseSql();
-    let data = [];
-    let parsedData = [];
-
-    if (req.params.type === `flashcard`) {
-      const { id } = req.params;
-      data = await evalu.getFlashcard(id);
-      parsedData = await parseSql.parser(data);
-      this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
-      res.render(this.ejs, { flashcard: parsedData });
-    }
-    else if (req.params.type === `quiz`) {
-      const { id } = req.params;
-      data = await evalu.getQuiz(id);
-      parsedData = await parseSql.parser(data);
-
-      this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
-      res.render(this.ejs, { quiz: parsedData });
-    }
+  async quizPage(req, res) {
+    const quiz = new Quiz(req);
+    const data = await quiz.getQuiz();
+    this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
+    res.render(this.ejs, { quiz: data });
   }
 
-  // viser alle tilgængelige sections fra databasen på siden rapport.ejs
+  async flashcardPage(req, res) {
+    const flashcard = new Flashcard(req);
+    const data = await flashcard.getFlashcard();
+    this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
+    res.render(this.ejs, { flashcard: data });
+  }
+
+  // viser alle tilgï¿½ngelige sections fra databasen pï¿½ siden rapport.ejs
   // input : non
-  // output: Array af Alle tilgængelige sections i databasen sendes som
+  // output: Array af Alle tilgï¿½ngelige sections i databasen sendes som
   //         array: afsnit til /www/views/rapport.ejs
   async rapportPage(req, res) {
-    const sec = new Section();
-    let mydata = [];
-    const data = await sec.getAllSections();
-    const parseSql = new ParseSql();
-
-    mydata = await parseSql.parser(data);
-
+    const doc = new Document(req);
+    const data = await doc.getEverything();
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
-    res.render(this.ejs, { afsnit: mydata });
+    res.render(this.ejs, { afsnit: data });
   }
 
-  // viser alle tilgængelige evaluations knyttet til en bestemt section på siden rapportafsnit.ejs
+  // viser alle tilgï¿½ngelige evaluations knyttet til en bestemt section pï¿½ siden rapportafsnit.ejs
   // input : iddocument_section
   // output: Array af Alle evalueringer samt content fra en section tilknyttet en section med id = iddocument_section
   // sendes som arrays: flashcards, quizzes, section til /www/views/rapportafsnit.ejs
   async rapportSectionPage(req, res) {
-    const id = req.params.iddocument_section;
-    const parseSql = new ParseSql();
+    const quiz = new Quiz(req);
+    const quizData = await quiz.getEvalForSection();
 
-    const section = new Section();
-    const evaluering = new Evaluation();
+    const flashcard = new Flashcard(req);
+    const flashcardData = await flashcard.getEvalForSection();
 
-    evaluering.table = `quiz`;
-    const evaluations = await evaluering.getEvalForSection(id);
-    const parsedEvaluations = await parseSql.parser(evaluations);
-    console.log(parsedEvaluations);
-
-
-    evaluering.table = `flashcard`;
-    const flashcards = await evaluering.getEvalForSection(id);
-    const parsedFlashcards = await parseSql.parser(flashcards);
-
-    const currentSection = await section.getSection(id);
-    const parsedSection = await parseSql.parser(currentSection);
+    const section = new Section(req);
+    const sectionData = await section.getSection();
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, {  flashcards: parsedFlashcards,  quizzes: parsedEvaluations, section: parsedSection  });
+    res.render(this.ejs, {  flashcards: flashcardData,  quizzes: quizData, section: sectionData  });
   }
 
   uploadPage(req, res) {
     if (req.params.type === `evalueringer`) {
       this.ejs = path.join(`${this.root}/www/views/evalueringerUpload.ejs`);
-      res.render(this.ejs);
     }
     else if (req.params.type === `rapport`) {
       this.ejs = path.join(`${this.root}/www/views/rapportUpload.ejs`);
-      res.render(this.ejs);
     }
+    res.render(this.ejs);
   }
 }
 

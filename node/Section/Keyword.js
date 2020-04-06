@@ -2,11 +2,10 @@ const { Database } = require(`../Database/Database.js`);
 
 
 class Keyword extends Database {
-  constructor(request) {
+  constructor() {
     super();
     this.name = `Keyword`;
     this.table = `document_keyword`;
-    this.request = request;
     this.idkeyword = `Not set`;
     this.iddocuments = [];
     this.idevaluations = [];
@@ -14,16 +13,16 @@ class Keyword extends Database {
     this.keyword = `Not set`;
   }
 
-  async getKeywordsForSection(id) {
+  async getKeywordsForSection() {
     // console.log(`prøver at hente : ` + id);
-    return this.query(`SELECT *`, `iddocument_section = "${id}"`)
+    return this.query(`SELECT *`, `iddocument_section = "${this.idQuery}"`)
       .then((result) => result)
       .catch((error) => error);
   }
 
-  async getKeywordsForEvaluation(id) {
+  async getKeywordsForEvaluation() {
     // console.log(`prøver at hente : ` + id);
-    return this.query(`SELECT *`, `iddocument_section = "${id}"`)
+    return this.query(`SELECT *`, `iddocument_section = "${this.idQuery}"`)
       .then((result) => result)
       .catch((error) => error);
   }
