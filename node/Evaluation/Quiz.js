@@ -1,4 +1,5 @@
 const { Evaluation } = require(`../Evaluation/Evaluation.js`);
+const { QuizQuestion } = require(`../Evaluation/QuizQuestion.js`);
 
 class Quiz extends Evaluation {
   constructor(req) {
@@ -8,38 +9,52 @@ class Quiz extends Evaluation {
     this.req = req;
     this.idquiz = `Not set`;
     this.elementtype = `quiz`;
-    this.Question = (req.body.Question === undefined ? false : req.body.Question[0]);
-    this.Answer = [];
-    // correctness er en binær repræsentation af svarernes sandhadsværdi "0001" betyder at answers[3] i er korrekt de andre er false!
-    this.correctness = this.translateCorrectness();
+    this.Questions = this.createQuizQuestionsArr();
   }
 
-  uploadQuiz() {
-    // post quiz to database
+  // UNDER CONSTRUCTION!
+  // Uploads quiz to database
+  // returns true, if it was possible to upload to database, else false
+  async saveQuiz() {
+    try {
+      this.query(`INSERT`);
+      return true;
+    }
+    catch (error) {
+      console.log(`there was an error: ${error}`);
+      return false;
+    }
   }
 
-  getQuiz() {
-    // get quiz from databse
-  }
-
+  // UNDER CONSTRUCTION!
   // input: req
-  // output: for digit string ex. 1100
-  // translates true/false of all answers into a binary string
-  // /correctness/.test(element[0] checks every [0] of elements, to see if it contains the string /correctness/, if it does, it returns true. thereby skipping all other elements than correctness_#
-  translateCorrectness() {
-    let currentCorrectness = ``;
+  // Create array of quiz questions, by splitting the req into chunks,
+  // that can be used to make each question object
+  // output an array of quesitions
+  createQuizQuestionsArr() {
+    const quizQuestionArr = [];
     const entries = Object.entries(this.req.body);
+    console.log(entries);
+    const quizQuestionReq = { body: { Question: {} } };
+    let i = 1;
+
     entries.forEach((element) => {
-      if (/correctness/.test(element[0])) {
-        if (element[1] === `true`) {
-          currentCorrectness += `1`;
-        }
-        else {
-          currentCorrectness += `0`;
-        }
+      if (/Question/.test(element[0])) {
+        quizQuestionReq.body.Question[i] += element[1];
+        i++;
       }
     });
-    return currentCorrectness;
+    console.log(quizQuestionReq);
+
+    const q = new QuizQuestion(req);
+    quizQuestionArr.push(q);
+  }
+
+  // UNDER CONSTRUCTION!
+  // no input
+  // Gets the entire quiz from databse
+  getQuiz() {
+    // get quiz from databse
   }
 }
 module.exports = {

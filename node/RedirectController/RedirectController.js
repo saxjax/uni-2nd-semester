@@ -95,19 +95,17 @@ class RedirectController {
     res.render(this.ejs);
   }
 
-  UploadQuiz(req, res) {
-    console.log(req.body);
+  // UNDER CONSTRUCTION!
+  async UploadQuiz(req, res) {
     const newQuiz = new Quiz(req);
-    console.log(newQuiz.correctness);
-    // newQuiz.saveQuiz();
+    const valid = await newQuiz.saveQuiz();
 
-    /* if (newQuiz.getQuiz() === true) {
-      this.ejs = path.join(`${this.root}/www/views/evalueringer/quiz/${newQuiz.idquiz}`);
+    if (valid) {
+      res.redirect(`/evalueringer/quiz/${newQuiz.idquiz}`);
     }
     else {        // fejlen er ikke nødvendigvis pga database nede, men bruges som 404 indtil videre
       res.redirect(`/dbdown`);
     }
-    res.render(this.ejs); */
   }
 }
 
