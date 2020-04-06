@@ -198,8 +198,8 @@ class Database {
     while (!done) {
       dataArr.columns += /^\w+/.exec(dataCopy);
       dataCopy = dataCopy.slice(`${/^\w+/.exec(dataCopy)} = `.length, dataCopy.length);
-      dataArr.values += /"\w+"/.exec(dataCopy);
-      dataCopy = dataCopy.slice(`${/"\w+"/.exec(dataCopy)} `.length, dataCopy.length);
+      dataArr.values += /".*?"/.exec(dataCopy);
+      dataCopy = dataCopy.slice(`${/".*?"/.exec(dataCopy)} `.length, dataCopy.length);
       try {
         if (/^\w+/.exec(dataCopy)[0] === `AND`) {
           dataArr.columns += `, `;

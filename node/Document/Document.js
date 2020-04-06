@@ -50,7 +50,6 @@ class Document extends Database {
       uploadSuccessfull = await this.uploadToArchive();
       if (uploadSuccessfull) {
         uploadSuccessfull = await this.insertDocumentToDB();
-        console.log(uploadSuccessfull);
       }
     }
     return uploadSuccessfull;
@@ -69,14 +68,12 @@ class Document extends Database {
 
   async insertDocumentToDB() {
     // Perhaps insert a duplicate check and overwrite existing data if filename is the same.
-    console.log(`Username: ${this.username}`);
     try {
-      const insertdata = await this.query(`CUSTOM`, `INSERT INTO p2.document (creator_iduser,title) VALUES ("shit","fuck")`);
-      console.log(insertdata);
+      await this.query(`INSERT`, `creator_iduser = "${this.username}" AND title = "title" AND elementtype = "document" AND teaser = "Test Teaser" AND filename = "${this.filename}" `);
       return true;
     }
     catch (error) {
-      console.log(error);
+      console.log(error.message);
       return false;
     }
   }
