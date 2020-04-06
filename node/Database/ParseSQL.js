@@ -21,6 +21,11 @@ class ParseSql {
   }
 
   async parser(data) {
+    if (data.length === 0) {
+      this.mydata.push(this.returnEmptyMultiobject());
+      console.log(`Empty Data!!`);
+      console.log(this.mydata);
+    }
     for (let i = 0; i < data.length; i++) {
       // console.log(data[i].elementtype);
       switch (data[i].elementtype) {
@@ -28,7 +33,7 @@ class ParseSql {
         case `quiz`:          this.promiseArray.push(this.parseQuiz(data[i]));      break;
         case `flashcard`:     this.promiseArray.push(this.parseFlashcard(data[i])); break;
         case `quiz_question`: this.mydata.push(this.parseQuizQuestion(data[i]));    break;
-        default:                                                                    break;
+        default:              this.mydata.push(this.returnEmptyMultiobject());      break;                                                                   break;
       }
     }
     // console.log(`parsed`);
@@ -43,6 +48,29 @@ class ParseSql {
     this.reset();
     return tempdata;
   }
+
+  returnEmptyMultiobject() {
+    return ({
+      elementtype: `section`,
+      iddocument: `00000000-00000-0000-0000-000000000000`,
+      iddocument_section: `00000000-00000-0000-0000-000000000000`,
+      idquiz: `00000000-00000-0000-0000-000000000000`,
+      idflashcard: `00000000-00000-0000-0000-000000000000`,
+      idquestion: `00000000-00000-0000-0000-000000000000`,
+      section_number: `0`,
+      title: `Not set`,
+      content: `Not set`,
+      teaser: `Not set`,
+      keywords: `Not set`,
+      question: `Not set`,
+      answer1: `Not set`,
+      answer2: `Not set`,
+      answer3: `Not set`,
+      answer4: `Not set`,
+      correctness: `0000`,
+    });
+  }
+
 
   parseKeywordsFromSql(keywords) {
     const myKeywords = [];

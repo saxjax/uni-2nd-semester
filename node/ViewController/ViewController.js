@@ -70,7 +70,6 @@ class ViewController {
     res.render(this.ejs, { Flashcards, Quizzes });
   }
 
-
   async evalueringerTypePage(req, res) {
     const doc = new Evaluation();
     const parseSql = new ParseSql();
