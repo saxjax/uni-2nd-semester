@@ -9,6 +9,9 @@ class Document extends Database {
     this.table = `document`;
     this.request = request;
     this.iddocument = `Not set`;
+    this.file = request.files.section_file;
+    this.filename = this.file.name;
+    this.username = request.session.key;
   }
 
   // async getAllSections() {
@@ -39,8 +42,45 @@ class Document extends Database {
       .then((result) => result)
       .catch((error) => error);
   }
-}
 
+  async uploadDocument() {
+    let uploadSuccessfull = false;
+    if (this.request.files) {
+      console.log(this.request.files);
+      uploadSuccessfull = await this.uploadToArchive();
+      if (uploadSuccessfull) {
+        uploadSuccessfull = await this.insertDocumentToDB();
+        console.log(uploadSuccessfull);
+      }
+    }
+    return uploadSuccessfull;
+  }
+
+  async uploadToArchive() {
+    try {
+      await this.file.mv(`./node/FileUploads/${this.filename}`);
+      return true;
+    }
+    catch (error) {
+      console.log(error.message);
+      return false;
+    }
+  }
+
+  async insertDocumentToDB() {
+    // Perhaps insert a duplicate check and overwrite existing data if filename is the same.
+    console.log(`Username: ${this.username}`);
+    try {
+      const insertdata = await this.query(`CUSTOM`, `INSERT INTO p2.document (creator_iduser,title) VALUES ("shit","fuck")`);
+      console.log(insertdata);
+      return true;
+    }
+    catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+}
 
 module.exports = {
   Document,

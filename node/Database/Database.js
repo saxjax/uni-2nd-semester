@@ -75,10 +75,12 @@ class Database {
             if (texton) {
               console.log(`Here at node/Database/Database.js-data the error \n${error.code}\n
               and ${error.stack}`);
+              console.log(`\x1b[33m%s\x1b[0m`, `\n SQL Statement: ${this.sql}`);
             }
             reject(error);
           }
           else {
+            console.log(`\x1b[32m%s\x1b[0m`, `\n SQL Statement: ${this.sql}`);
             resolve(result);
           }
         });

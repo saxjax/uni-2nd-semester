@@ -2,6 +2,7 @@
 
 const path = require(`path`);
 const { User } = require(`../User/User.js`);
+const { Document } = require(`../Document/Document.js`);
 
 const sectionDatabase = {
   2.1: { keywords: [`vidensdeling`, `feed-up`, `feed-forward`].toString() },
@@ -63,33 +64,22 @@ class RedirectController {
   }
 
 
-  UploadRapport(req, res) {
-    if (req.files) {
-      console.log(req.files);
-      const file = req.files.section_file;
-      const filename = file.name;
-      console.log(`This is the file name: ${filename}`);
+  async UploadRapport(req, res) {
+    const newDocument = new Document(req);
+    const uploadValidation = await newDocument.uploadDocument();
 
-      file.mv(`./node/File_uploads/${filename}`, (err) => {
-        if (err) {
-          console.log(err);
-        }
-        else {
-          console.log(`File Uploaded`);
-        }
-      });
-    }
-
-    const newKeywords = [req.body.keyword_1, req.body.keyword_2, req.body.keyword_3].toString();
-    console.log(req.body);
-    const newSection = req.body.name_of_section;
+    // const newKeywords = [req.body.keyword_1, req.body.keyword_2, req.body.keyword_3].toString();
+    // console.log(req.body);
+    // const newSection = req.body.name_of_section;
     // sectionDatabase[newSection] = {};
     // sectionDatabase[newSection]['keywords'] = newKeywords;
 
-    this.addNewSection(newSection, newKeywords);
+    // this.addNewSection(newSection, newKeywords);
 
-    this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, { section: req.body.name_of_section, content: sectionDatabase });
+    // this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
+    // res.render(this.ejs, { section: req.body.name_of_section, content: sectionDatabase });
+    this.ejs = path.join(`${this.root}/www/views/rapportUpload.ejs`);
+    res.render(this.ejs);
   }
 
   UploadEvalueringer(req, res) {
