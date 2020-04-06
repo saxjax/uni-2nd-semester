@@ -53,39 +53,36 @@ class ViewController {
     const parsedData = await parseSql.parser(data);
 
     // populate Quizzes and flashcards based on cardtype
-    const Quizzes = [];
+    const Quizzes = parsedData;
     const Flashcards = [];
-
-    for (const index in parsedData) {
-      if (parsedData[index].elementtype === `flashcard`) {
-        Flashcards.push(parsedData[index]);
-      }
-      else if (parsedData[index].elementtype === `quiz`) {
-        Quizzes.push(parsedData[index]);
-      }
-    }
 
     // make flashcards and quizzes availabel to HTML page
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-    res.render(this.ejs, { Flashcards, Quizzes });
+    res.render(this.ejs, { flashcards: Flashcards, quizzes: Quizzes });
   }
 
-
+  /*
+input: id og en type(flashcard eller quiz) (id'et er hhv idflashcard og idquiz alt efter typen)
+alt efter typen så hentes quiz questions eller flashcards knyttet til det specifikke idflashcard eller idquiz.
+output: Array hvor index 0 indeholder flashcard_data eller quiz_question data, hvilket sendes til
+hhv /www/views/evalueringerFlashcard.ejs eller /www/views/evalueringerQuiz.ejs
+*/
   async evalueringerTypePage(req, res) {
+    console.log(req.params);
     const evaluations = new Evaluation();
     const parseSql = new ParseSql();
     let data = [];
     let parsedData = [];
 
     if (req.params.type === `flashcard`) {
-      const id = req.params.idflashcard;
+      const { id } = req.params;
       data = await evaluations.getFlashcard(id);
       parsedData = await parseSql.parser(data);
       this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
       res.render(this.ejs, { flashcard: parsedData });
     }
     else if (req.params.type === `quiz`) {
-      const id = req.params.idquiz;
+      const { id } = req.params;
       data = await evaluations.getQuiz(id);
       parsedData = await parseSql.parser(data);
 
@@ -124,6 +121,7 @@ class ViewController {
     evaluering.table = `quiz`;
     const evaluations = await evaluering.getEvalForSection(id);
     const parsedEvaluations = await parseSql.parser(evaluations);
+    console.log(parsedEvaluations);
 
 
     evaluering.table = `flashcard`;
@@ -135,7 +133,7 @@ class ViewController {
     // const parsedSection = await parsesql(currentSection);
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, {  flashcards: parsedFlashcards,  evaluations: parsedEvaluations, section: parsedSection  });
+    res.render(this.ejs, {  flashcards: parsedFlashcards,  quizzes: parsedEvaluations, section: parsedSection  });
   }
 
   uploadPage(req, res) {
