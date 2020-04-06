@@ -65,7 +65,7 @@ class Server {
   logger(req, res, next) {
     const reqMethod = pad(req.method, -6, ` `);
     const reqUrl = pad(`${req.protocol}://${req.get(`host`)}${req.originalUrl}`, 76, ` `);
-    const date = `${(new Date()).toUTCString()}`;
+    const date = (new Date()).toUTCString();
     console.log(`GOT ${reqMethod}: ${reqUrl} -- ${date}`);
     next();
   }

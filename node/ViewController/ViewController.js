@@ -3,7 +3,6 @@
 const path = require(`path`);
 const { Section } = require(`../Section/Section.js`);
 const { Evaluation } = require(`../Evaluation/Evaluation.js`);
-const { ParseSql } = require(`../Database/ParseSQL`);
 const { User } = require(`../User/User.js`);
 
 
