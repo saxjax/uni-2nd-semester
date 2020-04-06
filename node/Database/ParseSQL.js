@@ -32,7 +32,7 @@ class ParseSql {
         case `quiz`:          this.promiseArray.push(this.parseQuiz(data[i]));      break;
         case `flashcard`:     this.promiseArray.push(this.parseFlashcard(data[i])); break;
         case `quiz_question`: this.mydata.push(this.parseQuizQuestion(data[i]));    break;
-        default:              this.mydata.push(this.returnEmptyMultiobject());      break;                                                                   break;
+        default:                                                                    break;
       }
     }
     // console.log(`parsed`);

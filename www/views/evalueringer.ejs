@@ -39,7 +39,7 @@
               <div class="leftside">
                 <div class="quizzes">
                   <h2> QUIZ </h2>
-                  <% Quizzes.forEach(element =>{ %>
+                  <% quizzes.forEach(element =>{ %>
                     <a href="/evalueringer/<%= element.elementtype %>/<%= element.idquiz %>"> 
                       <div class="card">
                       <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>
@@ -54,7 +54,7 @@
               <div class="rightside">
                 <div class="flashcards">
                   <h2> FLASHCARDS </h2>
-                  <% Flashcards.forEach(element =>{ %>
+                  <% flashcards.forEach(element =>{ %>
                     <a href="/evalueringer/<%= element.elementtype %>/<%= element.idflashcard %>"> 
                       <div class="card">
                       <div class="elementType<%= element.elementtype %>">Title: <%= element.title %></div>

@@ -18,6 +18,12 @@ class Evaluation extends Database {
       .catch((error) => error);
   }
 
+  async getAllQuizzes(id) {
+    // console.log(`prøver at hente : `+ id);
+    this.table = `quiz`;
+    this.getAllEvaluations(id).then(this.table = `quiz`);
+  }
+
   async getEvalForSection(id) {
     // console.log(`prøver at hente : `+ id);
     return this.query(`SELECT *`, `iddocument_section = "${id}"`)
@@ -35,7 +41,7 @@ class Evaluation extends Database {
 
   async getFlashcard(id) {
     // console.log(`prøver at hente : `+ id);
-    //console.log(`Denne funktion er ikke implementeret endnu${id}`);
+    // console.log(`Denne funktion er ikke implementeret endnu${id}`);
     return this.query(`SELECT *`, `idflashcard = "${id}"`)
       .then((result) => result)
       .catch((error) => error);

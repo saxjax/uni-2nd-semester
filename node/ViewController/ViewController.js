@@ -45,20 +45,20 @@ class ViewController {
   // viser alle oprettede evalueringer
   async evalueringerPage(req, res) {
     // get data from database
-    const doc = new Evaluation();
+    const evalu = new Evaluation();
     const parseSql = new ParseSql();
-    const data = await doc.getAllEvaluations();
 
-    // parse data from sqlpacket to OUR packet type
-    const parsedData = await parseSql.parser(data);
+    evalu.table = `quiz`;
+    const quizData = await evalu.getAllEvaluations();
+    const parsedQuizData = await parseSql.parser(quizData);
 
-    // populate Quizzes and flashcards based on cardtype
-    const Quizzes = parsedData;
-    const Flashcards = [];
+    evalu.table = `flashcard`;
+    const flashcardData = await evalu.getAllEvaluations();
+    const parsedFlashcardData = await parseSql.parser(flashcardData);
 
     // make flashcards and quizzes availabel to HTML page
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-    res.render(this.ejs, { flashcards: Flashcards, quizzes: Quizzes });
+    res.render(this.ejs, { flashcards: parsedFlashcardData, quizzes: parsedQuizData });
   }
 
   /*
