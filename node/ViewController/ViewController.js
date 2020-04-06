@@ -42,9 +42,9 @@ class ViewController {
     res.render(this.ejs);
   }
 
-  // viser alle tilgængelige evalueringer fra databasen på siden evalueringer.ejs
+  // viser alle tilgï¿½ngelige evalueringer fra databasen pï¿½ siden evalueringer.ejs
   // input : non
-  // output: Array af Alle tilgængelige evalueringer i databasen både quizzes og flashcards sendes som
+  // output: Array af Alle tilgï¿½ngelige evalueringer i databasen bï¿½de quizzes og flashcards sendes som
   //         arrays :flashcards og quizzes til /www/views/evalueringer.ejs
   async evalueringerPage(req, res) {
     const evalu = new Evaluation();
@@ -65,7 +65,7 @@ class ViewController {
   // viser indholdet af enten et flashcard eller en quizz vha. siden evalueringerFlashcard.ejs eller
   // evalueringerQuiz.ejs.
   // input: id og en type(flashcard eller quiz) (id'et er hhv idflashcard og idquiz alt efter typen)
-  // alt efter typen så hentes quiz questions eller flashcards knyttet til det specifikke idflashcard eller idquiz.
+  // alt efter typen sï¿½ hentes quiz questions eller flashcards knyttet til det specifikke idflashcard eller idquiz.
   // output: Array hvor index 0 indeholder flashcard_data eller quiz_question data, hvilket sendes til
   // hhv /www/views/evalueringerFlashcard.ejs eller /www/views/evalueringerQuiz.ejs
   async evalueringerTypePage(req, res) {
@@ -92,9 +92,9 @@ class ViewController {
     }
   }
 
-  // viser alle tilgængelige sections fra databasen på siden rapport.ejs
+  // viser alle tilgï¿½ngelige sections fra databasen pï¿½ siden rapport.ejs
   // input : non
-  // output: Array af Alle tilgængelige sections i databasen sendes som
+  // output: Array af Alle tilgï¿½ngelige sections i databasen sendes som
   //         array: afsnit til /www/views/rapport.ejs
   async rapportPage(req, res) {
     const sec = new Section();
@@ -108,7 +108,7 @@ class ViewController {
     res.render(this.ejs, { afsnit: mydata });
   }
 
-  // viser alle tilgængelige evaluations knyttet til en bestemt section på siden rapportafsnit.ejs
+  // viser alle tilgï¿½ngelige evaluations knyttet til en bestemt section pï¿½ siden rapportafsnit.ejs
   // input : iddocument_section
   // output: Array af Alle evalueringer samt content fra en section tilknyttet en section med id = iddocument_section
   // sendes som arrays: flashcards, quizzes, section til /www/views/rapportafsnit.ejs
