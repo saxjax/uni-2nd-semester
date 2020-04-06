@@ -10,21 +10,23 @@
     <%- include('meta/navbar') %> 
     <div class="container" id="content">
       <div class="row">
-        <div class="col-5">  
           <nav>
             <button class="btn btn-info">
               <a href="/upload/evalueringer"> Upload </a>
             </button>
           </nav> 
-        </div>
+      </div>
         <div class="row">
           <div class="col-12">
             <h1> EVALUERINGER </h1>
-            <form action="/evalueringer" method="POST">
-              <p> Vælg det afsnit du ønsker at finde evalueringer til </p>
-                <input type="text" id="section" name="section">
-                <input type="submit">
-            </form>
+              <div class = "search_eval">
+                <form action="/evalueringer" method="POST">
+                    <label> Vælg det afsnit du ønsker at finde evalueringer til</label><br>
+                    <input type="text" id="section" name="section"><br>
+                    
+                    <input type="submit">
+                </form>
+              </div>
           </div>
         </div>
         <div class="col-10">
@@ -34,38 +36,37 @@
         <section>
           <div class="row">
             <div class="col">
-              <div class="quizzes">
-                <h2> QUIZ </h2>
-                <% Quizzes.forEach(element =>{ %>
-                  <a href="/evalueringer/<%= element.elementtype %>/<%= element.idquiz %>"> 
-                    <div class="card">
-                    <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>
-                    <div>keywords:</div>
-                    <div class="sectinKeywords"><%= element.keywords %> </div>
-                    <div class="question"><%= element.question %></div>
-                    </div>    
-                  </a>
-                <% }) %>
+              <div class="leftside">
+                <div class="quizzes">
+                  <h2> QUIZ </h2>
+                  <% Quizzes.forEach(element =>{ %>
+                    <a href="/evalueringer/<%= element.elementtype %>/<%= element.idquiz %>"> 
+                      <div class="card">
+                      <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>
+                      <div class="question"><%= element.question %></div>
+                      </div>    
+                    </a>
+                  <% }) %>
+                </div>
               </div>
             </div>
             <div class="col">
-              <div class="flashcards">
-                <h2> FLASHCARDS </h2>
-                <% Flashcards.forEach(element =>{ %>
-                  <a href="/evalueringer/<%= element.elementtype %>/<%= element.idflashcard %>"> 
-                    <div class="card">
-                    <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>
-                    <div>keywords:</div>
-                    <div class="sectinKeywords"><%= element.keywords %> </div>
-                    <div class="notion"><%= element.notion %></div>
-                    </div>    
-                  </a>
-                <% }) %>
+              <div class="rightside">
+                <div class="flashcards">
+                  <h2> FLASHCARDS </h2>
+                  <% Flashcards.forEach(element =>{ %>
+                    <a href="/evalueringer/<%= element.elementtype %>/<%= element.idflashcard %>"> 
+                      <div class="card">
+                      <div class="elementType<%= element.elementtype %>">Title: <%= element.title %></div>
+                      <div class="notion">Begreb: <%= element.concept %></div>
+                      </div>    
+                    </a>
+                  <% }) %>
+                </div>
               </div>
             </div>
           </div>
         </section>
-      </div>
     </div>
     <%- include('meta/footer') %> 
   </body>

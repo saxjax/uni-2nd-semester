@@ -23,8 +23,7 @@ class ParseSql {
   async parser(data) {
     if (data.length === 0) {
       this.mydata.push(this.returnEmptyMultiobject());
-      console.log(`Empty Data!!`);
-      console.log(this.mydata);
+      console.log(`Empty Data send to parser!!`);
     }
     for (let i = 0; i < data.length; i++) {
       // console.log(data[i].elementtype);

@@ -15,7 +15,7 @@
                         <div class = "leftside"> 
                 
                             <H2> EVALUERINGER FOR AFSNITTET</H2><br>
-                            <% evaluations.forEach( (element) => { %>
+                            <% quizzes.forEach( (element) => { %>
                                 <p> Titel: <%= element.title %></p>
                                 <a href="/evalueringer/quiz/<%= element.idquiz %>">
                                     <img id="quiz_for_section" src="/img/Design/quiz.png"><br>

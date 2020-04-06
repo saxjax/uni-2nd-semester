@@ -45,48 +45,65 @@ class ViewController {
   // viser alle oprettede evalueringer
   async evalueringerPage(req, res) {
     // get data from database
-    const doc = new Evaluation();
+    // const evaluering = new Evaluation();
+    // const parseSql = new ParseSql();
+    // // const data = await evaluering.getAllEvaluations();
+    // parseSql = 
+    // // parse data from sqlpacket to OUR packet type
+    // const parsedData = await parseSql.parser(data);
+
+    // // populate Quizzes and flashcards based on cardtype
+    // const Quizzes = [];
+    // const Flashcards = [];
+
+    // // for (const index in parsedData) {
+    // //   if (parsedData[index].elementtype === `flashcard`) {
+    // //     Flashcards.push(parsedData[index]);
+    // //   }
+    // //   else if (parsedData[index].elementtype === `quiz`) {
+    // //     Quizzes.push(parsedData[index]);
+    // //   }
+    // // }
+
     const parseSql = new ParseSql();
-    const data = await doc.getAllEvaluations();
 
-    // parse data from sqlpacket to OUR packet type
-    const parsedData = await parseSql.parser(data);
+    // Get quizzes
+    const evaluering = new Evaluation();
+    evaluering.table = `quiz`;
+    const evaluations = await evaluering.getAllEvaluations();
+    const parsedEvaluations = await parseSql.parser(evaluations);
 
-    // populate Quizzes and flashcards based on cardtype
-    const Quizzes = [];
-    const Flashcards = [];
+    // Get
+    evaluering.table = `flashcard`;
+    const flashcards = await evaluering.getAllEvaluations();
+    const parsedFlashcards = await parseSql.parser(flashcards);
 
-    for (const index in parsedData) {
-      if (parsedData[index].elementtype === `flashcard`) {
-        Flashcards.push(parsedData[index]);
-      }
-      else if (parsedData[index].elementtype === `quiz`) {
-        Quizzes.push(parsedData[index]);
-      }
-    }
-
-    // make flashcards and quizzes availabel to HTML page
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-    res.render(this.ejs, { Flashcards, Quizzes });
+    res.render(this.ejs, { Flashcards: parsedFlashcards, Quizzes: parsedEvaluations });
   }
 
   async evalueringerTypePage(req, res) {
-    const doc = new Evaluation();
+    const evaluering = new Evaluation();
     const parseSql = new ParseSql();
     let data = [];
     let parsedData = [];
 
     if (req.params.type === `flashcard`) {
       const id = req.params.idflashcard;
-      data = await doc.getFlashcard(id);
-      parsedData = await parseSql.parser(data);
+      evaluering.table = `flashcard`;
+      data = await evaluering.getFlashcard(id);
+      const parsedFlashcard = await parseSql.parser(data);
       this.ejs = path.join(`${this.root}/www/views/evalueringerFlashcard.ejs`);
-      res.render(this.ejs, { flashcard: parsedData });
+      res.render(this.ejs, { flashcard: parsedFlashcard });
     }
     else if (req.params.type === `quiz`) {
       const id = req.params.idquiz;
-      data = await doc.getQuiz(id);
+      console.log("ID: \n");
+      console.log(id);
+      data = await evaluering.getQuiz(id);
       parsedData = await parseSql.parser(data);
+
+      console.log(data);
 
       this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
       res.render(this.ejs, { quiz: parsedData });
@@ -115,6 +132,7 @@ class ViewController {
     // get data from database
     const parseSql = new ParseSql();
     const id = req.params.iddocument_section;
+    console.log("Id document section: \n");
     console.log(id);
 
     const section = new Section();
@@ -123,7 +141,6 @@ class ViewController {
     evaluering.table = `quiz`;
     const evaluations = await evaluering.getEvalForSection(id);
     const parsedEvaluations = await parseSql.parser(evaluations);
-
 
     evaluering.table = `flashcard`;
     const flashcards = await evaluering.getEvalForSection(id);
@@ -134,7 +151,7 @@ class ViewController {
     // const parsedSection = await parsesql(currentSection);
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, {  flashcards: parsedFlashcards,  evaluations: parsedEvaluations, section: parsedSection  });
+    res.render(this.ejs, {  flashcards: parsedFlashcards,  quizzes: parsedEvaluations, section: parsedSection  });
   }
 
   uploadPage(req, res) {
