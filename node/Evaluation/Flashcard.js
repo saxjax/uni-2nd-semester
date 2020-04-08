@@ -1,12 +1,14 @@
 const { Evaluation } = require(`../Evaluation/Evaluation.js`);
 
+/* UNDER CONSTRUCTION */
+
 class Flashcard extends Evaluation {
+  /* UNDER CONSTRUCTION */
   constructor(request) {
     super();
-    this.name = `Flashcard`;
+    this.elementtype = `flashcard`;
     this.table = `flashcard`;
     this.idfalshcard = `Not set`;
-    this.elementtype = `flashcard`;
     this.concept = `Not set`;// begreb
     this.definition = `Not set`;
     // correctness er en binær repræsentation af svarernes sandhadsværdi "0001" betyder at answers[3] i er korrekt de andre er false!

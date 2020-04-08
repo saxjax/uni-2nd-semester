@@ -15,11 +15,13 @@ class ViewController {
     this.request = req;
   }
 
+  /* UNDER CONSTRUCTION */
   homePage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs);
   }
 
+  /* UNDER CONSTRUCTION */
   registerPage(req, res) {
     const Registered = new User(req);
     if (Registered.alreadyLoggedIn()) {
@@ -31,6 +33,7 @@ class ViewController {
     }
   }
 
+  /* UNDER CONSTRUCTION */
   loginPage(req, res) {
     if (req.session.loggedin === true) {
       this.ejs = path.join(`${this.root}/www/views/home.ejs`);
@@ -45,6 +48,7 @@ class ViewController {
   // input : non
   // output: Array af Alle tilg�ngelige evalueringer i databasen b�de quizzes og flashcards sendes som
   //         arrays :flashcards og quizzes til /www/views/evalueringer.ejs
+  /* UNDER CONSTRUCTION */
   async evalueringerPage(req, res) {
     const quiz = new Quiz(req);
     const quizData = await quiz.getEverything();
@@ -62,6 +66,7 @@ class ViewController {
   // alt efter typen s� hentes quiz questions eller flashcards knyttet til det specifikke idflashcard eller idquiz.
   // output: Array hvor index 0 indeholder flashcard_data eller quiz_question data, hvilket sendes til
   // hhv /www/views/evalueringerFlashcard.ejs eller /www/views/evalueringerQuiz.ejs
+  /* UNDER CONSTRUCTION */
   async quizPage(req, res) {
     const quiz = new Quiz(req);
     const data = await quiz.getQuiz();
@@ -69,6 +74,7 @@ class ViewController {
     res.render(this.ejs, { quiz: data });
   }
 
+  /* UNDER CONSTRUCTION */
   async flashcardPage(req, res) {
     const flashcard = new Flashcard(req);
     const data = await flashcard.getFlashcard();
@@ -80,6 +86,7 @@ class ViewController {
   // input : non
   // output: Array af Alle tilg�ngelige sections i databasen sendes som
   //         array: afsnit til /www/views/rapport.ejs
+  /* UNDER CONSTRUCTION */
   async rapportPage(req, res) {
     const sec = new Section(req);
     const data = await sec.getEverything();
@@ -91,20 +98,19 @@ class ViewController {
   // input : iddocument_section
   // output: Array af Alle evalueringer samt content fra en section tilknyttet en section med id = iddocument_section
   // sendes som arrays: flashcards, quizzes, section til /www/views/rapportafsnit.ejs
+  /* UNDER CONSTRUCTION */
   async rapportSectionPage(req, res) {
-    const quiz = new Quiz(req);
-    const quizData = await quiz.getEvalForSection();
-
-    const flashcard = new Flashcard(req);
-    const flashcardData = await flashcard.getEvalForSection();
-
-    const section = new Section(req);
-    const sectionData = await section.getSection();
-
+    const sec = new Section(req);
+    const data = {
+      flashcards: await sec.getAllFlashcards(),
+      quizzes: await sec.getAllQuizzes(),
+      section: await sec.getData(),
+    };
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, {  flashcards: flashcardData,  quizzes: quizData, section: sectionData  });
+    res.render(this.ejs, { data });
   }
 
+  /* UNDER CONSTRUCTION */
   uploadPage(req, res) {
     if (req.params.type === `evalueringer`) {
       this.ejs = path.join(`${this.root}/www/views/evalueringerUpload.ejs`);

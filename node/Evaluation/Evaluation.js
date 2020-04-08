@@ -1,12 +1,14 @@
 const { Database } = require(`../Database/Database.js`);
 
+/* UNDER CONSTRUCTION */
+
 class Evaluation extends Database {
+  /* UNDER CONSTRUCTION */
   constructor(request) {
     super();
-    this.name = `Evaluation`;
-    this.table = `quiz`;
+    this.elementtype = null;
+    this.table = null;
     this.iddocument = `Not set`;
-    this.elementtype = `Not set`;
     this.title = `Not set`;
 
     this.request = request;

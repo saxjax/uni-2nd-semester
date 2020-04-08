@@ -42,27 +42,7 @@ test(`Test af parseSection i node/Database`, (assert) => {
   assert.deepEqual(actual, expected,
     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere en parset version af inputtet`);
 
+  p.connect.end();
+
   assert.end();
 });
-
-// test(`Test af parseQuiz i node/Database`, (assert) => {
-//   expected = {
-//     elementtype: `quiz`,
-//     idquiz: `456`,
-//     iddocument: `789`,
-//     title: `test titel 1`,
-//     keywords: undefined,
-//   };
-//   actual = p.parseSection({
-//     elementtype: `quiz`,
-//     idquiz: `456`,
-//     iddocument: `789`,
-//     title: `test titel 1`,
-//     keywords: undefined,
-//   });
-
-//   assert.deepEqual(actual, expected,
-//     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere en parset version af inputtet`);
-
-//   assert.end();
-// });

@@ -2,11 +2,13 @@
 
 const { User } = require(`../User/User.js`);
 
+/* UNDER CONSTRUCTION */
+
 class Expert extends User {
+  /* UNDER CONSTRUCTION */
   constructor(req) {
     super(req);
-    this.name = `Expert`;
-    this.firstname = `Poul`;
+    this.elementtype = `expert`;
   }
 }
 

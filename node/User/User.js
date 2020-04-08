@@ -1,10 +1,14 @@
 /* eslint no-console: off */
 
 const { Database } = require(`../Database/Database.js`);
+
+/* UNDER CONSTRUCTION */
+
 class User extends Database {
+  /* UNDER CONSTRUCTION */
   constructor(req) {
     super();
-    this.name = `User`;
+    this.elementtype = `user`;
     this.table = `user`;
     this.data = ``;
     this.choice = `*`;
@@ -20,6 +24,7 @@ class User extends Database {
     this.email = req.body.email;
   }
 
+  /* UNDER CONSTRUCTION */
   async loginValid() {
     this.data = await this.query(`SELECT *`, `username = "${this.username}" AND password = "${this.password}"`)
       .then((result) => result)
@@ -29,11 +34,13 @@ class User extends Database {
   }
 
   /* Skal implementeres med sessions */
+  /* UNDER CONSTRUCTION */
   alreadyLoggedIn() {
     this.cookie = false;
     return this.cookie;
   }
 
+  /* UNDER CONSTRUCTION */
   async validateRegister() {
     let validationCheck = false;
     if (!isEmpty(this.username) && !isEmpty(this.firstName) && !isEmpty(this.lastName) && !isEmpty(this.email)) {
@@ -48,6 +55,7 @@ class User extends Database {
     return validationCheck;
   }
 
+  /* UNDER CONSTRUCTION */
   async createUser() {
     this.register_data = await this.query(`INSERT`, `username = "${this.username}" AND password = "${this.password}" AND firstname = "${this.firstName}" AND lastname = "${this.lastName}" AND university = "${this.university}" AND studysubject = "${this.studySubject}" AND semester = "${this.semester}"`);
   }

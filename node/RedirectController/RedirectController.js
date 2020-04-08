@@ -3,35 +3,22 @@
 const path = require(`path`);
 const { User } = require(`../User/User.js`);
 
-const sectionDatabase = {
-  2.1: { keywords: [`vidensdeling`, `feed-up`, `feed-forward`].toString() },
-  2.2: { keywords: [`studier`, `evaluering`, `formativ`, `summativ`].toString() },
-  2.3: { keywords: [`metoder`, `active recall`, `spaced repetition`].toString() },
-  2.4: { keywords: [`blabla`, `jepjepjep`, `superdupersuperduper`].toString() },
-  2.5: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-  2.6: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-  3.1: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-  3.2: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-  3.3: { keywords: [`SOTA`, `classkick`, `kahoot!`].toString() },
-};
-
+/* UNDER CONSTRUCTION */
 
 class RedirectController {
+  /* UNDER CONSTRUCTION */
   constructor() {
     this.name = `RedirectController`;
     this.root = __dirname.slice(0, -(`node/${this.name}`.length));
   }
 
-  addNewSection(newSection, newKeywords) {
-    sectionDatabase[newSection] = {};
-    sectionDatabase[newSection].keywords = newKeywords;
-  }
-
+  /* UNDER CONSTRUCTION */
   dbdown(req, res) {
     this.ejs = path.join(`${this.root}/www/ejs/database_down.ejs`);
     res.render(this.ejs);
   }
 
+  /* UNDER CONSTRUCTION */
   async auth(req, res) {
     const currentUser = new User(req);
     this.data = await currentUser.loginValid();
@@ -48,6 +35,7 @@ class RedirectController {
     }
   }
 
+  /* UNDER CONSTRUCTION */
   async RegisterNewUser(req, res) {
     console.log(req.body);
     const newUser = new User(req);
@@ -62,7 +50,7 @@ class RedirectController {
     }
   }
 
-
+  /* UNDER CONSTRUCTION */
   UploadRapport(req, res) {
     if (req.files) {
       console.log(req.files);
@@ -89,9 +77,10 @@ class RedirectController {
     this.addNewSection(newSection, newKeywords);
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, { section: req.body.name_of_section, content: sectionDatabase });
+    res.render(this.ejs, { section: req.body.name_of_section, content: null });
   }
 
+  /* UNDER CONSTRUCTION */
   UploadEvalueringer(req, res) {
     console.log(req.body);
     this.ejs = path.join(`${this.root}/www/views/evalueringerUpload.ejs`);

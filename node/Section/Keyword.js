@@ -1,18 +1,21 @@
 const { Database } = require(`../Database/Database.js`);
 
+/* UNDER CONSTRUCTION */
 
 class Keyword extends Database {
+  /* UNDER CONSTRUCTION */
   constructor(request) {
-    super(request);
-    this.name = `Keyword`;
+    super();
+    this.elementtype = `keyword`;
     this.table = `document_keyword`;
     this.idkeyword = undefined;
     this.iddocuments = [];
     this.idevaluations = [];
-    this.elementtype = `keyword`;
     this.keyword = undefined;
+    this.request = request;
   }
 
+  /* UNDER CONSTRUCTION */
   async getKeywordsForEvaluation() {
     // console.log(`prøver at hente : ` + id);
     return this.query(`SELECT *`, `iddocument_section = "${this.idQuery}"`)

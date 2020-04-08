@@ -6,13 +6,14 @@
  * Hvis inputtypen er ukendt, så skal den dermed blot sende data videre med en warning om at elementtypen ikke er kendt.
  */
 class ParseSql {
-  constructor() {
+  constructor(elementtype) {
     this.parsedData = [];
+    this.elementtype = elementtype;
   }
 
   /* Formål: Dette er tiltænkt som den overordnede funktion, som bliver kaldt fra Database.js
    * Input:  Et array af data - kan godt modtage forskellige elementtyper i samme array
-   * Output: Et array af data, som er parset/oversat fra databasesprog til frontendsprog
+   * Output: Et array af data, som er parset/oversat fra databasesprog til frontendsprog eller et tomt array, hvis data er tom.
    */
   parse(data) {
     if (data.length > 0) {
@@ -36,23 +37,12 @@ class ParseSql {
     return this.parsedData;
   }
 
-  // parseKeywordsFromSql(keywords) {
-  //   const myKeywords = [];
-  //   for (let i = 0; i < keywords.length; i++) {
-  //     myKeywords.push(keywords[i].keyword);
-  //   }
-  //   return myKeywords;
-  // }
-
   /* Formål: At parse Section-data
    * Input:  Et dataobjekt af typen "section"
    * Output: Et parset dataobjekt, som kan forståes på frontend
    */
   parseSection(data) {
     let teaser = ``;
-    // const keyw = new Keyword();
-    // this.keywords = await keyw.getKeywordsForSection(data.iddocument_section);
-    // this.keywords = this.parseKeywordsFromSql(this.keywords);
     if (data.section_teaser === null) {
       teaser = data.section_content.slice(0, 200);
     }
@@ -76,10 +66,6 @@ class ParseSql {
    * Output: Et parset dataobjekt, som kan forståes på frontend
    */
   parseQuiz(data) {
-    // const keyw = new Keyword();
-    // this.keywords = await keyw.getKeywordsForEvaluation(data.iddocument_section);
-    // this.keywords = this.parseKeywordsFromSql(this.keywords);
-
     return {
       elementtype: `${data.elementtype}`,
       idquiz: `${data.idquiz}`,
@@ -122,29 +108,6 @@ class ParseSql {
    */
   parseKeyword(data) {
     return data;
-  }
-
-
-  returnEmptyMultiobject() {
-    return {
-      elementtype: `undefined`,
-      iddocument: `00000000-00000-0000-0000-000000000000`,
-      iddocument_section: `00000000-00000-0000-0000-000000000000`,
-      idquiz: `00000000-00000-0000-0000-000000000000`,
-      idflashcard: `00000000-00000-0000-0000-000000000000`,
-      idquestion: `00000000-00000-0000-0000-000000000000`,
-      section_number: `0`,
-      title: `undefined`,
-      content: `undefined`,
-      teaser: `undefined`,
-      keywords: `undefined`,
-      question: `undefined`,
-      answer1: `undefined`,
-      answer2: `undefined`,
-      answer3: `undefined`,
-      answer4: `undefined`,
-      correctness: `0000`,
-    };
   }
 }
 
