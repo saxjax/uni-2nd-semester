@@ -80,7 +80,7 @@ class Database {
             reject(error);
           }
           else {
-            console.log(`\x1b[32m%s\x1b[0m`, `\n SQL Statement: ${this.sql}`);
+            // console.log(`\x1b[32m%s\x1b[0m`, `\n SQL Statement: ${this.sql}`); // fjern kommentaren for at vise SQL-statements uden fejl i konsollen.
             resolve(result);
           }
         });

@@ -79,7 +79,7 @@ class RedirectController {
     // this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
     // res.render(this.ejs, { section: req.body.name_of_section, content: sectionDatabase });
     this.ejs = path.join(`${this.root}/www/views/rapportUpload.ejs`);
-    res.render(this.ejs);
+    res.render(this.ejs, { uploadstatus: uploadValidation });
   }
 
   UploadEvalueringer(req, res) {

@@ -12,6 +12,7 @@ class Document extends Database {
     this.file = request.files.section_file;
     this.filename = this.file.name;
     this.username = request.session.key;
+    this.title = request.body.title;
   }
 
   // async getAllSections() {
@@ -69,7 +70,7 @@ class Document extends Database {
   async insertDocumentToDB() {
     // Perhaps insert a duplicate check and overwrite existing data if filename is the same.
     try {
-      await this.query(`INSERT`, `creator_iduser = "${this.username}" AND title = "title" AND elementtype = "document" AND teaser = "Test Teaser" AND filename = "${this.filename}" `);
+      await this.query(`INSERT`, `creator_iduser = "${this.username}" AND title = "${this.title}" AND elementtype = "document" AND teaser = "Test Teaser" AND filename = "${this.filename}" `);
       return true;
     }
     catch (error) {

@@ -4,13 +4,14 @@
     <%- include('meta/header') %> 
     <title>Rapport Uploading</title>
     <link href="/css/design.css" rel="stylesheet">
+    <script src="/js/rapportUpload.js"></script>
   </head>
   <body>
     <%- include('meta/navbar') %> 
     <div class="container" id="content">
         <div class="row">
           <div class="col-12">    
-            <h1> Upload afsnit fra rapporten</h1>
+            <h1> Upload rapport</h1>
           </div>
         </div>
       <br><br>
@@ -23,17 +24,19 @@
             <option value="fag2">Lineær Algebra</option>
             <option value="fag3">IWP</option> 
           </select><br><br>
-          <label for="section">Vælg rapportafsnit </label>
-          <input type="text" id="section" name="section"><br><br>
+          <label for="title">Vælg rapportafsnit </label>
+          <input type="text" id="title" name="title" required><br><br>
           <label for="keyword1">Vælg Keyword1 </label>
           <input type="text" id="keyword1" name="keyword1"><br><br>
           <label for="keyword2">Vælg Keyword2 </label>
           <input type="text" id="keyword2" name="keyword2"><br><br>
           <label for="keyword3">Vælg Keyword3 </label>
           <input type="text" id="keyword3" name="keyword3"><br><br>
-          <input type="file" id="section_file" name="section_file"><br>
+          <input type="file" required id="section_file" name="section_file"><br>
           <input type="submit" value="Upload">
         </form>
+        <!-- Mangler fade-timer og farve efter successfuldt upload-->
+        <%= (uploadstatus === false ? "" : "Upload sucess!") %>
       </section>
     </div>
     <%- include('meta/footer') %> 
