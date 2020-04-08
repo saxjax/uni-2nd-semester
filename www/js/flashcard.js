@@ -16,7 +16,6 @@ function showDefinition(definition) {
   });
 }
 
-
 function displayFlashcards() {
   // get all flashcard data for section
   const flashcardData = [];
@@ -49,6 +48,7 @@ function displayFlashcards() {
     }
     else {
       // log i databasen for user
+
     }
   }
 }
