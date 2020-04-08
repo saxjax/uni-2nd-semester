@@ -26,7 +26,8 @@
                         <h1> RAPPORT </h1>
                     </div>
                         <div class="section_list">
-                            <%  afsnit.forEach( (element) => { %>
+
+                            <%  if(afsnit) { afsnit.forEach( (element) => { %>
                                 <a href="/rapport/<%= element.iddocument_section %>" >
                                     <div class="card">
                                     <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>
@@ -35,7 +36,7 @@
                                     <div class="sectionContent"><%= element.teaser %></div>
                                     </div>    
                                 </a>
-                            <% }); %> 
+                            <% })}; %> 
                         </div>
                 
             </div>

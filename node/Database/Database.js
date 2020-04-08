@@ -1,6 +1,7 @@
 /* eslint no-console: off */
 
 const mysql = require(`mysql`);
+const { ParseSql } = require(`./ParseSQL`);
 
 /* Database objektet stiller alle manipulationer af databasen til raadighed for modeller med tilhorende database tabeller.
  * Databasen er designet efter et REST princip, som betyder at databasen skal kunne:
@@ -62,26 +63,26 @@ class Database {
   /* Input:  Metoden modtager de valg som brugeren har lavet, og gennem parser metoden, faar noget brugbar SQL,
    *         Der kan vaere et get, post, put eller delete.
    *         Metoden indtager ogsaa texton parameter, som frakobles info() kald under test af catching af errors, men ellers altid er true.
-   * Output: Metoden outputter data hentet fra SQL databasen, ud fra den givne SQL streng
+   * Output: Metoden outputter den parsede data hentet fra SQL databasen, ud fra den givne SQL streng
    * Formaal: Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overridet.
    *         Dette oger kode genbrug, samt sikre fornuftig testning paa tvaers af hele programmet i forhold til databasen.
    */
-  query(choice, data, texton = true) {
-    this.sql = this.parser(choice, data, texton);
+  async query(choice, data, texton = true) {
+    this.sql = this.inputParser(choice, data, texton);
     return new Promise((resolve, reject) => {
-      this.connect.query(this.sql,
-        (error, result) => {
-          if (error) {
-            if (texton) {
-              console.log(`Here at node/Database/Database.js-data the error \n${error.code}\n
-              and ${error.stack}`);
-            }
-            reject(error);
+      this.connect.query(this.sql, (error, result) => {
+        if (error) {
+          if (texton) {
+            console.log(`Here at node/Database/Database.js-data the error \n${error.code}\n
+            and ${error.stack}`);
           }
-          else {
-            resolve(result);
-          }
-        });
+          reject(error);
+        }
+        else {
+          const outputParser = new ParseSql();
+          resolve(outputParser.parse(result));
+        }
+      });
     });
   }
 
@@ -92,7 +93,7 @@ class Database {
    *         Det oger laesbarheden af koden, samtidigt med at det ikke abstrahere for meget,
    *         da det er SQL kommandoer der bruges.
    */
-  parser(choice, data, texton = true) {
+  inputParser(choice, data, texton = true) {
     const valid = this.parserValidator(choice, data, texton);
     let sql = ``;
     if (!valid) {
@@ -217,6 +218,7 @@ class Database {
 
     return dataArr;
   }
+
   /* Metoden insertSplitter bliver her beskrevet mere i detaljen for dem der ikke kender saa meget til regular expressions.
            * Lokken har til formaal at opsplitte "col = var" grupper i kolonner og variable, saa de kan bruges som INSERT SQL
            * Der initialiseres en "done" variabel der returnere true naar der ikke er flere ´col = var´ grupper tilbage
@@ -231,6 +233,15 @@ class Database {
            * Er der ikke flere elementer, dvs. der er ikke flere "col = var" der skal postes, saa giver det den fornaevnte typefejl.
            * Inden der returnes true sikrer vi os at det rent faktisk er en typefejl, og ikke alt muligt andet der kunne vaere gaaet galt.
            */
+
+  // Henter al data for this.table på databasen
+  // input: non
+  // output: array af samtlige tilgængelige elementer i den pågældende table.
+  async getEverything() {
+    return this.query(`SELECT *`)
+      .then((result) => result)
+      .catch((error) => error);
+  }
 }
 
 
