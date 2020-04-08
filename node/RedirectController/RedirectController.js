@@ -49,7 +49,7 @@ class RedirectController {
     }
   }
 
-  async RegisterNewUser(req, res) {
+  async registerNewUser(req, res) {
     console.log(req.body);
     const newUser = new User(req);
     if (await newUser.validateRegister()) {
@@ -64,7 +64,7 @@ class RedirectController {
   }
 
 
-  async UploadRapport(req, res) {
+  async uploadRapport(req, res) {
     const newDocument = new Document(req);
     const uploadValidation = await newDocument.uploadDocument();
 
@@ -82,7 +82,7 @@ class RedirectController {
     res.render(this.ejs, { uploadstatus: uploadValidation });
   }
 
-  UploadEvalueringer(req, res) {
+  uploadEvalueringer(req, res) {
     console.log(req.body);
     this.ejs = path.join(`${this.root}/www/views/evalueringerUpload.ejs`);
     res.render(this.ejs);

@@ -45,9 +45,9 @@ class Server {
     const Redirect = new RedirectController();
     this.app.get(`/dbdown`,                (req, res) => Redirect.dbdown(req, res));
     this.app.post(`/auth`,                 (req, res) => Redirect.auth(req, res));
-    this.app.post(`/upload/rapport`,       (req, res) => Redirect.UploadRapport(req, res));
-    this.app.post(`/upload/evalueringer`,  (req, res) => Redirect.UploadEvalueringer(req, res));
-    this.app.post(`/register`,             (req, res) => Redirect.RegisterNewUser(req, res));
+    this.app.post(`/upload/rapport`,       (req, res) => Redirect.uploadRapport(req, res));
+    this.app.post(`/upload/evalueringer`,  (req, res) => Redirect.uploadEvalueringer(req, res));
+    this.app.post(`/register`,             (req, res) => Redirect.registerNewUser(req, res));
   }
 
   staticMiddleware() {
