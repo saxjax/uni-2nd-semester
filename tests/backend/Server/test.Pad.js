@@ -19,11 +19,11 @@ test(`Test af Pad-funktionen i node/Server`, (assert) => {
   actual = pad(`String`, 50, ` `);
   expected = `String                                            `;
   assert.equal(actual, expected, `{Forventet: "${expected}" Reel: "${actual}"} funktionen skulle gerne tilføje 44 spaces til HØJRE for strengen`);
-  
+
   actual = pad(`String`, -50, ` `);
   expected = `                                            String`;
   assert.equal(actual, expected, `{Forventet: "${expected}" Reel: "${actual}"} funktionen skulle gerne tilføje 44 spaces til VENSTRE for strengen`);
-  
+
   actual = pad(`String`, 6, ` `);
   expected = `String`;
   assert.equal(actual, expected, `{Forventet: "${expected}" Reel: "${actual}"} funktionen skulle gerne returnere strengen selv`);

@@ -33,10 +33,11 @@ class Server {
     this.app.get(`/register`,                     (req, res) => Show.registerPage(req, res));
     this.app.get(`/login`,                        (req, res) => Show.loginPage(req, res));
     this.app.get(`/evalueringer`,                 (req, res) => Show.evalueringerPage(req, res));
-    this.app.get(`/evalueringer/:type/:id`,           (req, res) => Show.evalueringerTypePage(req, res));
+    this.app.get(`/evalueringer/quiz/:queryId`,        (req, res) => Show.quizPage(req, res));
+    this.app.get(`/evalueringer/flashcard/:queryId`,   (req, res) => Show.flashcardPage(req, res));
     // this.app.get(`/evalueringer/:type/:idquiz`,   (req, res) => Show.evalueringerTypePage(req, res));
     this.app.get(`/rapport`,                      (req, res) => Show.rapportPage(req, res));
-    this.app.get(`/rapport/:iddocument_section`,  (req, res) => Show.rapportSectionPage(req, res));
+    this.app.get(`/rapport/:queryId`,  (req, res) => Show.rapportSectionPage(req, res));
     this.app.get(`/elementList`,                  (req, res) => Show.elementList(req, res));
     this.app.get(`/upload/:type`,                 (req, res) => Show.uploadPage(req, res));
   }
@@ -66,8 +67,8 @@ class Server {
 
   logger(req, res, next) {
     const reqMethod = pad(req.method, -6, ` `);
-    const reqUrl = pad(`${req.protocol}://${req.get(`host`)}${req.originalUrl}`, 41, ` `);
-    const date = `${(new Date()).toUTCString()}`;
+    const reqUrl = pad(`${req.protocol}://${req.get(`host`)}${req.originalUrl}`, 76, ` `);
+    const date = (new Date()).toUTCString();
     console.log(`GOT ${reqMethod}: ${reqUrl} -- ${date}`);
     next();
   }

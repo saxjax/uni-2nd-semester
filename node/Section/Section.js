@@ -1,10 +1,11 @@
 /* eslint no-console: off */
 
-const { Database } = require(`../Database/Database.js`);
+const { Database } = require(`../Database/Database`);
+const { Keyword } = require(`./Keyword`);
 
 class Section extends Database {
   constructor(request) {
-    super();
+    super(request);
     this.name = `Section`;
     this.table = `document_section`;
     // this.iddocument = `not set`;
@@ -13,28 +14,30 @@ class Section extends Database {
     // this.section_title = `not set`;
     // this.section_teaser = `not set`;
     // this.section_content = `not set`;
+    this.sectionData = undefined;
+    this.keywords = undefined;
+
     this.request = request;
+    this.queryId = request !== undefined ? request.params.queryId : undefined;
   }
 
-  // Henter alle sections i this.table på databasen
-  // input: non
-  // output: array af samtlige tilgængelige elementer i den pågældende table.
-  async getAllSections() {
-    return this.query(`SELECT *`)
+  async getSectionContent() {
+    // console.log(`prøver at hente : `+ this.queryId);
+    return this.query(`SELECT content`, `iddocument_section = "${this.queryId}"`)
       .then((result) => result)
       .catch((error) => error);
   }
 
-  async getSectionContent(id) {
-    // console.log(`prøver at hente : `+ id);
-    return this.query(`SELECT content`, `iddocument_section = "${id}"`)
+  async getSection() {
+    // console.log(`prøver at hente : `+ this.queryId);
+    return this.query(`SELECT *`, `iddocument_section = "${this.queryId}"`)
       .then((result) => result)
       .catch((error) => error);
   }
 
-  async getSection(id) {
-    // console.log(`prøver at hente : `+ id);
-    return this.query(`SELECT *`, `iddocument_section = "${id}"`)
+  async getKeywords() {
+    const keyword = new Keyword(this.request);
+    return keyword.query(`SELECT *`, `iddocument_section = "${this.idQuery}"`)
       .then((result) => result)
       .catch((error) => error);
   }
