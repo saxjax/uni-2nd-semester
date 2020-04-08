@@ -80,3 +80,7 @@ nav {text-align: center;}
 .search_eval {
     text-align: center;
 }
+
+.concept, .definition, .show_definition {
+    text-align: center;
+}
