@@ -1,14 +1,17 @@
 /* eslint no-console: off */
 
 const { Database } = require(`../Database/Database.js`);
-const { Keyword } = require(`./Keyword`);
+const { Keyword } = require(`../Section/Keyword`);
 
 class Document extends Database {
-  constructor() {
+  constructor(request) {
     super();
     this.name = `Document`;
     this.table = `document`;
     this.iddocument = `Not set`;
+
+    this.request = request;
+    this.queryId = (typeof request.params.queryId !== `undefined` ? request.params.queryId : undefined);
   }
 
   async getEverything() {

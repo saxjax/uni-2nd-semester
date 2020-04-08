@@ -1,11 +1,11 @@
 /* eslint no-console: off */
 
-const { Database } = require(`../Database/Database.js`);
+const { Database } = require(`../Database/Database`);
 const { Keyword } = require(`./Keyword`);
 
 class Section extends Database {
-  constructor() {
-    super();
+  constructor(request) {
+    super(request);
     this.name = `Section`;
     this.table = `document_section`;
     // this.iddocument = `not set`;
@@ -16,6 +16,9 @@ class Section extends Database {
     // this.section_content = `not set`;
     this.sectionData = undefined;
     this.keywords = undefined;
+
+    this.request = request;
+    this.queryId = request !== undefined ? request.params.queryId : undefined;
   }
 
   async getSectionContent() {
@@ -28,6 +31,13 @@ class Section extends Database {
   async getSection() {
     // console.log(`prøver at hente : `+ this.queryId);
     return this.query(`SELECT *`, `iddocument_section = "${this.queryId}"`)
+      .then((result) => result)
+      .catch((error) => error);
+  }
+
+  async getKeywords() {
+    const keyword = new Keyword(this.request);
+    return keyword.query(`SELECT *`, `iddocument_section = "${this.idQuery}"`)
       .then((result) => result)
       .catch((error) => error);
   }

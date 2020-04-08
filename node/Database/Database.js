@@ -14,7 +14,7 @@ const { ParseSql } = require(`./ParseSQL`);
  */
 
 class Database {
-  constructor(request) {
+  constructor() {
     this.database = `p2`;
     this.connect = mysql.createConnection({
       host: `213.32.247.201`,
@@ -24,8 +24,6 @@ class Database {
       database: this.database,
     });
     this.table = `database`;
-    this.request = request;
-    this.queryId = request.params.queryId;
   }
   /* Input:  Metoden modtager et optional texton variabel, som defaulter til true hvis den ikke medsendes.
    * Output: Metoden har som (primaer) sideeffect information om hvordan querymetoden bruges.

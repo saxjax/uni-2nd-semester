@@ -31,7 +31,7 @@ class ParseSql {
       }
     }
     else {
-      this.parsedData.push(this.returnEmptyMultiobject());
+      this.parsedData = data;
     }
     return this.parsedData;
   }
@@ -127,22 +127,22 @@ class ParseSql {
 
   returnEmptyMultiobject() {
     return {
-      elementtype: `Not set`,
+      elementtype: `undefined`,
       iddocument: `00000000-00000-0000-0000-000000000000`,
       iddocument_section: `00000000-00000-0000-0000-000000000000`,
       idquiz: `00000000-00000-0000-0000-000000000000`,
       idflashcard: `00000000-00000-0000-0000-000000000000`,
       idquestion: `00000000-00000-0000-0000-000000000000`,
       section_number: `0`,
-      title: `Not set`,
-      content: `Not set`,
-      teaser: `Not set`,
-      keywords: `Not set`,
-      question: `Not set`,
-      answer1: `Not set`,
-      answer2: `Not set`,
-      answer3: `Not set`,
-      answer4: `Not set`,
+      title: `undefined`,
+      content: `undefined`,
+      teaser: `undefined`,
+      keywords: `undefined`,
+      question: `undefined`,
+      answer1: `undefined`,
+      answer2: `undefined`,
+      answer3: `undefined`,
+      answer4: `undefined`,
       correctness: `0000`,
     };
   }

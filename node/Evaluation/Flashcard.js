@@ -1,7 +1,7 @@
 const { Evaluation } = require(`../Evaluation/Evaluation.js`);
 
 class Flashcard extends Evaluation {
-  constructor() {
+  constructor(request) {
     super();
     this.name = `Flashcard`;
     this.table = `flashcard`;
@@ -10,6 +10,9 @@ class Flashcard extends Evaluation {
     this.concept = `Not set`;// begreb
     this.definition = `Not set`;
     // correctness er en binær repræsentation af svarernes sandhadsværdi "0001" betyder at answers[3] i er korrekt de andre er false!
+
+    this.request = request;
+    this.queryId = request !== undefined ? request.params.queryId : undefined;
   }
 
   // FIXME: virker ikke!!

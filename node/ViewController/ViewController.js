@@ -6,7 +6,6 @@ const { Quiz } = require(`../Evaluation/Quiz`);
 const { Flashcard } = require(`../Evaluation/Flashcard`);
 const { User } = require(`../User/User`);
 
-
 class ViewController {
   constructor(req) {
     this.name = `ViewController`;
@@ -82,8 +81,8 @@ class ViewController {
   // output: Array af Alle tilg�ngelige sections i databasen sendes som
   //         array: afsnit til /www/views/rapport.ejs
   async rapportPage(req, res) {
-    const doc = new Document(req);
-    const data = await doc.getEverything();
+    const sec = new Section(req);
+    const data = await sec.getEverything();
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
     res.render(this.ejs, { afsnit: data });
   }

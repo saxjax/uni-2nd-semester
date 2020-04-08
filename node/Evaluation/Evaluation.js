@@ -1,13 +1,16 @@
 const { Database } = require(`../Database/Database.js`);
 
 class Evaluation extends Database {
-  constructor() {
+  constructor(request) {
     super();
     this.name = `Evaluation`;
     this.table = `quiz`;
     this.iddocument = `Not set`;
     this.elementtype = `Not set`;
     this.title = `Not set`;
+
+    this.request = request;
+    this.queryId = request !== undefined ? request.params.queryId : undefined;
   }
 
   // Henter alle evalueringer i this.table som er tilknyttet det pågældende iddocument_section

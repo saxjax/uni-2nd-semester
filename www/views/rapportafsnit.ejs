@@ -15,18 +15,18 @@
                         <div class = "leftside"> 
                 
                             <H2> EVALUERINGER FOR AFSNITTET</H2><br>
-                            <% quizzes.forEach( (element) => { %>
+                            <% if(quizzes) { quizzes.forEach( (element) => { %>
                                 <p> Titel: <%= element.title %></p>
                                 <a href="/evalueringer/quiz/<%= element.idquiz %>">
                                     <img id="quiz_for_section" src="/img/Design/quiz.png"><br>
                                 </a>
-                            <% }) %>
-                            <% flashcards.forEach( (element) => { %>
+                            <% })} %>
+                            <% if(flashcards) { flashcards.forEach( (element) => { %>
                                 <p><%= element.title %>  </p>
                                 <a href="/evalueringer/flashcard/<%= element.idflashcard %>">
                                     <img id="flashcard_for_section" src="/img/Design/flashcard.png">
                                 </a>
-                            <% }) %>
+                            <% })} %>
                         </div>
                     </div>
                     <div class = "col">
