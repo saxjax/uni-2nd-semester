@@ -3,18 +3,28 @@ const { Evaluation } = require(`../Evaluation/Evaluation.js`);
 /* UNDER CONSTRUCTION */
 
 class Flashcard extends Evaluation {
-  /* UNDER CONSTRUCTION */
-  constructor(request) {
+  /* Input : requestet der sendes fra en klient, samt inheritance af Database objektet.
+   * Output: Et objekt med unikt ID konstrueret med de givne variable tilknyttet det.
+   * Variablene over mellemrummet inheriter og overskriver JS database modulet.
+   * Elementtype er en kolonne i databasen der angiver type, mens table angiver tabellen.
+   * Variablene under mellemrummet har navn efter tabelens SQL database kolonner.
+   * groupId variablen hentes fra cookies, da de altid skal være tilgængelige.
+   * Værdier sat til null er de parent ID'er som objektet har i sig, der endnu ikke har en funktion.
+   * idFlashcard variablen hentes fra parametrene, da den sendes med en GET/SELECT request
+   * Andre variable hentes fra body, da de sendes med en POST/INSERT eller PUT/UPDATE request
+   */
+  constructor(req) {
     super();
     this.elementtype = `flashcard`;
     this.table = `flashcard`;
-    this.idfalshcard = `Not set`;
+
+    this.idGroup = (typeof req.session.idGroup  !== `undefined` ? req.session.idGroup  : undefined);
+    this.idUser = null;
+    this.idDocument = null;
+    this.idSection = null;
+    this.idFlashcard = (typeof req.params.idFlashcard       !== `undefined` ? req.session.idFlashcard      : undefined);
     this.concept = `Not set`;// begreb
     this.definition = `Not set`;
-    // correctness er en binær repræsentation af svarernes sandhadsværdi "0001" betyder at answers[3] i er korrekt de andre er false!
-
-    this.request = request;
-    this.queryId = request !== undefined ? request.params.queryId : undefined;
   }
 
   // FIXME: virker ikke!!

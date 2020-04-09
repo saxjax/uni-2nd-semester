@@ -12,9 +12,11 @@ class Section extends Database {
   /* Input : requestet der sendes fra en klient, samt inheritance af Database objektet.
    * Output: Et objekt med unikt ID konstrueret med de givne variable tilknyttet det.
    * Variablene over mellemrummet inheriter og overskriver JS database modulet.
+   * Elementtype er en kolonne i databasen der angiver type, mens table angiver tabellen.
    * Variablene under mellemrummet har navn efter tabelens SQL database kolonner.
    * groupId variablen hentes fra cookies, da de altid skal være tilgængelige.
-   * queryId variablen hentes fra parametrene, da de sendes med en GET/SELECT request
+   * Værdier sat til null er de parent ID'er som objektet har i sig, der endnu ikke har en funktion.
+   * idSection variablen hentes fra parametrene, da den sendes med en GET/SELECT request
    * Andre variable hentes fra body, da de sendes med en POST/INSERT eller PUT/UPDATE request
    */
   constructor(req) {
@@ -22,12 +24,14 @@ class Section extends Database {
     this.elementtype = `section`;
     this.table = `document_section`;
 
-    this.groupId         = (typeof req.session.groupId     !== `undefined` ? req.session.groupId      : undefined);
-    this.queryId         = (typeof req.params.queryId      !== `undefined` ? req.params.queryId       : undefined);
-    this.section_number  = (typeof req.body.sectionNumber  !== `undefined` ? req.body.section_number  : undefined);
-    this.section_title   = (typeof req.body.sectionTitle   !== `undefined` ? req.body.section_title   : undefined);
-    this.section_teaser  = (typeof req.body.sectionTeaser  !== `undefined` ? req.body.section_teaser  : undefined);
-    this.section_content = (typeof req.body.sectionContent !== `undefined` ? req.body.section_content : undefined);
+    this.idGroup        = (typeof req.session.idGroup     !== `undefined` ? req.session.idGroup     : undefined);
+    this.idUser         = null;
+    this.idDocument     = null;
+    this.idSection      = (typeof req.params.idSection    !== `undefined` ? req.params.idSection    : undefined);
+    this.sectionNumber  = (typeof req.body.sectionNumber  !== `undefined` ? req.body.sectionNumber  : undefined);
+    this.sectionTitle   = (typeof req.body.sectionTitle   !== `undefined` ? req.body.sectionTitle   : undefined);
+    this.sectionTeaser  = (typeof req.body.sectionTeaser  !== `undefined` ? req.body.sectionTeaser  : undefined);
+    this.sectionContent = (typeof req.body.sectionContent !== `undefined` ? req.body.sectionContent : undefined);
   }
 
   /* Input : En Section er blevet oprettet med et unikt iddocument_section

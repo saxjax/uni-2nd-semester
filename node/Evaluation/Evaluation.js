@@ -4,15 +4,13 @@ const { Database } = require(`../Database/Database.js`);
 
 class Evaluation extends Database {
   /* UNDER CONSTRUCTION */
-  constructor(request) {
+  /* Denne abstrakte klasse skal defineres ud fra hvad der samler de forskellige evalueringsmetoder
+   * Mangler design for hvad den kan tilføje af funktionalitet. Kræver diskussion.
+   */
+  constructor() {
     super();
     this.elementtype = null;
     this.table = null;
-    this.iddocument = `Not set`;
-    this.title = `Not set`;
-
-    this.request = request;
-    this.queryId = request !== undefined ? request.params.queryId : undefined;
   }
 
   // Henter alle evalueringer i this.table som er tilknyttet det pågældende iddocument_section

@@ -4,12 +4,14 @@ const { Database } = require(`../Database/Database.js`);
 const { Keyword } = require(`../Section/Keyword`);
 
 class Document extends Database {
-  constructor(request) {
+  constructor(req) {
     super();
     this.elementtype = `document`;
     this.table = `document`;
 
-    this.queryId = (typeof request.params.queryId !== `undefined` ? request.params.queryId : undefined);
+    this.idGroup = (typeof req.session.idGroup  !== `undefined` ? req.session.idGroup  : undefined);
+    this.idUser = null;
+    this.idDocument = (typeof req.params.idDocument       !== `undefined` ? req.session.idDocument      : undefined);
   }
 
   async getEverything() {

@@ -24,6 +24,7 @@ class ParseSql {
           case `quiz_question`: this.parsedData.push(this.parseQuizQuestion(data[i])); break;
           case `flashcard`:     this.parsedData.push(this.parseFlashcard(data[i]));    break;
           case `keyword`:       this.parsedData.push(this.parseKeyword(data[i]));      break;
+          case `user`:          this.parsedData.push(this.parseUser(data[i]));         break;
           default:
             this.parsedData.push(data[i]);
             console.warn(`WARNING: Elementtype "${data[i].elementtype}" is not defined. Parsing skipped!`);
@@ -38,7 +39,7 @@ class ParseSql {
   }
 
   /* Formål: At parse Section-data
-   * Input:  Et dataobjekt af typen "section"
+   * Input:  Et dataobjekt af typen "section" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
    */
   parseSection(data) {
@@ -51,9 +52,9 @@ class ParseSql {
     }
     return {
       elementtype: `${data.elementtype}`,
-      iddocument: `${data.iddocument}`,
-      iddocument_section: `${data.iddocument_section}`,
-      section_number: data.section_number,
+      idDocument: `${data.iddocument}`,
+      idSection: `${data.iddocument_section}`,
+      sectionNumber: data.section_number,
       title: `${data.section_title}`,
       content: `${data.section_content}`,
       teaser: `${teaser}`,
@@ -62,27 +63,27 @@ class ParseSql {
   }
 
   /* Formål: At parse Quiz-data
-   * Input:  Et dataobjekt af typen "quiz"
+   * Input:  Et dataobjekt af typen "quiz" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
    */
   parseQuiz(data) {
     return {
       elementtype: `${data.elementtype}`,
-      idquiz: `${data.idquiz}`,
-      iddocument: `${data.iddocument}`,
+      idQuiz: `${data.idquiz}`,
+      idDocument: `${data.iddocument}`,
       title: `${data.section_title}`,
       keywords: undefined,
     };
   }
 
   /* Formål: At parse QuizQuestion-data
-   * Input:  Et dataobjekt af typen "quiz_question"
+   * Input:  Et dataobjekt af typen "quiz_question" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
    */
   parseQuizQuestion(data) {
     return {
-      idquestion: `${data.idquiz_question}`,
-      idquiz: `${data.idquiz}`,
+      idQuestion: `${data.idquiz_question}`,
+      idQuiz: `${data.idquiz}`,
       question: `${data.question}`,
       answer1: `${data.answer1}`,
       answer2: `${data.answer2}`,
@@ -93,20 +94,32 @@ class ParseSql {
   }
 
   /* Formål: At parse Flashcard-data
-   * Input:  Et dataobjekt af typen "flashcard"
+   * Input:  Et dataobjekt af typen "flashcard" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
    * FIXME: Metoden skal udvikles
    */
   parseFlashcard(data) {
+    console.warn(`WARNING: Elementtype oprettet, men parser metode IKKE oprettet!`);
     return data;
   }
 
   /* Formål: At parse Keyword-data
-   * Input:  Et dataobjekt af typen "keyword"
+   * Input:  Et dataobjekt af typen "keyword" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
    * FIXME: Metoden skal udvikles
    */
   parseKeyword(data) {
+    console.warn(`WARNING: Elementtype oprettet, men parser metode IKKE oprettet!`);
+    return data;
+  }
+
+  /* Formål: At parse User-data
+   * Input:  Et dataobjekt af typen "user" fra parse metoden.
+   * Output: Et parset dataobjekt, som kan forståes på frontend
+   * FIXME: Metoden skal udvikles
+   */
+  parseUser(data) {
+    console.warn(`WARNING: Elementtype oprettet, men parser metode IKKE oprettet!`);
     return data;
   }
 }

@@ -4,18 +4,17 @@ const path = require(`path`);
 const { Section } = require(`../Section/Section`);
 const { Quiz } = require(`../Evaluation/Quiz`);
 const { Flashcard } = require(`../Evaluation/Flashcard`);
+const { Keyword } = require(`../Section/Keyword`);
 const { User } = require(`../User/User`);
 
 /* UNDER CONSTRUCTION */
 
 class ViewController {
   /* UNDER CONSTRUCTION */
-  constructor(req) {
+  constructor() {
     this.name = `ViewController`;
-    this.ejs = {};
-    this.validated = false;
     this.root = __dirname.slice(0, -(`node/${this.name}`.length));
-    this.request = req;
+    this.ejs = ``;
   }
 
   /* Dette er lavet for at kunne teste meta data fra SQL databasen */

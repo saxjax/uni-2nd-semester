@@ -10,6 +10,7 @@ class RedirectController {
   constructor() {
     this.name = `RedirectController`;
     this.root = __dirname.slice(0, -(`node/${this.name}`.length));
+    this.ejs = ``;
   }
 
   /* UNDER CONSTRUCTION */
