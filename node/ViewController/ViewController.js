@@ -6,13 +6,24 @@ const { Quiz } = require(`../Evaluation/Quiz`);
 const { Flashcard } = require(`../Evaluation/Flashcard`);
 const { User } = require(`../User/User`);
 
+/* UNDER CONSTRUCTION */
+
 class ViewController {
+  /* UNDER CONSTRUCTION */
   constructor(req) {
     this.name = `ViewController`;
     this.ejs = {};
     this.validated = false;
     this.root = __dirname.slice(0, -(`node/${this.name}`.length));
     this.request = req;
+  }
+
+  /* Dette er lavet for at kunne teste meta data fra SQL databasen */
+  async head(req, res) {
+    const object = new User(req);
+    console.log(object);
+    console.log(await object.query(`HEAD`));
+    res.send(`It worked`);
   }
 
   /* UNDER CONSTRUCTION */

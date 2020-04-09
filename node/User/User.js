@@ -5,23 +5,29 @@ const { Database } = require(`../Database/Database.js`);
 /* UNDER CONSTRUCTION */
 
 class User extends Database {
-  /* UNDER CONSTRUCTION */
+  /* Input : requestet der sendes fra en klient, samt inheritance af Database objektet.
+   * Output: Et objekt konstrueret med de givne variable tilknyttet det.
+   * Variablene over mellemrummet inheriter og overskriver JS database modulet.
+   * Variablene under mellemrummet har navn efter tabelens SQL database kolonner.
+   * groupId variablen hentes fra cookies, da de altid skal være tilgængelige.
+   * queryId variablen hentes fra parametrene, da de sendes med en GET/SELECT request
+   * Andre variable hentes fra body, da de sendes med en POST/INSERT eller PUT/UPDATE request
+   */
   constructor(req) {
     super();
     this.elementtype = `user`;
     this.table = `user`;
-    this.data = ``;
-    this.choice = `*`;
-    this.queries = ``;
-    this.objects = [];
-    this.username = req.body.username;
-    this.password = req.body.password;
-    this.firstName = req.body.firstName;
-    this.lastName = req.body.lastName;
-    this.studySubject = req.body.studySubject;
-    this.semester = req.body.semester;
-    this.university = req.body.university;
-    this.email = req.body.email;
+
+    this.groupId      = (typeof req.session.groupId   !== `undefined` ? req.session.groupId   : undefined);
+    this.queryId      = (typeof req.params.queryId    !== `undefined` ? req.session.userId    : undefined);
+    this.username     = (typeof req.body.username     !== `undefined` ? req.body.username     : undefined);
+    this.password     = (typeof req.body.password     !== `undefined` ? req.body.password     : undefined);
+    this.firstName    = (typeof req.body.firstName    !== `undefined` ? req.body.firstName    : undefined);
+    this.lastName     = (typeof req.body.lastName     !== `undefined` ? req.body.lastName     : undefined);
+    this.studySubject = (typeof req.body.studySubject !== `undefined` ? req.body.studySubject : undefined);
+    this.semester     = (typeof req.body.semester     !== `undefined` ? req.body.semester     : undefined);
+    this.university   = (typeof req.body.university   !== `undefined` ? req.body.university   : undefined);
+    this.email        = (typeof req.body.email        !== `undefined` ? req.body.email        : undefined);
   }
 
   /* UNDER CONSTRUCTION */

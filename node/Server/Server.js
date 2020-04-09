@@ -19,7 +19,7 @@ class Server {
    */
   constructor(settings) {
     this.app = express();
-    this.root = __dirname.slice(0, -(`node/${this.name}`.length));
+    this.root = __dirname.slice(0, -(`node/Server`.length));
 
     this.name = settings.name;
     this.port = settings.port;
@@ -55,6 +55,7 @@ class Server {
     this.app.get(`/rapport/:queryId`,  (req, res) => Show.rapportSectionPage(req, res));
     this.app.get(`/elementList`,                  (req, res) => Show.elementList(req, res));
     this.app.get(`/upload/:type`,                 (req, res) => Show.uploadPage(req, res));
+    this.app.get(`/head`, (req, res) => Show.head(req, res));
   }
 
   /* UNDER CONSTRUCTION */
@@ -69,7 +70,7 @@ class Server {
 
   /* UNDER CONSTRUCTION */
   staticMiddleware() {
-    this.app.use(express.static(`${this.root}/www`));
+    this.app.use(express.static(`${this.root}/www/`));
     this.app.use(this.logger);
   }
 
@@ -79,7 +80,11 @@ class Server {
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
     this.app.use(session({
-      key: `user_sid`, secret: `SECRET_SALT_CODE_BY_MIKE123456789`, resave: false, saveUninitialized: false, cookie: { maxAge: 600000 },
+      key: `user_sid`,
+      secret: `SECRET_SALT_CODE_BY_MIKE123456789`,
+      resave: false,
+      saveUninitialized: false,
+      cookie: { maxAge: 600000 },
     }));
   }
 
