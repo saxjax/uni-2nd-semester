@@ -12,7 +12,7 @@ function showDefinition(definition) {
 
   // button to be pressed
   document.getElementById(`definition`).addEventListener(`click`, () => {
-    definitionSpace.src = `/img/Design/flashcard.png`;
+    definitionSpace.innerText = definition;
   });
 }
 
