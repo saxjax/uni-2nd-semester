@@ -27,7 +27,7 @@ class Database {
       host: `213.32.247.201`,
       user: `ADMIN`,
       port: `3306`,
-      password: `"7Tn!W7'>vSJ4Zw#'_5t4uB2wtk2+LvGV"!`,
+      password: `7Tn!W7'>vSJ4Zw#'_5t4uB2wtk2+LvGV`,
       database: this.database,
     });
 
