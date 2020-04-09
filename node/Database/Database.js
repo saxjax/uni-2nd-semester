@@ -97,20 +97,24 @@ class Database {
   }
 
   /* Formål: Automatisk oprettelse af et objekt når det bliver gettet via et id.
-   * Input :
-   * Output:
+   * Input : Et kald fra et unikt objekt, som desuden vælger hvilken kolonne der søges efter.
+   * Output: En enkel værdi ud fra id og kolonne, der bruges til at konstruere objektet.
    */
-  async getThis() {
-    console.log(`Tingting`);
+  async getColumn(choice) {
+    this.query(`SELECT ${choice}`, `${this.idColumnName} = ${this.queryId}`)
+      .then((result) => result)
+      .catch((error) => error);
   }
 
   /* Formål: En almen funktion så alle objekter der knytter sig til et objekt kan hentes.
              Denne er ment som generel case til at hente FLERE objekter der knytter sig til ET objekt.
-   * Input : Et objekt oprettet uden request indeni et andet, unikt oprettet objekt.
+   * Input : Et kald fra et objekt oprettet uden request indeni et andet, unikt oprettet objekt.
    * Output: En liste af underobjekter som er udvalgt ud fra Id'et i det øvre objekt.
    */
   async getAll() {
-    console.log(`Tingting`);
+    this.query(`SELECT *`, `${this.idColumnName} = ${this.queryId}`)
+      .then((result) => result)
+      .catch((error) => error);
   }
 
   /* Input:  Metoden modtager de valg som brugeren har lavet
@@ -249,13 +253,13 @@ class Database {
   /* Metoden insertSplitter bliver her beskrevet mere i detaljen for dem der ikke kender saa meget til regular expressions.
            * Lokken har til formaal at opsplitte "col = var" grupper i kolonner og variable, saa de kan bruges som INSERT SQL
            * Der initialiseres en "done" variabel der returnere true naar der ikke er flere ´col = var´ grupper tilbage
-           * /^[@\w+]/.exec(dataCopy) finder det forste alfanumeriske element og laegger det til column variablen --
+           * /^\w+/.exec(dataCopy) finder det forste alfanumeriske element og laegger det til column variablen --
            * -- i et JSON objekt med matchet som det forste element
            * data = data.slice "slicer" det alfanumeriske element vaek + " = " strengen, saa variablen i "col = var" konstruktionen er klar.
            * values bruger samme regular expression for at faa variablen ud af den nu forkortede data streng
            * Der tjekkes nu for, om der er en ny "col = var" ved at se om det naeste element er et AND
-           * /^[@\w+]/.exec(dataCopy) returnere null hvis der IKKE er et match, hvilket giver en typefejl naar der skal ledes efter --
-           * -- det forste element i /^[@\w+]/.exec(dataCopy)[0]
+           * /^\w+/.exec(dataCopy) returnere null hvis der IKKE er et match, hvilket giver en typefejl naar der skal ledes efter --
+           * -- det forste element i /^\w+/.exec(dataCopy)[0]
            * Er der det appendes der ", " for at gore det brugbart som en INSERT SQL, og "AND " slices vaek fra datasaettet
            * Er der ikke flere elementer, dvs. der er ikke flere "col = var" der skal postes, saa giver det den fornaevnte typefejl.
            * Inden der returnes true sikrer vi os at det rent faktisk er en typefejl, og ikke alt muligt andet der kunne vaere gaaet galt.

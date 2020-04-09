@@ -16,13 +16,14 @@ class Flashcard extends Evaluation {
   constructor(req) {
     super();
     this.elementtype = `flashcard`;
+    this.idColumnName = `flashcard`;
     this.table = `flashcard`;
 
     // this.idGroup = (typeof req.session.idGroup  !== `undefined` ? req.session.idGroup  : undefined);
     this.idUser = null;
     this.idDocument = null;
     this.idSection = null;
-    this.idFlashcard = (typeof req.params.idFlashcard       !== `undefined` ? req.session.idFlashcard      : undefined);
+    this.queryId = (typeof req.params.idFlashcard       !== `undefined` ? req.session.idFlashcard      : undefined);
     this.concept = `Not set`;// begreb
     this.definition = `Not set`;
   }

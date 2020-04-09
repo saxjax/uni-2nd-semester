@@ -78,6 +78,8 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   assert.true(expected,
     `(1.1) {Altid true hvis der IKKE sker en error} Databasen skal have adgang til SQL databasen.`);
 
+  await resetDB();
+
   /* 2.1 */
   try {
     expected = `SELECT * FROM ${object.database}.${object.table} WHERE testfield = "test"`;

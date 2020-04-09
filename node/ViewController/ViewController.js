@@ -5,7 +5,7 @@ const { Document } = require(`../Document/Document`);
 const { Section } = require(`../Section/Section`);
 const { Quiz } = require(`../Evaluation/Quiz`);
 const { Flashcard } = require(`../Evaluation/Flashcard`);
-const { Keyword } = require(`../Section/Keyword`);
+const { Group } = require(`../Group/Group`);
 const { User } = require(`../User/User`);
 
 /* UNDER CONSTRUCTION */

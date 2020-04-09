@@ -5,17 +5,21 @@ const { Section } = require(`../Section/Section`);
 const { Keyword } = require(`../Section/Keyword`);
 
 class Document extends Database {
-  /* UNDER CONSTRUCTION */
+  /* UNDER CONSTRUCTION
+   */
   constructor(req) {
     super();
     this.elementtype = `document`;
+    this.idColumnName = `iddocument`;
     this.table = `document`;
 
-    this.idGroup = (typeof req.session.idGroup  !== `undefined` ? req.session.idGroup  : undefined);
-    this.idUser = null;
-    this.idDocument = (typeof req.params.idDocument       !== `undefined` ? req.session.idDocument      : undefined);
+    this.idGroup = (typeof req.session.idGroup   !== `undefined` ? req.session.idGroup    : undefined);
+    this.idUser  = null;
+    this.queryId = (typeof req.params.idDocument !== `undefined` ? req.session.idDocument : undefined);
+    this.title   = (typeof req.params.title      !== `undefined` ? req.session.title      : undefined);
   }
 
+  /* UNDER CONSTRUCTION */
   async getSections() {
     const sec = new Section();
     return sec.query(`SELECT *`, `iddocument = ${this.idDocument}`)

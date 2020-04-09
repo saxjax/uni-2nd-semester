@@ -10,6 +10,7 @@ class Evaluation extends Database {
   constructor() {
     super();
     this.elementtype = null;
+    this.idColumnName = null;
     this.table = null;
   }
 }
