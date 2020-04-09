@@ -18,7 +18,7 @@ class Keyword extends Database {
     this.elementtype = `keyword`;
     this.table = `document_keyword`;
 
-    this.idGroup         = (typeof req.session.idGroup  !== `undefined` ? req.session.idGroup  : undefined);
+    // this.idGroup         = (typeof req.session.idGroup  !== `undefined` ? req.session.idGroup  : undefined);
     this.idUser          = null;
     this.idDocument      = null;
     this.idSection       = null;

@@ -18,7 +18,7 @@ class Flashcard extends Evaluation {
     this.elementtype = `flashcard`;
     this.table = `flashcard`;
 
-    this.idGroup = (typeof req.session.idGroup  !== `undefined` ? req.session.idGroup  : undefined);
+    // this.idGroup = (typeof req.session.idGroup  !== `undefined` ? req.session.idGroup  : undefined);
     this.idUser = null;
     this.idDocument = null;
     this.idSection = null;
@@ -32,7 +32,7 @@ class Flashcard extends Evaluation {
   // Input : this.idFlashcard fra constructoren
   // Output: array med 1 element indeholdende et flashcard
   async getFlashcard() {
-    return this.query(`SELECT *`, `idflashcard = "${this.queryId}"`)
+    return this.query(`SELECT *`, `idflashcard = "${this.idFlashcard}"`)
       .then((result) => result)
       .catch((error) => error);
   }

@@ -19,7 +19,7 @@ class User extends Database {
     this.elementtype = `user`;
     this.table = `user`;
 
-    this.idGroup      = (typeof req.session.idGroup     !== `undefined` ? req.session.idGroup     : undefined);
+    // this.idGroup      = (typeof req.session.idGroup     !== `undefined` ? req.session.idGroup     : undefined);
     this.idUser       = (typeof req.params.idUser       !== `undefined` ? req.session.idUser      : undefined);
     this.username     = (typeof req.body.username       !== `undefined` ? req.body.username       : undefined);
     this.password     = (typeof req.body.password       !== `undefined` ? req.body.password       : undefined);

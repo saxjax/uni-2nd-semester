@@ -17,7 +17,7 @@ class Document extends Database {
   }
 
   async getSections() {
-    const sec = new Section(); 
+    const sec = new Section();
     return sec.query(`SELECT *`, `iddocument = ${this.idDocument}`)
       .then((result) => result)
       .catch((error) => error);

@@ -27,14 +27,13 @@ class Database {
       host: `213.32.247.201`,
       user: `ADMIN`,
       port: `3306`,
-      password: `Admin123!`,
+      password: `"7Tn!W7'>vSJ4Zw#'_5t4uB2wtk2+LvGV"!`,
       database: this.database,
     });
 
     this.table = `database`;
     this.elementtype = `test`;
-    this.groupId = 0;
-    this.userId = 0;
+    this.idColumnName = `iddatabase`;
   }
 
   /* Formål: Naar der sker fejl ved brug af querymetoden vil denne metode give den nodvendige information med det samme.
@@ -95,6 +94,23 @@ class Database {
         }
       });
     });
+  }
+
+  /* Formål: Automatisk oprettelse af et objekt når det bliver gettet via et id.
+   * Input :
+   * Output:
+   */
+  async getThis() {
+    console.log(`Tingting`);
+  }
+
+  /* Formål: En almen funktion så alle objekter der knytter sig til et objekt kan hentes.
+             Denne er ment som generel case til at hente FLERE objekter der knytter sig til ET objekt.
+   * Input : Et objekt oprettet uden request indeni et andet, unikt oprettet objekt.
+   * Output: En liste af underobjekter som er udvalgt ud fra Id'et i det øvre objekt.
+   */
+  async getAll() {
+    console.log(`Tingting`);
   }
 
   /* Input:  Metoden modtager de valg som brugeren har lavet

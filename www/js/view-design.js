@@ -1,8 +1,4 @@
-console.log(window.location.href);
-
 function showImages() {
-  console.log(`We're in`);
-
   // Rapport
   if (window.location.href === `http://localhost:3000/rapport`) {
     document.getElementById(`design-rapport`).addEventListener(`click`, () => {

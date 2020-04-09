@@ -17,7 +17,7 @@ class Quiz extends Evaluation {
     this.elementtype = `quiz`;
     this.table = `quiz`;
 
-    this.idGroup = (typeof req.session.idGroup  !== `undefined` ? req.session.idGroup  : undefined);
+    // this.idGroup = (typeof req.session.idGroup  !== `undefined` ? req.session.idGroup  : undefined);
     this.idUser = null;
     this.idQuiz = (typeof req.params.idQuiz       !== `undefined` ? req.session.idQuiz      : undefined);
     this.question = `Not set`;

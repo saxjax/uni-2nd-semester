@@ -1,6 +1,8 @@
 /* eslint no-console: off */
 
 const { Database } = require(`../Database/Database`);
+const { Flashcard } = require(`../Evaluation/Flashcard`);
+const { Quiz } = require(`../Evaluation/Quiz`);
 
 /* UNDER CONSTRUCTION */
 
@@ -18,9 +20,32 @@ class Group extends Database {
   constructor(req) {
     super();
     this.elementtype = `group`;
+    this.idColumnName = `iduser_group`;
     this.table = `group`;
 
     this.idGroup = (typeof req.params.idGroup       !== `undefined` ? req.session.idGroup      : undefined);
+  }
+
+  /* Input : En Group er blevet oprettet med et unikt iduser_group
+   * Output: Returnere alle flashcard data som er tilknyttet den givne gruppe.
+   * Formål: At kunne få alle flashcard data tilhørende sectionen.
+   */
+  async getAllFlashcards() {
+    const flash = new Flashcard();
+    return flash.query(`SELECT *`, `iddocument_section = "${this.idGroup}"`)
+      .then((result) => result)
+      .catch((error) => error);
+  }
+
+  /* Input : En Group er blevet oprettet med et unikt iduser_group
+   * Output: Returnere alle quiz data som er tilknyttet den givne gruppe.
+   * Formål: At kunne få alle quiz data tilhørende sectionen.
+   */
+  async getAllQuizzes() {
+    const q = new Quiz();
+    return q.query(`SELECT *`, `iddocument_section = "${this.idGroup}"`)
+      .then((result) => result)
+      .catch((error) => error);
   }
 }
 

@@ -25,7 +25,7 @@ class Section extends Database {
     this.elementtype = `section`;
     this.table = `document_section`;
 
-    this.idGroup        = (typeof req.session.idGroup     !== `undefined` ? req.session.idGroup     : undefined);
+    // this.idGroup        = (typeof req.session.idGroup     !== `undefined` ? req.session.idGroup     : undefined);
     this.idUser         = null;
     this.idDocument     = null;
     this.idSection      = (typeof req.params.idSection    !== `undefined` ? req.params.idSection    : undefined);

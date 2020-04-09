@@ -79,6 +79,9 @@ class Server {
     this.app.use(upload());
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
+  }
+
+  sessionAndCookieMiddleware() {
     this.app.use(session({
       key: `user_sid`,
       secret: `SECRET_SALT_CODE_BY_MIKE123456789`,

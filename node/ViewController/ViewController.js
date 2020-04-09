@@ -46,29 +46,24 @@ class ViewController {
 
   /* UNDER CONSTRUCTION */
   loginPage(req, res) {
-    if (req.session.loggedin === true) {
-      this.ejs = path.join(`${this.root}/www/views/home.ejs`);
-    }
-    else {
-      this.ejs = path.join(`${this.root}/www/views/login.ejs`);
-    }
+    this.ejs = path.join(`${this.root}/www/views/login.ejs`);
     res.render(this.ejs);
   }
 
-  // Formål: Viser alle tilg�ngelige evalueringer fra databasen p� siden evalueringer.ejs
+  // Formål: Viser alle tilg�ngelige evalueringer i gruppen p� siden evalueringer.ejs
   // Input : Non
   // Output: Array af Alle tilg�ngelige evalueringer i databasen b�de quizzes og flashcards sendes som
   //         arrays :flashcards og quizzes til /www/views/evalueringer.ejs
   /* UNDER CONSTRUCTION */
   async evalueringerPage(req, res) {
-    const sec = new Section(req);
+    const group = new Group(req);
     const data = {
-      flashcards: await sec.getAllFlashcards(),
-      quizzes: await sec.getAllQuizzes(),
+      flashcards: await group.getAllFlashcards(),
+      quizzes: await group.getAllQuizzes(),
     };
 
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-    res.render(this.ejs, { flashcards: data.flashcards, quizzes: data.quizzes });
+    res.render(this.ejs, { data });
   }
 
   // Formål: Viser indholdet af enten et flashcard eller en quizz vha. siden evalueringerFlashcard.ejs eller
