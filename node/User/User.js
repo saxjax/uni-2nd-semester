@@ -7,6 +7,7 @@ const { Database } = require(`../Database/Database.js`);
 class User extends Database {
   /* Input : requestet der sendes fra en klient, samt inheritance af Database objektet.
    * Output: Et objekt med unikt ID konstrueret med de givne variable tilknyttet det.
+   * Udvidet Beskrivelse:
    * Variablene over mellemrummet inheriter og overskriver JS database modulet.
    * Variablene under mellemrummet har navn efter tabelens SQL database kolonner.
    * groupId variablen hentes fra cookies, da de altid skal være tilgængelige.

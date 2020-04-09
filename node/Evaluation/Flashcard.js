@@ -28,9 +28,9 @@ class Flashcard extends Evaluation {
   }
 
   // FIXME: virker ikke!!
-  // hent flashcard indhold for det pågældende idflashcard
-  // input: idflashcard
-  // output: array med 1 element indeholdende et flashcard
+  // Formål: Hent flashcard indhold for det pågældende idflashcard
+  // Input : this.idFlashcard fra constructoren
+  // Output: array med 1 element indeholdende et flashcard
   async getFlashcard() {
     return this.query(`SELECT *`, `idflashcard = "${this.queryId}"`)
       .then((result) => result)

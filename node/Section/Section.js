@@ -11,6 +11,7 @@ const { Quiz } = require(`../Evaluation/Quiz`);
 class Section extends Database {
   /* Input : requestet der sendes fra en klient, samt inheritance af Database objektet.
    * Output: Et objekt med unikt ID konstrueret med de givne variable tilknyttet det.
+   * Udvidet Beskrivelse:
    * Variablene over mellemrummet inheriter og overskriver JS database modulet.
    * Elementtype er en kolonne i databasen der angiver type, mens table angiver tabellen.
    * Variablene under mellemrummet har navn efter tabelens SQL database kolonner.
@@ -35,12 +36,22 @@ class Section extends Database {
   }
 
   /* Input : En Section er blevet oprettet med et unikt iddocument_section
+   * Output: Returnere alle data som er gemt i section tabellen til det tilknyttede id.
+   * Formål: At kunne få alle data tilhørende sectionen.
+   */
+  async getThis() {
+    return this.query(`SELECT *`, `iddocument_section = "${this.idSection}"`)
+      .then((result) => result)
+      .catch((error) => error);
+  }
+
+  /* Input : En Section er blevet oprettet med et unikt iddocument_section
    * Output: Returnere alle flashcard data som er tilknyttet den givne section.
    * Formål: At kunne få alle flashcard data tilhørende sectionen.
    */
   async getAllFlashcards() {
     const flash = new Flashcard();
-    return flash.query(`SELECT *`, `iddocument_section = "${this.queryId}"`)
+    return flash.query(`SELECT *`, `iddocument_section = "${this.idSection}"`)
       .then((result) => result)
       .catch((error) => error);
   }
@@ -51,17 +62,7 @@ class Section extends Database {
    */
   async getAllQuizzes() {
     const q = new Quiz();
-    return q.query(`SELECT *`, `iddocument_section = "${this.queryId}"`)
-      .then((result) => result)
-      .catch((error) => error);
-  }
-
-  /* Input : En Section er blevet oprettet med et unikt iddocument_section
-   * Output: Returnere alle data som er gemt i section tabellen til det tilknyttede id.
-   * Formål: At kunne få alle data tilhørende sectionen.
-   */
-  getData() {
-    return this.query(`SELECT *`, `iddocument_section = "${this.queryId}"`)
+    return q.query(`SELECT *`, `iddocument_section = "${this.idSection}"`)
       .then((result) => result)
       .catch((error) => error);
   }

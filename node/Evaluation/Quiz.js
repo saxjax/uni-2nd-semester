@@ -3,6 +3,7 @@ const { Evaluation } = require(`../Evaluation/Evaluation.js`);
 class Quiz extends Evaluation {
   /* Input : requestet der sendes fra en klient, samt inheritance af Database objektet.
    * Output: Et objekt med unikt ID konstrueret med de givne variable tilknyttet det.
+   * Udvidet Beskrivelse:
    * Variablene over mellemrummet inheriter og overskriver JS database modulet.
    * Elementtype er en kolonne i databasen der angiver type, mens table angiver tabellen.
    * Variablene under mellemrummet har navn efter tabelens SQL database kolonner.
@@ -25,12 +26,12 @@ class Quiz extends Evaluation {
     this.correctness = `0000`;
   }
 
-  // hent quiz_question indhold for det pågældende idquiz
-  // input: idquiz
-  // output: array indeholdende et antal quiz_question elementer
+  // Formål: Hent quiz_question indhold for det pågældende idquiz
+  // Input : this.idQuiz fra constructoren
+  // Output: Array indeholdende et antal quizQuestion elementer
   async getQuiz() {
     this.table = `quiz_question`;
-    return this.query(`SELECT *`, `idquiz = "${this.queryId}"`)
+    return this.query(`SELECT *`, `idquiz = "${this.idQuiz}"`)
       .then((result) => result)
       .catch((error) => error);
   }

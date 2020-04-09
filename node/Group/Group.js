@@ -7,6 +7,7 @@ const { Database } = require(`../Database/Database`);
 class Group extends Database {
   /* Input : requestet der sendes fra en klient, samt inheritance af Database objektet.
    * Output: Et objekt med unikt ID konstrueret med de givne variable tilknyttet det.
+   * Udvidet Beskrivelse:
    * Variablene over mellemrummet inheriter og overskriver JS database modulet.
    * Elementtype er en kolonne i databasen der angiver type, mens table angiver tabellen.
    * Variablene under mellemrummet har navn efter tabelens SQL database kolonner.

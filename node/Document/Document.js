@@ -1,9 +1,11 @@
 /* eslint no-console: off */
 
 const { Database } = require(`../Database/Database.js`);
+const { Section } = require(`../Section/Section`);
 const { Keyword } = require(`../Section/Keyword`);
 
 class Document extends Database {
+  /* UNDER CONSTRUCTION */
   constructor(req) {
     super();
     this.elementtype = `document`;
@@ -14,6 +16,14 @@ class Document extends Database {
     this.idDocument = (typeof req.params.idDocument       !== `undefined` ? req.session.idDocument      : undefined);
   }
 
+  async getSections() {
+    const sec = new Section(); 
+    return sec.query(`SELECT *`, `iddocument = ${this.idDocument}`)
+      .then((result) => result)
+      .catch((error) => error);
+  }
+
+  /* UNDER CONSTRUCTION */
   async getEverything() {
     try {
       this.sectionData = await this.query(`SELECT *`);
@@ -30,10 +40,10 @@ class Document extends Database {
     }
   }
 
+  /* UNDER CONSTRUCTION */
   async getKeywordsForEvaluation() {
-    // console.log(`prøver at hente : ` + this.queryId);
     this.table = `document_keywords`;
-    return this.query(`SELECT *`, `idevaluations = "${this.queryId}"`)
+    return this.query(`SELECT *`, `idevaluations = "${this.idDocument}"`)
       .then((result) => result)
       .catch((error) => error);
   }

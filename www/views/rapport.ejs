@@ -27,7 +27,7 @@
                     </div>
                         <div class="section_list">
 
-                            <%  if(afsnit) { afsnit.forEach( (element) => { %>
+                            <%  if(data.section) { data.section.forEach( (element) => { %>
                                 <a href="/rapport/<%= element.iddocument_section %>" >
                                     <div class="card">
                                     <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>

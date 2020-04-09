@@ -1,8 +1,8 @@
-/* Pads a string to a certain length
- * Param paddingLength can both be positive or negative
- * - if length is positive adjust left
- * - if length is negative adjust right
- * Returns the padded string
+/* Formål: "Padder" en streng til en længde, så læsbarheden øges.
+ * Input: Param paddingLength can both be positive or negative
+ *        Hvis længden er positiv justere den til venstre.
+ *        Er længden derimod negativ, justere den til højre.
+ * Output: Returnere den "paddede" streng
  */
 function pad(str, newStrLen, padChar) {
   let newStr = ``;

@@ -14,12 +14,12 @@ const { ParseSql } = require(`./ParseSQL`);
  */
 
 class Database {
-  /* Input: Non
-   * Output: Extender alle disse variable til modellerne.
-   * Formål: konstruere forbindelse til databasen og øger genbrugelighed af koden.
+  /* Formål: konstruere forbindelse til databasen og øger genbrugelighed af koden.
    *         Giver desuden oversigt over alle de værdier som en given model skal huske at oversskrive.
    *         Alle variable efter mellemrummet skal overskrives af en model. Variablene over mellemrummet skal ikke.
    *         De givne variable bruges til at lave testcases.
+   * Input : Non
+   * Output: Extender alle disse variable til modellerne.
    */
   constructor() {
     this.database = `p2`;
@@ -36,13 +36,13 @@ class Database {
     this.groupId = 0;
     this.userId = 0;
   }
-  /* Input:  Metoden modtager et optional texton variabel, som defaulter til true hvis den ikke medsendes.
+
+  /* Formål: Naar der sker fejl ved brug af querymetoden vil denne metode give den nodvendige information med det samme.
+   *         Desuden fungere dette som dokumentation af Database klassen som helhed.
+   * Input:  Metoden modtager et optional texton variabel, som defaulter til true hvis den ikke medsendes.
    * Output: Metoden har som (primaer) sideeffect information om hvordan querymetoden bruges.
              Metoden outputter true, saa den kan testes i tests/backend/Database/test.Class.js
-   * Formaal: Naar der sker fejl ved brug af querymetoden vil denne metode give den nodvendige information med det samme.
-   *         Desuden fungere dette som dokumentation af Database klassen som helhed.
    */
-
   info(texton = true) {
     if (texton) {
       console.log(`INFORMATION\n`
@@ -71,12 +71,12 @@ class Database {
     return true;
   }
 
-  /* Input:  Metoden modtager de valg som brugeren har lavet, og gennem parser metoden, faar noget brugbar SQL,
+  /* Formål: Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overridet.
+   *         Dette oger kode genbrug, samt sikre fornuftig testning paa tvaers af hele programmet i forhold til databasen.
+   * Input:  Metoden modtager de valg som brugeren har lavet, og gennem parser metoden, faar noget brugbar SQL,
    *         Der kan vaere et get, post, put eller delete.
    *         Metoden indtager ogsaa texton parameter, som frakobles info() kald under test af catching af errors, men ellers altid er true.
    * Output: Metoden outputter den parsede data hentet fra SQL databasen, ud fra den givne SQL streng
-   * Formaal: Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overridet.
-   *         Dette oger kode genbrug, samt sikre fornuftig testning paa tvaers af hele programmet i forhold til databasen.
    */
   async query(choice, data, texton = true) {
     this.sql = this.inputParser(choice, data, texton);
@@ -152,11 +152,11 @@ class Database {
     return sql;
   }
 
-  /* Input: Metoden modtager de valg som brugeren har lavet
+  /* Formaal: Ved at validere om formattet er overholdt, kan der testes om et evt. problem opstaar ved metodekaldet eller i operationerne.
+   *         Dette gor debugging mere overskueligt, og sikre at dem der bruger metoden hurtigt faar respons paa metodens API.
+   * Input: Metoden modtager de valg som brugeren har lavet
    * Output: Metoden outputter true hvis baade choice og data folger det fastsatte format.
              Ellers false med information om hvordan metoden bruges
-   * Formaal: Ved at validere om formattet er overholdt, kan der testes om et evt. problem opstaar ved metodekaldet eller i operationerne.
-   *         Dette gor debugging mere overskueligt, og sikre at dem der bruger metoden hurtigt faar respons paa metodens API.
    */
   parserValidator(choice, data, texton = true) {
     let choiceValid = false;
@@ -195,10 +195,10 @@ class Database {
     return choiceValid && dataValid;
   }
 
-  /* Input: faar data parameteren fra et INSERT query
-   * Output: Returnere et JSON objekt, hvor dataene er udsplittet i columns og deres vaerdier.
-   * Formaal: Ved at opsplitte col = val i et objekt, undgaas det at der skal bruges to forskellige syntakser
+  /* Formål: Ved at opsplitte col = val i et objekt, undgaas det at der skal bruges to forskellige syntakser
    *         mellem INSERT kontra de andre SELECT, DELETE og UPDATE.
+   * Input : faar data parameteren fra et INSERT query
+   * Output: Returnere et JSON objekt, hvor dataene er udsplittet i columns og deres vaerdier.
   */
   insertSplitter(data) {
     let done = false;
@@ -244,15 +244,6 @@ class Database {
            * Er der ikke flere elementer, dvs. der er ikke flere "col = var" der skal postes, saa giver det den fornaevnte typefejl.
            * Inden der returnes true sikrer vi os at det rent faktisk er en typefejl, og ikke alt muligt andet der kunne vaere gaaet galt.
            */
-
-  // Henter al data for this.table på databasen
-  // input: non
-  // output: array af samtlige tilgængelige elementer i den pågældende table.
-  async getEverything() {
-    return this.query(`SELECT *`)
-      .then((result) => result)
-      .catch((error) => error);
-  }
 }
 
 

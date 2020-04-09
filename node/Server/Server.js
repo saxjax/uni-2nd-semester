@@ -12,10 +12,10 @@ const pad = require(`./Pad`);
  * Server fungere dermed som den primære indgangsvinkel til programmet, og alle dele af programmet kan udledes herfra.
  */
 class Server {
-  /* Input: Settings som er defineret i main.js.
-   * Output: En server der er oprettet på sin angivne port.
-   * Formål: At kunne give definere programmæsige settings et sted, så det er muligt
+  /* Formål: At kunne give definere programmæsige settings et sted, så det er muligt
    *         at opstarte en server i forskellige tilstande.
+   * Input: Settings som er defineret i main.js.
+   * Output: En server der er oprettet på sin angivne port.
    */
   constructor(settings) {
     this.app = express();
@@ -26,10 +26,10 @@ class Server {
     this.debug = settings.debug;
   }
 
-  /* Input : Valgte settings fra constructoren.
-   * Output: Opstartning af Server
-   * Formål: Opstiller alt det middleware som skal aktiveres ved hvert enkelt request.
+  /* Formål: Opstiller alt det middleware som skal aktiveres ved hvert enkelt request.
    *         Denne struktur gør at der er mere kontrol over rækkefølgen (såsom først static, url'er til sidst)
+   * Input : Valgte settings fra constructoren.
+   * Output: Opstartning af Server
    */
   startServer() {
     this.staticMiddleware();
