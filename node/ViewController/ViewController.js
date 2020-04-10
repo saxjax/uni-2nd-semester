@@ -8,10 +8,10 @@ const { Flashcard } = require(`../Evaluation/Flashcard`);
 const { Group } = require(`../Group/Group`);
 const { User } = require(`../User/User`);
 
-/* UNDER CONSTRUCTION */
+/* FIXME: UNDER CONSTRUCTION */
 
 class ViewController {
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   constructor() {
     this.name = `ViewController`;
     this.root = __dirname.slice(0, -(`node/${this.name}`.length));
@@ -26,13 +26,13 @@ class ViewController {
     res.send(`It worked`);
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   homePage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs);
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   registerPage(req, res) {
     const Registered = new User(req);
     if (Registered.alreadyLoggedIn()) {
@@ -44,7 +44,7 @@ class ViewController {
     }
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   loginPage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/login.ejs`);
     res.render(this.ejs);
@@ -54,7 +54,7 @@ class ViewController {
   // Input : Non
   // Output: Array af Alle tilg�ngelige evalueringer i databasen b�de quizzes og flashcards sendes som
   //         arrays :flashcards og quizzes til /www/views/evalueringer.ejs
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   async evalueringerPage(req, res) {
     const group = new Group(req);
     const data = {
@@ -72,7 +72,7 @@ class ViewController {
   //         alt efter typen s� hentes quiz questions eller flashcards knyttet til det specifikke idflashcard eller idquiz.
   // Output: Array hvor index 0 indeholder flashcard_data eller quiz_question data, hvilket sendes til
   //         hhv /www/views/evalueringerFlashcard.ejs eller /www/views/evalueringerQuiz.ejs
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   async quizPage(req, res) {
     const quiz = new Quiz(req);
     const data = await quiz.getQuiz();
@@ -80,7 +80,7 @@ class ViewController {
     res.render(this.ejs, { quiz: data });
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   async flashcardPage(req, res) {
     const flashcard = new Flashcard(req);
     const data = await flashcard.getFlashcard();
@@ -92,7 +92,7 @@ class ViewController {
   // input : Non
   // output: Array af Alle tilg�ngelige sections i databasen sendes som
   //         array: afsnit til /www/views/rapport.ejs
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   async rapportPage(req, res) {
     const doc = new Document(req);
     // Her bliver der hardcoded et dokument som her antages at være "Rapporten"
@@ -111,7 +111,7 @@ class ViewController {
   // Input : Iddocument_section
   // Output: Array af Alle evalueringer samt content fra en section tilknyttet en section med id = iddocument_section
   //         sendes som arrays: flashcards, quizzes, section til /www/views/rapportafsnit.ejs
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   async rapportSectionPage(req, res) {
     const sec = new Section(req);
     const data = {
@@ -123,7 +123,7 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   uploadPage(req, res) {
     if (req.params.type === `evalueringer`) {
       this.ejs = path.join(`${this.root}/www/views/evalueringerUpload.ejs`);

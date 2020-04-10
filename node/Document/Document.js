@@ -19,7 +19,7 @@ class Document extends Database {
     this.title   = (typeof req.params.title      !== `undefined` ? req.session.title      : undefined);
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   async getSections() {
     const sec = new Section();
     return sec.query(`SELECT *`, `iddocument = ${this.idDocument}`)
@@ -27,7 +27,7 @@ class Document extends Database {
       .catch((error) => error);
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   async getEverything() {
     try {
       this.sectionData = await this.query(`SELECT *`);
@@ -44,7 +44,7 @@ class Document extends Database {
     }
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   async getKeywordsForEvaluation() {
     this.table = `document_keywords`;
     return this.query(`SELECT *`, `idevaluations = "${this.idDocument}"`)

@@ -3,23 +3,23 @@
 const path = require(`path`);
 const { User } = require(`../User/User.js`);
 
-/* UNDER CONSTRUCTION */
+/* FIXME: UNDER CONSTRUCTION */
 
 class RedirectController {
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   constructor() {
     this.name = `RedirectController`;
     this.root = __dirname.slice(0, -(`node/${this.name}`.length));
     this.ejs = ``;
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   dbdown(req, res) {
     this.ejs = path.join(`${this.root}/www/ejs/database_down.ejs`);
     res.render(this.ejs);
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   async auth(req, res) {
     const currentUser = new User(req);
     this.data = await currentUser.loginValid();
@@ -36,7 +36,7 @@ class RedirectController {
     }
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   async RegisterNewUser(req, res) {
     console.log(req.body);
     const newUser = new User(req);
@@ -51,7 +51,7 @@ class RedirectController {
     }
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   UploadRapport(req, res) {
     if (req.files) {
       console.log(req.files);
@@ -81,7 +81,7 @@ class RedirectController {
     res.render(this.ejs, { section: req.body.name_of_section, content: null });
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   UploadEvalueringer(req, res) {
     console.log(req.body);
     this.ejs = path.join(`${this.root}/www/views/evalueringerUpload.ejs`);
