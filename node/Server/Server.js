@@ -58,7 +58,7 @@ class Server {
     this.app.get(`/head`, (req, res) => Show.head(req, res));
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   redirectPatterns() {
     const Redirect = new RedirectController();
     this.app.get(`/dbdown`,                (req, res) => Redirect.dbdown(req, res));
@@ -68,13 +68,13 @@ class Server {
     this.app.post(`/register`,             (req, res) => Redirect.RegisterNewUser(req, res));
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   staticMiddleware() {
     this.app.use(express.static(`${this.root}/www/`));
     this.app.use(this.logger);
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   bodyParserMiddleware() {
     this.app.use(upload());
     this.app.use(bodyParser.urlencoded({ extended: true }));
@@ -91,10 +91,14 @@ class Server {
     }));
   }
 
-  /* UNDER CONSTRUCTION */
+  /* Formål: Logger serverrequests med følgende syntax:
+   *           >> GOT: "Request metode": "Request URL" -- "Dato" <<
+   * Input:  Requestobjekt
+   * Output: Intet. Men der bliver logget i consollen.
+   */
   logger(req, res, next) {
     const reqMethod = pad(req.method, -6, ` `);
-    const reqUrl = pad(`${req.protocol}://${req.get(`host`)}${req.originalUrl}`, 76, ` `);
+    const reqUrl = pad(`${req.protocol}://${req.get(`host`)}${req.originalUrl}`, 85, ` `);
     const date = (new Date()).toUTCString();
     console.log(`GOT ${reqMethod}: ${reqUrl} -- ${date}`);
     next();

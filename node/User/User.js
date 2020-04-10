@@ -31,7 +31,7 @@ class User extends Database {
     this.email        = (typeof req.body.email          !== `undefined` ? req.body.email          : undefined);
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   async loginValid() {
     this.data = await this.query(`SELECT *`, `username = "${this.username}" AND password = "${this.password}"`)
       .then((result) => result)
@@ -41,13 +41,13 @@ class User extends Database {
   }
 
   /* Skal implementeres med sessions */
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   alreadyLoggedIn() {
     this.cookie = false;
     return this.cookie;
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   async validateRegister() {
     let validationCheck = false;
     if (!isEmpty(this.username) && !isEmpty(this.firstName) && !isEmpty(this.lastName) && !isEmpty(this.email)) {
