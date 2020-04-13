@@ -50,9 +50,9 @@ class ViewController {
     res.render(this.ejs);
   }
 
-  // Formål: Viser alle tilg�ngelige evalueringer i gruppen p� siden evalueringer.ejs
+  // Formål: Viser alle tilgængelige evalueringer i gruppen på siden evalueringer.ejs
   // Input : Non
-  // Output: Array af Alle tilg�ngelige evalueringer i databasen b�de quizzes og flashcards sendes som
+  // Output: Array af Alle tilgængelige evalueringer i databasen både quizzes og flashcards sendes som
   //         arrays :flashcards og quizzes til /www/views/evalueringer.ejs
   /* FIXME: UNDER CONSTRUCTION */
   async evalueringerPage(req, res) {
@@ -69,7 +69,7 @@ class ViewController {
   // Formål: Viser indholdet af enten et flashcard eller en quizz vha. siden evalueringerFlashcard.ejs eller
   //         evalueringerQuiz.ejs.
   // Input : Id og en type(flashcard eller quiz) (id'et er hhv idflashcard og idquiz alt efter typen)
-  //         alt efter typen s� hentes quiz questions eller flashcards knyttet til det specifikke idflashcard eller idquiz.
+  //         alt efter typen så hentes quiz questions eller flashcards knyttet til det specifikke idflashcard eller idquiz.
   // Output: Array hvor index 0 indeholder flashcard_data eller quiz_question data, hvilket sendes til
   //         hhv /www/views/evalueringerFlashcard.ejs eller /www/views/evalueringerQuiz.ejs
   /* FIXME: UNDER CONSTRUCTION */
@@ -88,9 +88,9 @@ class ViewController {
     res.render(this.ejs, { flashcard: data });
   }
 
-  // Formål: Viser alle tilg�ngelige sections fra databasen p� siden rapport.ejs
+  // Formål: Viser alle tilgængelige sections fra databasen på siden rapport.ejs
   // input : Non
-  // output: Array af Alle tilg�ngelige sections i databasen sendes som
+  // output: Array af Alle tilgængelige sections i databasen sendes som
   //         array: afsnit til /www/views/rapport.ejs
   /* FIXME: UNDER CONSTRUCTION */
   async rapportPage(req, res) {
@@ -130,6 +130,9 @@ class ViewController {
     }
     else if (req.params.type === `rapport`) {
       this.ejs = path.join(`${this.root}/www/views/rapportUpload.ejs`);
+    }
+    else {
+      throw new Error(`ERROR: Param "${req.params.type}" not of type "evalueringer" or "rapport". Rendering was canceled.`);
     }
     res.render(this.ejs);
   }

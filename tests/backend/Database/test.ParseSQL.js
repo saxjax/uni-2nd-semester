@@ -1,3 +1,6 @@
+/* Run test command:
+ *    nodemon tests/backend/Database/test.ParseSQL.js | .\node_modules\.bin\tap-spec
+ */
 /* eslint no-console: off */
 const tape = require(`tape`);
 const testDecorater = require(`tape-promise`).default;
@@ -8,50 +11,50 @@ let actual = true;
 let expected = true;
 
 test(`Test af ParseSQL i node/Database`, (assert) => {
-  console.log(`Test af parse() metoden`);
+  console.log(`Test af parseArrayOfObjects() metoden`);
   // Tests a første if-statement
-  p.parsedData = [];
+  reset();
   expected = { data: `data` };
-  actual = p.parse({ data: `data` });
+  actual = p.parseArrayOfObjects({ data: `data` });
   assert.deepEqual(actual, expected,
     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrært input, 
      som ikke er et array, uden at ændre i det og logge en warning i processen`);
 
-  p.parsedData = [];
+  reset();
   expected = 1;
-  actual = p.parse(1);
+  actual = p.parseArrayOfObjects(1);
   assert.deepEqual(actual, expected,
     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrært input, 
      som ikke er et array, uden at ændre i det og logge en warning i processen`);
 
-  p.parsedData = [];
+  reset();
   expected = true;
-  actual = p.parse(true);
+  actual = p.parseArrayOfObjects(true);
   assert.deepEqual(actual, expected,
     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrært input, 
      som ikke er et array, uden at ændre i det og logge en warning i processen`);
 
-  p.parsedData = [];
+  reset();
   expected = false;
-  actual = p.parse(false);
+  actual = p.parseArrayOfObjects(false);
   assert.deepEqual(actual, expected,
     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrært input, 
      som ikke er et array, uden at ændre i det og logge en warning i processen`);
 
-  p.parsedData = [];
+  reset();
   expected = `hejsa dejsa`;
-  actual = p.parse(`hejsa dejsa`);
+  actual = p.parseArrayOfObjects(`hejsa dejsa`);
   assert.deepEqual(actual, expected,
     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrært input, 
      som ikke er et array, uden at ændre i det og logge en warning i processen`);
 
   // Tests af ukendt elementtype
-  p.parsedData = [];
+  reset();
   expected = [{
     elementtype: `lmao`,
     data: `data`,
   }];
-  actual = p.parse([{
+  actual = p.parseArrayOfObjects([{
     elementtype: `lmao`,
     data: `data`,
   }]);
@@ -109,3 +112,7 @@ test(`Test af ParseSQL i node/Database`, (assert) => {
 
   assert.end();
 });
+
+function reset() {
+  p.parsedData = [];
+}
