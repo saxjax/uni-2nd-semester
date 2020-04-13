@@ -50,7 +50,7 @@ class User extends Database {
   /* FIXME: UNDER CONSTRUCTION */
   async validateRegister() {
     let validationCheck = false;
-    if (!isEmpty(this.username) && !isEmpty(this.firstName) && !isEmpty(this.lastName) && !isEmpty(this.email)) {
+    if (sufficientData()) {
       this.data = await this.query(`SELECT *`, `username = "${this.username}" OR email = "${this.email}"`);
       if (this.data.length > 0) {
         console.log(`User already registered`);
@@ -64,7 +64,14 @@ class User extends Database {
 
   /* UNDER CONSTRUCTION */
   async createUser() {
-    this.register_data = await this.query(`INSERT`, `username = "${this.username}" AND password = "${this.password}" AND firstname = "${this.firstName}" AND lastname = "${this.lastName}" AND university = "${this.university}" AND studysubject = "${this.studySubject}" AND semester = "${this.semester}"`);
+    this.register_data = await this.query(`INSERT`,
+      `username = "${this.username}" 
+      AND password = "${this.password}" 
+      AND firstname = "${this.firstName}" 
+      AND lastname = "${this.lastName}" 
+      AND university = "${this.university}" 
+      AND studysubject = "${this.studySubject}" 
+      AND semester = "${this.semester}"`);
   }
 }
 
@@ -72,6 +79,10 @@ class User extends Database {
 module.exports = {
   User,
 };
+
+function sufficientData() {
+  return (!isEmpty(this.username) && !isEmpty(this.firstName) && !isEmpty(this.lastName) && !isEmpty(this.email));
+}
 
 function isEmpty(str) {
   return (!str || str.length === 0);

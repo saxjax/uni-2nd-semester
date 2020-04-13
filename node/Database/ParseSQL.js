@@ -16,7 +16,7 @@ class ParseSql {
    * Input:  Et array af data - kan godt modtage forskellige elementtyper i samme array
    * Output: Et array af data, som er parset/oversat fra databasesprog til frontendsprog eller et tomt array, hvis data er tom.
    */
-  parse(data) {
+  parseArrayOfObjects(data) {
     if (!Array.isArray(data)) {
       console.warn(`WARNING: This data package doesn't seem to be an array. Parsing skipped!`);
       return data;
