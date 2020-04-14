@@ -1,6 +1,8 @@
 /* eslint no-console: off */
 
 const mysql = require(`mysql`);
+const fs = require(`fs`);
+
 const { ParseSql } = require(`./ParseSQL`);
 
 /* Database objektet stiller alle manipulationer af databasen til raadighed for modeller med tilhorende database tabeller.
@@ -27,7 +29,7 @@ class Database {
       host: `213.32.247.201`,
       user: `ADMIN`,
       port: `3306`,
-      password: `7Tn!W7'>vSJ4Zw#'_5t4uB2wtk2+LvGV`,
+      password: fs.readFileSync(`node/Models/AbstractClasses/password.txt`, `utf8`),
       database: this.database,
     });
 
