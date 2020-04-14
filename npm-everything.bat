@@ -9,6 +9,7 @@ IF errorlevel 1 (
     pause
     exit 
 )
+cd /D "%~dp0"
 call del /f package.json
 call del /f package-lock.json
 call rmdir /Q /S C:\Users\%USERNAME%\AppData\Roaming\npm-cache\_logs
@@ -36,6 +37,10 @@ call npm install ejs --save
 echo =====================================================================================
 echo Installing EXPRESS-SESSION 
 call npm install express-session --save
+echo =====================================================================================
+echo Installing EXPRESS-SESSION 
+call npm install express-fileupload --save
+
 
 :: Installing dev-dependencies
 echo =====================================================================================
