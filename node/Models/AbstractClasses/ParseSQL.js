@@ -101,7 +101,18 @@ class ParseSql {
    */
   parseFlashcard(data) {
     console.warn(`WARNING: Elementtype oprettet, men parser metode IKKE oprettet!`);
-    return data;
+    return {
+      elementtype: `${data.elementtype}`,
+      idFlashcard: `${data.idflashcard}`,
+      idUser: `${data.idUser}`,
+      idDocument: `${data.iddocument}`,
+      idDocumentSection: `${data.iddocument_section}`,
+
+      concept: `${data.concept}`,
+      definition: `${data.definition}`,
+      correctness: `${data.correct_answer}`,
+    };
+    // return data;
   }
 
   /* Formål: At parse Keyword-data

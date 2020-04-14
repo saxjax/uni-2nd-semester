@@ -29,7 +29,7 @@ test(`Test af parseSection i node/Database`, (assert) => {
   });
 
   assert.deepEqual(actual, expected,
-    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere en parset version af inputtet`);
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere en parset version af en section fra sql databasen`);
 
   assert.end();
 });
@@ -52,7 +52,7 @@ test(`Test af parseSection i node/Database ved elementtype quiz`, (assert) => {
   });
 
   assert.deepEqual(actual, expected,
-    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere en parset version af inputtet`);
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere en parset version af en quiz fra sql databasen`);
 
   assert.end();
 });
@@ -81,7 +81,90 @@ test(`Test af parseSection i node/Database ved elementtype quiz_question`, (asse
   });
 
   assert.deepEqual(actual, expected,
-    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere en parset version af inputtet`);
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere en parset version af et quiz_question fra sql databasen`);
+
+  assert.end();
+});
+
+test(`Test af parseSection i node/Database ved elementtype flashcard`, (assert) => {
+  expected = {
+      elementtype: `flashcard`,
+      idFlashcard: `11111111-aaaa-bbbb-1111-111111111111`,
+      idUser: `11111111-aaaa-bbbb-1111-111111111111`,
+      idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
+      idDocumentSection: `11111111-aaaa-bbbb-1111-111111111111`,
+      concept: `hvad er?`,
+      definition: `ans1`,
+      correctness: `1`,
+
+  };
+  actual = p.parseFlashcard({
+    idflashcard: `11111111-aaaa-bbbb-1111-111111111111`,   
+    idUser: `11111111-aaaa-bbbb-1111-111111111111`,
+    iddocument: `11111111-aaaa-bbbb-1111-111111111111`,
+    iddocument_section: `11111111-aaaa-bbbb-1111-111111111111`,
+    concept: `hvad er?`,
+    definition: `ans1`,
+    correct_answer: `1`,
+    elementtype: `flashcard`,
+  });
+
+  assert.deepEqual(actual, expected,
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere en parset version af et flashcard fra sql databasen`);
+
+  assert.end();
+});
+
+test(`Test af parseSection i node/Database ved elementtype keyword`, (assert) => {
+  expected = {
+      idUser: `11111111-aaaa-bbbb-1111-111111111111`,
+      idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
+      idDocumentSection: `11111111-aaaa-bbbb-1111-111111111111`,
+      keyword: `keyword Test`,
+      elementtype: `keyword`
+  };
+  actual = p.parseKeyword({
+    iduser: `11111111-aaaa-bbbb-1111-111111111111`,
+    iddocument: `11111111-aaaa-bbbb-1111-111111111111`,
+    iddocument_section: `11111111-aaaa-bbbb-1111-111111111111`,
+    keyword: `keyword Test`,
+    elementtype: `keyword`,
+  });
+
+  assert.deepEqual(actual, expected,
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere en parset version af et keyword fra sql databasen`);
+
+  assert.end();
+});
+
+test(`Test af parseSection i node/Database ved elementtype user`, (assert) => {
+  expected = {
+      elementtype: `user`,
+      idUser: `11111111-aaaa-bbbb-1111-111111111111`,
+      userName: `Test user`,
+      password: `****`,
+      firstName: `test fornavn`,
+      lastName: `test efternavn`,
+      email: `test@email.com`,
+      studySubject: `software`,
+      semester: `2`,
+      university: `MIT`,
+  };
+  actual = p.parseKeyword({
+    elementtype: `user`,
+    idUser: `11111111-aaaa-bbbb-1111-111111111111`,
+    username: `Test user`,
+    password: `****`,
+    firstname: `test fornavn`,
+    lastname: `test efternavn`,
+    email: `test@email.com`,
+    studySubject: `software`,
+    semester: `2`,
+    university: `MIT`,
+  });
+
+  assert.deepEqual(actual, expected,
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere en parset version af en user fra sql databasen`);
 
   assert.end();
 });
