@@ -84,3 +84,11 @@ nav {text-align: center;}
 .concept, .definition, .show_definition, .cards {
     text-align: center;
 }
+
+#review {
+    color: orange;
+}
+
+#agree {
+    color: green;
+}

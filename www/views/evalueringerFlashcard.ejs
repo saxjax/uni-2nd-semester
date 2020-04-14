@@ -3,7 +3,7 @@
 <head>
     <%- include('meta/header') %> 
     <link href="/css/design.css" rel="stylesheet">
-    <script src="js/flashcard.js" defer></script>
+    <script src="js/flashcard_func.js" defer></script>
 </head>
     <body>
         <%- include('meta/navbar') %> 
@@ -18,8 +18,9 @@
                     <div class="definition">
                         <button type="button" id="definition"> Show definition </button><br><br>
                         <img id="def"><br><br>
-                        <button type="button"> I agree </button>
+                        <button type="button" id="agree"> I agree </button>
                         <button type="button"> I do not agree </button>
+                        <button tyoe="button" id="review"> Review Concept</button>
                     </div>
                 </div>
             </div>
