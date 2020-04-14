@@ -71,6 +71,7 @@ class ParseSql {
       elementtype: `${data.elementtype}`,
       idQuiz: `${data.idquiz}`,
       idDocument: `${data.iddocument}`,
+      idDocumentSection: `${data.iddocument_section}`,
       title: `${data.section_title}`,
       keywords: undefined,
     };
