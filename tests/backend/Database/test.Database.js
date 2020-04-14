@@ -3,7 +3,7 @@ const tape = require(`tape`);
 const testDecorater = require(`tape-promise`).default;
 
 const test = testDecorater(tape);
-const { Database } = require(`../../../node/Database/Database.js`);
+const { Database } = require(`../../../node/Models/AbstractClasses/Database.js`);
 
 let actualObject = true;
 let actual = true;

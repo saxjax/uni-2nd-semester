@@ -1,25 +1,28 @@
 /* eslint no-console: off */
 
 const path = require(`path`);
-const { User } = require(`../User/User.js`);
+const { User } = require(`../Models/User.js`);
 
-/* FIXME: UNDER CONSTRUCTION */
+/* UNDER CONSTRUCTION */
 
 class RedirectController {
-  /* FIXME: UNDER CONSTRUCTION */
+  /* UNDER CONSTRUCTION */
   constructor() {
     this.name = `RedirectController`;
-    this.root = __dirname.slice(0, -(`node/${this.name}`.length));
+    this.root = __dirname.slice(0, -(`node/Controllers`.length));
     this.ejs = ``;
   }
 
-  /* FIXME: UNDER CONSTRUCTION */
+  /* UNDER CONSTRUCTION */
   dbdown(req, res) {
     this.ejs = path.join(`${this.root}/www/ejs/database_down.ejs`);
     res.render(this.ejs);
   }
 
-  /* FIXME: UNDER CONSTRUCTION */
+  /* Formål: At autentificere at bruger og password kombinationen findes i databasen
+   * Input : Et username og password submittet fra login
+   * Output: Oprettelsen af en session med den indloggede bruger
+   */
   async auth(req, res) {
     const currentUser = new User(req);
     this.data = await currentUser.loginValid();
@@ -27,6 +30,7 @@ class RedirectController {
       res.redirect(`/dbdown`);
     }
     else if (this.data.length > 0) {
+      req.session.userId = currentUser.getThis(``);
       req.session.loggedin = true;
       req.session.key = this.data[0].username;
       res.redirect(`/`);
@@ -36,9 +40,8 @@ class RedirectController {
     }
   }
 
-  /* FIXME: UNDER CONSTRUCTION */
+  /* UNDER CONSTRUCTION */
   async RegisterNewUser(req, res) {
-    console.log(req.body);
     const newUser = new User(req);
     if (await newUser.validateRegister()) {
       await newUser.createUser();
@@ -51,13 +54,11 @@ class RedirectController {
     }
   }
 
-  /* FIXME: UNDER CONSTRUCTION */
+  /* UNDER CONSTRUCTION */
   UploadRapport(req, res) {
     if (req.files) {
-      console.log(req.files);
       const file = req.files.section_file;
       const filename = file.name;
-      console.log(`This is the file name: ${filename}`);
 
       file.mv(`./node/File_uploads/${filename}`, (err) => {
         if (err) {
@@ -70,7 +71,6 @@ class RedirectController {
     }
 
     const newKeywords = [req.body.keyword_1, req.body.keyword_2, req.body.keyword_3].toString();
-    console.log(req.body);
     const newSection = req.body.name_of_section;
     // sectionDatabase[newSection] = {};
     // sectionDatabase[newSection]['keywords'] = newKeywords;
@@ -81,9 +81,8 @@ class RedirectController {
     res.render(this.ejs, { section: req.body.name_of_section, content: null });
   }
 
-  /* FIXME: UNDER CONSTRUCTION */
+  /* UNDER CONSTRUCTION */
   UploadEvalueringer(req, res) {
-    console.log(req.body);
     this.ejs = path.join(`${this.root}/www/views/evalueringerUpload.ejs`);
     res.render(this.ejs);
   }

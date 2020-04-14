@@ -11,31 +11,30 @@ class ParseSql {
     this.elementtype = elementtype;
   }
 
-  /* Formål: Dette er tiltænkt som den overordnede funktion, som bliver kaldt fra Database.js.
-   *         Funktionen parser alt data fra databasen til et format, som serveren kender
+  /* Formål: Dette er tiltænkt som den overordnede funktion, som bliver kaldt fra Database.js
    * Input:  Et array af data - kan godt modtage forskellige elementtyper i samme array
    * Output: Et array af data, som er parset/oversat fra databasesprog til frontendsprog eller et tomt array, hvis data er tom.
    */
-  parseArrayOfObjects(data) {
-    if (!Array.isArray(data)) {
-      console.warn(`WARNING: This data package doesn't seem to be an array. Parsing skipped!`);
-      return data;
-    }
-    for (let i = 0; i < data.length; i++) {
-      switch (data[i].elementtype) {
-        case `section`:       this.parsedData.push(this.parseSection(data[i]));      break;
-        case `quiz`:          this.parsedData.push(this.parseQuiz(data[i]));         break;
-        case `quiz_question`: this.parsedData.push(this.parseQuizQuestion(data[i])); break;
-        case `flashcard`:     this.parsedData.push(this.parseFlashcard(data[i]));    break;
-        case `keyword`:       this.parsedData.push(this.parseKeyword(data[i]));      break;
-        case `user`:          this.parsedData.push(this.parseUser(data[i]));         break;
-        default:
-          console.warn(`WARNING: Elementtype "${data[i].elementtype}" is not defined. Parsing skipped!`);
-          this.parsedData.push(data[i]);
-          break;
+  parse(data) {
+    if (data.length > 0) {
+      for (let i = 0; i < data.length; i++) {
+        switch (data[i].elementtype) {
+          case `section`:       this.parsedData.push(this.parseSection(data[i]));      break;
+          case `quiz`:          this.parsedData.push(this.parseQuiz(data[i]));         break;
+          case `quiz_question`: this.parsedData.push(this.parseQuizQuestion(data[i])); break;
+          case `flashcard`:     this.parsedData.push(this.parseFlashcard(data[i]));    break;
+          case `keyword`:       this.parsedData.push(this.parseKeyword(data[i]));      break;
+          case `user`:          this.parsedData.push(this.parseUser(data[i]));         break;
+          default:
+            this.parsedData.push(data[i]);
+            console.warn(`WARNING: Elementtype "${data[i].elementtype}" is not defined. Parsing skipped!`);
+            break;
+        }
       }
     }
-
+    else {
+      this.parsedData = data;
+    }
     return this.parsedData;
   }
 

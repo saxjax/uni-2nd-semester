@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('meta/header') %> 
+    <title>Groups</title>
+  </head>
+  <body>
+    <div class="container" id="content">
+      <div class="row">
+          <div class="col-sm-12">
+            <h1>Choose one of the groups</h1>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <% data.group.forEach((element) => { %>
+            <a href="session/group/<%= element.iduser_group %>">
+              <h2><%= element.name %></h2>
+            </a> 
+          <% }); %>
+        </div>
+      </div>
+    </div>
+    <%- include('meta/footer') %> 
+  </body>
+</html>

@@ -1,7 +1,7 @@
 const tape = require(`tape`);
 const testDecorater = require(`tape-promise`).default;
 const test = testDecorater(tape);
-const pad = require(`../../../node/Server/Pad`);
+const pad = require(`../../../node/HelperFunctions/Pad`);
 let actual = true;
 let expected = true;
 
