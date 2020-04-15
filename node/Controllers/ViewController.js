@@ -37,8 +37,8 @@ class ViewController {
   async evalueringerPage(req, res) {
     const group = new Group(req);
     const data = {
-      flashcards: await group.getAllFlashcards(),
-      quizzes: await group.getAllQuizzes(),
+      flashcards: await group.getAllElementsOfType(`Flashcard`),
+      quizzes: await group.getAllElementsOfType(`Quiz`),
     };
 
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
@@ -111,6 +111,22 @@ class ViewController {
       this.ejs = path.join(`${this.root}/www/views/rapportUpload.ejs`);
     }
     res.render(this.ejs);
+  }
+
+  /* UNDER CONSTRUCTION */
+  createQuiz(req, res) {
+    this.ejs = path.join(`${this.root}/www/views/createQuiz.ejs`);
+    res.render(this.ejs);
+  }
+
+  /* UNDER CONSTRUCTION */
+  createFlashcard(req, res) {
+    const G = new Group(req);
+    const data = {
+      section: G.getAllElementsOfType(`section`),
+    };
+    this.ejs = path.join(`${this.root}/www/views/createFlashcard.ejs`);
+    res.render(this.ejs, { data });
   }
 }
 

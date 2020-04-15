@@ -4,18 +4,25 @@ const { Evaluation } = require(`./AbstractClasses/Evaluation.js`);
 
 class Flashcard extends Evaluation {
   constructor(req) {
-    super(req);
+    super();
     this.elementtype = `flashcard`;
     this.table = `flashcard`;
-    // Session
-    this.groupId = (typeof req.session.groupId  !== `undefined` ? req.session.groupId  : undefined);
-    this.userId  = (typeof req.session.userId    !== `undefined` ? req.session.userId     : undefined);
-    // ID
-    this.idColumnName = `flashcard`;
-    this.queryId = (typeof req.params.queryId !== `undefined` ? req.session.queryId : undefined);
-    // Columns
-    this.concept    = (typeof req.body.concept    !== `undefined` ? req.body.concept    : undefined);
-    this.definition = (typeof req.body.definition !== `undefined` ? req.body.definition : undefined);
+
+    if (this.validateMethodChoice) {
+      this.groupId = req.session.groupId;
+      this.userId  = req.session.userId;
+      switch (req.method) {
+        case `GET`:
+          this.idColumnName = `flashcard`;
+          this.queryId = req.params.queryId;
+          break;
+        case `POST`: case `UPDATE`:
+          this.concept    = req.body.concept;
+          this.definition = req.body.definition;
+          break;
+        default: break;
+      }
+    }
   }
 }
 module.exports = {
