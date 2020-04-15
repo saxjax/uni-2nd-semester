@@ -1,5 +1,7 @@
 const { Model } = require(`./AbstractClasses/Model.js`);
-
+/* Ideen med denne class er at den skal have funktioner til at oprette
+mockdata i databasen */
+/* IKKE FÆRDIG DU MÅ GERNE TILFØJE mockdata-FUNKTIONER SOM DU SAVNER */
 class MockData extends Model {
   constructor(req) {
     super();
@@ -24,7 +26,9 @@ class MockData extends Model {
   }
 
   createMockData() {
-
+    this.allElementypes.forEach((element) => {
+      console.log(element);
+    });
   }
 }
 module.exports = {

@@ -77,8 +77,6 @@ class ParseSql {
    * Output: Et parset dataobjekt, som kan forståes på frontend
    */
   parseQuiz(data) {
-    console.log(`-------------------linie 48`);
-
     return {
       elementtype: `${data.ELEMENT_TYPE}`,
       idQuiz: `${data.ID_QUIZ}`,
@@ -151,7 +149,6 @@ class ParseSql {
    * FIXME: Metoden skal udvikles
    */
   parseKeyword(data) {
-    console.warn(`WARNING: Elementtype oprettet, men parser metode IKKE oprettet!`);
     return {
       idKeyword: `${data.ID_KEYWORD}`,
       idDocument: `${data.ID_DOCUMENT}`,
@@ -168,7 +165,6 @@ class ParseSql {
    * FIXME: Metoden skal udvikles
    */
   parseUser(data) {
-    console.warn(`WARNING: Elementtype oprettet, men parser metode IKKE oprettet!`);
     return {
       elementtype: `${data.ELEMENT_TYPE}`,
       idUser: `${data.ID_USER}`,
