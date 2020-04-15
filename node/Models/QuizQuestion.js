@@ -10,7 +10,7 @@ class QuizQuestion extends Evaluation {
       this.userId  = req.session.userId;
       switch (req.method) {
         case `GET`: case `DELETE`: case `UPDATE`:
-          this.idColumnName = `idquiz`;
+          this.idColumnName = `ID_QUIZ_QUESTION`;
           this.queryId = req.params.queryId;
           break;
         case `POST`:

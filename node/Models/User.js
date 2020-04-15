@@ -14,7 +14,7 @@ class User extends Model {
     this.userId  = (typeof req.session.userId    !== `undefined` ? req.session.userId     : undefined);
     this.loggedin  = (typeof req.session.loggedin    !== `undefined` ? req.session.loggedin     : undefined);
     // ID
-    this.idColumnName = `iduser`;
+    this.idColumnName = `ID_USER`;
     this.queryId       = (typeof req.params.queryId       !== `undefined` ? req.session.queryId      : req.session.userId);
     // Columns
     this.username     = (typeof req.body.username       !== `undefined` ? req.body.username       : undefined);

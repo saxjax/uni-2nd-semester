@@ -15,7 +15,7 @@ class Section extends Model {
     this.groupId        = (typeof req.session.groupId     !== `undefined` ? req.session.groupId     : undefined);
     this.userId  = (typeof req.session.userId    !== `undefined` ? req.session.userId     : undefined);
     // ID
-    this.idColumnName = `document_section`;
+    this.idColumnName = `ID_DOCUMENT_SECTION`;
     this.queryId      = (typeof req.params.queryId    !== `undefined` ? req.params.queryId    : undefined);
     // Columns
     this.sectionNumber  = (typeof req.body.sectionNumber  !== `undefined` ? req.body.sectionNumber  : undefined);

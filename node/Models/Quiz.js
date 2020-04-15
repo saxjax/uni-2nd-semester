@@ -9,7 +9,7 @@ class Quiz extends Model {
     this.groupId = (typeof req.session.groupId  !== `undefined` ? req.session.groupId  : undefined);
     this.userId  = (typeof req.session.userId    !== `undefined` ? req.session.userId     : undefined);
     // ID
-    this.idColumnName = `idquiz`;
+    this.idColumnName = `ID_QUIZ`;
     this.queryId = (typeof req.params.queryId       !== `undefined` ? req.params.queryId      : undefined);
     // Columns
   }
@@ -17,7 +17,7 @@ class Quiz extends Model {
   // UNDER CONSTRUCTION!
   // Uploads quiz to database
   // returns true, if it was possible to upload to database, else false
-  async saveQuiz() {
+  async save() {
     try {
       this.query(`INSERT`);
       return true;

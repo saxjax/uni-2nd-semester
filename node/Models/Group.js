@@ -15,7 +15,7 @@ class Group extends Model {
       this.userId  = req.session.userId;
       switch (req.method) {
         case `GET`:
-          this.idColumnName = `iduser_group`;
+          this.idColumnName = `ID_USER_GROUP`;
           this.queryId = req.params.queryId;
           break;
         case `POST`: case `UPDATE`:
@@ -25,6 +25,8 @@ class Group extends Model {
       }
     }
   }
+
+  /* UN */
 }
 
 module.exports = {
