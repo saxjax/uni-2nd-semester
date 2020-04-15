@@ -20,13 +20,18 @@ class ViewController {
 
   /* UNDER CONSTRUCTION */
   async homePage(req, res) {
-    const U = new User(req);
-    const data = {
-      user: await U.getThis(),
-      req,
-    };
-    this.ejs = path.join(`${this.root}/www/views/home.ejs`);
-    res.render(this.ejs, { data });
+    if (req.session.groupId && req.session.userId) {
+      const U = new User(req);
+      const data = {
+        user: await U.getThis(),
+        req,
+      };
+      this.ejs = path.join(`${this.root}/www/views/home.ejs`);
+      res.render(this.ejs, { data });
+    }
+    else {
+      res.redirect(`/`);
+    }
   }
 
   // Formål: Viser alle tilg�ngelige evalueringer i gruppen p� siden evalueringer.ejs
