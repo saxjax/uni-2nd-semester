@@ -1,5 +1,5 @@
 const { Server } = require(`./node/Server.js`);
-
+/*
 const devSettings = {
   name: `Developmentserver`,
   port: 3000,
@@ -9,7 +9,8 @@ const devSettings = {
   groupId: null,
 };
 const Start = new Server(devSettings);
-/*
+*/
+
 const skipAccessSettings = {
   name: `Developmentserver`,
   port: 3000,
@@ -19,7 +20,7 @@ const skipAccessSettings = {
   groupId: `34701dd1-7c29-11ea-86e2-2c4d54532c7a`,
 };
 const Start = new Server(skipAccessSettings);
-*/
+
 /*
 const stageSettings = {
   name: `Staginserver`,

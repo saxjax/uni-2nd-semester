@@ -35,7 +35,7 @@ class AccessController {
 
     req.session.groupname = `Test Group`;
     req.session.groupId = testGroupId;
-    res.redirect(`/`);
+    res.redirect(`/home`);
   }
 
   /* UNDER CONSTRUCTION */

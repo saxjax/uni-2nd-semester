@@ -18,7 +18,7 @@ class ParseSql {
   parse(data) {
     if (data.length > 0) {
       for (let i = 0; i < data.length; i++) {
-        switch (data[i].elementtype) {
+        switch (data[i].ELEMENT_TYPE) {
           case `section`:       this.parsedData.push(this.parseSection(data[i]));      break;
           case `quiz`:          this.parsedData.push(this.parseQuiz(data[i]));         break;
           case `quiz_question`: this.parsedData.push(this.parseQuizQuestion(data[i])); break;
@@ -40,25 +40,33 @@ class ParseSql {
     return this.parsedData;
   }
 
+  /* nulstil parser mlm kald
+  */
+  reset() {
+    this.parsedData = [];
+    this.elementtype = ``;
+  }
+
   /* Formål: At parse Section-data
    * Input:  Et dataobjekt af typen "section" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
    */
   parseSection(data) {
     let teaser = ``;
-    if (data.section_teaser === null) {
-      teaser = data.section_content.slice(0, 200);
+    if (data.SECTION_TEASER === null) {
+      teaser = data.SECTION_CONTENT.slice(0, 200);
     }
     else {
-      teaser = data.section_teaser;
+      teaser = data.SECTION_TEASER;
     }
+
     return {
-      elementtype: `${data.elementtype}`,
-      idDocument: `${data.iddocument}`,
-      idSection: `${data.iddocument_section}`,
-      sectionNumber: data.section_number,
-      title: `${data.section_title}`,
-      content: `${data.section_content}`,
+      elementtype: `${data.ELEMENT_TYPE}`,
+      idDocument: `${data.ID_DOCUMENT}`,
+      idSection: `${data.ID_DOCUMENT_SECTION}`,
+      sectionNumber: data.SECTION_NUMBER,
+      title: `${data.SECTION_TITLE}`,
+      content: `${data.SECTION_CONTENT}`,
       teaser: `${teaser}`,
       keywords: undefined,
     };
@@ -69,12 +77,14 @@ class ParseSql {
    * Output: Et parset dataobjekt, som kan forståes på frontend
    */
   parseQuiz(data) {
+    console.log(`-------------------linie 48`);
+
     return {
-      elementtype: `${data.elementtype}`,
-      idQuiz: `${data.idquiz}`,
-      idDocument: `${data.iddocument}`,
-      idDocumentSection: `${data.iddocument_section}`,
-      title: `${data.section_title}`,
+      elementtype: `${data.ELEMENT_TYPE}`,
+      idQuiz: `${data.ID_QUIZ}`,
+      idDocument: `${data.ID_DOCUMENT}`,
+      idDocumentSection: `${data.ID_DOCUMENT_SECTION}`,
+      title: `${data.SECTION_TITLE}`,
       keywords: undefined,
     };
   }
@@ -85,14 +95,14 @@ class ParseSql {
    */
   parseQuizQuestion(data) {
     return {
-      idQuestion: `${data.idquiz_question}`,
-      idQuiz: `${data.idquiz}`,
-      question: `${data.question}`,
-      answer1: `${data.answer1}`,
-      answer2: `${data.answer2}`,
-      answer3: `${data.answer3}`,
-      answer4: `${data.answer4}`,
-      correctness: `${data.correct_answer}`,
+      idQuestion: `${data.ID_QUIZ_QUESTION}`,
+      idQuiz: `${data.ID_QUIZ}`,
+      question: `${data.QUESTION}`,
+      answer1: `${data.ANSWER_1}`,
+      answer2: `${data.ANSWER_2}`,
+      answer3: `${data.ANSWER_3}`,
+      answer4: `${data.ANSWER_4}`,
+      correctness: `${data.CORRECT_ANSWER}`,
     };
   }
 
@@ -112,18 +122,17 @@ class ParseSql {
    * FIXME: Metoden skal udvikles
    */
   parseFlashcard(data) {
-    console.warn(`WARNING: Elementtype oprettet, men parser metode IKKE oprettet!`);
     return {
-      elementtype: `${data.elementtype}`,
-      idFlashcard: `${data.idflashcard}`,
-      // idUser: `${data.idUser}`,
-      idDocument: `${data.iddocument}`,
-      idDocumentSection: `${data.iddocument_section}`,
-      concept: `${data.concept}`,
-      definition: `${data.definition}`,
-      correctness: `${data.correct_answer}`,
+      elementtype: `${data.ELEMENT_TYPE}`,
+      idFlashcard: `${data.ID_FLASHCARD}`,
+      idUser: `${data.ID_USER}`,
+      idDocument: `${data.ID_DOCUMENT}`,
+      idDocumentSection: `${data.ID_DOCUMENT_SECTION}`,
+
+      concept: `${data.CONCEPT}`,
+      definition: `${data.DEFINITION}`,
+      correctness: `${data.CORRECT_ANSWER}`,
     };
-    // return data;
   }
 
   /* Formål: At parse Flashcard-result data
@@ -143,7 +152,14 @@ class ParseSql {
    */
   parseKeyword(data) {
     console.warn(`WARNING: Elementtype oprettet, men parser metode IKKE oprettet!`);
-    return data;
+    return {
+      idKeyword: `${data.ID_KEYWORD}`,
+      idDocument: `${data.ID_DOCUMENT}`,
+      idDocumentSection: `${data.ID_DOCUMENT_SECTION}`,
+      keyword: `${data.KEYWORD}`,
+      elementtype: `${data.ELEMENT_TYPE}`,
+
+    };
   }
 
   /* Formål: At parse User-data
@@ -153,7 +169,18 @@ class ParseSql {
    */
   parseUser(data) {
     console.warn(`WARNING: Elementtype oprettet, men parser metode IKKE oprettet!`);
-    return data;
+    return {
+      elementtype: `${data.ELEMENT_TYPE}`,
+      idUser: `${data.ID_USER}`,
+      userName: `${data.USER_NAME}`,
+      // password: `${data.PASSWORD}`,
+      firstName: `${data.FIRST_NAME}`,
+      lastName: `${data.LAST_NAME}`,
+      email: `${data.EMAIL}`,
+      studySubject: `${data.STUDY_SUBJECT}`,
+      semester: `${data.SEMESTER}`,
+      university: `${data.UNIVERSITY}`,
+    };
   }
 }
 

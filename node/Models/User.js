@@ -12,8 +12,9 @@ class User extends Model {
     // Session
     this.groupId      = (typeof req.session.groupId     !== `undefined` ? req.session.groupId     : undefined);
     this.userId  = (typeof req.session.userId    !== `undefined` ? req.session.userId     : undefined);
+    this.loggedin  = (typeof req.session.loggedin    !== `undefined` ? req.session.loggedin     : undefined);
     // ID
-    this.idColumnName = `iduser`;
+    this.idColumnName = `ID_USER`;
     this.queryId       = (typeof req.params.queryId       !== `undefined` ? req.session.queryId      : req.session.userId);
     // Columns
     this.username     = (typeof req.body.username       !== `undefined` ? req.body.username       : undefined);
@@ -34,6 +35,13 @@ class User extends Model {
     return this.query(`SELECT *`, `username = "${this.username}" AND password = "${this.password}"`)
       .then((result) => result)
       .catch((error) => error);
+  }
+
+  alreadyLoggedIn() {
+    if (this.loggedin === true) {
+      return true;
+    }
+    return false;
   }
 
   /* UNDER CONSTRUCTION */

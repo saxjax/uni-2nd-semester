@@ -7,8 +7,8 @@ class Evaluation extends Model {
   /* Denne abstrakte klasse skal defineres ud fra hvad der samler de forskellige evalueringsmetoder
    * Mangler design for hvad den kan tilføje af funktionalitet. Kræver diskussion.
    */
-  constructor(req) {
-    super(req);
+  constructor() {
+    super();
     this.elementtype = null;
     this.table = null;
   }

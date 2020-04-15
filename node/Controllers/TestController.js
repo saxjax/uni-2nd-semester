@@ -28,6 +28,14 @@ class TestController {
   async test2(req, res) {
     res.send(req.session.groupId);
   }
+
+  async test3(req, res) {
+    const test1 = (typeof req.params.queryId       !== `undefined` ? req.params.queryId      : undefined);
+    const test2 = (req.params ? req.params.queryId : undefined);
+    console.log(test1);
+    console.log(`test2 = ${test2}`);
+    res.send(`Se i log`);
+  }
 }
 
 module.exports = {
