@@ -22,7 +22,9 @@ class ParseSql {
           case `section`:       this.parsedData.push(this.parseSection(data[i]));      break;
           case `quiz`:          this.parsedData.push(this.parseQuiz(data[i]));         break;
           case `quiz_question`: this.parsedData.push(this.parseQuizQuestion(data[i])); break;
+          case `quiz_result`:   this.parsedData.push(this.parseQuizResult(data[i]));    break;
           case `flashcard`:     this.parsedData.push(this.parseFlashcard(data[i]));    break;
+          case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i]));    break;
           case `keyword`:       this.parsedData.push(this.parseKeyword(data[i]));      break;
           case `user`:          this.parsedData.push(this.parseUser(data[i]));         break;
           default:
@@ -94,6 +96,16 @@ class ParseSql {
     };
   }
 
+  /* Formål: At parse Quiz-result
+   * Input:  Et dataobjekt af typen "quiz_result" fra parse metoden.
+   * Output: Et parset dataobjekt, som kan forståes på frontend
+   * FIXME: Metoden skal udvikles
+   */
+  parseQuizResult(data) {
+    console.warn(`WARNING: Elementtype oprettet, men parser metode IKKE oprettet!`);
+    return data;
+  }
+
   /* Formål: At parse Flashcard-data
    * Input:  Et dataobjekt af typen "flashcard" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
@@ -104,15 +116,24 @@ class ParseSql {
     return {
       elementtype: `${data.elementtype}`,
       idFlashcard: `${data.idflashcard}`,
-      idUser: `${data.idUser}`,
+      // idUser: `${data.idUser}`,
       idDocument: `${data.iddocument}`,
       idDocumentSection: `${data.iddocument_section}`,
-
       concept: `${data.concept}`,
       definition: `${data.definition}`,
       correctness: `${data.correct_answer}`,
     };
     // return data;
+  }
+
+  /* Formål: At parse Flashcard-result data
+   * Input:  Et dataobjekt af typen "flashcaard_result" fra parse metoden.
+   * Output: Et parset dataobjekt, som kan forståes på frontend
+   * FIXME: Metoden skal udvikles
+   */
+  parseFlashcardResult(data) {
+    console.warn(`WARNING: Elementtype oprettet, men parser metode IKKE oprettet!`);
+    return data;
   }
 
   /* Formål: At parse Keyword-data
