@@ -344,7 +344,7 @@ test(`Test af parse i node/Database ved elementtype user`, (assert) => {
 
 /* Test parsing data from database */
 
-test(`Test af parse i node/Database ved hentning af første element fra alle tabeller`, (assert) => {
+test(`Test af Database-setup i vores SQLdatabase, ved hentning af første element fra alle tabeller, udtræk kolonnenavne`, (assert) => {
   p.reset();
 
   expected = [
