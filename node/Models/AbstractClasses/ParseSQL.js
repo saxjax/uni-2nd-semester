@@ -18,7 +18,7 @@ class ParseSql {
   parse(data) {
     if (data.length > 0) {
       for (let i = 0; i < data.length; i++) {
-        switch (data[i].elementtype) {
+        switch (data[i].ELEMENT_TYPE) {
           case `section`:       this.parsedData.push(this.parseSection(data[i]));      break;
           case `quiz`:          this.parsedData.push(this.parseQuiz(data[i]));         break;
           case `quiz_question`: this.parsedData.push(this.parseQuizQuestion(data[i])); break;
@@ -44,19 +44,19 @@ class ParseSql {
    */
   parseSection(data) {
     let teaser = ``;
-    if (data.section_teaser === null) {
-      teaser = data.section_content.slice(0, 200);
+    if (data.SECTION_TEASER === null) {
+      teaser = data.SECTION_CONTENT.slice(0, 200);
     }
     else {
-      teaser = data.section_teaser;
+      teaser = data.SECTION_TEASER;
     }
     return {
-      elementtype: `${data.elementtype}`,
-      idDocument: `${data.iddocument}`,
-      idSection: `${data.iddocument_section}`,
-      sectionNumber: data.section_number,
-      title: `${data.section_title}`,
-      content: `${data.section_content}`,
+      elementtype: `${data.ELEMENT_TYPE}`,
+      idDocument: `${data.ID_DOCUMENT}`,
+      idSection: `${data.ID_DOCUMENT_SECTION}`,
+      sectionNumber: data.SECTION_NUMBER,
+      title: `${data.SECTION_TITLE}`,
+      content: `${data.SECTION_CONTENT}`,
       teaser: `${teaser}`,
       keywords: undefined,
     };
@@ -68,11 +68,11 @@ class ParseSql {
    */
   parseQuiz(data) {
     return {
-      elementtype: `${data.elementtype}`,
-      idQuiz: `${data.idquiz}`,
-      idDocument: `${data.iddocument}`,
-      idDocumentSection: `${data.iddocument_section}`,
-      title: `${data.section_title}`,
+      elementtype: `${data.ELEMENT_TYPE}`,
+      idQuiz: `${data.ID_QUIZ}`,
+      idDocument: `${data.ID_DOCUMENT}`,
+      idDocumentSection: `${data.ID_DOCUMENT_SECTION}`,
+      title: `${data.SECTION_TITLE}`,
       keywords: undefined,
     };
   }
@@ -83,14 +83,14 @@ class ParseSql {
    */
   parseQuizQuestion(data) {
     return {
-      idQuestion: `${data.idquiz_question}`,
-      idQuiz: `${data.idquiz}`,
-      question: `${data.question}`,
-      answer1: `${data.answer1}`,
-      answer2: `${data.answer2}`,
-      answer3: `${data.answer3}`,
-      answer4: `${data.answer4}`,
-      correctness: `${data.correct_answer}`,
+      idQuestion: `${data.ID_QUIZ_QUESTION}`,
+      idQuiz: `${data.ID_QUIZ}`,
+      question: `${data.QUESTION}`,
+      answer1: `${data.ANSWER_1}`,
+      answer2: `${data.ANSWER_2}`,
+      answer3: `${data.ANSWER_3}`,
+      answer4: `${data.ANSWER_4}`,
+      correctness: `${data.CORRECT_ANSWER}`,
     };
   }
 
@@ -102,15 +102,15 @@ class ParseSql {
   parseFlashcard(data) {
     console.warn(`WARNING: Elementtype oprettet, men parser metode IKKE oprettet!`);
     return {
-      elementtype: `${data.elementtype}`,
-      idFlashcard: `${data.idflashcard}`,
-      idUser: `${data.idUser}`,
-      idDocument: `${data.iddocument}`,
-      idDocumentSection: `${data.iddocument_section}`,
+      elementtype: `${data.ELEMENT_TYPE}`,
+      idFlashcard: `${data.ID_FLASHCARD}`,
+      idUser: `${data.ID_USER}`,
+      idDocument: `${data.ID_DOCUMENT}`,
+      idDocumentSection: `${data.ID_DOCUMENT_SECTION}`,
 
-      concept: `${data.concept}`,
-      definition: `${data.definition}`,
-      correctness: `${data.correct_answer}`,
+      concept: `${data.CONCEPT}`,
+      definition: `${data.DEFINITION}`,
+      correctness: `${data.CORRECT_ANSWER}`,
     };
     // return data;
   }
