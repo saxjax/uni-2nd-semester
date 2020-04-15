@@ -6,17 +6,24 @@ const { Model } = require(`./AbstractClasses/Model`);
 
 class Group extends Model {
   constructor(req) {
-    super(req);
+    super();
     this.elementtype = `group`;
     this.table = `user_group`;
-    // Session
-    this.groupId = (typeof req.session.groupId        !== `undefined` ? req.session.groupId       : undefined);
-    this.userId  = (typeof req.session.userId         !== `undefined` ? req.session.userId        : undefined);
-    // ID
-    this.idColumnName = `iduser_group`;
-    this.queryId = (typeof req.params.queryId         !== `undefined` ? req.params.queryId        : undefined);
-    // Columns
-    this.name = (typeof req.body.name !== `undefined` ? req.body.name : undefined);
+
+    if (this.validateMethodChoice()) {
+      this.groupId = req.session.groupId;
+      this.userId  = req.session.userId;
+      switch (req.method) {
+        case `GET`:
+          this.idColumnName = `iduser_group`;
+          this.queryId = req.params.queryId;
+          break;
+        case `POST`: case `UPDATE`:
+          this.name = req.body.name;
+          break;
+        default: break;
+      }
+    }
   }
 }
 

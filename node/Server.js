@@ -39,6 +39,7 @@ class Server {
     this.staticMiddleware();
     this.bodyParserMiddleware();
     this.sessionMiddleware();
+    this.viewEngineMiddleware();
 
     this.sessionPatterns();
     this.accessPatterns();
@@ -83,9 +84,11 @@ class Server {
     this.app.get(`/evalueringer/flashcard/:queryId`,   (req, res) => Show.flashcardPage(req, res));
     // this.app.get(`/evalueringer/:type/:idquiz`,   (req, res) => Show.evalueringerTypePage(req, res));
     this.app.get(`/rapport`,                      (req, res) => Show.rapportPage(req, res));
-    this.app.get(`/rapport/:idSection`,  (req, res) => Show.rapportSectionPage(req, res));
+    this.app.get(`/rapport/:queryId`,  (req, res) => Show.rapportSectionPage(req, res));
     this.app.get(`/elementList`,                  (req, res) => Show.elementList(req, res));
     this.app.get(`/upload/:type`,                 (req, res) => Show.uploadPage(req, res));
+    this.app.get(`/create/quiz`, (req, res) => Show.createQuiz(req, res));
+    this.app.get(`/create/flashcard`, (req, res) => Show.createFlashcard(req, res));
   }
 
   /* Formål: At redirecte brugeren hen til det korrekte sted, eller vise den korrekte fejlmeddelse */
@@ -105,6 +108,7 @@ class Server {
     const Creator = new CreateController();
     this.app.post(`/post/group`, (req, res) => Creator.createGroup(req, res));
     this.app.post(`/post/user`, (req, res) => Creator.createUser(req, res));
+    this.app.post(`/post/quiz`, (req, res) => Creator.createQuiz(req, res));
   }
 
   /* Formål: En "catch all" for alle de tests der ønskes at blive lavet, så de ikke "clutter" de andre URL'er til.
@@ -117,6 +121,12 @@ class Server {
     const Tester = new TestController();
     this.app.get(`/test`, (req, res) => Tester.test(req, res));
     this.app.get(`/test2`, (req, res) => Tester.test2(req, res));
+    this.app.get(`/test3`, (req, res) => Tester.test3(req, res));
+    this.app.get(`/test3/:queryId`, (req, res) => Tester.test3(req, res));
+  }
+
+  viewEngineMiddleware() {
+    this.app.set(`view engine`, `ejs`);
   }
 
   /* UNDER CONSTRUCTION */

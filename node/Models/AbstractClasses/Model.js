@@ -8,12 +8,14 @@ class Model extends Database {
   /* Denne abstrakte klasse skal defineres ud fra hvad der samler de forskellige evalueringsmetoder
    * Mangler design for hvad den kan tilføje af funktionalitet. Kræver diskussion.
    */
-  constructor(req) {
+  constructor() {
     super();
     this.idColumnGroup = `iduser_group`;
-    // Session
-    this.groupId = (typeof req.session.groupId   !== `undefined` ? req.session.groupId    : undefined);
-    this.userId  = (typeof req.session.userId    !== `undefined` ? req.session.userId     : undefined);
+  }
+
+  validateMethodChoice() {
+    const imValid = true;
+    return imValid;
   }
 
   /* Formål: Mulighed for at få data der tilhører et objekt med et unikt ID.

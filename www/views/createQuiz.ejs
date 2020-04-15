@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('meta/header') %> 
+    <title>evalueringQuizUpload</title>
+    <link rel="stylesheet" href="/css/design.css">
+  </head>
+  <body>
+    <%- include('meta/navbar') %> 
+    <div class="container" id="content">
+      <h1>Make a quiz</h1>
+      <form action="/post/quiz" method="POST">
+        <div class="form-group">
+          <input type="text" id="title" name="title" placeholder="title of quiz">
+        </div>
+        <!-- Her skal der vælges en section ud fra en "drop down menu" eller lign.
+             Alle section data er medsendt i data.section
+        <div class="form-group">
+          <input type="text" id="section" name="section" placeholder="section?">
+        </div>
+        -->
+        <div class="form-group">
+          <h2>Question 1</h2>
+          <input type="text" id="Question" name="Question" placeholder="Insert your question">
+        </div>
+        <div class="form-group">
+          <label for="Answer">Answer 1:</label>
+          <input type="text" id="Answer_1" name="Answer_1">
+          <input type="radio" id="correctness_1" name="correctness_1" value="true">
+          <label for="correctness">Sandt svar</label>
+          <input type="radio" id="correctness_1" name="correctness_1" value="false">
+          <label for="correctness">Falsk svar</label>
+        </div>
+        <div class="form-group">
+          <label for="Answer_2">Answer 2:</label>
+          <input type="text" id="Answer_2" name="Answer_2">
+          <input type="radio" id="correctness_2" name="correctness_2" value="true">
+          <label for="correctness_2">Sandt svar</label>
+          <input type="radio" id="correctness_2" name="correctness_2" value="false">
+          <label for="correctness_2">Falsk svar</label>
+        </div>
+        <div class="form-group">
+          <label for="Answer">Answer 3:</label>
+          <input type="text" id="Answer" name="Answer">
+          <input type="radio" id="correctness" name="correctness_1" value="true">
+          <label for="correctness">Sandt svar</label>
+          <input type="radio" id="correctness" name="correctness_1" value="false">
+          <label for="correctness">Falsk svar</label>
+        </div>
+        <div class="form-group">
+          <label for="Answer">Answer 4:</label>
+          <input type="text" id="Answer" name="Answer">
+          <input type="radio" id="correctness" name="correctness_1" value="true">
+          <label for="correctness">Sandt svar</label>
+          <input type="radio" id="correctness" name="correctness_1" value="false">
+          <label for="correctness">Falsk svar</label>
+        </div>
+        <div class="form-group">
+          <input type="submit" value="Submit">
+        </div>
+      </form>      
+    </div>
+    <%- include('meta/footer') %> 
+  </body>
+</html>
