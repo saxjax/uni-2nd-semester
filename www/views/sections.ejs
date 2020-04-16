@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('meta/header') %> 
+        <link href="css/design.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/elementlist.css">
+    </head>
+    <body>
+        <%- include('meta/navbar') %> 
+        <ol>
+            <% sections.forEach((section) => { %>
+                <li>
+                    <div>
+                        <strong>Title: </strong>     <%= section.title %> 
+                        <p> <strong>Content:</strong> <%= section.content %> </p>
+                        <p><strong>Keywords:</strong> <%= section.keywords %> </p>
+                    </div> 
+
+                </li>
+                <% console.log(section.keywords) %> 
+                <% }); %> 
+            </ol>
+            
+        <button>
+            <a href="/create/section">Crate new section!</a>
+        </button>
+
+
+        <%- include('meta/footer') %> 
+  </body>
+  <script src="js/view-design.js"></script>
+</html>   

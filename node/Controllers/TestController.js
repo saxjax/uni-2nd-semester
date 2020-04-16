@@ -1,4 +1,4 @@
-// const path = require(`path`);
+const path = require(`path`);
 // const { Document } = require(`../Document/Document`);
 // const { Section } = require(`../Section/Section`);
 // const { Quiz } = require(`../Evaluation/Quiz`);
@@ -35,6 +35,10 @@ class TestController {
     console.log(test1);
     console.log(`test2 = ${test2}`);
     res.send(`Se i log`);
+  }
+
+  createSection(req, res) {
+    res.render(path.join(`${this.root}/www/views/createSection.ejs`));
   }
 }
 
