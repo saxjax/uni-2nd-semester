@@ -78,17 +78,20 @@ class Server {
   /* Formål: At opstille alle de funkktioner som loader en ejs fil og viser en side i et grupperum */
   viewPatterns() {
     const Show = new ViewController();
-    this.app.get(`/home`,                             (req, res) => Show.homePage(req, res));
-    this.app.get(`/evalueringer`,                 (req, res) => Show.evalueringerPage(req, res));
+    const Test = new TestController();
+    this.app.get(`/home`,                              (req, res) => Show.homePage(req, res));
+    this.app.get(`/evalueringer`,                      (req, res) => Show.evalueringerPage(req, res));
     this.app.get(`/evalueringer/quiz/:queryId`,        (req, res) => Show.quizPage(req, res));
     this.app.get(`/evalueringer/flashcard/:queryId`,   (req, res) => Show.flashcardPage(req, res));
-    // this.app.get(`/evalueringer/:type/:idquiz`,   (req, res) => Show.evalueringerTypePage(req, res));
-    this.app.get(`/rapport`,                      (req, res) => Show.rapportPage(req, res));
-    this.app.get(`/rapport/:queryId`,  (req, res) => Show.rapportSectionPage(req, res));
-    this.app.get(`/elementList`,                  (req, res) => Show.elementList(req, res));
-    this.app.get(`/upload/:type`,                 (req, res) => Show.uploadPage(req, res));
+    // this.app.get(`/evalueringer/:type/:idquiz`,     (req, res) => Show.evalueringerTypePage(req, res));
+    this.app.get(`/rapport`,                           (req, res) => Show.rapportPage(req, res));
+    this.app.get(`/rapport/:queryId`,                  (req, res) => Show.rapportSectionPage(req, res));
+    this.app.get(`/elementList`,                       (req, res) => Show.elementList(req, res));
+    this.app.get(`/upload/:type`,                      (req, res) => Show.uploadPage(req, res));
+    this.app.get(`/sections`,                          (req, res) => Show.sections(req, res));
     this.app.get(`/create/quiz`, (req, res) => Show.createQuiz(req, res));
     this.app.get(`/create/flashcard`, (req, res) => Show.createFlashcard(req, res));
+    this.app.get(`/create/section`, (req, res) => Test.createSection(req, res));
   }
 
   /* Formål: At redirecte brugeren hen til det korrekte sted, eller vise den korrekte fejlmeddelse */
@@ -98,6 +101,7 @@ class Server {
     this.app.post(`/upload/rapport`,       (req, res) => Redirect.UploadRapport(req, res));
     this.app.post(`/upload/evalueringer`,  (req, res) => Redirect.UploadEvalueringer(req, res));
     this.app.post(`/register`,             (req, res) => Redirect.RegisterNewUser(req, res));
+    this.app.post(`/create/section`,       (req, res) => Redirect.createSection(req, res));
   }
 
   /* Formål: Struktur for de URL Patterns der indsætter data i databasen.

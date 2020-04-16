@@ -10,7 +10,7 @@ class Model extends Database {
    */
   constructor() {
     super();
-    this.idColumnGroup = `iduser_group`;
+    this.idColumnGroup = `ID_USER_GROUP`;
   }
 
   validateMethodChoice() {
@@ -64,7 +64,7 @@ class Model extends Database {
       case `Keyword`: return `keyword`;
       case `Quiz`: return `quiz`;
       case `QuizQuestion`: return `quiz_question`;
-      case `Section`: return `section`;
+      case `Section`: return `document_section`;
       case `User`: return `user`;
       default: throw new Error(`WARNING: Element Type not implemented in parseElementTypesTable in Model`);
     }
