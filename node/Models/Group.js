@@ -10,7 +10,7 @@ class Group extends Model {
     this.elementtype = `group`;
     this.table = `user_group`;
 
-    if (this.validateMethodChoice()) {
+    if (this.validateMethodChoice(req)) {
       this.groupId = req.session.groupId;
       this.userId  = req.session.userId;
       switch (req.method) {
