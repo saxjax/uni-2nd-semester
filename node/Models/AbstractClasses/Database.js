@@ -126,8 +126,13 @@ class Database {
     });
   }
 
+  /*
+  * FIXME: HEAD skal returnere alle kollonne navne for den givne tabel
+  */
+  /* UNDER CONSTRUCTION */
   /* Input:  Metoden modtager de valg som brugeren har lavet
    *         Metoden indtager ogsaa texton parameter, som frakobles info() kald under test af catching af errors, men ellers altid er true.
+   *        (`HEAD`,`COLUMN_NAME`) giver os column navne retur fra databasen
    * Output: Metoden outputter en brugbar SQL streng til brug i mysql
    * Formaal: Ved at standardisere maaden der skrives SQL kan andre modeller nemmere haandtere queries.
    *         Det oger laesbarheden af koden, samtidigt med at det ikke abstrahere for meget,
@@ -165,7 +170,7 @@ class Database {
           sql = `DELETE FROM ${this.database}.${this.table} WHERE ${data}`;
           break;
         case `HEAD`:
-          sql = `SELECT * FROM information_schema.columns WHERE table_schema = "${this.database}" AND table_name = "${this.table}" AND column_name = "COLUMN_NAME"`;
+          sql = `SELECT ${data} FROM information_schema.columns WHERE table_schema = "${this.database}" AND table_name = "${this.table}" `;
           break;
         case `CUSTOM`:
           if (texton) {
