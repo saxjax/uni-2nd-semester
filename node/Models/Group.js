@@ -10,13 +10,13 @@ class Group extends Model {
     this.elementtype = `group`;
     this.table = `user_group`;
 
-    if (this.validateMethodChoice()) {
+    if (this.validateMethodChoice(req)) {
       this.groupId = req.session.groupId;
       this.userId  = req.session.userId;
       switch (req.method) {
         case `GET`:
           this.idColumnName = `ID_USER_GROUP`;
-          this.queryId = req.params.queryId;
+          this.queryId = this.groupId;
           break;
         case `POST`: case `UPDATE`:
           this.name = req.body.name;
@@ -25,8 +25,6 @@ class Group extends Model {
       }
     }
   }
-
-  /* UN */
 }
 
 module.exports = {

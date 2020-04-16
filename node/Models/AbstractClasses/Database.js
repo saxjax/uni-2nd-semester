@@ -35,8 +35,7 @@ class Database {
 
     this.table = `database`;
     this.elementtype = `test`;
-    this.idColumnName = `iddatabase`;
-    this.idColumnGroup = `iduser_group`;
+    this.idColumnName = `ID_DATABASE`;
   }
 
   /* Formål: Naar der sker fejl ved brug af querymetoden vil denne metode give den nodvendige information med det samme.
@@ -245,8 +244,8 @@ class Database {
     while (!done) {
       dataArr.columns += /^\w+/.exec(dataCopy);
       dataCopy = dataCopy.slice(`${/^\w+/.exec(dataCopy)} = `.length, dataCopy.length);
-      dataArr.values += /"\w+"/.exec(dataCopy);
-      dataCopy = dataCopy.slice(`${/"\w+"/.exec(dataCopy)} `.length, dataCopy.length);
+      dataArr.values += /".*?"/.exec(dataCopy);
+      dataCopy = dataCopy.slice(`${/".*?"/.exec(dataCopy)} `.length, dataCopy.length);
       try {
         if (/^\w+/.exec(dataCopy)[0] === `AND`) {
           dataArr.columns += `, `;

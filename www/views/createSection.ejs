@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<%- include(`meta/header.ejs`)  %> 
+  	<title>GroupHub | New Section</title>
+  	<link rel="stylesheet" href="css/login_register_form.css">
+  </head>
+  <body>
+    <%- include('meta/navbar') %>
+    <div class="container">
+  	  <div class="login-form">
+  		  <h1>Make a new section!</h1>
+            <form action="/create/section" method="POST">
+                <label for="">Section Title</label>
+                <input name="section[title]" type="text" placeholder="Section Title">
+                <textarea name="section[content]" placeholder="Please put in the content here!" cols="30" rows="10"></textarea>
+                <label for="">keywords</label>
+                <input name="section[keywords]" type="text" placeholder="Keywords">
+  		        <input type="submit">
+		    </form>
+      </div>
+    </div>
+  	<%- include(`meta/footer.ejs`) %> 
+  </body>
+</html>
