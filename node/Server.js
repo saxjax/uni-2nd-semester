@@ -26,8 +26,6 @@ class Server {
     this.port = settings.port;
     this.debug = settings.debug;
     this.skipAccess = settings.skipAccess;
-    this.userId = settings.userId;
-    this.groupId = settings.groupId;
   }
 
   /* Formål: Opstiller alt det middleware som skal aktiveres ved hvert enkelt request.
@@ -40,6 +38,9 @@ class Server {
     this.bodyParserMiddleware();
     this.sessionMiddleware();
     this.viewEngineMiddleware();
+    if (this.debug) {
+      this.testMiddleware();
+    }
 
     this.sessionPatterns();
     this.accessPatterns();
@@ -54,47 +55,56 @@ class Server {
   }
 
   /* Formål: At opstille alle de funktioner som loader og viser de ejs filer
-             der skal bruges for at tilgå et grupperum */
+             der skal bruges for at tilgå et grupperum
+   * Input : Non. Her laves blot opsætningen.
+   * Output: Opsætning af url'er som kan tilgås via serverens port.
+   */
   accessPatterns() {
     const Access = new AccessController();
-    if (this.skipAccess) {
-      this.app.get(`/`,         (req, res) => Access.skipAccess(req, res, this.userId, this.groupId));
-    }
-    else {
-      this.app.get(`/`,         (req, res) => Access.accessPoint(req, res));
-      this.app.get(`/register`, (req, res) => Access.registerPage(req, res));
-      this.app.get(`/login`,    (req, res) => Access.loginPage(req, res));
-      this.app.get(`/groups`,   (req, res) => Access.groupsPage(req, res));
-    }
+    this.app.get(`/register`, (req, res) => Access.registerPage(req, res));
+    this.app.get(`/login`,    (req, res) => Access.loginPage(req, res));
+    this.app.get(`/groups`,   (req, res) => Access.groupsPage(req, res));
   }
 
-  /* Formål: At opstille alle de funktioner som opsætter, ændrer og stopper sessions */
+  /* Formål: At opstille alle de funktioner som opsætter, ændrer og stopper sessions
+   * Input : Non. Her laves blot opsætningen.
+   * Output: Opsætning af url'er som kan tilgås via serverens port.
+   */
   sessionPatterns() {
     const Session = new SessionController();
     this.app.post(`/auth/user`, (req, res) => Session.userSession(req, res));
     this.app.get(`/session/group/:queryId`, (req, res) => Session.groupSession(req, res));
   }
 
-  /* Formål: At opstille alle de funkktioner som loader en ejs fil og viser en side i et grupperum */
+  /* Formål: At opstille alle de funkktioner som loader en ejs fil og viser en side i et grupperum
+   *         Alle objekter vil have et medfølgende queryId eller et /user eller /group,
+   *         da det indikere hvad man får vist. (queryId for et bestemt objet, /user el. /group for alle objekter tilknyttet user/group)
+   *         "/" er lidt speciel da den tæller for startsiden.
+   * Input : Non. Her laves blot opsætningen.
+   * Output: Opsætning af url'er som kan tilgås via serverens port.
+   */
   viewPatterns() {
     const Show = new ViewController();
-    const Test = new TestController();
-    this.app.get(`/home`,                              (req, res) => Show.homePage(req, res));
-    this.app.get(`/evalueringer`,                      (req, res) => Show.evalueringerPage(req, res));
+    this.app.get(`/`,                             (req, res) => Show.homePage(req, res));
+    this.app.get(`/evalueringer`,                 (req, res) => Show.evalueringerPage(req, res));
     this.app.get(`/evalueringer/quiz/:queryId`,        (req, res) => Show.quizPage(req, res));
     this.app.get(`/evalueringer/flashcard/:queryId`,   (req, res) => Show.flashcardPage(req, res));
-    // this.app.get(`/evalueringer/:type/:idquiz`,     (req, res) => Show.evalueringerTypePage(req, res));
-    this.app.get(`/rapport`,                           (req, res) => Show.rapportPage(req, res));
-    this.app.get(`/rapport/:queryId`,                  (req, res) => Show.rapportSectionPage(req, res));
-    this.app.get(`/elementList`,                       (req, res) => Show.elementList(req, res));
-    this.app.get(`/upload/:type`,                      (req, res) => Show.uploadPage(req, res));
+    this.app.get(`/evalueringer/:type/:idquiz`,   (req, res) => Show.evalueringerTypePage(req, res));
+    this.app.get(`/rapport`,                      (req, res) => Show.rapportPage(req, res));
+    this.app.get(`/rapport/:queryId`,  (req, res) => Show.rapportSectionPage(req, res));
+    this.app.get(`/elementList`,                  (req, res) => Show.elementList(req, res));
+    this.app.get(`/upload/:type`,                 (req, res) => Show.uploadPage(req, res));
     this.app.get(`/sections`,                          (req, res) => Show.sections(req, res));
     this.app.get(`/create/quiz`, (req, res) => Show.createQuiz(req, res));
     this.app.get(`/create/flashcard`, (req, res) => Show.createFlashcard(req, res));
     this.app.get(`/create/section`, (req, res) => Test.createSection(req, res));
   }
 
-  /* Formål: At redirecte brugeren hen til det korrekte sted, eller vise den korrekte fejlmeddelse */
+  /* Formål: At redirecte brugeren hen til det korrekte sted, eller vise den korrekte fejlmeddelse.
+   *         Denne controller vil IKKE håndtere nogle ejs filer overhovedet!
+   * Input : Non. Her laves blot opsætningen.
+   * Output: Opsætning af url'er som kan tilgås via serverens port.
+   */
   redirectPatterns() {
     const Redirect = new RedirectController();
     this.app.get(`/dbdown`,                (req, res) => Redirect.dbdown(req, res));
@@ -105,6 +115,7 @@ class Server {
   }
 
   /* Formål: Struktur for de URL Patterns der indsætter data i databasen.
+  *          Vil være den controller der håndtere posting af database, og dermed også sikkerhed.
    * Input : Et request med data der passer til den model der skal oprettes.
    * Output: Setup af muligheden for klienten at poste data til databasen.
    */
@@ -136,7 +147,6 @@ class Server {
   /* UNDER CONSTRUCTION */
   staticMiddleware() {
     this.app.use(express.static(`${this.root}/www/`));
-    this.app.use(this.logger);
   }
 
   /* UNDER CONSTRUCTION */
@@ -155,6 +165,55 @@ class Server {
       saveUninitialized: false,
       cookie: { maxAge: 600000 },
     }));
+    if (this.skipAccess) {
+      this.app.use(this.createTestUserAndGroupId);
+    }
+    this.app.use(this.noSessionNoAccess);
+  }
+
+  /* Formål: At skabe et user og group Id i tilfælde af at man i udviklingsmode ønsker at skippe login/gruppevalgs fasen.
+   * Input : Et request
+   * Output: En fuldt oprettet session for user og group data.
+   */
+  createTestUserAndGroupId(req, res, next) {
+    if (!req.session.userId || !req.session.groupId) {
+      req.session.username = `Test User`;
+      req.session.loggedin = true;
+      req.session.userId = `553e422d-7c29-11ea-86e2-2c4d54532c7a`;
+
+      req.session.groupname = `Test Group`;
+      req.session.groupId = `34701dd1-7c29-11ea-86e2-2c4d54532c7a`;
+    }
+    next();
+  }
+
+  /* Formål: At sikre sig at man ikke kan tilgå et grupperum uden en session
+   * Input : Et request
+   * Output: En omdirigering til login siden hvis man ikke er logget ind, eller til groups siden hvis man ikke har valgt gruppe.
+   * FIXME : Denne funktion kan udvides til også at indeholde sikkerhed såsom
+   *         at sikre sig at userId og groupId stemmer overens.
+   *         Hvordan det gøres er dog lettere usikkert.
+   */
+  noSessionNoAccess(req, res, next) {
+    if (!req.session.userId) {
+      if (this.debug) {
+        console.warn(`Du har ikke et validt userId og er dermed blevet omdirigeret til login siden!`);
+      }
+      res.redirect(`/login`);
+    }
+    else if (!req.session.groupId) {
+      if (this.debug) {
+        console.warn(`Du har ikke et validt groupId og er dermed blevet omdirigeret til login siden!`);
+      }
+      res.redirect(`/groups`);
+    }
+    else {
+      next();
+    }
+  }
+
+  testMiddleware() {
+    this.app.use(this.logger);
   }
 
   /* UNDER CONSTRUCTION */
