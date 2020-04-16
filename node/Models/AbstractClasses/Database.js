@@ -29,7 +29,7 @@ class Database {
       host: `213.32.247.201`,
       user: `ADMIN`,
       port: `3306`,
-      password: fs.readFileSync(`node/Models/AbstractClasses/password.txt`, `utf8`),
+      password: fs.readFileSync(`../../../node/Models/AbstractClasses/password.txt`, `utf8`),
       database: this.database,
     });
 
@@ -99,6 +99,33 @@ class Database {
     });
   }
 
+  /* Formål: modtag uparset data fra databasen, funktionen virker som query funktionen uden parser.
+            Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overridet.
+   *         Dette oger kode genbrug, samt sikre fornuftig testning paa tvaers af hele programmet i forhold til databasen.
+   * Input:  Metoden modtager de valg som brugeren har lavet, og gennem parser metoden, faar noget brugbar SQL,
+   *         Der kan vaere et get, post, put eller delete.
+   *         Metoden indtager ogsaa texton parameter, som frakobles info() kald under test af catching af errors, men ellers altid er true.
+   * Output: Metoden outputter den parsede data hentet fra SQL databasen, ud fra den givne SQL streng
+   */
+  async queryUnparsedData(choice, data, texton = true) {
+    this.sql = this.inputParser(choice, data, texton);
+    return new Promise((resolve, reject) => {
+      this.connect.query(this.sql, (error, result) => {
+        if (error) {
+          if (texton) {
+            console.log(`Here at node/Database/Database.js-data the error \n${error.code}\n
+            and ${error.stack}`);
+          }
+          reject(error);
+        }
+        else {
+          // const outputParser = new ParseSql(this.elementtype);
+          resolve(result);
+        }
+      });
+    });
+  }
+
   /* Input:  Metoden modtager de valg som brugeren har lavet
    *         Metoden indtager ogsaa texton parameter, som frakobles info() kald under test af catching af errors, men ellers altid er true.
    * Output: Metoden outputter en brugbar SQL streng til brug i mysql
@@ -138,7 +165,7 @@ class Database {
           sql = `DELETE FROM ${this.database}.${this.table} WHERE ${data}`;
           break;
         case `HEAD`:
-          sql = `SELECT * FROM information_schema.columns WHERE table_schema = "${this.database}" AND table_name = "${this.table}"`;
+          sql = `SELECT * FROM information_schema.columns WHERE table_schema = "${this.database}" AND table_name = "${this.table}" AND column_name = "COLUMN_NAME"`;
           break;
         case `CUSTOM`:
           if (texton) {
@@ -178,6 +205,9 @@ class Database {
     const dataEmpty = (data === undefined || data === ``);
     const dataRe = /^\w+ = /;
     if (/^CUSTOM$/.test(choice)) {
+      dataValid = true;
+    }
+    else if (/^HEAD$/.test(choice)) {
       dataValid = true;
     }
     else if (/^DELETE$/.test(choice) && dataEmpty) {

@@ -26,7 +26,7 @@
                     <h1> RAPPORT </h1>
                 </div>
                 <div class="section_list">
-                    <%  if(data.section) { data.section.forEach( (element) => { %>
+                    <%  if(data.section && data.section.length > 0) { data.section.forEach( (element) => { %>
                         <a href="/rapport/<%= element.iddocument_section %>" >
                             <div class="card">
                             <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>

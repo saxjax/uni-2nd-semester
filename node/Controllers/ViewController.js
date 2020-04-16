@@ -78,17 +78,12 @@ class ViewController {
   //         array: afsnit til /www/views/rapport.ejs
   /* UNDER CONSTRUCTION */
   async rapportPage(req, res) {
-    const doc = new Document(req);
-    // Her bliver der hardcoded et dokument som her antages at være "Rapporten"
-    // Alle vores sections er tilknyttet 1 dokument hver, hvilket jeg antager er en fejl.
-    // Vi kan måske også ønske os et sted hvor man får overblik over alle dokumenter?
-    // Dette skal selvfølgelig autogenereres når en person vælger sit gruppe rum -> et dokument oprettes som "rapporten" etc.
-    doc.idDocument = `'0f69a258-6dda-11ea-9983-2c4d54532c7a'`;
+    const group = new Group(req);
     const data = {
-      section: await doc.getSections(),
+      section: await group.getAllElementsOfType(`Section`),
     };
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
-    res.render(this.ejs, { afsnit: data });
+    res.render(this.ejs, { data });
   }
 
   // Formål: Viser alle tilgængelige evaluations knyttet til en bestemt section på siden rapportafsnit.ejs

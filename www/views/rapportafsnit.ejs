@@ -15,13 +15,13 @@
                         <div class = "leftside"> 
                 
                             <H2> EVALUERINGER FOR AFSNITTET</H2><br>
-                            <% if(data.quizzes) { data.quizzes.forEach( (element) => { %>
+                            <% if(data.quizzes.length) { data.quizzes.forEach( (element) => { %>
                                 <p> Titel: <%= element.title %></p>
                                 <a href="/evalueringer/quiz/<%= element.idquiz %>">
                                     <img id="quiz_for_section" src="/img/Design/quiz.png"><br>
                                 </a>
                             <% })} %>
-                            <% if(data.flashcards) { data.flashcards.forEach( (element) => { %>
+                            <% if(data.flashcards.length) { data.flashcards.forEach( (element) => { %>
                                 <p><%= element.title %>  </p>
                                 <a href="/evalueringer/flashcard/<%= element.idflashcard %>">
                                     <img id="flashcard_for_section" src="/img/Design/flashcard.png">
