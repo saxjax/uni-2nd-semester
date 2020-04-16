@@ -36,7 +36,7 @@ class Database {
     this.table = `database`;
     this.elementtype = `test`;
     this.idColumnName = `iddatabase`;
-    this.idColumnGroup = `iduser_group`;
+    this.idColumnGroup = `ID_USER_GROUP`;
   }
 
   /* Formål: Naar der sker fejl ved brug af querymetoden vil denne metode give den nodvendige information med det samme.

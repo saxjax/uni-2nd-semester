@@ -8,17 +8,23 @@ const { Flashcard } = require(`../Models/Flashcard`);
 const { Group } = require(`../Models/Group`);
 const { User } = require(`../Models/User`);
 
-/* UNDER CONSTRUCTION */
+/* ViewController er den controller som præsentere alle de "views" som brugeren kan se i et grupperum.
+ * ViewControllerens metoder vil dermed alle sammen hente og vise et ejs dokument, hvor der medsendes data.
+ * ViewController vil dermed være den simpleste form, da der ikke bør være nogen form for logik, men alt andet logik bør
+ * henvises til eksempelvis RedirectController (hvis der skal tjekkes for redirects) mv.
+ */
 
 class ViewController {
-  /* UNDER CONSTRUCTION */
   constructor() {
     this.name = `ViewController`;
     this.root = __dirname.slice(0, -(`node/Controllers`.length));
     this.ejs = ``;
   }
 
-  /* UNDER CONSTRUCTION */
+  /* Formål: Et overblik til brugeren om programmet, samt hvilke muligheder brugeren har.
+   * Input : Et request der har oprettet en userId og groupId.
+   * Output: Startsiden af hjemmesiden, som skal give et overblik for User.
+   */
   async homePage(req, res) {
     const U = new User(req);
     const data = {
@@ -29,16 +35,15 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // Formål: Viser alle tilg�ngelige evalueringer i gruppen p� siden evalueringer.ejs
-  // Input : Non
-  // Output: Array af Alle tilg�ngelige evalueringer i databasen b�de quizzes og flashcards sendes som
-  //         arrays :flashcards og quizzes til /www/views/evalueringer.ejs
+  // Formål: Et overblik over alle de tilgængelige evalueringsværktøjer som brugeren har adgang til.
+  // Input : Et request der har oprettet en userId og groupId.
+  // Output: Viser alle tilgængelige evalueringer for en bestemt Group.
   /* UNDER CONSTRUCTION */
   async evalueringerPage(req, res) {
     const group = new Group(req);
     const data = {
-      flashcards: await group.getAllElementsOfType(`Flashcard`),
-      quizzes: await group.getAllElementsOfType(`Quiz`),
+      flashcard: await group.getAllElementsOfType(`Flashcard`),
+      quiz: await group.getAllElementsOfType(`Quiz`),
     };
 
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);

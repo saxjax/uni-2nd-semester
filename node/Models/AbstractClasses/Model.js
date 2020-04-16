@@ -10,7 +10,7 @@ class Model extends Database {
    */
   constructor() {
     super();
-    this.idColumnGroup = `iduser_group`;
+    this.idColumnGroup = `ID_USER_GROUP`;
   }
 
   validateMethodChoice() {

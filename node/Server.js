@@ -26,8 +26,6 @@ class Server {
     this.port = settings.port;
     this.debug = settings.debug;
     this.skipAccess = settings.skipAccess;
-    this.userId = settings.userId;
-    this.groupId = settings.groupId;
   }
 
   /* Formål: Opstiller alt det middleware som skal aktiveres ved hvert enkelt request.
@@ -57,7 +55,10 @@ class Server {
   }
 
   /* Formål: At opstille alle de funktioner som loader og viser de ejs filer
-             der skal bruges for at tilgå et grupperum */
+             der skal bruges for at tilgå et grupperum
+   * Input : Non. Her laves blot opsætningen.
+   * Output: Opsætning af url'er som kan tilgås via serverens port.
+   */
   accessPatterns() {
     const Access = new AccessController();
     this.app.get(`/register`, (req, res) => Access.registerPage(req, res));
@@ -65,21 +66,30 @@ class Server {
     this.app.get(`/groups`,   (req, res) => Access.groupsPage(req, res));
   }
 
-  /* Formål: At opstille alle de funktioner som opsætter, ændrer og stopper sessions */
+  /* Formål: At opstille alle de funktioner som opsætter, ændrer og stopper sessions
+   * Input : Non. Her laves blot opsætningen.
+   * Output: Opsætning af url'er som kan tilgås via serverens port.
+   */
   sessionPatterns() {
     const Session = new SessionController();
     this.app.post(`/auth/user`, (req, res) => Session.userSession(req, res));
     this.app.get(`/session/group/:queryId`, (req, res) => Session.groupSession(req, res));
   }
 
-  /* Formål: At opstille alle de funkktioner som loader en ejs fil og viser en side i et grupperum */
+  /* Formål: At opstille alle de funkktioner som loader en ejs fil og viser en side i et grupperum
+   *         Alle objekter vil have et medfølgende queryId eller et /user eller /group,
+   *         da det indikere hvad man får vist. (queryId for et bestemt objet, /user el. /group for alle objekter tilknyttet user/group)
+   *         "/" er lidt speciel da den tæller for startsiden.
+   * Input : Non. Her laves blot opsætningen.
+   * Output: Opsætning af url'er som kan tilgås via serverens port.
+   */
   viewPatterns() {
     const Show = new ViewController();
     this.app.get(`/`,                             (req, res) => Show.homePage(req, res));
     this.app.get(`/evalueringer`,                 (req, res) => Show.evalueringerPage(req, res));
     this.app.get(`/evalueringer/quiz/:queryId`,        (req, res) => Show.quizPage(req, res));
     this.app.get(`/evalueringer/flashcard/:queryId`,   (req, res) => Show.flashcardPage(req, res));
-    // this.app.get(`/evalueringer/:type/:idquiz`,   (req, res) => Show.evalueringerTypePage(req, res));
+    this.app.get(`/evalueringer/:type/:idquiz`,   (req, res) => Show.evalueringerTypePage(req, res));
     this.app.get(`/rapport`,                      (req, res) => Show.rapportPage(req, res));
     this.app.get(`/rapport/:queryId`,  (req, res) => Show.rapportSectionPage(req, res));
     this.app.get(`/elementList`,                  (req, res) => Show.elementList(req, res));
@@ -88,7 +98,11 @@ class Server {
     this.app.get(`/create/flashcard`, (req, res) => Show.createFlashcard(req, res));
   }
 
-  /* Formål: At redirecte brugeren hen til det korrekte sted, eller vise den korrekte fejlmeddelse */
+  /* Formål: At redirecte brugeren hen til det korrekte sted, eller vise den korrekte fejlmeddelse.
+   *         Denne controller vil IKKE håndtere nogle ejs filer overhovedet!
+   * Input : Non. Her laves blot opsætningen.
+   * Output: Opsætning af url'er som kan tilgås via serverens port.
+   */
   redirectPatterns() {
     const Redirect = new RedirectController();
     this.app.get(`/dbdown`,                (req, res) => Redirect.dbdown(req, res));
@@ -98,6 +112,7 @@ class Server {
   }
 
   /* Formål: Struktur for de URL Patterns der indsætter data i databasen.
+  *          Vil være den controller der håndtere posting af database, og dermed også sikkerhed.
    * Input : Et request med data der passer til den model der skal oprettes.
    * Output: Setup af muligheden for klienten at poste data til databasen.
    */
