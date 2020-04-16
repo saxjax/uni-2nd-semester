@@ -1,7 +1,7 @@
 /* eslint no-console: off */
-
 const path = require(`path`);
 const { User } = require(`../Models/User.js`);
+const { Section } = require(`../Models/Section.js`);
 
 /* UNDER CONSTRUCTION */
 
@@ -85,6 +85,13 @@ class RedirectController {
   UploadEvalueringer(req, res) {
     this.ejs = path.join(`${this.root}/www/views/evalueringerUpload.ejs`);
     res.render(this.ejs);
+  }
+
+  async createSection(req, res) {
+    const newSection = new Section(req);
+    const testInsert = await newSection.insertSectionToDatabase();
+    console.log(testInsert);
+    res.redirect(`/sections`);
   }
 }
 

@@ -25,8 +25,6 @@ class Group extends Model {
       }
     }
   }
-
-  /* UN */
 }
 
 module.exports = {

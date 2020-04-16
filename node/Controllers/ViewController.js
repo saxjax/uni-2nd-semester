@@ -47,7 +47,7 @@ class ViewController {
     };
 
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-    res.render(this.ejs, { data });
+    res.render(this.ejs, { data: evaluationData });
   }
 
   // Formål: Viser indholdet af enten et flashcard eller en quizz vha. siden evalueringerFlashcard.ejs eller
@@ -89,6 +89,13 @@ class ViewController {
     };
     this.ejs = path.join(`${this.root}/www/views/rapport.ejs`);
     res.render(this.ejs, { afsnit: data });
+  }
+
+  async sections(req, res) {
+    const G = new Group(req);
+    const data = await G.getAllElementsOfType(`Section`);
+    console.log(data);
+    res.render(path.join(`${this.root}/www/views/sections.ejs`), { sections: data });
   }
 
   // Formål: Viser alle tilgængelige evaluations knyttet til en bestemt section på siden rapportafsnit.ejs

@@ -68,7 +68,7 @@ class ParseSql {
       title: `${data.SECTION_TITLE}`,
       content: `${data.SECTION_CONTENT}`,
       teaser: `${teaser}`,
-      keywords: undefined,
+      keywords: `${data.KEYWORDS}`,
     };
   }
 
