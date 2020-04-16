@@ -30,27 +30,18 @@ class Section extends Model {
     }
   }
 
-  async insertSectionToDatabse() {
+  async insertSectionToDatabase() {
     try {
-      await this.query(`INSERT`, `SECTION_TITLE = "${this.sectionTitle}" AND SECTION_CONTENT = "${this.sectionContent}" AND KEYWORDS = "${this.sectionKeywords}"`);
+      await this.query(`INSERT`, `SECTION_TITLE = "${this.sectionTitle}" `
+                       + `AND SECTION_CONTENT = "${this.sectionContent}" `
+                       + `AND KEYWORDS = "${this.sectionKeywords}" `
+                       + `AND ID_USER_GROUP = "${this.groupId}"`);
     }
     catch (error) {
       console.log(error);
       return false;
     }
     return true;
-  }
-
-  async getAllSections() {
-    let sections;
-    try {
-      sections = await this.query(`SELECT *`);
-    }
-    catch (error) {
-      console.log(error);
-      return false;
-    }
-    return sections;
   }
 }
 

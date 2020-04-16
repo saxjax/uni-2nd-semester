@@ -89,7 +89,7 @@ class RedirectController {
 
   async createSection(req, res) {
     const newSection = new Section(req);
-    const testInsert = await newSection.insertSectionToDatabse();
+    const testInsert = await newSection.insertSectionToDatabase();
     console.log(testInsert);
     res.redirect(`/sections`);
   }
