@@ -40,6 +40,9 @@ class Server {
     this.bodyParserMiddleware();
     this.sessionMiddleware();
     this.viewEngineMiddleware();
+    if (this.debug) {
+      this.testMiddleware();
+    }
 
     this.sessionPatterns();
     this.accessPatterns();
@@ -57,15 +60,9 @@ class Server {
              der skal bruges for at tilgå et grupperum */
   accessPatterns() {
     const Access = new AccessController();
-    if (this.skipAccess) {
-      this.app.get(`/`,         (req, res) => Access.skipAccess(req, res, this.userId, this.groupId));
-    }
-    else {
-      this.app.get(`/`,         (req, res) => Access.accessPoint(req, res));
-      this.app.get(`/register`, (req, res) => Access.registerPage(req, res));
-      this.app.get(`/login`,    (req, res) => Access.loginPage(req, res));
-      this.app.get(`/groups`,   (req, res) => Access.groupsPage(req, res));
-    }
+    this.app.get(`/register`, (req, res) => Access.registerPage(req, res));
+    this.app.get(`/login`,    (req, res) => Access.loginPage(req, res));
+    this.app.get(`/groups`,   (req, res) => Access.groupsPage(req, res));
   }
 
   /* Formål: At opstille alle de funktioner som opsætter, ændrer og stopper sessions */
@@ -78,7 +75,7 @@ class Server {
   /* Formål: At opstille alle de funkktioner som loader en ejs fil og viser en side i et grupperum */
   viewPatterns() {
     const Show = new ViewController();
-    this.app.get(`/home`,                             (req, res) => Show.homePage(req, res));
+    this.app.get(`/`,                             (req, res) => Show.homePage(req, res));
     this.app.get(`/evalueringer`,                 (req, res) => Show.evalueringerPage(req, res));
     this.app.get(`/evalueringer/quiz/:queryId`,        (req, res) => Show.quizPage(req, res));
     this.app.get(`/evalueringer/flashcard/:queryId`,   (req, res) => Show.flashcardPage(req, res));
@@ -132,7 +129,6 @@ class Server {
   /* UNDER CONSTRUCTION */
   staticMiddleware() {
     this.app.use(express.static(`${this.root}/www/`));
-    this.app.use(this.logger);
   }
 
   /* UNDER CONSTRUCTION */
@@ -151,6 +147,55 @@ class Server {
       saveUninitialized: false,
       cookie: { maxAge: 600000 },
     }));
+    if (this.skipAccess) {
+      this.app.use(this.createTestUserAndGroupId);
+    }
+    this.app.use(this.noSessionNoAccess);
+  }
+
+  /* Formål: At skabe et user og group Id i tilfælde af at man i udviklingsmode ønsker at skippe login/gruppevalgs fasen.
+   * Input : Et request
+   * Output: En fuldt oprettet session for user og group data.
+   */
+  createTestUserAndGroupId(req, res, next) {
+    if (!req.session.userId || !req.session.groupId) {
+      req.session.username = `Test User`;
+      req.session.loggedin = true;
+      req.session.userId = `553e422d-7c29-11ea-86e2-2c4d54532c7a`;
+
+      req.session.groupname = `Test Group`;
+      req.session.groupId = `34701dd1-7c29-11ea-86e2-2c4d54532c7a`;
+    }
+    next();
+  }
+
+  /* Formål: At sikre sig at man ikke kan tilgå et grupperum uden en session
+   * Input : Et request
+   * Output: En omdirigering til login siden hvis man ikke er logget ind, eller til groups siden hvis man ikke har valgt gruppe.
+   * FIXME : Denne funktion kan udvides til også at indeholde sikkerhed såsom
+   *         at sikre sig at userId og groupId stemmer overens.
+   *         Hvordan det gøres er dog lettere usikkert.
+   */
+  noSessionNoAccess(req, res, next) {
+    if (!req.session.userId) {
+      if (this.debug) {
+        console.warn(`Du har ikke et validt userId og er dermed blevet omdirigeret til login siden!`);
+      }
+      res.redirect(`/login`);
+    }
+    else if (!req.session.groupId) {
+      if (this.debug) {
+        console.warn(`Du har ikke et validt groupId og er dermed blevet omdirigeret til login siden!`);
+      }
+      res.redirect(`/groups`);
+    }
+    else {
+      next();
+    }
+  }
+
+  testMiddleware() {
+    this.app.use(this.logger);
   }
 
   /* UNDER CONSTRUCTION */
