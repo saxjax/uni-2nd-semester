@@ -14,15 +14,95 @@ const { Flashcard } = require(`../../../node/Models/Flashcard`);
 const { Keyword } = require(`../../../node/Models/Keyword`);
 const { User } = require(`../../../node/Models/User`);
 
+// nodemon tests/backend/Database/test.ParseSQL.js | .\node_modules\.bin\tap-spec
+
 /* 1 test af de enkelte parse funktioner */
 /* 1.1 */
 // TODO:
 // TESTvAF PARSE DOCUMENT
 
-
 /* 1.2 */
 /* SECTION */
-test(`Test 1.2 af parseSection() i node/Database`, (assert) => {
+test(`Test af ParseSQL i node/Database`, (assert) => {
+  console.log(`Test af parseArrayOfObjects() metoden`);
+  // Tests a fÃ¸rste if-statement
+  reset();
+  expected = { data: `data` };
+  actual = p.parseArrayOfObjects({ data: `data` });
+  assert.deepEqual(actual, expected,
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrÃ¦rt input, 
+     som ikke er et array, uden at Ã¦ndre i det og logge en warning i processen`);
+
+  reset();
+  expected = 1;
+  actual = p.parseArrayOfObjects(1);
+  assert.deepEqual(actual, expected,
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrÃ¦rt input, 
+     som ikke er et array, uden at Ã¦ndre i det og logge en warning i processen`);
+
+  reset();
+  expected = true;
+  actual = p.parseArrayOfObjects(true);
+  assert.deepEqual(actual, expected,
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrÃ¦rt input, 
+     som ikke er et array, uden at Ã¦ndre i det og logge en warning i processen`);
+
+  reset();
+  expected = false;
+  actual = p.parseArrayOfObjects(false);
+  assert.deepEqual(actual, expected,
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrÃ¦rt input, 
+     som ikke er et array, uden at Ã¦ndre i det og logge en warning i processen`);
+
+  reset();
+  expected = `hejsa dejsa`;
+  actual = p.parseArrayOfObjects(`hejsa dejsa`);
+  assert.deepEqual(actual, expected,
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrÃ¦rt input, 
+     som ikke er et array, uden at Ã¦ndre i det og logge en warning i processen`);
+
+  // Tests af ukendt elementtype
+  reset();
+  expected = [{
+    elementtype: `lmao`,
+    data: `data`,
+  }];
+  actual = p.parseArrayOfObjects([{
+    elementtype: `lmao`,
+    data: `data`,
+  }]);
+  assert.deepEqual(actual, expected,
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere input af typen array, 
+     med ukendt elementtype i det indre objekt, uden at Ã¦ndre i det og logge en warning i processen`);
+
+  console.log(`Test af parseSection() metoden`);
+  // Test uden teaser
+  assert.deepEqual(actual, expected,
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere en parset version af inputtet med en selvkonstrueret teaser`);
+
+  // Test med teaser
+  expected = {
+    elementtype: `section`,
+    idDocument: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
+    idSection: `78c14a9a-6f59-11ea-9983-2c4d54532c7a`,
+    sectionNumber: 9.9,
+    title: `fiktiv viden`,
+    content: `lidt tekst 3`,
+    teaser: `En lille tisser`,
+    keywords: undefined,
+  };
+  actual = p.parseSection({
+    ID_DOCUMENT_SECTION: `78c14a9a-6f59-11ea-9983-2c4d54532c7a`,
+    ID_DOCUMENT: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
+    SECTION_NUMBER: 9.9,
+    SECTION_TITLE: `fiktiv viden`,
+    SECTION_TEASER: `En lille tisser`,
+    SECTION_CONTENT: `lidt tekst 3`,
+    ELEMENT_TYPE: `section`,
+  });
+  assert.deepEqual(actual, expected,
+    `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere en parset version af inputtet med den vedlagte teaser`);
+
   expected = {
     elementtype: `section`,
     idDocument: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
@@ -193,11 +273,11 @@ test(`Test 1.7 af parseUser() i node/Database ved elementtype user`, (assert) =>
 /* 2 test af parse funktionen som switcher pÃ¥ indkommende elementtypes */
 /* 2.1 */
 // DOCUMENT
-// TODO: test parse document via parse()
+// TODO: test parse document via parseArrayOfObjects()
 
 /* 2.2 */
 // SECTION
-test(`Test 2.2 af parse() i node/Database`, (assert) => {
+test(`Test 2.2 af parseArrayOfObjects() i node/Database`, (assert) => {
   p.reset();
   expected = [{
     elementtype: `section`,
@@ -209,7 +289,7 @@ test(`Test 2.2 af parse() i node/Database`, (assert) => {
     teaser: `lidt tekst 3`,
     keywords: undefined,
   }];
-  actual = p.parse([{
+  actual = p.parseArrayOfObjects([{
     ID_DOCUMENT_SECTION: `78c14a9a-6f59-11ea-9983-2c4d54532c7a`,
     ID_DOCUMENT: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
     SECTION_NUMBER: 9.9,
@@ -227,7 +307,7 @@ test(`Test 2.2 af parse() i node/Database`, (assert) => {
 
 /* 2.3 */
 // QUIZ
-test(`Test 2.3 af parse() i node/Database ved elementtype quiz`, (assert) => {
+test(`Test 2.3 af parseArrayOfObjects() i node/Database ved elementtype quiz`, (assert) => {
   p.reset();
   expected = [{
     elementtype: `quiz`,
@@ -237,7 +317,7 @@ test(`Test 2.3 af parse() i node/Database ved elementtype quiz`, (assert) => {
     title: `fiktiv quiz viden`,
     keywords: undefined,
   }];
-  actual = p.parse([{
+  actual = p.parseArrayOfObjects([{
     ID_QUIZ: `11111111-aaaa-bbbb-1111-111111111111`,
     ID_DOCUMENT: `11111111-aaaa-bbbb-1111-111111111111`,
     ID_DOCUMENT_SECTION: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -253,7 +333,7 @@ test(`Test 2.3 af parse() i node/Database ved elementtype quiz`, (assert) => {
 
 /* 2.4 */
 // QUIZQUESTION
-test(`Test 2.4 af parse() i node/Database ved elementtype quiz_question`, (assert) => {
+test(`Test 2.4 af parseArrayOfObjects() i node/Database ved elementtype quiz_question`, (assert) => {
   p.reset();
   expected = [{
     idQuestion: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -265,7 +345,7 @@ test(`Test 2.4 af parse() i node/Database ved elementtype quiz_question`, (asser
     answer4: `ans4`,
     correctness: `0000`,
   }];
-  actual = p.parse([{
+  actual = p.parseArrayOfObjects([{
     ID_QUIZ_QUESTION: `11111111-aaaa-bbbb-1111-111111111111`,
     ID_QUIZ: `11111111-aaaa-bbbb-1111-111111111111`,
     QUESTION: `hvad er?`,
@@ -285,7 +365,7 @@ test(`Test 2.4 af parse() i node/Database ved elementtype quiz_question`, (asser
 
 /* 2.5 */
 // FLASHCARD
-test(`Test 2.5 af parse() i node/Database ved elementtype flashcard`, (assert) => {
+test(`Test 2.5 af parseArrayOfObjects() i node/Database ved elementtype flashcard`, (assert) => {
   p.reset();
   expected = [{
     elementtype: `flashcard`,
@@ -298,7 +378,7 @@ test(`Test 2.5 af parse() i node/Database ved elementtype flashcard`, (assert) =
     correctness: `1`,
 
   }];
-  actual = p.parse([{
+  actual = p.parseArrayOfObjects([{
     ID_FLASHCARD: `11111111-aaaa-bbbb-1111-111111111111`,
     ID_USER: `11111111-aaaa-bbbb-1111-111111111111`,
     ID_DOCUMENT: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -317,7 +397,7 @@ test(`Test 2.5 af parse() i node/Database ved elementtype flashcard`, (assert) =
 
 /* 2.6 */
 // KEYWORD
-test(`Test 2.6 af parse() i node/Database ved elementtype keyword`, (assert) => {
+test(`Test 2.6 af parseArrayOfObjects() i node/Database ved elementtype keyword`, (assert) => {
   p.reset();
 
   expected = [{
@@ -327,7 +407,7 @@ test(`Test 2.6 af parse() i node/Database ved elementtype keyword`, (assert) => 
     keyword: `keyword Test`,
     elementtype: `keyword`,
   }];
-  actual = p.parse([{
+  actual = p.parseArrayOfObjects([{
     ID_KEYWORD: `11111111-aaaa-bbbb-1111-111111111111`,
     ID_DOCUMENT: `11111111-aaaa-bbbb-1111-111111111111`,
     ID_DOCUMENT_SECTION: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -343,7 +423,7 @@ test(`Test 2.6 af parse() i node/Database ved elementtype keyword`, (assert) => 
 
 /* 2.7 */
 // USER
-test(`Test 2.7 af parse() i node/Database ved elementtype user`, (assert) => {
+test(`Test 2.7 af parseArrayOfObjects() i node/Database ved elementtype user`, (assert) => {
   p.reset();
 
   expected = [{
@@ -358,7 +438,7 @@ test(`Test 2.7 af parse() i node/Database ved elementtype user`, (assert) => {
     semester: `2`,
     university: `MIT`,
   }];
-  actual = p.parse([{
+  actual = p.parseArrayOfObjects([{
     ELEMENT_TYPE: `user`,
     ID_USER: `11111111-aaaa-bbbb-1111-111111111111`,
     USER_NAME: `Test user`,
@@ -381,7 +461,7 @@ test(`Test 2.7 af parse() i node/Database ved elementtype user`, (assert) => {
 /* 3 Test That column-names from database are the same as expected in parser */
 /* 3.1 */
 // DOCUMENT DB
-test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af første element fra DOCUMENT tabellen, udtræk kolonnenavne`, async (assert) => {
+test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af fï¿½rste element fra DOCUMENT tabellen, udtrï¿½k kolonnenavne`, async (assert) => {
   p.reset();
 
   const req = { session: {}, params: {}, body: {} };
@@ -412,7 +492,7 @@ test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af første ele
 
 // SECTION DB
 /* 3.2 */
-test(`Test 3.2 af Database-setup i vores SQLdatabase, ved hentning af første element fra SECTION, udtræk kolonnenavne`, async (assert) => {
+test(`Test 3.2 af Database-setup i vores SQLdatabase, ved hentning af fï¿½rste element fra SECTION, udtrï¿½k kolonnenavne`, async (assert) => {
   p.reset();
 
   const req = { session: {}, params: {}, body: {} };
@@ -446,7 +526,7 @@ test(`Test 3.2 af Database-setup i vores SQLdatabase, ved hentning af første ele
 
 // QUIZ DB
 /* 3.3 */
-test(`Test 3.3 af Database-setup i vores SQLdatabase, ved hentning af første element quiz tabellen, udtræk kolonnenavne`, async (assert) => {
+test(`Test 3.3 af Database-setup i vores SQLdatabase, ved hentning af fï¿½rste element quiz tabellen, udtrï¿½k kolonnenavne`, async (assert) => {
   p.reset();
 
   expected = [
@@ -477,7 +557,7 @@ test(`Test 3.3 af Database-setup i vores SQLdatabase, ved hentning af første ele
 
 // QUIZ QUESTION DB
 /* 3.4 */
-test(`Test 3.4 af Database-setup i vores SQLdatabase, ved hentning af første element fra QUIZ QUESTION tabellen, udtræk kolonnenavne`, async (assert) => {
+test(`Test 3.4 af Database-setup i vores SQLdatabase, ved hentning af fï¿½rste element fra QUIZ QUESTION tabellen, udtrï¿½k kolonnenavne`, async (assert) => {
   p.reset();
 
   const req = { session: {}, params: {}, body: {} };
@@ -508,7 +588,7 @@ test(`Test 3.4 af Database-setup i vores SQLdatabase, ved hentning af første ele
 
 // FLASHCARD DB
 /* 3.5 */
-test(`Test 3.5 af Database-setup i vores SQLdatabase, ved hentning af første element fra flashcard tabellen, udtræk kolonnenavne`, async (assert) => {
+test(`Test 3.5 af Database-setup i vores SQLdatabase, ved hentning af fï¿½rste element fra flashcard tabellen, udtrï¿½k kolonnenavne`, async (assert) => {
   p.reset();
 
   expected = [
@@ -540,7 +620,7 @@ test(`Test 3.5 af Database-setup i vores SQLdatabase, ved hentning af første ele
 
 // USER DB
 /* 3.6 */
-test(`Test 3.6 af Database-setup i vores SQLdatabase, ved hentning af første element fra User tabellen, udtræk kolonnenavne`, async (assert) => {
+test(`Test 3.6 af Database-setup i vores SQLdatabase, ved hentning af fï¿½rste element fra User tabellen, udtrï¿½k kolonnenavne`, async (assert) => {
   p.reset();
   // arrange
   let Udata = [];
@@ -580,7 +660,7 @@ test(`Test 3.6 af Database-setup i vores SQLdatabase, ved hentning af første ele
 // FIXME:
 // KEYWORD DB
 /* 3.7 */
-test(`Test 3.7 af Database-setup i vores SQLdatabase, ved hentning af første element fra keyword tabellen, udtræk kolonnenavne`, async (assert) => {
+test(`Test 3.7 af Database-setup i vores SQLdatabase, ved hentning af fï¿½rste element fra keyword tabellen, udtrï¿½k kolonnenavne`, async (assert) => {
   p.reset();
 
   const req = { session: {}, params: {}, body: {} };
@@ -602,3 +682,8 @@ test(`Test 3.7 af Database-setup i vores SQLdatabase, ved hentning af første ele
 
   assert.end();
 });
+
+
+function reset() {
+  p.parsedData = [];
+}
