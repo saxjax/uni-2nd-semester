@@ -29,7 +29,7 @@ class Server {
   }
 
   /* Formål: Opstiller alt det middleware som skal aktiveres ved hvert enkelt request.
-   *         Denne struktur gør at der er mere kontrol over rækkefølgen (såsom først static, url'er til sidst)
+   *         Denne struktur gør at der er mere kontrol over rækkefølgen (såsom først static, url'er til sidst, etc.)
    * Input : Valgte settings fra constructoren.
    * Output: Opstartning af Server
    */
@@ -76,18 +76,24 @@ class Server {
     this.app.get(`/session/group/:queryId`, (req, res) => Session.groupSession(req, res));
   }
 
-  /* Formål: At opstille alle de funkktioner som loader en ejs fil og viser en side i et grupperum
+  /* Formål: At opstille alle de funktioner som loader en ejs fil og viser en side i et grupperum
+   *         Den første parameter angiver hvilken type view det er:
+   *         Dem herunder knytter sig til et objekt. Alle andre (såsom /about) er selvstændige, hardcodede EJS filer.
+   *         /view angiver at det er en side der kun skal "ses",
+   *         /create angiver at der vises en form
+   *         "/" er lidt speciel da den tæller for startsiden.
    *         Alle objekter vil have et medfølgende queryId eller et /user eller /group,
    *         da det indikere hvad man får vist. (queryId for et bestemt objet, /user el. /group for alle objekter tilknyttet user/group)
-   *         "/" er lidt speciel da den tæller for startsiden.
    * Input : Non. Her laves blot opsætningen.
    * Output: Opsætning af url'er som kan tilgås via serverens port.
+   * UNDER CONSTRUCTION: de kommenterede (//) er ikke implementeret endnu.
    */
   viewPatterns() {
     const Show = new ViewController();
     this.app.get(`/`,                             (req, res) => Show.homePage(req, res));
-    this.app.get(`/evalueringer`,                 (req, res) => Show.evalueringerPage(req, res));
-    this.app.get(`/evalueringer/quiz/:queryId`,        (req, res) => Show.quizPage(req, res));
+    this.app.get(`/view/quiz/group`,                 (req, res) => Show.evalueringerPage(req, res));
+    // this.app.get(`/view/quiz/user`, (req, res) => Show.viewQuizUser(req, res));
+    this.app.get(`/view/quiz/:queryId`,        (req, res) => Show.viewQuizPage(req, res));
     this.app.get(`/evalueringer/flashcard/:queryId`,   (req, res) => Show.flashcardPage(req, res));
     this.app.get(`/evalueringer/:type/:idquiz`,   (req, res) => Show.evalueringerTypePage(req, res));
     this.app.get(`/rapport`,                      (req, res) => Show.rapportPage(req, res));
@@ -97,7 +103,7 @@ class Server {
     this.app.get(`/sections`,                          (req, res) => Show.sections(req, res));
     this.app.get(`/create/quiz`, (req, res) => Show.createQuiz(req, res));
     this.app.get(`/create/flashcard`, (req, res) => Show.createFlashcard(req, res));
-    this.app.get(`/create/section`, (req, res) => Test.createSection(req, res));
+    this.app.get(`/create/section`, (req, res) => Show.createSection(req, res));
   }
 
   /* Formål: At redirecte brugeren hen til det korrekte sted, eller vise den korrekte fejlmeddelse.
@@ -156,7 +162,10 @@ class Server {
     this.app.use(bodyParser.json());
   }
 
-  /* UNDER CONSTRUCTION */
+  /* Formål: At opstille den session som gør at programmet kan "huske" hvilken gruppe man er en del af samt hvilken bruger man er
+   * Input : Non
+   * Output: Muligheden for at tilgå req.session, samt et autogeneret login hvis man har sat skipAccess i settings til true.
+   */
   sessionMiddleware() {
     this.app.use(session({
       key: `user_sid`,
@@ -212,11 +221,18 @@ class Server {
     }
   }
 
+  /* Formål: Indeholder alt det middleware der kun er relevant i testningsøjemed
+   * Input : Non, men aktiveres kun hvis debug er sat til true
+   * Output: Mulighed for brug af testværktøjer
+   */
   testMiddleware() {
     this.app.use(this.logger);
   }
 
-  /* UNDER CONSTRUCTION */
+  /* Formål: Et testværktøj der sørger for at give information til udvikleren om hvordan programmet fungere
+   * Input : Et request
+   * Output: En log i kommandoprompten som angiver metodevalg, url samt tidspunktet i requestet.
+   */
   logger(req, res, next) {
     const reqMethod = pad(req.method, -6, ` `);
     const reqUrl = pad(`${req.protocol}://${req.get(`host`)}${req.originalUrl}`, 76, ` `);

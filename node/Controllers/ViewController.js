@@ -35,10 +35,10 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // Formål: Et overblik over alle de tilgængelige evalueringsværktøjer som brugeren har adgang til.
-  // Input : Et request der har oprettet en userId og groupId.
-  // Output: Viser alle tilgængelige evalueringer for en bestemt Group.
-  /* UNDER CONSTRUCTION */
+  /* Formål: Et overblik over alle de tilgængelige evalueringsværktøjer som brugeren har adgang til.
+   * Input : Et request der har oprettet en userId og groupId.
+   * Output: Viser alle tilgængelige evalueringer for en bestemt Group.
+   */
   async evalueringerPage(req, res) {
     const group = new Group(req);
     const data = {
@@ -47,21 +47,22 @@ class ViewController {
     };
 
     this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
-    res.render(this.ejs, { data: evaluationData });
+    res.render(this.ejs, { data });
   }
 
-  // Formål: Viser indholdet af enten et flashcard eller en quizz vha. siden evalueringerFlashcard.ejs eller
-  //         evalueringerQuiz.ejs.
-  // Input : Id og en type(flashcard eller quiz) (id'et er hhv idflashcard og idquiz alt efter typen)
-  //         alt efter typen s� hentes quiz questions eller flashcards knyttet til det specifikke idflashcard eller idquiz.
-  // Output: Array hvor index 0 indeholder flashcard_data eller quiz_question data, hvilket sendes til
-  //         hhv /www/views/evalueringerFlashcard.ejs eller /www/views/evalueringerQuiz.ejs
-  /* UNDER CONSTRUCTION */
-  async quizPage(req, res) {
+  /* Formål: Viser indholdet af 
+   * Input : Id og en type(flashcard eller quiz) (id'et er hhv idflashcard og idquiz alt efter typen)
+   *         alt efter typen s� hentes quiz questions eller flashcards knyttet til det specifikke idflashcard eller idquiz.
+   * Output: Viser en Quiz som en bruger kan tage.
+   */
+  async viewQuizPage(req, res) {
     const quiz = new Quiz(req);
-    const data = await quiz.getQuiz();
-    this.ejs = path.join(`${this.root}/www/views/evalueringerQuiz.ejs`);
-    res.render(this.ejs, { quiz: data });
+    const data = {
+      quiz: await quiz.getThis(),
+      question: await quiz.getAllElementsOfType(`QuizQuestion`),
+    }
+    this.ejs = path.join(`${this.root}/www/views/viewQuiz.ejs`);
+    res.render(this.ejs, { data });
   }
 
   /* UNDER CONSTRUCTION */

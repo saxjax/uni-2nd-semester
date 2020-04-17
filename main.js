@@ -1,25 +1,12 @@
 const { Server } = require(`./node/Server.js`);
-/*
+
 const devSettings = {
-  name: `Developmentserver`,
-  port: 3000,
-  debug: true, // Denne værdi er UNDER CONSTRUCTION
-  skipAccess: false,
-  userId: null,
-  groupId: null,
+  name: `Developmentserver`, // Angiver funktionaliteten af disse settings. Har ingen funktionsmæssig betydning.
+  port: 3000,                // Angiver porten som programmet skal kører på.
+  debug: true,               // Angiver om programmet skal køre i udviklingsmode eller i productionmode (ikke endnu fuldt implementeret)
+  skipAccess: true,          // Angiver om programmet automatisk skal logges ind som Test User i Tester Group
 };
 const Start = new Server(devSettings);
-*/
-
-const skipAccessSettings = {
-  name: `Developmentserver`,
-  port: 3000,
-  debug: true, // Denne værdi er UNDER CONSTRUCTION
-  skipAccess: true,
-  userId: `553e422d-7c29-11ea-86e2-2c4d54532c7a`,
-  groupId: `34701dd1-7c29-11ea-86e2-2c4d54532c7a`,
-};
-const Start = new Server(skipAccessSettings);
 
 /*
 const stageSettings = {
@@ -27,8 +14,6 @@ const stageSettings = {
   port: 3000,
   debug: false,
   skipAccess: false,
-  userId: null,
-  groupId: null,
 };
 const Start = new Server(stageSettings);
 */
