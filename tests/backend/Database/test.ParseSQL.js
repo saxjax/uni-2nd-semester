@@ -18,7 +18,7 @@ const { User } = require(`../../../node/Models/User`);
 /* 1.1 */
 // TODO:
 // TESTvAF PARSE DOCUMENT
-
+// nodemon tests/backend/Database/test.ParseSQL.js | .\node_modules\.bin\tap-spec
 
 /* 1.2 */
 /* SECTION */
@@ -381,7 +381,7 @@ test(`Test 2.7 af parse() i node/Database ved elementtype user`, (assert) => {
 /* 3 Test That column-names from database are the same as expected in parser */
 /* 3.1 */
 // DOCUMENT DB
-test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af første element fra DOCUMENT tabellen, udtræk kolonnenavne`, async (assert) => {
+test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af fï¿½rste element fra DOCUMENT tabellen, udtrï¿½k kolonnenavne`, async (assert) => {
   p.reset();
 
   const req = { session: {}, params: {}, body: {} };
@@ -412,7 +412,7 @@ test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af første ele
 
 // SECTION DB
 /* 3.2 */
-test(`Test 3.2 af Database-setup i vores SQLdatabase, ved hentning af første element fra SECTION, udtræk kolonnenavne`, async (assert) => {
+test(`Test 3.2 af Database-setup i vores SQLdatabase, ved hentning af fï¿½rste element fra SECTION, udtrï¿½k kolonnenavne`, async (assert) => {
   p.reset();
 
   const req = { session: {}, params: {}, body: {} };
@@ -446,7 +446,7 @@ test(`Test 3.2 af Database-setup i vores SQLdatabase, ved hentning af første ele
 
 // QUIZ DB
 /* 3.3 */
-test(`Test 3.3 af Database-setup i vores SQLdatabase, ved hentning af første element quiz tabellen, udtræk kolonnenavne`, async (assert) => {
+test(`Test 3.3 af Database-setup i vores SQLdatabase, ved hentning af fï¿½rste element quiz tabellen, udtrï¿½k kolonnenavne`, async (assert) => {
   p.reset();
 
   expected = [
@@ -477,14 +477,13 @@ test(`Test 3.3 af Database-setup i vores SQLdatabase, ved hentning af første ele
 
 // QUIZ QUESTION DB
 /* 3.4 */
-test(`Test 3.4 af Database-setup i vores SQLdatabase, ved hentning af første element fra QUIZ QUESTION tabellen, udtræk kolonnenavne`, async (assert) => {
+test(`Test 3.4 af Database-setup i vores SQLdatabase, ved hentning af fï¿½rste element fra QUIZ QUESTION tabellen, udtrï¿½k kolonnenavne`, async (assert) => {
   p.reset();
 
   const req = { session: {}, params: {}, body: {} };
   const Qq = new QuizQuestion(req);
   let Qqdata = [];
   expected = [
-
     [
       { COLUMN_NAME: `ELEMENT_TYPE` },
       { COLUMN_NAME: `ID_DOCUMENT` },
@@ -508,7 +507,7 @@ test(`Test 3.4 af Database-setup i vores SQLdatabase, ved hentning af første ele
 
 // FLASHCARD DB
 /* 3.5 */
-test(`Test 3.5 af Database-setup i vores SQLdatabase, ved hentning af første element fra flashcard tabellen, udtræk kolonnenavne`, async (assert) => {
+test(`Test 3.5 af Database-setup i vores SQLdatabase, ved hentning af fï¿½rste element fra flashcard tabellen, udtrï¿½k kolonnenavne`, async (assert) => {
   p.reset();
 
   expected = [
@@ -540,7 +539,7 @@ test(`Test 3.5 af Database-setup i vores SQLdatabase, ved hentning af første ele
 
 // USER DB
 /* 3.6 */
-test(`Test 3.6 af Database-setup i vores SQLdatabase, ved hentning af første element fra User tabellen, udtræk kolonnenavne`, async (assert) => {
+test(`Test 3.6 af Database-setup i vores SQLdatabase, ved hentning af fï¿½rste element fra User tabellen, udtrï¿½k kolonnenavne`, async (assert) => {
   p.reset();
   // arrange
   let Udata = [];
@@ -580,7 +579,7 @@ test(`Test 3.6 af Database-setup i vores SQLdatabase, ved hentning af første ele
 // FIXME:
 // KEYWORD DB
 /* 3.7 */
-test(`Test 3.7 af Database-setup i vores SQLdatabase, ved hentning af første element fra keyword tabellen, udtræk kolonnenavne`, async (assert) => {
+test(`Test 3.7 af Database-setup i vores SQLdatabase, ved hentning af fï¿½rste element fra keyword tabellen, udtrï¿½k kolonnenavne`, async (assert) => {
   p.reset();
 
   const req = { session: {}, params: {}, body: {} };
@@ -602,3 +601,13 @@ test(`Test 3.7 af Database-setup i vores SQLdatabase, ved hentning af første ele
 
   assert.end();
 });
+
+// function testArrayOfObjects(array1, array2, callback) {
+//   array1[0].forEach((obj1, i) => {
+//     const obj2 = array2[0][i];
+//     const array1Val = obj1[Object.keys(obj1)[0]];
+//     const array2Val = obj2[Object.keys(obj1)[0]];
+
+//     callback(array1Val, array2Val);
+//   });
+// }
