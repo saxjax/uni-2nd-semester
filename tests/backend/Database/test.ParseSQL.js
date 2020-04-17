@@ -18,7 +18,7 @@ const { User } = require(`../../../node/Models/User`);
 /* 1.1 */
 // TODO:
 // TESTvAF PARSE DOCUMENT
-
+// nodemon tests/backend/Database/test.ParseSQL.js | .\node_modules\.bin\tap-spec
 
 /* 1.2 */
 /* SECTION */
@@ -491,7 +491,6 @@ test(`Test 3.4 af Database-setup i vores SQLdatabase, ved hentning af f�rste e
   const Qq = new QuizQuestion(req);
   let Qqdata = [];
   expected = [
-
     [
       { COLUMN_NAME: `ELEMENT_TYPE` },
       { COLUMN_NAME: `ID_DOCUMENT` },
@@ -609,3 +608,13 @@ test(`Test 3.7 af Database-setup i vores SQLdatabase, ved hentning af f�rste e
 
   assert.end();
 });
+
+// function testArrayOfObjects(array1, array2, callback) {
+//   array1[0].forEach((obj1, i) => {
+//     const obj2 = array2[0][i];
+//     const array1Val = obj1[Object.keys(obj1)[0]];
+//     const array2Val = obj2[Object.keys(obj1)[0]];
+
+//     callback(array1Val, array2Val);
+//   });
+// }
