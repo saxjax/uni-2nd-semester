@@ -81,14 +81,20 @@ class Server {
   }
 
   /* Formål: At opstille alle de funktioner som loader en ejs fil og viser en side i et grupperum
-   *         Den første parameter angiver hvilken type view det er:
-   *         Dem herunder knytter sig til et objekt. Alle andre (såsom /about) er selvstændige, hardcodede EJS filer.
+   *         Et view url er på denne form:
+   *         /typeAfView/ObjectNavnDerØnskes/IdEllerObjectNavnSomDefinereScopetAfDetØnskedeObject/
+   *           Evt.EkstraParametreHvisSammeQuerySkalVisesForskelligtIForskelligeSammenhænge
+   *
+   *        TypeAfView vil typisk enten være en selsvtændig hardcoded EJS fil (såsom /about) eller knytte sig til et objekt (se herunder)
+   *          Ønskes der flere funktionaliteter (såsom et view der både viser dokumenter samt præsentere formen for at oprette en ny), så
+   *          skal TypeAfView blot være "/viewAndInsert" eksempelvis.
+   *         TypeAfView eksemplerne herunder knytter sig til et objekt.
    *           /view angiver at det er en side der kun skal ses,
    *           /create angiver at der vises en form som opretter objektet
    *           /delete angiver at der vises en form, som sletter objektet
    *           /update angiver at der vises en form, hvor man kan ændrer objektet
    *           "/" er lidt speciel da den tæller for startsiden.
-   *         Alle objekter vil have et medfølgende queryId eller et /recipient eller /expert,
+   *         Alle objekter vil have et medfølgende queryId, /recipient, /expert, /document eller /section,
    *           da det indikere hvad man får vist. (queryId for et bestemt object,
    *           /recipient for alle objekter brugeren har adgang til i den valgte gruppe og
    *           /expert for alle objekter brugeren har oprettet i den valgte gruppe.
