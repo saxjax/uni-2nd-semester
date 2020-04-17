@@ -61,8 +61,12 @@ class Server {
    */
   accessPatterns() {
     const Access = new AccessController();
+    // No Session URLs
+    this.app.get(`/about`,    (req, res) => Access.aboutPage(req, res));
     this.app.get(`/register`, (req, res) => Access.registerPage(req, res));
+    // userId Session URLs
     this.app.get(`/login`,    (req, res) => Access.loginPage(req, res));
+    // groupId Session URLs
     this.app.get(`/groups`,   (req, res) => Access.groupsPage(req, res));
   }
 
@@ -90,33 +94,30 @@ class Server {
    *          skal TypeAfView blot være "/viewAndInsert" eksempelvis.
    *         TypeAfView eksemplerne herunder knytter sig til et objekt.
    *           /view angiver at det er en side der kun skal ses,
-   *           /create angiver at der vises en form som opretter objektet
-   *           /delete angiver at der vises en form, som sletter objektet
+   *           /insert angiver at der vises en form som opretter objektet
    *           /update angiver at der vises en form, hvor man kan ændrer objektet
+   *           DER ER INGEN /delete, da det ikke kræver en seperat visning, men blot
+   *             kan være en enkelt knap i et /view (evt. med en "er du sikker?")
    *           "/" er lidt speciel da den tæller for startsiden.
    *         Alle objekter vil have et medfølgende queryId, /recipient, /expert, /document eller /section,
-   *           da det indikere hvad man får vist. (queryId for et bestemt object,
+   *           da det indikere hvad man får vist. (queryId for et bestemt, unikt object,
    *           /recipient for alle objekter brugeren har adgang til i den valgte gruppe og
    *           /expert for alle objekter brugeren har oprettet i den valgte gruppe.
    *           /document(el. /section)/ :queryId for de section/evalueringer/keywords
    *             der knytter sig til et unikt dokument/section, fremfor hele gruppen.
-   *         Andre /IndsætNoget (istedet for /queryId, /recipient eller /expert) indikere at objektet håndteres anderledes
-   *           end blot en "ren REST" database håndtering (som er: visning af en, visning af mange, oprettelse, sletning eller opdatering)
-   *  Input : Non. Her laves blot opsætningen.
+   * Input : Non. Her laves blot opsætningen.
    * Output: Opsætning af url'er som kan tilgås via serverens port.
-   * TODO: de kommenterede (//) er ikke implementeret endnu.
+   * TODO: de kommenterede (//) har ikke en tilsvarende EJS fil endnu.
    */
   viewPatterns() {
     const Show = new ViewController();
     this.app.get(`/`,                             (req, res) => Show.homePage(req, res));
-    // this.app.get(`/about`),                    (req, res) => Show.aboutPage(req, res));
 
     // Documents
     // this.app.get(`/view/document/recipient`,  (req, res) => Show.viewDocumentRecipientPage(req, res));
     // this.app.get(`/view/document/expert`,     (req, res) => Show.viewDocumentExpertPage(req, res));
     // this.app.get(`/insert/document/`,         (req, res) => Show.insertDocumentSelectPage(req, res));
     // this.app.get(`/view/document/:queryId`,   (req, res) => Show.viewDocumentPage(req, res));
-    // this.app.get(`/delete/document/:queryId`, (req, res) => Show.deleteDocumentPage(req, res));
     // this.app.get(`/update/document/:queryId`, (req, res) => Show.updateDocumentPage(req, res));
 
     // Sections
@@ -125,7 +126,6 @@ class Server {
     // this.app.get(`/view/section/document/:queryId`, (req, res) => Show.viewSectionDocumentPage(req, res));
     // this.app.get(`/insert/section`,                 (req, res) => Show.insertSectionPage(req, res));
     // this.app.get(`/view/section/:queryId`,          (req, res) => Show.viewSectionPage(req, res));
-    // this.app.get(`/delete/section/:queryId`,        (req, res) => Show.deleteSectionPage(req, res));
     // this.app.get(`/update/section/:queryId`,        (req, res) => Show.updateSectionPage(req, res));
 
     // Evaluations
@@ -133,7 +133,7 @@ class Server {
     // this.app.get(`/view/evaluations/expert`,            (req, res) => Show.viewEvaluationsExpertPage(req, res));
     // this.app.get(`/view/evaluations/document/:queryId`, (req, res) => Show.viewEvaluationsDocumentPage(req, res));
     // this.app.get(`/view/evaluations/section/:queryId`,  (req, res) => Show.viewEvaluationsSectionPage(req, res));
-    /* EVALUATIONS HAR IKKE insert, view, delete og update, da evaluations IKKE er et objekt som sådan
+    /* EVALUATIONS HAR IKKE insert, view/:queryId og update, da evaluations IKKE er et objekt som sådan
      * Evaluations er blot det objekt der håndtere de usecases, hvor man vises for alle ens quiz/flashcard sammen
      */
 
@@ -144,7 +144,6 @@ class Server {
     // this.app.get(`/view/quiz/section/:queryId`,  (req, res) => Show.viewQuizSectionPage(req, res));
     // this.app.get(`/insert/quiz`,                 (req, res) => Show.insertQuizPage(req, res));
     // this.app.get(`/view/quiz/:queryId`,          (req, res) => Show.viewQuizPage(req, res));
-    // this.app.get(`/delete/quiz/:queryId`,        (req, res) => Show.deleteQuizPage(req, res));
     // this.app.get(`/update/quiz/:queryId`,        (req, res) => Show.updateQuizPage(req, res));
 
     // Flashcard
@@ -154,7 +153,6 @@ class Server {
     // this.app.get(`/view/flashcard/section/:queryId`, (req, res) => Show.viewFlashcardSectionPage(req, res));
     // this.app.get(`/insert/flashcard`, (req, res) => Show.insertFlashcardPage(req, res));
     // this.app.get(`/view/flashcard/:queryId`,        (req, res) => Show.viewFlashcardPage(req, res));
-    // this.app.get(`/delete/flashcard/:queryId`, (req, res) => Show.deleteFlashcardPage(req, res));
     // this.app.get(`/update/flashcard/:queryId`, (req, res) => Show.updateFlashcardPage(req, res));
 
     // Keywords
@@ -166,7 +164,6 @@ class Server {
     // this.app.get(`/view/keyword/flashcard/:queryId`, (req, res) => Show.viewKeywordFlashcardPage(req, res));
     // this.app.get(`/insert/keyword`, (req, res) => Show.insertKeywordPage(req, res));
     // this.app.get(`/view/keyword/:queryId`,        (req, res) => Show.viewKeywordPage(req, res));
-    // this.app.get(`/delete/keyword/:queryId`, (req, res) => Show.deleteKeywordPage(req, res));
     // this.app.get(`/update/keyword/:queryId`, (req, res) => Show.updateKeywordPage(req, res));
   }
 
@@ -187,7 +184,7 @@ class Server {
 
   /* Formål: Struktur for de URL Patterns der indsætter data i databasen.
   *          Vil være den controller der håndtere posting af database, og dermed også sikkerhed.
-   * Input : Et request med data der passer til den model der skal oprettes.
+   * Input : Ingen, denne opsætter blot URLerne
    * Output: Setup af muligheden for klienten at poste data til databasen.
    */
   createPatterns() {
@@ -195,6 +192,16 @@ class Server {
     this.app.post(`/post/group`, (req, res) => Creator.createGroup(req, res));
     this.app.post(`/post/user`, (req, res) => Creator.createUser(req, res));
     this.app.post(`/post/quiz`, (req, res) => Creator.createQuiz(req, res));
+  }
+
+  /* Formål: Struktur for de URL Patterns der sletter data i databasen.
+   *         Slettes et "højere" objekt, vil det automatisk slette sine tilhørende underobjekter.
+   * Input : Ingen, denne opsætter blot URLerne
+   * Output: Setup af muligheden for klienten at delete data.
+   * TODO: De udkommenterede (//) er ikke implementeret endnu
+   */
+  deletePatterns() {
+    // const Deletter = new DeletController();
   }
 
   /* Formål: En "catch all" for alle de tests der ønskes at blive lavet, så de ikke "clutter" de andre URL'er til.

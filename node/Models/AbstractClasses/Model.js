@@ -15,6 +15,7 @@ class Model extends Database {
   constructor() {
     super();
     this.idColumnGroup = `ID_USER_GROUP`;
+    this.idColumnUser = `ID_USER`;
   }
 
   /* Formål: Alle modeller konstrueres ud fra den givne session brugeren er en del af, samt
@@ -61,6 +62,26 @@ class Model extends Database {
       choice = `*`;
     }
     return this.query(`SELECT ${choice}`, `${this.idColumnName} = "${this.queryId}"`)
+      .then((result) => result)
+      .catch((error) => error);
+  }
+
+  /* Formål: At kunne tilgå data om den gruppe man er en del af såsom gruppens navn med videre.
+   * Input : Et objekt der er oprettet med et groupId i session
+   * Output: Den row i user_group tabellen der svarer til groupId
+   */
+  getThisGroupData() {
+    return this.query(`SELECT *`, `${this.idColumnGroup} = "${this.groupId}"`)
+      .then((result) => result)
+      .catch((error) => error);
+  }
+
+  /* Formål: At kunne tilgå data om den user man er såsom ens username med videre.
+   * Input : Et objekt der er oprettet med et userId i session
+   * Output: Den row i user tabellen der svarer til userId
+   */
+  getThisUserData() {
+    return this.query(`SELECT *`, `${this.idColumnUser} = "${this.userId}"`)
       .then((result) => result)
       .catch((error) => error);
   }
