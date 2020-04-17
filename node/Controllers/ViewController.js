@@ -126,6 +126,10 @@ class ViewController {
     res.render(this.ejs);
   }
 
+  createSection(req, res) {
+    res.render(path.join(`${this.root}/www/views/createSection.ejs`));
+  }
+
   /* UNDER CONSTRUCTION */
   createFlashcard(req, res) {
     const G = new Group(req);
