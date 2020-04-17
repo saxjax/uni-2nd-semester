@@ -67,6 +67,10 @@ class Server {
   }
 
   /* Formål: At opstille alle de funktioner som opsætter, ændrer og stopper sessions
+   *         Den første parameter angiver hvilken type session der er tale om.
+   *         /auth omhandler et authentifikation af nogle indsendte data med et post request,
+   *               og oprettelse af session hvis authentikationen er true.
+   *         /session omhandler en oprettelse af en session ud fra et valgt objekt.
    * Input : Non. Her laves blot opsætningen.
    * Output: Opsætning af url'er som kan tilgås via serverens port.
    */
@@ -79,35 +83,69 @@ class Server {
   /* Formål: At opstille alle de funktioner som loader en ejs fil og viser en side i et grupperum
    *         Den første parameter angiver hvilken type view det er:
    *         Dem herunder knytter sig til et objekt. Alle andre (såsom /about) er selvstændige, hardcodede EJS filer.
-   *         /view angiver at det er en side der kun skal "ses",
-   *         /create angiver at der vises en form
-   *         "/" er lidt speciel da den tæller for startsiden.
+   *           /view angiver at det er en side der kun skal ses,
+   *           /create angiver at der vises en form som opretter objektet
+   *           /delete angiver at der vises en form, som sletter objektet
+   *           /update angiver at der vises en form, hvor man kan ændrer objektet
+   *           "/" er lidt speciel da den tæller for startsiden.
    *         Alle objekter vil have et medfølgende queryId eller et /user eller /group,
-   *         da det indikere hvad man får vist. (queryId for et bestemt objet, /user el. /group for alle objekter tilknyttet user/group)
-   * Input : Non. Her laves blot opsætningen.
+   *           da det indikere hvad man får vist. (queryId for et bestemt objet,
+   *           /user el. /group for alle objekter tilknyttet user/group).
+   *         Andre /IndsætNoget (istedet for /queryId, /group eller /user) indikere at objektet håndteres anderledes
+   *           end blot en "ren REST" database håndtering (som er: visning af en, visning af mange, oprettelse, sletning eller opdatering)
+   *  Input : Non. Her laves blot opsætningen.
    * Output: Opsætning af url'er som kan tilgås via serverens port.
-   * UNDER CONSTRUCTION: de kommenterede (//) er ikke implementeret endnu.
+   * TODO: de kommenterede (//) er ikke implementeret endnu.
    */
   viewPatterns() {
     const Show = new ViewController();
     this.app.get(`/`,                             (req, res) => Show.homePage(req, res));
-    this.app.get(`/view/quiz/group`,                 (req, res) => Show.evalueringerPage(req, res));
-    // this.app.get(`/view/quiz/user`, (req, res) => Show.viewQuizUser(req, res));
-    this.app.get(`/view/quiz/:queryId`,        (req, res) => Show.viewQuizPage(req, res));
-    this.app.get(`/evalueringer/flashcard/:queryId`,   (req, res) => Show.flashcardPage(req, res));
-    this.app.get(`/evalueringer/:type/:idquiz`,   (req, res) => Show.evalueringerTypePage(req, res));
-    this.app.get(`/rapport`,                      (req, res) => Show.rapportPage(req, res));
-    this.app.get(`/rapport/:queryId`,  (req, res) => Show.rapportSectionPage(req, res));
-    this.app.get(`/elementList`,                  (req, res) => Show.elementList(req, res));
-    this.app.get(`/upload/:type`,                 (req, res) => Show.uploadPage(req, res));
-    this.app.get(`/sections`,                          (req, res) => Show.sections(req, res));
-    this.app.get(`/create/quiz`, (req, res) => Show.createQuiz(req, res));
-    this.app.get(`/create/flashcard`, (req, res) => Show.createFlashcard(req, res));
-    this.app.get(`/create/section`, (req, res) => Show.createSection(req, res));
+    // this.app.get(`/about`),                    (req, res) => Show.aboutPage(req, res));
+
+    // Documents
+    // this.app.get(`/view/document/group`,                 (req, res) => Show.viewDocumentGroupPage(req, res));
+    // this.app.get(`/view/document/user`, (req, res) => Show.viewDocumentUserPage(req, res));
+    // this.app.get(`/insert/document`, (req, res) => Show.insertDocumentPage(req, res));
+    // this.app.get(`/view/document/:queryId`,        (req, res) => Show.viewDocumentPage(req, res));
+    // this.app.get(`/delete/document/:queryId`, (req, res) => Show.deleteDocumentPage(req, res));
+    // this.app.get(`/update/document/:queryId`, (req, res) => Show.updateDocumentPage(req, res));
+
+    // Sections
+    // this.app.get(`/view/section/group`,                 (req, res) => Show.viewSectionGroupPage(req, res));
+    // this.app.get(`/view/section/user`, (req, res) => Show.viewSectionUserPage(req, res));
+    // this.app.get(`/insert/section`, (req, res) => Show.insertSectionPage(req, res));
+    // this.app.get(`/view/section/:queryId`,        (req, res) => Show.viewSectionPage(req, res));
+    // this.app.get(`/delete/section/:queryId`, (req, res) => Show.deleteSectionPage(req, res));
+    // this.app.get(`/update/section/:queryId`, (req, res) => Show.updateSectionPage(req, res));
+
+    // Evaluations
+    // this.app.get(`/view/evaluation/group`,                 (req, res) => Show.viewEvaluationGroupPage(req, res));
+    // this.app.get(`/view/evaluation/user`, (req, res) => Show.viewEvaluationUserPage(req, res));
+    // this.app.get(`/insert/evaluation`, (req, res) => Show.insertEvaluationPage(req, res));
+    // this.app.get(`/view/evaluation/:queryId`,        (req, res) => Show.viewEvaluationPage(req, res));
+    // this.app.get(`/delete/evaluation/:queryId`, (req, res) => Show.deleteEvaluationPage(req, res));
+    // this.app.get(`/update/evaluation/:queryId`, (req, res) => Show.updateEvaluationPage(req, res));
+
+    // Quiz
+    // this.app.get(`/view/quiz/group`,                 (req, res) => Show.viewQuizGroupPage(req, res));
+    // this.app.get(`/view/quiz/user`, (req, res) => Show.viewQuizUserPage(req, res));
+    // this.app.get(`/insert/quiz`, (req, res) => Show.insertQuizPage(req, res));
+    // this.app.get(`/view/quiz/:queryId`,        (req, res) => Show.viewQuizPage(req, res));
+    // this.app.get(`/delete/quiz/:queryId`, (req, res) => Show.deleteQuizPage(req, res));
+    // this.app.get(`/update/quiz/:queryId`, (req, res) => Show.updateQuizPage(req, res));
+
+    // Flashcard
+    // this.app.get(`/view/flashcard/group`, (req, res) => Show.viewFlashcardGroupPage(req, res));
+    // this.app.get(`/view/flashcard/user`, (req, res) => Show.viewFlashcardUserPage(req, res));
+    // this.app.get(`/insert/flashcard`, (req, res) => Show.insertFlashcardPage(req, res));
+    // this.app.get(`/view/flashcard/:queryId`,        (req, res) => Show.viewFlashcardPage(req, res));
+    // this.app.get(`/delete/flashcard/:queryId`, (req, res) => Show.deleteFlashcardPage(req, res));
+    // this.app.get(`/update/flashcard/:queryId`, (req, res) => Show.updateFlashcardPage(req, res));
   }
 
   /* Formål: At redirecte brugeren hen til det korrekte sted, eller vise den korrekte fejlmeddelse.
    *         Denne controller vil IKKE håndtere nogle ejs filer overhovedet!
+   *
    * Input : Non. Her laves blot opsætningen.
    * Output: Opsætning af url'er som kan tilgås via serverens port.
    */
@@ -146,16 +184,26 @@ class Server {
     this.app.get(`/test3/:queryId`, (req, res) => Tester.test3(req, res));
   }
 
+  /* Formål: Opsætning af en viewEngine så det er muligt at render ejs filer.
+   * Input : En request for en ejs fil
+   * Output: Muligheden for at sende ejs filer i et format så clienten kan render det.
+   */
   viewEngineMiddleware() {
     this.app.set(`view engine`, `ejs`);
   }
 
-  /* UNDER CONSTRUCTION */
+  /* Formål: At gøre alle vores statiske filer tilgængelige for et request fra en client
+   * Input : Et request der forespørger en statisk fil
+   * Output: En static file der skal bruges i en ejs fil.
+   */
   staticMiddleware() {
     this.app.use(express.static(`${this.root}/www/`));
   }
 
-  /* UNDER CONSTRUCTION */
+  /* Formål: At opstille body-parser så det bliver muligt nemmere at håndtere request objektet, såsom req.body og req.params
+   * Input : Et request objekt
+   * Output: Et modificeret request objekt, der følger body-parsers syntaks.
+   */
   bodyParserMiddleware() {
     this.app.use(upload());
     this.app.use(bodyParser.urlencoded({ extended: true }));
@@ -199,7 +247,7 @@ class Server {
   /* Formål: At sikre sig at man ikke kan tilgå et grupperum uden en session
    * Input : Et request
    * Output: En omdirigering til login siden hvis man ikke er logget ind, eller til groups siden hvis man ikke har valgt gruppe.
-   * FIXME : Denne funktion kan udvides til også at indeholde sikkerhed såsom
+   * FIXME: Denne funktion kan udvides til også at indeholde sikkerhed såsom
    *         at sikre sig at userId og groupId stemmer overens.
    *         Hvordan det gøres er dog lettere usikkert.
    */
