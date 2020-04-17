@@ -21,7 +21,9 @@ class ViewController {
     this.ejs = ``;
   }
 
-  /* Formål: Et overblik til brugeren om programmet, samt hvilke muligheder brugeren har.
+  /* Non-Object Views */
+
+  /* Formål: Et overblik til brugeren om den gruppe vedkommende er en del af, samt hvilke muligheder brugeren har.
    * Input : Et request der har oprettet en userId og groupId.
    * Output: Startsiden af hjemmesiden, som skal give et overblik for User.
    */
@@ -35,11 +37,433 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  /* Formål: Et overblik over alle de tilgængelige evalueringsværktøjer som brugeren har adgang til.
+  // TODO:
+  /* Formål: En side der angiver information om hjemmesiden.
+   *         Denne side skal være tilgængelig fra alle sider af hjemmesiden.
+   * Input : Non.
+   * Output: Visning af information om hjemmesiden, uden man behøver være User.
+   * FIXME: Implementation af denne funktionalitet kræver højst sandsynligt en ændring i Servermetoden "noSessionNoAccess"
+   *         da den blokere for alt adgang til hjemmesiden, hvis man ikke er logget ind og har valgt gruppe, hvor denne
+   *         vil være en undtagelse. Implementer gerne så denne kan være "en af flere" undtagelser.
+   */
+  // async aboutPage(req, res) {
+
+  // }
+
+  /* Document Views TODO: */
+
+  // TODO:
+  /* Formål: At vise brugeren alle de dokumenter som er tilgængelige for vedkommende på siden.
+   * Input : En session med groupId
+   * Output: En liste af de dokumenter som er lagt op i gruppen.
+   */
+  // async viewDocumentRecipientPage(req, res) {
+  //   const G = new Group(req);
+  // }
+
+  // TODO:
+  /* Formål: At vise brugeren for alle de dokumenter de personligt har lagt op på siden.
+   * Input : En session med userId og groupId
+   * Output: En liste af dokumenter som brugeren har lagt op.
+   */
+  // async viewDocumentExpertPage(req, res) {
+  //   const U = new User(req);
+  // }
+
+  // TODO:
+  /* Formål: At gøre det muligt for brugeren at oprette et dokument med tekst input (ikke upload!)
+   * Input : En session med userId og groupId
+   * Output: En visning af en form som brugeren kan bruge til at oprette et dokument.
+   */
+  // async insertDocumentPage(req, res) {
+  //   const Doc = new Document(req);
+  // }
+
+  // TODO:
+  /* Formål: At vise brugeren for en enkelt requested side.
+   * Input : Et request med et queryId samt en session med userId og groupId
+   * Output:
+   */
+  // async viewDocumentPage(req, res) {
+  //   const Doc = new Document(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : Et request med et queryId samt en session med userId og groupId
+   * Output:
+   */
+  // async deleteDocumentPage(req, res) {
+  //   const Doc = new Document(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : Et request med et queryId samt en session med userId og groupId
+   * Output:
+   */
+  // async updateDocumentPage(req, res) {
+  //   const Doc = new Document(req);
+  // }
+
+  /* Section Views TODO: */
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId
+   * Output: En liste af de sections som er lagt op i gruppen.
+   */
+  // async viewSectionRecipientPage(req, res) {
+  //   const Recipient = new Group(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId
+   * Output:
+   */
+  // async viewSectionExpertPage(req, res) {
+  //   const Expert = new User(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId samt et queryId fra params
+   * Output:
+   */
+  // async viewSectionDocumentPage(req, res) {
+  //   const Doc = new Document(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId
+   * Output:
+   * FIXME: Denne funktion skal gerne, på en eller anden måde, kunne vurdere om der er valgt et dokument/section på forhånd
+   *        som denne insert skal knyttes til.
+   *        Det er vigtigt, at strukturen for hvordan det løses på, er den samme for alle de andre URL'er.
+   */
+  // async insertSectionPage(req, res) {
+  //   const Sec = new Section(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : Et request med et queryId samt en session med userId og groupId
+   * Output:
+   */
+  // async viewSectionPage(req, res) {
+  //   const Sec = new Section(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : Et request med et queryId samt en session med userId og groupId
+   * Output:
+   */
+  // async deleteSectionPage(req, res) {
+  //   const Sec = new Section(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : Et request med et queryId samt en session med userId og groupId
+   * Output:
+   */
+  // async updateSectionPage(req, res) {
+  //   const Sec = new Section(req);
+  // }
+
+  /* Evaluation Views TODO: */
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId
+   * Output:
+   */
+  // async viewEvaluationsRecipientPage(req, res) {
+  //   const Recipient = new Group(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId
+   * Output:
+   */
+  // async viewEvaluationsExpertPage(req, res) {
+  //   const Expert = new User(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId og queryId fra params
+   * Output:
+   */
+  // async viewEvaluationsDocumentPage(req, res) {
+  //   const Doc = new Document(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId og queryId fra params
+   * Output:
+   */
+  // async viewEvaluationsSectionPage(req, res) {
+  //   const Sec = new Section(req);
+  // }
+
+  /* Quiz Views TODO: */
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId
+   * Output:
+   */
+  // async viewQuizRecipientPage(req, res) {
+  //   const Recipient = new Group(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId
+   * Output:
+   */
+  // async viewQuizExpertPage(req, res) {
+  //   const Expert = new User(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId og queryId fra params
+   * Output:
+   */
+  // async viewQuizDocumentPage(req, res) {
+  //   const Doc = new Document(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId og queryId fra params
+   * Output:
+   */
+  // async viewQuizSectionPage(req, res) {
+  //   const Sec = new Section(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId (og muligvis document/section id?)
+   * Output:
+   * FIXME: Denne funktion skal gerne, på en eller anden måde, kunne vurdere om der er valgt et dokument/section på forhånd
+   *        som denne insert skal knyttes til.
+   *        Det er vigtigt, at strukturen for hvordan det løses på, er den samme for alle de andre URL'er.
+   */
+  // async insertQuizPage(req, res) {
+  //   const Q = new Quiz(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : Et request med et queryId samt en session med userId og groupId
+   * Output:
+   */
+  // async viewQuizPage(req, res) {
+  //   const Q = new Quiz(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : Et request med et queryId samt en session med userId og groupId
+   * Output:
+   */
+  // async deleteQuizPage(req, res) {
+  //   const Q = new Quiz(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : Et request med et queryId samt en session med userId og groupId
+   * Output:
+   */
+  // async updateQuizPage(req, res) {
+  //   const Q = new Quiz(req);
+  // }
+
+  /* Flashcard Views TODO: */
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId
+   * Output:
+   */
+  // async viewFlashcardRecipientPage(req, res) {
+  //   const Recipient = new Group(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId
+   * Output:
+   */
+  // async viewFlashcardExpertPage(req, res) {
+  //   const Expert = new User(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId
+   * Output:
+   */
+  // async viewFlashcardDocumentPage(req, res) {
+  //   const Doc = new Document(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId
+   * Output:
+   */
+  // async viewFlashcardSectionPage(req, res) {
+  //   const Sec = new Section(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId (og muligvis document/section id?)
+   * Output:
+   * FIXME: Denne funktion skal gerne, på en eller anden måde, kunne vurdere om der er valgt et dokument/section på forhånd
+   *        som denne insert skal knyttes til.
+   *        Det er vigtigt, at strukturen for hvordan det løses på, er den samme for alle de andre URL'er.
+   */
+  // async insertFlashcardPage(req, res) {
+  //   const F = new Flashcard(req);
+
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : Et request med et queryId samt en session med userId og groupId
+   * Output:
+   */
+  // async viewFlashcardPage(req, res) {
+  //   const F = new Flashcard(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : Et request med et queryId samt en session med userId og groupId
+   * Output:
+   */
+  // async deleteFlashcardPage(req, res) {
+  //   const F = new Flashcard(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : Et request med et queryId samt en session med userId og groupId
+   * Output:
+   */
+  // async updateFlashcardPage(req, res) {
+  //   const F = new Flashcard(req);
+  // }
+
+  /* Keyword Views TODO: */
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId
+   * Output:
+   */
+  // async viewKeywordRecipientPage(req, res) {
+  //   const Recipient = new Group(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId
+   * Output:
+   */
+  // async viewKeywordExpertPage(req, res) {
+  //   const Expert = new User(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId og queryId fra params
+   * Output:
+   */
+  // async viewKeywordDocumentPage(req, res) {
+  //   const Doc = new Document(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId og queryId fra params
+   * Output:
+   */
+  // async viewKeywordSectionPage(req, res) {
+  //   const Sec = new Section(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : En session med userId og groupId (og muligvis document/section id?)
+   * Output:
+   * FIXME: Denne funktion skal gerne, på en eller anden måde, kunne vurdere om der er valgt et dokument/section på forhånd
+   *        som denne insert skal knyttes til.
+   *        Det er vigtigt, at strukturen for hvordan det løses på, er den samme for alle de andre URL'er.
+   */
+  // async insertKeywordPage(req, res) {
+  //   const K = new Keyword(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : Et request med et queryId samt en session med userId og groupId
+   * Output:
+   */
+  // async viewKeywordPage(req, res) {
+  //   const K = new Keyword(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : Et request med et queryId samt en session med userId og groupId
+   * Output:
+   */
+  // async deleteKeywordPage(req, res) {
+  //   const K = new Keyword(req);
+  // }
+
+  // TODO:
+  /* Formål:
+   * Input : Et request med et queryId samt en session med userId og groupId
+   * Output:
+   */
+  // async updateKeywordPage(req, res) {
+  //   const K = new Keyword(req);
+  // }
+
+  /* Formål: Et overblik over alle de tilgængelige evalueringsværktøjer som brugeren har adgang til i sin valgte gruppe.
    * Input : Et request der har oprettet en userId og groupId.
    * Output: Viser alle tilgængelige evalueringer for en bestemt Group.
    */
-  async evalueringerPage(req, res) {
+  async viewEvaluationGroupPage(req, res) {
+    const group = new Group(req);
+    const data = {
+      flashcard: await group.getAllElementsOfType(`Flashcard`),
+      quiz: await group.getAllElementsOfType(`Quiz`),
+    };
+
+    this.ejs = path.join(`${this.root}/www/views/evalueringer.ejs`);
+    res.render(this.ejs, { data });
+  }
+
+  /* Formål: Et overblik over alle de tilgængelige evalueringsværktøjer som brugeren har oprettet.
+   * Input : Et request der har oprettet en userId og groupId.
+   * Output: Viser alle tilgængelige evalueringer for en bestemt Group.
+   */
+  async viewEvaluationUserPage(req, res) {
     const group = new Group(req);
     const data = {
       flashcard: await group.getAllElementsOfType(`Flashcard`),
