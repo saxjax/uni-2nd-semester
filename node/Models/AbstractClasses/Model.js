@@ -25,10 +25,18 @@ class Model extends Database {
    * Output: En true værdi hvis requested har session, params(GET/UPDATE/DELETE) og/eller body(POST) ellers false.
    */
   validateMethodChoice(req) {
-    const paramsMethod = (req.method.toUpperCase() === `GET`
+    let paramsMethod;
+    let bodyMethod;
+    if (req.method) {
+      paramsMethod = (req.method.toUpperCase() === `GET`
                        || req.method.toUpperCase() === `UPDATE`
                        || req.method.toUpperCase() === `DELETE`);
-    const bodyMethod   = (req.method.toUpperCase() === `POST`);
+      bodyMethod   = (req.method.toUpperCase() === `POST`);
+    }
+    else {
+      return false;
+    }
+
     let valid = ``;
     if (req.session) {
       if (paramsMethod && req.params) {

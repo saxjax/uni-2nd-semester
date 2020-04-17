@@ -1,22 +1,29 @@
 /* eslint no-console: off */
 
-const { Database } = require(`./AbstractClasses/Database.js`);
+const { Model } = require(`./AbstractClasses/Model.js`);
 
 /* UNDER CONSTRUCTION */
 
-class Document extends Database {
+class Document extends Model {
   constructor(req) {
     super();
     this.elementtype = `document`;
     this.table       = `document`;
     // Session from session
-    this.groupId = (typeof req.session.groupId   !== `undefined` ? req.session.groupId    : undefined);
-    this.userId  = (typeof req.session.userId    !== `undefined` ? req.session.userId     : undefined);
-    // ID from params
-    this.idColumnName = `ID_DOCUMENT`;
-    this.queryId      = (typeof req.params.queryId !== `undefined` ? req.session.queryId : undefined);
-    // Columns from body
-    this.title   = (typeof req.body.title      !== `undefined` ? req.body.title      : undefined);
+    if (this.validateMethodChoice(req)) {
+      this.groupId = req.session.groupId;
+      this.userId  = req.session.userId;
+      switch (req.method) {
+        case `GET`: case `UPDATE`: case `DELETE`:
+          this.idColumnName   = `ID_DOCUMENT`;
+          this.queryId        =  req.params.queryId;
+          break;
+        case `POST`:
+          this.title     = req.body.title;
+          break;
+        default: break;
+      }
+    }
   }
 }
 

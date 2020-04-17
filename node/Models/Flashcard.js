@@ -8,7 +8,7 @@ class Flashcard extends Evaluation {
     this.elementtype = `flashcard`;
     this.table = `flashcard`;
 
-    if (this.validateMethodChoice) {
+    if (this.validateMethodChoice(req)) {
       this.groupId = req.session.groupId;
       this.userId  = req.session.userId;
       switch (req.method) {
