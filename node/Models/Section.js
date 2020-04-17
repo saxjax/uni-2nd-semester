@@ -12,7 +12,7 @@ class Section extends Model {
     this.elementtype = `section`;
     this.table = `document_section`;
     // Session
-    if (this.validateMethodChoice()) {
+    if (this.validateMethodChoice(req)) {
       this.groupId = req.session.groupId;
       this.userId  = req.session.userId;
       switch (req.method) {

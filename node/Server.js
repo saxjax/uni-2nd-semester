@@ -97,7 +97,7 @@ class Server {
     this.app.get(`/sections`,                          (req, res) => Show.sections(req, res));
     this.app.get(`/create/quiz`, (req, res) => Show.createQuiz(req, res));
     this.app.get(`/create/flashcard`, (req, res) => Show.createFlashcard(req, res));
-    this.app.get(`/create/section`, (req, res) => Test.createSection(req, res));
+    this.app.get(`/create/section`, (req, res) => Show.createSection(req, res));
   }
 
   /* Formål: At redirecte brugeren hen til det korrekte sted, eller vise den korrekte fejlmeddelse.
