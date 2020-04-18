@@ -1,10 +1,10 @@
 /* eslint no-console: off */
 
-const { Database } = require(`./AbstractClasses/Database.js`);
+const { Model } = require(`./AbstractClasses/Model.js`);
 
 /* UNDER CONSTRUCTION */
 
-class Document extends Database {
+class Document extends Model {
   constructor(req) {
     super();
     this.elementtype = `document`;

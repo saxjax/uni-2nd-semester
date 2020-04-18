@@ -23,10 +23,10 @@
                     </nav> 
                 </div>
                 <div class="col-12">
-                    <h1> RAPPORT </h1>
+                    <h1> <%= data.document.title %> </h1>
                 </div>
                 <div class="section_list">
-                    <%  if(data.sections && data.section.length > 0) { data.sections.forEach( (element) => { %>
+                    <%  if(data.sections && data.sections.length > 0) { data.sections.forEach( (element) => { %>
                         <a href="/rapport/<%= element.iddocument_section %>" >
                             <div class="card">
                             <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>

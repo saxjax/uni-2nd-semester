@@ -32,7 +32,6 @@ class ViewController {
       group: await Recipient.getThisGroupData(),
       user: await Recipient.getThisUserData(),
     };
-    console.log(data);
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs, { data });
   }
@@ -161,6 +160,7 @@ class ViewController {
     const data = {
       group: await Doc.getThisGroupData(),
       user: await Doc.getThisUserData(),
+      document: await Doc.getThis(),
       sections: await Doc.getAllElementsOfType(`Section`),
     };
     this.ejs = path.join(`${this.root}/www/views/viewSectionDocument.ejs`);
