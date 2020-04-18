@@ -86,7 +86,7 @@ class Server {
 
   /* Formål: At opstille alle de funktioner som loader en ejs fil og viser en side i et grupperum
    *         Et view url er på denne form:
-   *         /typeAfView/ObjectNavnDerØnskes/IdEllerObjectNavnSomDefinereScopetAfDetØnskedeObject/
+   *         /typeAfView / ObjectNavnDerØnskes / IdEllerObjectNavnSomDefinereScopetAfDetØnskedeObject /
    *           Evt.EkstraParametreHvisSammeQuerySkalVisesForskelligtIForskelligeSammenhænge
    *
    *        TypeAfView vil typisk enten være en selsvtændig hardcoded EJS fil (såsom /about) eller knytte sig til et objekt (se herunder)
@@ -121,18 +121,18 @@ class Server {
     // this.app.get(`/update/document/:queryId`, (req, res) => Show.updateDocumentPage(req, res));
 
     // Sections
-    // this.app.get(`/view/section/recipient`,         (req, res) => Show.viewSectionRecipientPage(req, res));
+    this.app.get(`/view/section/recipient`,         (req, res) => Show.viewSectionRecipientPage(req, res));
     // this.app.get(`/view/section/expert`,            (req, res) => Show.viewSectionExpertPage(req, res));
-    // this.app.get(`/view/section/document/:queryId`, (req, res) => Show.viewSectionDocumentPage(req, res));
-    // this.app.get(`/insert/section`,                 (req, res) => Show.insertSectionPage(req, res));
+    this.app.get(`/view/section/document/:queryId`, (req, res) => Show.viewSectionDocumentPage(req, res));
+    this.app.get(`/insert/section`,                 (req, res) => Show.insertSectionPage(req, res));
     // this.app.get(`/view/section/:queryId`,          (req, res) => Show.viewSectionPage(req, res));
     // this.app.get(`/update/section/:queryId`,        (req, res) => Show.updateSectionPage(req, res));
 
     // Evaluations
-    // this.app.get(`/view/evaluations/recipient`,         (req, res) => Show.viewEvaluationsRecipientPage(req, res));
+    this.app.get(`/view/evaluations/recipient`,         (req, res) => Show.viewEvaluationsRecipientPage(req, res));
     // this.app.get(`/view/evaluations/expert`,            (req, res) => Show.viewEvaluationsExpertPage(req, res));
     // this.app.get(`/view/evaluations/document/:queryId`, (req, res) => Show.viewEvaluationsDocumentPage(req, res));
-    // this.app.get(`/view/evaluations/section/:queryId`,  (req, res) => Show.viewEvaluationsSectionPage(req, res));
+    this.app.get(`/view/evaluations/section/:queryId`,  (req, res) => Show.viewEvaluationsSectionPage(req, res));
     /* EVALUATIONS HAR IKKE insert, view/:queryId og update, da evaluations IKKE er et objekt som sådan
      * Evaluations er blot det objekt der håndtere de usecases, hvor man vises for alle ens quiz/flashcard sammen
      */
@@ -142,12 +142,12 @@ class Server {
     // this.app.get(`/view/quiz/expert`,            (req, res) => Show.viewQuizExpertPage(req, res));
     // this.app.get(`/view/quiz/document/:queryId`, (req, res) => Show.viewQuizDocumentPage(req, res));
     // this.app.get(`/view/quiz/section/:queryId`,  (req, res) => Show.viewQuizSectionPage(req, res));
-    // this.app.get(`/insert/quiz`,                 (req, res) => Show.insertQuizPage(req, res));
-    // this.app.get(`/view/quiz/:queryId`,          (req, res) => Show.viewQuizPage(req, res));
+    this.app.get(`/insert/quiz`,                 (req, res) => Show.insertQuizPage(req, res));
+    this.app.get(`/view/quiz/:queryId`,          (req, res) => Show.viewQuizPage(req, res));
     // this.app.get(`/update/quiz/:queryId`,        (req, res) => Show.updateQuizPage(req, res));
 
     // Flashcard
-    // this.app.get(`/view/flashcard/recipient`, (req, res) => Show.viewFlashcardRecipientPage(req, res));
+    this.app.get(`/view/flashcard/recipient`, (req, res) => Show.viewFlashcardRecipientPage(req, res));
     // this.app.get(`/view/flashcard/expert`, (req, res) => Show.viewFlashcardExpertPage(req, res));
     // this.app.get(`/view/flashcard/document/:queryId`, (req, res) => Show.viewFlashcardDocumentPage(req, res));
     // this.app.get(`/view/flashcard/section/:queryId`, (req, res) => Show.viewFlashcardSectionPage(req, res));
@@ -175,11 +175,11 @@ class Server {
    */
   redirectPatterns() {
     const Redirect = new RedirectController();
-    this.app.get(`/dbdown`,                (req, res) => Redirect.dbdown(req, res));
-    this.app.post(`/upload/rapport`,       (req, res) => Redirect.UploadRapport(req, res));
-    this.app.post(`/upload/evalueringer`,  (req, res) => Redirect.UploadEvalueringer(req, res));
-    this.app.post(`/register`,             (req, res) => Redirect.RegisterNewUser(req, res));
-    this.app.post(`/create/section`,       (req, res) => Redirect.createSection(req, res));
+    this.app.get(`/dbdown`,                    (req, res) => Redirect.dbdown(req, res));
+    this.app.post(`/upload/rapport`,           (req, res) => Redirect.UploadRapport(req, res));
+    this.app.post(`/upload/evalueringer`,      (req, res) => Redirect.UploadEvalueringer(req, res));
+    this.app.post(`/register`,                 (req, res) => Redirect.RegisterNewUser(req, res));
+    this.app.post(`/create/section`,           (req, res) => Redirect.createSection(req, res));
   }
 
   /* Formål: Struktur for de URL Patterns der indsætter data i databasen.

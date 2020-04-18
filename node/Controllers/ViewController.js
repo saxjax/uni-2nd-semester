@@ -32,6 +32,7 @@ class ViewController {
       group: await Recipient.getThisGroupData(),
       user: await Recipient.getThisUserData(),
     };
+    console.log(data);
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs, { data });
   }
@@ -119,8 +120,7 @@ class ViewController {
 
   /* Section Views TODO: */
 
-  // TODO: Mangler EJS fil
-  /* Formål: BESKRIV EJS FORMÅL HER
+  /* Formål: At vise alle de sektioner som er tilgængelige for en bruger i en gruppe.
    * Input : En session med userId og groupId
    * Output: En liste af de sections som er lagt op i gruppen.
    */
@@ -152,8 +152,7 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // TODO: Mangler EJS
-  /* Formål: BESKRIV EJS FORMÅL HER
+  /* Formål: At vise alle de sektioner som knytter sig til et dokument der er valgt
    * Input : En session med userId og groupId samt et queryId fra params
    * Output: En liste af de sections som tilhører et specifikt dokument
    */
@@ -168,10 +167,10 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // TODO: Mangler EJS
-  /* Formål: BESKRIV EJS FORMÅL HER
+  /* Formål: Gør det muligt for en bruger at oprette en section så den er tilkoblet et dokument i gruppen.
    * Input : En session med userId og groupId
    * Output: En visning af en form hvor brugeren kan tilføje en section
+   * FIXME: Som det står nu er sections DOCUMENT_ID blot sat til null, og formålet er dermed ikke opfyldt.
    * FIXME: Denne funktion skal gerne, på en eller anden måde, kunne vurdere om der er valgt et dokument/section på forhånd
    *        som denne insert skal knyttes til.
    *        Det er vigtigt, at strukturen for hvordan det løses på, er den samme for alle de andre URL'er.
@@ -220,8 +219,7 @@ class ViewController {
 
   /* Evaluation Views TODO: */
 
-  // TODO: Mangler EJS
-  /* Formål: BESKRIV EJS FORMÅL HER
+  /* Formål: At vise alle de tilgængelige evalueringer som en bruger kan give sig i kast med.
    * Input : En session med userId og groupId
    * Output: En liste med alle de oprettede evalueringsværktøjer som er i gruppen
    */
@@ -272,8 +270,7 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // TODO: Mangler EJS
-  /* Formål: BESKRIV EJS FORMÅL HER
+  /* Formål: At vise et afsnit med alle de tilhørende evalueringer som er mulige at tage til dette afsnit.
    * Input : En session med userId og groupId og queryId fra params
    * Output: En liste med alle de evalueringer der er tilknyttet en section
    */
@@ -358,8 +355,8 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // TODO: Mangler EJS
-  /* Formål: BESKRIV EJS FORMÅL HER
+  /* Formål: At gøre det muligt for en bruger dynamisk at oprette en quiz så den er tillagt en
+             section (og sectionens document), med et ubestemt antal spørgsmål og svarmuligheder.
    * Input : En session med userId og groupId (og muligvis document/section id?)
    * Output: En præsentation af den form der gør det muligt at oprette en Quiz
    * FIXME: Denne funktion skal gerne, på en eller anden måde, kunne vurdere om der er valgt et dokument/section på forhånd
@@ -412,8 +409,7 @@ class ViewController {
 
   /* Flashcard Views TODO: */
 
-  // TODO: Mangler EJS
-  /* Formål: BESKRIV EJS FORMÅL HER
+  /* Formål: En fremstilling af alle de flashcard som en bruger har adgang til.
    * Input : En session med userId og groupId
    * Output: En liste af flashcards som en bruger kan tage
    */

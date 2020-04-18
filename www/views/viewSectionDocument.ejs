@@ -3,7 +3,7 @@
     <head>
         <%- include('meta/header') %> 
         <link href="css/design.css" rel="stylesheet">
-        <link rel="stylesheet" href="../css/elementlist.css">
+        <link rel="stylesheet" href="/css/elementlist.css">
     </head>
     <body>
         <%- include('meta/navbar') %> 
@@ -18,7 +18,7 @@
                 <div class="col-5">  
                     <nav>
                         <button class="btn btn-info">
-                            <a href="/upload/rapport"> Upload </a>
+                            <a href="/insert/document"> Opret Dokument </a>
                         </button>
                     </nav> 
                 </div>
@@ -26,7 +26,7 @@
                     <h1> RAPPORT </h1>
                 </div>
                 <div class="section_list">
-                    <%  if(data.section && data.section.length > 0) { data.section.forEach( (element) => { %>
+                    <%  if(data.sections && data.section.length > 0) { data.sections.forEach( (element) => { %>
                         <a href="/rapport/<%= element.iddocument_section %>" >
                             <div class="card">
                             <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>

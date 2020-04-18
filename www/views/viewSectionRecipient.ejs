@@ -3,12 +3,12 @@
     <head>
         <%- include('meta/header') %> 
         <link href="css/design.css" rel="stylesheet">
-        <link rel="stylesheet" href="../css/elementlist.css">
+        <link rel="stylesheet" href="/css/elementlist.css">
     </head>
     <body>
         <%- include('meta/navbar') %> 
         <ol>
-            <% sections.forEach((section) => { %>
+            <% data.sections.forEach((section) => { %>
                 <li>
                     <div>
                         <strong>Title: </strong>     <%= section.title %> 
@@ -21,7 +21,7 @@
             </ol>
             
         <button>
-            <a href="/create/section">Crate new section!</a>
+            <a href="/insert/section">Crate new section!</a>
         </button>
 
 

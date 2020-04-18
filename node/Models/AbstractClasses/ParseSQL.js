@@ -27,6 +27,7 @@ class ParseSql {
           case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i]));    break;
           case `keyword`:       this.parsedData.push(this.parseKeyword(data[i]));      break;
           case `user`:          this.parsedData.push(this.parseUser(data[i]));         break;
+          case `user_group`:    this.parsedData.push(this.parseGroup(data[i]));         break;
           default:
             this.parsedData.push(data[i]);
             console.warn(`WARNING: Elementtype "${data[i].elementtype}" is not defined. Parsing skipped!`);
@@ -167,7 +168,7 @@ class ParseSql {
   parseUser(data) {
     return {
       elementtype: `${data.ELEMENT_TYPE}`,
-      idUser: `${data.ID_USER}`,
+      userId: `${data.ID_USER}`,
       userName: `${data.USER_NAME}`,
       // password: `${data.PASSWORD}`,
       firstName: `${data.FIRST_NAME}`,
@@ -176,6 +177,14 @@ class ParseSql {
       studySubject: `${data.STUDY_SUBJECT}`,
       semester: `${data.SEMESTER}`,
       university: `${data.UNIVERSITY}`,
+    };
+  }
+
+  parseGroup(data) {
+    return {
+      elementtype: `${data.ELEMENT_TYPE}`,
+      groupId: `${data.ID_USER_GROUP}`,
+      name: `${data.NAME}`,
     };
   }
 }

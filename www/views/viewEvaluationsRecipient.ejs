@@ -3,7 +3,7 @@
   <head>
     <%- include('meta/header') %> 
     <link href="css/design.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/elementlist.css">
+    <link rel="stylesheet" href="/css/elementlist.css">
     <script defer src="js/view-design.js"></script>
   </head>
   <body>
@@ -11,9 +11,8 @@
     <div class="container" id="content">
       <div class="row">
           <nav>
-            <button class="btn btn-info">
-              <a href="/upload/evalueringer"> Upload </a>
-            </button>
+              <a href="/insert/quiz">Opret Quiz</a>
+              <a href="/insert/flashcard">Opret Flashcard</a>
           </nav> 
       </div>
         <div class="row">
@@ -39,7 +38,7 @@
               <div class="leftside">
                 <div class="quizzes">
                   <h2> QUIZ </h2>
-                  <% data.quiz.forEach((element) =>{ %>
+                  <% data.quizzes.forEach((element) =>{ %>
                     <a href="/evalueringer/<%= element.elementtype %>/<%= element.idquiz %>"> 
                       <div class="card">
                       <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>
@@ -54,7 +53,7 @@
               <div class="rightside">
                 <div class="flashcards">
                   <h2> FLASHCARDS </h2>
-                  <% data.flashcard.forEach(element =>{ %>
+                  <% data.flashcards.forEach(element =>{ %>
                     <a href="/evalueringer/<%= element.elementtype %>/<%= element.idflashcard %>"> 
                       <div class="card">
                       <div class="elementType<%= element.elementtype %>">Title: <%= element.title %></div>

@@ -70,20 +70,24 @@ class Model extends Database {
    * Input : Et objekt der er oprettet med et groupId i session
    * Output: Den row i user_group tabellen der svarer til groupId
    */
-  getThisGroupData() {
-    return this.query(`SELECT *`, `${this.idColumnGroup} = "${this.groupId}"`)
+  async getThisGroupData() {
+    this.table = `USER_GROUP`;
+    const data = await this.query(`SELECT *`, `${this.idColumnGroup} = "${this.groupId}"`)
       .then((result) => result)
       .catch((error) => error);
+    return data;
   }
 
   /* Formål: At kunne tilgå data om den user man er såsom ens username med videre.
    * Input : Et objekt der er oprettet med et userId i session
    * Output: Den row i user tabellen der svarer til userId
    */
-  getThisUserData() {
-    return this.query(`SELECT *`, `${this.idColumnUser} = "${this.userId}"`)
+  async getThisUserData() {
+    this.table = `USER`;
+    const data = this.query(`SELECT *`, `${this.idColumnUser} = "${this.userId}"`)
       .then((result) => result)
       .catch((error) => error);
+    return data;
   }
 
   /* Formål: En almen funktion så alle objekter der knytter sig til et objekt kan hentes.
