@@ -16,12 +16,12 @@ const { User } = require(`../../../node/Models/User`);
 
 // nodemon tests/backend/Database/test.ParseSQL.js | .\node_modules\.bin\tap-spec
 
-/* 0 test af parseArrayOfObjects() på data som er ukendt for parseren */
+/* 0 test af parseArrayOfObjects() pï¿½ data som er ukendt for parseren */
 /* 0.0 - 0.6 */
 
 test(`Test af ParseSQL i node/Database`, (assert) => {
   console.log(`Test af parseArrayOfObjects() metoden med inputData som er ukendt for parseren`);
-  // Tests a første if-statement
+  // Tests a fï¿½rste if-statement
   reset();
   const testThis = [{ data: `data` }, 1, 0, true, false, `hejse dejsa`];
 
@@ -34,7 +34,7 @@ test(`Test af ParseSQL i node/Database`, (assert) => {
     // console.log(expected);
     assert.deepEqual(actual, expected,
       `{0.${i} Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere et for parseren ukendt input,
-     som ikke er et array, uden at ændre i det og logge en warning i processen`);
+     som ikke er et array, uden at ï¿½ndre i det og logge en warning i processen`);
   });
 
   // reset();
@@ -828,12 +828,11 @@ test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
       { COLUMN_NAME: `SECTION_NUMBER` },
       { COLUMN_NAME: `SECTION_CONTENT` },
       { COLUMN_NAME: `SECTION_TEASER` },
-<<<<<<< HEAD
       { COLUMN_NAME: `KEYWORDS` }, { COLUMN_NAME: `ID_USER_GROUP` },
-=======
       { COLUMN_NAME: `KEYWORDS` },
       { COLUMN_NAME: `ID_USER_GROUP` },
->>>>>>> 1c5134c2bee8da0dd8cc0f23fc54ed7a325a1b25
+      { COLUMN_NAME: `KEYWORDS` },
+      { COLUMN_NAME: `ID_USER_GROUP` },
     ],
   ];
 
