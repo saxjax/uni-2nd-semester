@@ -7,23 +7,18 @@
     </head>
     <body>
         <%- include('meta/navbar') %> 
-
-       
-       <button class="getSection" id="section_id_77">Click here to get a very specific section, with the id: 77!</button>
-
-
         <div class="container" id="content">
 
             <div class="row">
-                <div class="col-5">  
+                <div class="col-12">  
                     <nav>
-                        <button class="btn btn-info">
-                            <a href="/upload/rapport"> Upload </a>
+                        <button class="btn btn-info" style="background-color:powderblue;">
+                            <a href="/create/section">Create New Section</a>
                         </button>
                     </nav> 
                 </div>
                 <div class="col-12">
-                    <h1> RAPPORT </h1>
+                    <h1> SECTIONS </h1>
                 </div>
                 <div class="section_list">
                     <%  if(data.section && data.section.length > 0) { data.section.forEach( (element) => { %>

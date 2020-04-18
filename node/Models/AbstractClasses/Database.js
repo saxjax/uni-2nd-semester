@@ -29,7 +29,7 @@ class Database {
       host: `213.32.247.201`,
       user: `ADMIN`,
       port: `3306`,
-      password: fs.readFileSync(`./node/Models/AbstractClasses/password.txt`, `utf8`),
+      password: fs.readFileSync(`../../../node/Models/AbstractClasses/password.txt`, `utf8`),
       database: this.database,
     });
 
@@ -92,7 +92,7 @@ class Database {
         }
         else {
           const outputParser = new ParseSql(this.elementtype);
-          resolve(outputParser.parse(result));
+          resolve(outputParser.parseArrayOfObjects(result));
         }
       });
     });

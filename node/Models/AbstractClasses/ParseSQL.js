@@ -15,28 +15,28 @@ class ParseSql {
    * Input:  Et array af data - kan godt modtage forskellige elementtyper i samme array
    * Output: Et array af data, som er parset/oversat fra databasesprog til frontendsprog eller et tomt array, hvis data er tom.
    */
-  parse(data) {
-    if (data.length > 0) {
-      for (let i = 0; i < data.length; i++) {
-        switch (data[i].ELEMENT_TYPE) {
-          case `section`:       this.parsedData.push(this.parseSection(data[i]));      break;
-          case `quiz`:          this.parsedData.push(this.parseQuiz(data[i]));         break;
-          case `quiz_question`: this.parsedData.push(this.parseQuizQuestion(data[i])); break;
-          case `quiz_result`:   this.parsedData.push(this.parseQuizResult(data[i]));    break;
-          case `flashcard`:     this.parsedData.push(this.parseFlashcard(data[i]));    break;
-          case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i]));    break;
-          case `keyword`:       this.parsedData.push(this.parseKeyword(data[i]));      break;
-          case `user`:          this.parsedData.push(this.parseUser(data[i]));         break;
-          default:
-            this.parsedData.push(data[i]);
-            console.warn(`WARNING: Elementtype "${data[i].elementtype}" is not defined. Parsing skipped!`);
-            break;
-        }
+  parseArrayOfObjects(data) {
+    if (!Array.isArray(data)) {
+      console.warn(`WARNING: This data package is not an array. Parsing skipped!`);
+      return data;
+    }
+    for (let i = 0; i < data.length; i++) {
+      switch (data[i].ELEMENT_TYPE) {
+        case `section`:          this.parsedData.push(this.parseSection(data[i]));         break;
+        case `quiz`:             this.parsedData.push(this.parseQuiz(data[i]));            break;
+        case `quiz_question`:    this.parsedData.push(this.parseQuizQuestion(data[i]));    break;
+        case `quiz_result`:      this.parsedData.push(this.parseQuizResult(data[i]));      break;
+        case `flashcard`:        this.parsedData.push(this.parseFlashcard(data[i]));       break;
+        case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i])); break;
+        case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));         break;
+        case `user`:             this.parsedData.push(this.parseUser(data[i]));            break;
+        default:
+          this.parsedData.push(data[i]);
+          console.warn(`WARNING: Elementtype "${data[i].elementtype}" is not defined. Parsing skipped!`);
+          break;
       }
     }
-    else {
-      this.parsedData = data;
-    }
+
     return this.parsedData;
   }
 
@@ -61,14 +61,14 @@ class ParseSql {
     }
 
     return {
-      elementtype: `${data.ELEMENT_TYPE}`,
-      idDocument: `${data.ID_DOCUMENT}`,
-      idSection: `${data.ID_DOCUMENT_SECTION}`,
+      elementtype: data.ELEMENT_TYPE,
+      idDocument: data.ID_DOCUMENT,
+      idSection: data.ID_DOCUMENT_SECTION,
       sectionNumber: data.SECTION_NUMBER,
-      title: `${data.SECTION_TITLE}`,
-      content: `${data.SECTION_CONTENT}`,
-      teaser: `${teaser}`,
-      keywords: `${data.KEYWORDS}`,
+      title: data.SECTION_TITLE,
+      content: data.SECTION_CONTENT,
+      teaser,
+      keywords: data.KEYWORDS,
     };
   }
 
