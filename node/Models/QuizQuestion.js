@@ -5,7 +5,7 @@ class QuizQuestion extends Evaluation {
     super();
     this.elementtype = `quiz`;
     this.table = `quiz`;
-    if (this.validateMethodChoice()) {
+    if (this.validateMethodChoice(req)) {
       this.groupId = req.session.groupId;
       this.userId  = req.session.userId;
       switch (req.method) {
