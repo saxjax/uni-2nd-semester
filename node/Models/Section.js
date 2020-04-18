@@ -24,6 +24,7 @@ class Section extends Model {
           this.sectionTitle     = req.body.section.title;
           this.sectionContent   = req.body.section.content;
           this.sectionKeywords  = req.body.section.keywords;
+          this.sectionNumber    = req.body.section.number;
           break;
         default: break;
       }
@@ -35,6 +36,7 @@ class Section extends Model {
       await this.query(`INSERT`, `SECTION_TITLE = "${this.sectionTitle}" `
                        + `AND SECTION_CONTENT = "${this.sectionContent}" `
                        + `AND KEYWORDS = "${this.sectionKeywords}" `
+                       + `AND SECTION_NUMBER = "${this.sectionNumber}" `
                        + `AND ID_USER_GROUP = "${this.groupId}"`);
     }
     catch (error) {
