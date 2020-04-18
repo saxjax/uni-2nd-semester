@@ -92,7 +92,7 @@ class Database {
         }
         else {
           const outputParser = new ParseSql(this.elementtype);
-          resolve(outputParser.parse(result));
+          resolve(outputParser.parseArrayOfObjects(result));
         }
       });
     });
