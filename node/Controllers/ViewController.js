@@ -75,13 +75,13 @@ class ViewController {
    * Input : En session med userId og groupId
    * Output: En visning af en form som brugeren kan bruge til at oprette et dokument.
    */
-  async insertDocumentPage(req, res) {
+  async postDocumentPage(req, res) {
     const Expert = new User(req);
     const data = {
       group: await Expert.getThisGroupData(),
       user: await Expert.getThisUserData(),
     };
-    this.ejs = path.join(`${this.root}/www/views/insertDocument.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/postDocument.ejs`);
     res.render(this.ejs, { data });
   }
 
@@ -106,14 +106,14 @@ class ViewController {
    * Input : Et request med et queryId samt en session med userId og groupId
    * Output: Ens dokument data med mulighed for at rette i det.
    */
-  async updateDocumentPage(req, res) {
+  async putDocumentPage(req, res) {
     const Doc = new Document(req);
     const data = {
       group: await Doc.getThisGroupData(),
       user: await Doc.getThisUserData(),
       document: await Doc.getThis(),
     };
-    this.ejs = path.join(`${this.root}/www/views/updateDocument.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/putDocument.ejs`);
     res.render(this.ejs, { data });
   }
 
@@ -172,16 +172,16 @@ class ViewController {
    * Output: En visning af en form hvor brugeren kan tilføje en section
    * FIXME: Som det står nu er sections DOCUMENT_ID blot sat til null, og formålet er dermed ikke opfyldt.
    * FIXME: Denne funktion skal gerne, på en eller anden måde, kunne vurdere om der er valgt et dokument/section på forhånd
-   *        som denne insert skal knyttes til.
+   *        som denne post skal knyttes til.
    *        Det er vigtigt, at strukturen for hvordan det løses på, er den samme for alle de andre URL'er.
    */
-  async insertSectionPage(req, res) {
+  async postSectionPage(req, res) {
     const Expert = new User(req);
     const data = {
       group: await Expert.getThisGroupData(),
       user: await Expert.getThisUserData(),
     };
-    this.ejs = path.join(`${this.root}/www/views/insertSection.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/postSection.ejs`);
     res.render(this.ejs, { data });
   }
 
@@ -206,14 +206,14 @@ class ViewController {
    * Input : Et request med et queryId samt en session med userId og groupId
    * Output: En præsentation af en section i en form som kan ændres
    */
-  async updateSectionPage(req, res) {
+  async putSectionPage(req, res) {
     const Sec = new Section(req);
     const data = {
       group: await Sec.getThisGroupData(),
       user: await Sec.getThisUserData(),
       document: await Sec.getThis(),
     };
-    this.ejs = path.join(`${this.root}/www/views/updateSection.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/putSection.ejs`);
     res.render(this.ejs, { data });
   }
 
@@ -360,16 +360,16 @@ class ViewController {
    * Input : En session med userId og groupId (og muligvis document/section id?)
    * Output: En præsentation af den form der gør det muligt at oprette en Quiz
    * FIXME: Denne funktion skal gerne, på en eller anden måde, kunne vurdere om der er valgt et dokument/section på forhånd
-   *        som denne insert skal knyttes til.
+   *        som denne post skal knyttes til.
    *        Det er vigtigt, at strukturen for hvordan det løses på, er den samme for alle de andre URL'er.
    */
-  async insertQuizPage(req, res) {
+  async postQuizPage(req, res) {
     const Expert = new User(req);
     const data = {
       group: await Expert.getThisGroupData(),
       user: await Expert.getThisUserData(),
     };
-    this.ejs = path.join(`${this.root}/www/views/insertQuiz.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/postQuiz.ejs`);
     res.render(this.ejs, { data });
   }
 
@@ -395,7 +395,7 @@ class ViewController {
    * Input : Et request med et queryId samt en session med userId og groupId
    * Output: En fremvisning af en quiz og dens tilhørende spørgsmål/svar så en bruger kan rette den til
    */
-  async updateQuizPage(req, res) {
+  async putQuizPage(req, res) {
     const Q = new Quiz(req);
     const data = {
       group: await Q.getThisGroupData(),
@@ -403,7 +403,7 @@ class ViewController {
       quiz: await Q.getThis(),
       questions: await Q.getAllElementsOfType(`QuizQuestion`),
     };
-    this.ejs = path.join(`${this.root}/www/views/updateQuiz.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/putQuiz.ejs`);
     res.render(this.ejs, { data });
   }
 
@@ -479,16 +479,16 @@ class ViewController {
    * Input : En session med userId og groupId (og muligvis document/section id?)
    * Output: En form som gør det muligt for brugeren at POST et flashcard
    * FIXME: Denne funktion skal gerne, på en eller anden måde, kunne vurdere om der er valgt et dokument/section på forhånd
-   *        som denne insert skal knyttes til.
+   *        som denne post skal knyttes til.
    *        Det er vigtigt, at strukturen for hvordan det løses på, er den samme for alle de andre URL'er.
    */
-  async insertFlashcardPage(req, res) {
+  async postFlashcardPage(req, res) {
     const Expert = new User(req);
     const data = {
       group: await Expert.getThisGroupData(),
       user: await Expert.getThisUserData(),
     };
-    this.ejs = path.join(`${this.root}/www/views/insertFlashcard.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/postFlashcard.ejs`);
     res.render(this.ejs, { data });
   }
 
@@ -513,14 +513,14 @@ class ViewController {
    * Input : Et request med et queryId samt en session med userId og groupId
    * Output: En form der gør det muligt opdateret et flashcard
    */
-  async updateFlashcardPage(req, res) {
+  async putFlashcardPage(req, res) {
     const F = new Flashcard(req);
     const data = {
       group: await F.getThisGroupData(),
       user: await F.getThisUserData(),
       flashcard: await F.getThis(),
     };
-    this.ejs = path.join(`${this.root}/www/views/updateFlashcard.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/putFlashcard.ejs`);
     res.render(this.ejs, { data });
   }
 
@@ -597,16 +597,16 @@ class ViewController {
    * Input : En session med userId og groupId (og muligvis document/section id?)
    * Output: En form hvor det er muligt at rette et keyword til
    * FIXME: Denne funktion skal gerne, på en eller anden måde, kunne vurdere om der er valgt et dokument/section på forhånd
-   *        som denne insert skal knyttes til.
+   *        som denne post skal knyttes til.
    *        Det er vigtigt, at strukturen for hvordan det løses på, er den samme for alle de andre URL'er.
    */
-  async insertKeywordPage(req, res) {
+  async postKeywordPage(req, res) {
     const Expert = new User(req);
     const data = {
       group: await Expert.getThisGroupData(),
       user: await Expert.getThisUserData(),
     };
-    this.ejs = path.join(`${this.root}/www/views/insertKeyword.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/postKeyword.ejs`);
     res.render(this.ejs, { data });
   }
 
@@ -631,14 +631,14 @@ class ViewController {
    * Input : Et request med et queryId samt en session med userId og groupId
    * Output: En form der giver brugeren mulighed for at opdatere et keyword
    */
-  async updateKeywordPage(req, res) {
+  async putKeywordPage(req, res) {
     const K = new Keyword(req);
     const data = {
       group: await K.getThisGroupData(),
       user: await K.getThisUserData(),
       keyword: await K.getThis(),
     };
-    this.ejs = path.join(`${this.root}/www/views/updateKeyword.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/putKeyword.ejs`);
     res.render(this.ejs, { data });
   }
 }

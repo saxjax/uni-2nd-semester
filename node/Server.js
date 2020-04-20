@@ -91,11 +91,11 @@ class Server {
    *
    *        TypeAfView vil typisk enten være en selsvtændig hardcoded EJS fil (såsom /about) eller knytte sig til et objekt (se herunder)
    *          Ønskes der flere funktionaliteter (såsom et view der både viser dokumenter samt præsentere formen for at oprette en ny), så
-   *          skal TypeAfView blot være "/viewAndInsert" eksempelvis.
+   *          skal TypeAfView blot være "/viewAndpost" eksempelvis.
    *         TypeAfView eksemplerne herunder knytter sig til et objekt.
    *           /view angiver at det er en side der kun skal ses,
-   *           /insert angiver at der vises en form som opretter objektet
-   *           /update angiver at der vises en form, hvor man kan ændrer objektet
+   *           /post angiver at der vises en form som opretter objektet
+   *           /put angiver at der vises en form, hvor man kan ændrer objektet
    *           DER ER INGEN /delete, da det ikke kræver en seperat visning, men blot
    *             kan være en enkelt knap i et /view (evt. med en "er du sikker?")
    *           "/" er lidt speciel da den tæller for startsiden.
@@ -116,24 +116,24 @@ class Server {
     // Documents
     // this.app.get(`/view/document/recipient`,  (req, res) => Show.viewDocumentRecipientPage(req, res));
     // this.app.get(`/view/document/expert`,     (req, res) => Show.viewDocumentExpertPage(req, res));
-    // this.app.get(`/insert/document/`,         (req, res) => Show.insertDocumentSelectPage(req, res));
+    // this.app.get(`/post/document/`,         (req, res) => Show.postDocumentSelectPage(req, res));
     // this.app.get(`/view/document/:idQuery`,   (req, res) => Show.viewDocumentPage(req, res));
-    // this.app.get(`/update/document/:idQuery`, (req, res) => Show.updateDocumentPage(req, res));
+    // this.app.get(`/put/document/:idQuery`, (req, res) => Show.putDocumentPage(req, res));
 
     // Sections
     this.app.get(`/view/section/recipient`,         (req, res) => Show.viewSectionRecipientPage(req, res));
     // this.app.get(`/view/section/expert`,            (req, res) => Show.viewSectionExpertPage(req, res));
     this.app.get(`/view/section/document/:idQuery`, (req, res) => Show.viewSectionDocumentPage(req, res));
-    this.app.get(`/insert/section`,                 (req, res) => Show.insertSectionPage(req, res));
+    this.app.get(`/post/section`,                 (req, res) => Show.postSectionPage(req, res));
     // this.app.get(`/view/section/:idQuery`,          (req, res) => Show.viewSectionPage(req, res));
-    // this.app.get(`/update/section/:idQuery`,        (req, res) => Show.updateSectionPage(req, res));
+    // this.app.get(`/put/section/:idQuery`,        (req, res) => Show.putSectionPage(req, res));
 
     // Evaluations
     this.app.get(`/view/evaluations/recipient`,         (req, res) => Show.viewEvaluationsRecipientPage(req, res));
     // this.app.get(`/view/evaluations/expert`,            (req, res) => Show.viewEvaluationsExpertPage(req, res));
     // this.app.get(`/view/evaluations/document/:idQuery`, (req, res) => Show.viewEvaluationsDocumentPage(req, res));
     this.app.get(`/view/evaluations/section/:idQuery`,  (req, res) => Show.viewEvaluationsSectionPage(req, res));
-    /* EVALUATIONS HAR IKKE insert, view/:idQuery og update, da evaluations IKKE er et objekt som sådan
+    /* EVALUATIONS HAR IKKE post, view/:idQuery og put, da evaluations IKKE er et objekt som sådan
      * Evaluations er blot det objekt der håndtere de usecases, hvor man vises for alle ens quiz/flashcard sammen
      */
 
@@ -142,18 +142,18 @@ class Server {
     // this.app.get(`/view/quiz/expert`,            (req, res) => Show.viewQuizExpertPage(req, res));
     // this.app.get(`/view/quiz/document/:idQuery`, (req, res) => Show.viewQuizDocumentPage(req, res));
     // this.app.get(`/view/quiz/section/:idQuery`,  (req, res) => Show.viewQuizSectionPage(req, res));
-    this.app.get(`/insert/quiz`,                 (req, res) => Show.insertQuizPage(req, res));
+    this.app.get(`/post/quiz`,                 (req, res) => Show.postQuizPage(req, res));
     this.app.get(`/view/quiz/:idQuery`,          (req, res) => Show.viewQuizPage(req, res));
-    // this.app.get(`/update/quiz/:idQuery`,        (req, res) => Show.updateQuizPage(req, res));
+    // this.app.get(`/put/quiz/:idQuery`,        (req, res) => Show.putQuizPage(req, res));
 
     // Flashcard
     this.app.get(`/view/flashcard/recipient`, (req, res) => Show.viewFlashcardRecipientPage(req, res));
     // this.app.get(`/view/flashcard/expert`, (req, res) => Show.viewFlashcardExpertPage(req, res));
     // this.app.get(`/view/flashcard/document/:idQuery`, (req, res) => Show.viewFlashcardDocumentPage(req, res));
     // this.app.get(`/view/flashcard/section/:idQuery`, (req, res) => Show.viewFlashcardSectionPage(req, res));
-    // this.app.get(`/insert/flashcard`, (req, res) => Show.insertFlashcardPage(req, res));
+    // this.app.get(`/post/flashcard`, (req, res) => Show.postFlashcardPage(req, res));
     // this.app.get(`/view/flashcard/:idQuery`,        (req, res) => Show.viewFlashcardPage(req, res));
-    // this.app.get(`/update/flashcard/:idQuery`, (req, res) => Show.updateFlashcardPage(req, res));
+    // this.app.get(`/put/flashcard/:idQuery`, (req, res) => Show.putFlashcardPage(req, res));
 
     // Keywords
     // this.app.get(`/view/keyword/recipient`, (req, res) => Show.viewKeywordRecipientPage(req, res));
@@ -162,9 +162,9 @@ class Server {
     // this.app.get(`/view/keyword/section/:idQuery`, (req, res) => Show.viewKeywordSectionPage(req, res));
     // this.app.get(`/view/keyword/quiz/:idQuery`, (req, res) => Show.viewKeywordQuizPage(req, res));
     // this.app.get(`/view/keyword/flashcard/:idQuery`, (req, res) => Show.viewKeywordFlashcardPage(req, res));
-    // this.app.get(`/insert/keyword`, (req, res) => Show.insertKeywordPage(req, res));
+    // this.app.get(`/post/keyword`, (req, res) => Show.postKeywordPage(req, res));
     // this.app.get(`/view/keyword/:idQuery`,        (req, res) => Show.viewKeywordPage(req, res));
-    // this.app.get(`/update/keyword/:idQuery`, (req, res) => Show.updateKeywordPage(req, res));
+    // this.app.get(`/put/keyword/:idQuery`, (req, res) => Show.putKeywordPage(req, res));
   }
 
   /* Formål: At redirecte brugeren hen til det korrekte sted, eller vise den korrekte fejlmeddelse.
