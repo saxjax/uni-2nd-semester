@@ -40,12 +40,14 @@ class RedirectController {
     }
   }
 
-  /* UNDER CONSTRUCTION */
+  /* Formål: At oprette en bruger i databasen hvis registrerings informationen er valid.
+   * Input : Username, Password, Firstname, Lastname, Semester, University, Email, Studysubject.
+   * Output: Opretter bruger eller informerer om fejl.
+   */
   async RegisterNewUser(req, res) {
     const newUser = new User(req);
     if (await newUser.validateRegister()) {
       await newUser.createUser();
-      console.log(`User created`);
       res.redirect(`/`);
     }
     else {
