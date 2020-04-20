@@ -29,7 +29,7 @@
                     <%  if(data.sections && data.sections.length > 0) { data.sections.forEach( (element) => { %>
                         <a href="/rapport/<%= element.iddocument_section %>" >
                             <div class="card">
-                            <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>
+                            <div class="elementType<%= element.elementType %>">title: <%= element.title %></div>
                             <div>keywords:</div>
                             <div class="sectinKeywords"><%= element.keywords %> </div>
                             <div class="sectionContent"><%= element.teaser %></div>

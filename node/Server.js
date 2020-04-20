@@ -64,9 +64,9 @@ class Server {
     // No Session URLs
     this.app.get(`/about`,    (req, res) => Access.aboutPage(req, res));
     this.app.get(`/register`, (req, res) => Access.registerPage(req, res));
-    // userId Session URLs
+    // idUser Session URLs
     this.app.get(`/login`,    (req, res) => Access.loginPage(req, res));
-    // groupId Session URLs
+    // idGroup Session URLs
     this.app.get(`/groups`,   (req, res) => Access.groupsPage(req, res));
   }
 
@@ -81,7 +81,7 @@ class Server {
   sessionPatterns() {
     const Session = new SessionController();
     this.app.post(`/auth/user`, (req, res) => Session.userSession(req, res));
-    this.app.get(`/session/group/:queryId`, (req, res) => Session.groupSession(req, res));
+    this.app.get(`/session/group/:idQuery`, (req, res) => Session.groupSession(req, res));
   }
 
   /* Formål: At opstille alle de funktioner som loader en ejs fil og viser en side i et grupperum
@@ -99,11 +99,11 @@ class Server {
    *           DER ER INGEN /delete, da det ikke kræver en seperat visning, men blot
    *             kan være en enkelt knap i et /view (evt. med en "er du sikker?")
    *           "/" er lidt speciel da den tæller for startsiden.
-   *         Alle objekter vil have et medfølgende queryId, /recipient, /expert, /document eller /section,
-   *           da det indikere hvad man får vist. (queryId for et bestemt, unikt object,
+   *         Alle objekter vil have et medfølgende idQuery, /recipient, /expert, /document eller /section,
+   *           da det indikere hvad man får vist. (idQuery for et bestemt, unikt object,
    *           /recipient for alle objekter brugeren har adgang til i den valgte gruppe og
    *           /expert for alle objekter brugeren har oprettet i den valgte gruppe.
-   *           /document(el. /section)/ :queryId for de section/evalueringer/keywords
+   *           /document(el. /section)/ :idQuery for de section/evalueringer/keywords
    *             der knytter sig til et unikt dokument/section, fremfor hele gruppen.
    * Input : Non. Her laves blot opsætningen.
    * Output: Opsætning af url'er som kan tilgås via serverens port.
@@ -117,54 +117,54 @@ class Server {
     // this.app.get(`/view/document/recipient`,  (req, res) => Show.viewDocumentRecipientPage(req, res));
     // this.app.get(`/view/document/expert`,     (req, res) => Show.viewDocumentExpertPage(req, res));
     // this.app.get(`/insert/document/`,         (req, res) => Show.insertDocumentSelectPage(req, res));
-    // this.app.get(`/view/document/:queryId`,   (req, res) => Show.viewDocumentPage(req, res));
-    // this.app.get(`/update/document/:queryId`, (req, res) => Show.updateDocumentPage(req, res));
+    // this.app.get(`/view/document/:idQuery`,   (req, res) => Show.viewDocumentPage(req, res));
+    // this.app.get(`/update/document/:idQuery`, (req, res) => Show.updateDocumentPage(req, res));
 
     // Sections
     this.app.get(`/view/section/recipient`,         (req, res) => Show.viewSectionRecipientPage(req, res));
     // this.app.get(`/view/section/expert`,            (req, res) => Show.viewSectionExpertPage(req, res));
-    this.app.get(`/view/section/document/:queryId`, (req, res) => Show.viewSectionDocumentPage(req, res));
+    this.app.get(`/view/section/document/:idQuery`, (req, res) => Show.viewSectionDocumentPage(req, res));
     this.app.get(`/insert/section`,                 (req, res) => Show.insertSectionPage(req, res));
-    // this.app.get(`/view/section/:queryId`,          (req, res) => Show.viewSectionPage(req, res));
-    // this.app.get(`/update/section/:queryId`,        (req, res) => Show.updateSectionPage(req, res));
+    // this.app.get(`/view/section/:idQuery`,          (req, res) => Show.viewSectionPage(req, res));
+    // this.app.get(`/update/section/:idQuery`,        (req, res) => Show.updateSectionPage(req, res));
 
     // Evaluations
     this.app.get(`/view/evaluations/recipient`,         (req, res) => Show.viewEvaluationsRecipientPage(req, res));
     // this.app.get(`/view/evaluations/expert`,            (req, res) => Show.viewEvaluationsExpertPage(req, res));
-    // this.app.get(`/view/evaluations/document/:queryId`, (req, res) => Show.viewEvaluationsDocumentPage(req, res));
-    this.app.get(`/view/evaluations/section/:queryId`,  (req, res) => Show.viewEvaluationsSectionPage(req, res));
-    /* EVALUATIONS HAR IKKE insert, view/:queryId og update, da evaluations IKKE er et objekt som sådan
+    // this.app.get(`/view/evaluations/document/:idQuery`, (req, res) => Show.viewEvaluationsDocumentPage(req, res));
+    this.app.get(`/view/evaluations/section/:idQuery`,  (req, res) => Show.viewEvaluationsSectionPage(req, res));
+    /* EVALUATIONS HAR IKKE insert, view/:idQuery og update, da evaluations IKKE er et objekt som sådan
      * Evaluations er blot det objekt der håndtere de usecases, hvor man vises for alle ens quiz/flashcard sammen
      */
 
     // Quiz
     // this.app.get(`/view/quiz/recipient`,         (req, res) => Show.viewQuizRecipientPage(req, res));
     // this.app.get(`/view/quiz/expert`,            (req, res) => Show.viewQuizExpertPage(req, res));
-    // this.app.get(`/view/quiz/document/:queryId`, (req, res) => Show.viewQuizDocumentPage(req, res));
-    // this.app.get(`/view/quiz/section/:queryId`,  (req, res) => Show.viewQuizSectionPage(req, res));
+    // this.app.get(`/view/quiz/document/:idQuery`, (req, res) => Show.viewQuizDocumentPage(req, res));
+    // this.app.get(`/view/quiz/section/:idQuery`,  (req, res) => Show.viewQuizSectionPage(req, res));
     this.app.get(`/insert/quiz`,                 (req, res) => Show.insertQuizPage(req, res));
-    this.app.get(`/view/quiz/:queryId`,          (req, res) => Show.viewQuizPage(req, res));
-    // this.app.get(`/update/quiz/:queryId`,        (req, res) => Show.updateQuizPage(req, res));
+    this.app.get(`/view/quiz/:idQuery`,          (req, res) => Show.viewQuizPage(req, res));
+    // this.app.get(`/update/quiz/:idQuery`,        (req, res) => Show.updateQuizPage(req, res));
 
     // Flashcard
     this.app.get(`/view/flashcard/recipient`, (req, res) => Show.viewFlashcardRecipientPage(req, res));
     // this.app.get(`/view/flashcard/expert`, (req, res) => Show.viewFlashcardExpertPage(req, res));
-    // this.app.get(`/view/flashcard/document/:queryId`, (req, res) => Show.viewFlashcardDocumentPage(req, res));
-    // this.app.get(`/view/flashcard/section/:queryId`, (req, res) => Show.viewFlashcardSectionPage(req, res));
+    // this.app.get(`/view/flashcard/document/:idQuery`, (req, res) => Show.viewFlashcardDocumentPage(req, res));
+    // this.app.get(`/view/flashcard/section/:idQuery`, (req, res) => Show.viewFlashcardSectionPage(req, res));
     // this.app.get(`/insert/flashcard`, (req, res) => Show.insertFlashcardPage(req, res));
-    // this.app.get(`/view/flashcard/:queryId`,        (req, res) => Show.viewFlashcardPage(req, res));
-    // this.app.get(`/update/flashcard/:queryId`, (req, res) => Show.updateFlashcardPage(req, res));
+    // this.app.get(`/view/flashcard/:idQuery`,        (req, res) => Show.viewFlashcardPage(req, res));
+    // this.app.get(`/update/flashcard/:idQuery`, (req, res) => Show.updateFlashcardPage(req, res));
 
     // Keywords
     // this.app.get(`/view/keyword/recipient`, (req, res) => Show.viewKeywordRecipientPage(req, res));
     // this.app.get(`/view/keyword/expert`, (req, res) => Show.viewKeywordExpertPage(req, res));
-    // this.app.get(`/view/keyword/document/:queryId`, (req, res) => Show.viewKeywordDocumentPage(req, res));
-    // this.app.get(`/view/keyword/section/:queryId`, (req, res) => Show.viewKeywordSectionPage(req, res));
-    // this.app.get(`/view/keyword/quiz/:queryId`, (req, res) => Show.viewKeywordQuizPage(req, res));
-    // this.app.get(`/view/keyword/flashcard/:queryId`, (req, res) => Show.viewKeywordFlashcardPage(req, res));
+    // this.app.get(`/view/keyword/document/:idQuery`, (req, res) => Show.viewKeywordDocumentPage(req, res));
+    // this.app.get(`/view/keyword/section/:idQuery`, (req, res) => Show.viewKeywordSectionPage(req, res));
+    // this.app.get(`/view/keyword/quiz/:idQuery`, (req, res) => Show.viewKeywordQuizPage(req, res));
+    // this.app.get(`/view/keyword/flashcard/:idQuery`, (req, res) => Show.viewKeywordFlashcardPage(req, res));
     // this.app.get(`/insert/keyword`, (req, res) => Show.insertKeywordPage(req, res));
-    // this.app.get(`/view/keyword/:queryId`,        (req, res) => Show.viewKeywordPage(req, res));
-    // this.app.get(`/update/keyword/:queryId`, (req, res) => Show.updateKeywordPage(req, res));
+    // this.app.get(`/view/keyword/:idQuery`,        (req, res) => Show.viewKeywordPage(req, res));
+    // this.app.get(`/update/keyword/:idQuery`, (req, res) => Show.updateKeywordPage(req, res));
   }
 
   /* Formål: At redirecte brugeren hen til det korrekte sted, eller vise den korrekte fejlmeddelse.
@@ -215,7 +215,7 @@ class Server {
     this.app.get(`/test`, (req, res) => Tester.test(req, res));
     this.app.get(`/test2`, (req, res) => Tester.test2(req, res));
     this.app.get(`/test3`, (req, res) => Tester.test3(req, res));
-    this.app.get(`/test3/:queryId`, (req, res) => Tester.test3(req, res));
+    this.app.get(`/test3/:idQuery`, (req, res) => Tester.test3(req, res));
   }
 
   /* Formål: Opsætning af en viewEngine så det er muligt at render ejs filer.
@@ -257,7 +257,7 @@ class Server {
       cookie: { maxAge: 600000 },
     }));
     if (this.skipAccess) {
-      this.app.use(this.createTestUserAndGroupId);
+      this.app.use(this.createTestUserAndidGroup);
     }
     this.app.use(this.noSessionNoAccess);
   }
@@ -266,14 +266,14 @@ class Server {
    * Input : Et request
    * Output: En fuldt oprettet session for user og group data.
    */
-  createTestUserAndGroupId(req, res, next) {
-    if (!req.session.userId || !req.session.groupId) {
+  createTestUserAndidGroup(req, res, next) {
+    if (!req.session.idUser || !req.session.idGroup) {
       req.session.username = `Test User`;
-      req.session.loggedin = true;
-      req.session.userId = `553e422d-7c29-11ea-86e2-2c4d54532c7a`;
+      req.session.loggedIn = true;
+      req.session.idUser = `553e422d-7c29-11ea-86e2-2c4d54532c7a`;
 
-      req.session.groupname = `Test Group`;
-      req.session.groupId = `34701dd1-7c29-11ea-86e2-2c4d54532c7a`;
+      req.session.groupName = `Test Group`;
+      req.session.idGroup = `34701dd1-7c29-11ea-86e2-2c4d54532c7a`;
     }
     next();
   }
@@ -282,19 +282,19 @@ class Server {
    * Input : Et request
    * Output: En omdirigering til login siden hvis man ikke er logget ind, eller til groups siden hvis man ikke har valgt gruppe.
    * FIXME: Denne funktion kan udvides til også at indeholde sikkerhed såsom
-   *         at sikre sig at userId og groupId stemmer overens.
+   *         at sikre sig at idUser og idGroup stemmer overens.
    *         Hvordan det gøres er dog lettere usikkert.
    */
   noSessionNoAccess(req, res, next) {
-    if (!req.session.userId) {
+    if (!req.session.idUser) {
       if (this.debug) {
-        console.warn(`Du har ikke et validt userId og er dermed blevet omdirigeret til login siden!`);
+        console.warn(`Du har ikke et validt idUser og er dermed blevet omdirigeret til login siden!`);
       }
       res.redirect(`/login`);
     }
-    else if (!req.session.groupId) {
+    else if (!req.session.idGroup) {
       if (this.debug) {
-        console.warn(`Du har ikke et validt groupId og er dermed blevet omdirigeret til login siden!`);
+        console.warn(`Du har ikke et validt idGroup og er dermed blevet omdirigeret til login siden!`);
       }
       res.redirect(`/groups`);
     }
