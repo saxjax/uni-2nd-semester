@@ -91,7 +91,7 @@ class RedirectController {
     const newSection = new Section(req);
     const testInsert = await newSection.insertSectionToDatabase();
     console.log(testInsert);
-    res.redirect(`/sections`);
+    res.redirect(`/rapport`);
   }
 }
 

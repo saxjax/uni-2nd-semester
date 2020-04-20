@@ -7,18 +7,19 @@
   </head>
   <body>
     <%- include('meta/navbar') %>
-    <div class="container">
-  	  <div class="login-form">
+    <div class="container" id="content" style="text-align: center; font-weight: bold;">
   		  <h1>Make a new section!</h1>
             <form action="/post/section" method="POST">
-                <label for="">Section Title</label>
-                <input name="section[title]" type="text" placeholder="Section Title">
-                <textarea name="section[content]" placeholder="Please put in the content here!" cols="30" rows="10"></textarea>
-                <label for="">keywords</label>
-                <input name="section[keywords]" type="text" placeholder="Keywords">
-  		        <input type="submit">
-		    </form>
-      </div>
+                <label for="">Section Title:</label><br>
+                <input name="title" type="text" size="60%" placeholder="Section Title" required><br>
+                <label for="">Section Number:</label><br>
+                <input name="number" type="text" size="60%" placeholder="1.1" required><br>
+                <label for="">Section content:</label><br>
+                <textarea name="content" placeholder="Please put in the content here!" cols="80" rows="15" required></textarea><br>
+                <label for="">keywords:</label><br>
+                <input name="keywords" type="text" size="80%" placeholder="Keyword1,Keyword2, etc.." required><br><br>
+  		        <input type="submit" value="Create!">
+		        </form>
     </div>
   	<%- include(`meta/footer.ejs`) %> 
   </body>

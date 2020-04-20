@@ -3,15 +3,24 @@ const { Evaluation } = require(`./AbstractClasses/Evaluation.js`);
 class Quiz extends Evaluation {
   constructor(req) {
     super();
-    this.elementtype = `quiz`;
+    this.elementType = `quiz`;
     this.table = `quiz`;
-    // Session
-    this.groupId = (typeof req.session.groupId  !== `undefined` ? req.session.groupId  : undefined);
-    this.userId  = (typeof req.session.userId    !== `undefined` ? req.session.userId     : undefined);
-    // ID
-    this.idColumnName = `ID_QUIZ`;
-    this.queryId = (typeof req.params.queryId       !== `undefined` ? req.params.queryId      : undefined);
-    // Columns
+
+    if (this.validRequest(req)) {
+      this.idGroup = req.session.idGroup;
+      this.idUser  = req.session.idUser;
+      switch (req.method) {
+        case `GET`: case `UPDATE`: case `DELETE`:
+          this.idColumnName = `ID_QUIZ`;
+          this.idQuery = req.params.idQuery;
+          this.loggedIn = req.session.loggedIn;
+          break;
+        case `POST`:
+          // none yet
+          break;
+        default: break;
+      }
+    }
   }
 }
 module.exports = {

@@ -11,19 +11,21 @@ class Section extends Model {
     super(req);
     this.elementtype = `section`;
     this.table = `document_section`;
-    // Session
-    if (this.validateMethodChoice()) {
-      this.groupId = req.session.groupId;
-      this.userId  = req.session.userId;
+
+    if (this.validRequest(req)) {
+      this.idGroup = req.session.idGroup;
+      this.idUser  = req.session.idUser;
+      this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
           this.idColumnName   = `ID_USER_GROUP`;
-          this.queryId        =  req.params.queryId;
+          this.idQuery        =  req.params.idQuery;
           break;
         case `POST`:
-          this.sectionTitle     = req.body.section.title;
-          this.sectionContent   = req.body.section.content;
-          this.sectionKeywords  = req.body.section.keywords;
+          this.title    = req.body.title;
+          this.content  = req.body.content;
+          this.keywords = req.body.keywords;
+          this.number   = req.body.number;
           break;
         default: break;
       }
@@ -32,10 +34,11 @@ class Section extends Model {
 
   async insertSectionToDatabase() {
     try {
-      await this.query(`INSERT`, `SECTION_TITLE = "${this.sectionTitle}" `
-                       + `AND SECTION_CONTENT = "${this.sectionContent}" `
-                       + `AND KEYWORDS = "${this.sectionKeywords}" `
-                       + `AND ID_USER_GROUP = "${this.groupId}"`);
+      await this.query(`INSERT`, `SECTION_TITLE = "${this.title}" `
+                       + `AND SECTION_CONTENT = "${this.content}" `
+                       + `AND KEYWORDS = "${this.keywords}" `
+                       + `AND SECTION_NUMBER = "${this.number}" `
+                       + `AND ID_USER_GROUP = "${this.idGroup}"`);
     }
     catch (error) {
       console.log(error);

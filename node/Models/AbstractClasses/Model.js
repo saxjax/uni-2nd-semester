@@ -3,7 +3,7 @@ const { Database } = require(`./Database.js`);
 
 /* Model er det objekt som virker som bindeled mellem databasen og de andre modeller
  * Model bruger databasens query funktion til at implementere generelle funktionaliteter.
- * Dette er gjort for at sikre genbrugelig kode samt at undgå fejl (såsom at glemme at query for groupId)
+ * Dette er gjort for at sikre genbrugelig kode samt at undgå fejl (såsom at glemme at query for idGroup)
  *
  * Som eksempel kan tages getThis(), som gør at alle modeller kan query for deres egen information.
  * Eller deleteThis(), som gør det den siger, og til sidst getAllElementsOfType("ObjektNavn")
@@ -25,17 +25,25 @@ class Model extends Database {
    * Input : Et request
    * Output: En true værdi hvis requested har session, params(GET/UPDATE/DELETE) og/eller body(POST) ellers false.
    */
-  validateMethodChoice(req) {
-    const paramsMethod = (req.method.toUpperCase() === `GET`
+  validRequest(req) {
+    let methodNeedsParamsInRequest;
+    let methodNeedsBodyInRequest;
+    if (req.method) {
+      methodNeedsParamsInRequest = (req.method.toUpperCase() === `GET`
                        || req.method.toUpperCase() === `UPDATE`
                        || req.method.toUpperCase() === `DELETE`);
-    const bodyMethod   = (req.method.toUpperCase() === `POST`);
+      methodNeedsBodyInRequest   = (req.method.toUpperCase() === `POST`);
+    }
+    else {
+      return false;
+    }
+
     let valid = ``;
     if (req.session) {
-      if (paramsMethod && req.params) {
+      if (methodNeedsParamsInRequest && req.params) {
         valid = true;
       }
-      else if (bodyMethod && req.body) {
+      else if (methodNeedsBodyInRequest && req.body) {
         valid = true;
       }
       else {
@@ -61,30 +69,30 @@ class Model extends Database {
     else {
       choice = `*`;
     }
-    return this.query(`SELECT ${choice}`, `${this.idColumnName} = "${this.queryId}"`)
+    return this.query(`SELECT ${choice}`, `${this.idColumnName} = "${this.idQuery}"`)
       .then((result) => result)
       .catch((error) => error);
   }
 
   /* Formål: At kunne tilgå data om den gruppe man er en del af såsom gruppens navn med videre.
-   * Input : Et objekt der er oprettet med et groupId i session
-   * Output: Den row i user_group tabellen der svarer til groupId
+   * Input : Et objekt der er oprettet med et idGroup i session
+   * Output: Den row i user_group tabellen der svarer til idGroup
    */
   async getThisGroupData() {
     this.table = `USER_GROUP`;
-    const data = await this.query(`SELECT *`, `${this.idColumnGroup} = "${this.groupId}"`)
+    const data = await this.query(`SELECT *`, `${this.idColumnGroup} = "${this.idGroup}"`)
       .then((result) => result)
       .catch((error) => error);
     return data;
   }
 
   /* Formål: At kunne tilgå data om den user man er såsom ens username med videre.
-   * Input : Et objekt der er oprettet med et userId i session
-   * Output: Den row i user tabellen der svarer til userId
+   * Input : Et objekt der er oprettet med et idUser i session
+   * Output: Den row i user tabellen der svarer til idUser
    */
   async getThisUserData() {
     this.table = `USER`;
-    const data = this.query(`SELECT *`, `${this.idColumnUser} = "${this.userId}"`)
+    const data = this.query(`SELECT *`, `${this.idColumnUser} = "${this.idUser}"`)
       .then((result) => result)
       .catch((error) => error);
     return data;
@@ -99,7 +107,7 @@ class Model extends Database {
   async getAllElementsOfType(choice) {
     const parentTable = this.table;
     this.table = this.parseElementTypesTable(choice);
-    return this.query(`SELECT *`, `${this.idColumnName} = "${this.queryId}" AND ${this.idColumnGroup} = "${this.groupId}"`)
+    return this.query(`SELECT *`, `${this.idColumnName} = "${this.idQuery}" AND ${this.idColumnGroup} = "${this.idGroup}"`)
       .then((result) => {
         this.table = parentTable;
         return result;
@@ -116,12 +124,12 @@ class Model extends Database {
    * Output: Et array der indeholder data vedrørende om objektet er slettet eller ej.
    */
   async deleteThis() {
-    if (this.queryId) {
-      return this.query(`DELETE`, `${this.idColumnName} = "${this.queryId}"`)
+    if (this.idQuery) {
+      return this.query(`DELETE`, `${this.idColumnName} = "${this.idQuery}"`)
         .then((result) => result)
         .catch((error) => error);
     }
-    throw new Error(`ERROR! Objectet der ønskes slettet har ikke et queryId tilknyttet!`);
+    throw new Error(`ERROR! Objectet der ønskes slettet har ikke et idQuery tilknyttet!`);
   }
 
   /* Formål: Gør det muligt at skrive getAllElementsOfType("Quiz"), så vi ikke behøver huske tabel navnene.

@@ -3,41 +3,41 @@
 /* ParseSql er en hjælpeklasse til Database.js.
  * ParseSql parser den SQL, som vi får leveret af databasen til et format, som frontend kan forstå
  * Klassen skal kunne parse alle former for input.
- * Hvis inputtypen er ukendt, så skal den dermed blot sende data videre med en warning om at elementtypen ikke er kendt.
+ * Hvis inputtypen er ukendt, så skal den dermed blot sende data videre med en warning om at elementTypen ikke er kendt.
  */
 class ParseSql {
-  constructor(elementtype) {
+  constructor(elementType) {
     this.parsedData = [];
-    this.elementtype = elementtype;
+    this.elementType = elementType;
   }
 
   /* Formål: Dette er tiltænkt som den overordnede funktion, som bliver kaldt fra Database.js
-   * Input:  Et array af data - kan godt modtage forskellige elementtyper i samme array
+   * Input:  Et array af data - kan godt modtage forskellige elementTyper i samme array
    * Output: Et array af data, som er parset/oversat fra databasesprog til frontendsprog eller et tomt array, hvis data er tom.
    */
-  parse(data) {
-    if (data.length > 0) {
-      for (let i = 0; i < data.length; i++) {
-        switch (data[i].ELEMENT_TYPE) {
-          case `section`:       this.parsedData.push(this.parseSection(data[i]));      break;
-          case `quiz`:          this.parsedData.push(this.parseQuiz(data[i]));         break;
-          case `quiz_question`: this.parsedData.push(this.parseQuizQuestion(data[i])); break;
-          case `quiz_result`:   this.parsedData.push(this.parseQuizResult(data[i]));    break;
-          case `flashcard`:     this.parsedData.push(this.parseFlashcard(data[i]));    break;
-          case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i]));    break;
-          case `keyword`:       this.parsedData.push(this.parseKeyword(data[i]));      break;
-          case `user`:          this.parsedData.push(this.parseUser(data[i]));         break;
-          case `user_group`:    this.parsedData.push(this.parseGroup(data[i]));         break;
-          default:
-            this.parsedData.push(data[i]);
-            console.warn(`WARNING: Elementtype "${data[i].elementtype}" is not defined. Parsing skipped!`);
-            break;
-        }
+  parseArrayOfObjects(data) {
+    if (!Array.isArray(data)) {
+      console.warn(`WARNING: This data package is not an array. Parsing skipped!`);
+      return data;
+    }
+    for (let i = 0; i < data.length; i++) {
+      switch (data[i].ELEMENT_TYPE) {
+        case `section`:          this.parsedData.push(this.parseSection(data[i]));         break;
+        case `quiz`:             this.parsedData.push(this.parseQuiz(data[i]));            break;
+        case `quiz_question`:    this.parsedData.push(this.parseQuizQuestion(data[i]));    break;
+        case `quiz_result`:      this.parsedData.push(this.parseQuizResult(data[i]));      break;
+        case `flashcard`:        this.parsedData.push(this.parseFlashcard(data[i]));       break;
+        case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i])); break;
+        case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));         break;
+        case `user`:             this.parsedData.push(this.parseUser(data[i]));            break;
+        case `user_group`:    this.parsedData.push(this.parseGroup(data[i]));              break;
+        default:
+          this.parsedData.push(data[i]);
+          console.warn(`WARNING: elementType "${data[i].elementType}" is not defined. Parsing skipped!`);
+          break;
       }
     }
-    else {
-      this.parsedData = data;
-    }
+
     return this.parsedData;
   }
 
@@ -45,7 +45,7 @@ class ParseSql {
   */
   reset() {
     this.parsedData = [];
-    this.elementtype = ``;
+    this.elementType = ``;
   }
 
   /* Formål: At parse Section-data
@@ -62,14 +62,14 @@ class ParseSql {
     }
 
     return {
-      elementtype: `${data.ELEMENT_TYPE}`,
-      idDocument: `${data.ID_DOCUMENT}`,
-      idSection: `${data.ID_DOCUMENT_SECTION}`,
+      elementType: data.ELEMENT_TYPE,
+      idDocument: data.ID_DOCUMENT,
+      idSection: data.ID_DOCUMENT_SECTION,
       sectionNumber: data.SECTION_NUMBER,
-      title: `${data.SECTION_TITLE}`,
-      content: `${data.SECTION_CONTENT}`,
-      teaser: `${teaser}`,
-      keywords: `${data.KEYWORDS}`,
+      title: data.SECTION_TITLE,
+      content: data.SECTION_CONTENT,
+      teaser,
+      keywords: data.KEYWORDS,
     };
   }
 
@@ -79,7 +79,7 @@ class ParseSql {
    */
   parseQuiz(data) {
     return {
-      elementtype: `${data.ELEMENT_TYPE}`,
+      elementType: `${data.ELEMENT_TYPE}`,
       idQuiz: `${data.ID_QUIZ}`,
       idDocument: `${data.ID_DOCUMENT}`,
       idDocumentSection: `${data.ID_DOCUMENT_SECTION}`,
@@ -111,7 +111,7 @@ class ParseSql {
    * FIXME: Metoden skal udvikles
    */
   parseQuizResult(data) {
-    console.warn(`WARNING: Elementtype oprettet, men parser metode IKKE oprettet!`);
+    console.warn(`WARNING: elementType oprettet, men parser metode IKKE oprettet!`);
     return data;
   }
 
@@ -122,7 +122,7 @@ class ParseSql {
    */
   parseFlashcard(data) {
     return {
-      elementtype: `${data.ELEMENT_TYPE}`,
+      elementType: `${data.ELEMENT_TYPE}`,
       idFlashcard: `${data.ID_FLASHCARD}`,
       idUser: `${data.ID_USER}`,
       idDocument: `${data.ID_DOCUMENT}`,
@@ -140,7 +140,7 @@ class ParseSql {
    * FIXME: Metoden skal udvikles
    */
   parseFlashcardResult(data) {
-    console.warn(`WARNING: Elementtype oprettet, men parser metode IKKE oprettet!`);
+    console.warn(`WARNING: elementType oprettet, men parser metode IKKE oprettet!`);
     return data;
   }
 
@@ -155,7 +155,7 @@ class ParseSql {
       idDocument: `${data.ID_DOCUMENT}`,
       idDocumentSection: `${data.ID_DOCUMENT_SECTION}`,
       keyword: `${data.KEYWORD}`,
-      elementtype: `${data.ELEMENT_TYPE}`,
+      elementType: `${data.ELEMENT_TYPE}`,
 
     };
   }
@@ -167,9 +167,9 @@ class ParseSql {
    */
   parseUser(data) {
     return {
-      elementtype: `${data.ELEMENT_TYPE}`,
-      userId: `${data.ID_USER}`,
-      userName: `${data.USER_NAME}`,
+      elementType: `${data.ELEMENT_TYPE}`,
+      idUser: `${data.ID_USER}`,
+      username: `${data.USER_NAME}`,
       // password: `${data.PASSWORD}`,
       firstName: `${data.FIRST_NAME}`,
       lastName: `${data.LAST_NAME}`,
@@ -182,8 +182,8 @@ class ParseSql {
 
   parseGroup(data) {
     return {
-      elementtype: `${data.ELEMENT_TYPE}`,
-      groupId: `${data.ID_USER_GROUP}`,
+      elementType: `${data.ELEMENT_TYPE}`,
+      idGroup: `${data.ID_USER_GROUP}`,
       name: `${data.NAME}`,
     };
   }

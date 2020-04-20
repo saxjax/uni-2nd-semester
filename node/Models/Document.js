@@ -7,16 +7,24 @@ const { Model } = require(`./AbstractClasses/Model.js`);
 class Document extends Model {
   constructor(req) {
     super();
-    this.elementtype = `document`;
+    this.elementType = `document`;
     this.table       = `document`;
     // Session from session
-    this.groupId = (typeof req.session.groupId   !== `undefined` ? req.session.groupId    : undefined);
-    this.userId  = (typeof req.session.userId    !== `undefined` ? req.session.userId     : undefined);
-    // ID from params
-    this.idColumnName = `ID_DOCUMENT`;
-    this.queryId      = (typeof req.params.queryId !== `undefined` ? req.session.queryId : undefined);
-    // Columns from body
-    this.title   = (typeof req.body.title      !== `undefined` ? req.body.title      : undefined);
+    if (this.validRequest(req)) {
+      this.idGroup = req.session.idGroup;
+      this.idUser  = req.session.idUser;
+      this.loggedIn = req.session.loggedIn;
+      switch (req.method) {
+        case `GET`: case `UPDATE`: case `DELETE`:
+          this.idColumnName   = `ID_DOCUMENT`;
+          this.idQuery        =  req.params.idQuery;
+          break;
+        case `POST`:
+          this.title     = req.body.title;
+          break;
+        default: break;
+      }
+    }
   }
 }
 
