@@ -7,14 +7,14 @@ class MockData extends Model {
     super();
     this.elementtype = ``;
     this.table = ``;
-    this.allElementypes = [`group`, `user`, `document`, `section`, `quiz`, `quiz_question`, `quiz_result`, `flashcard`, `flashcard_result`];
+    this.allElemenTypes = [`group`, `user`, `document`, `section`, `quiz`, `quiz_question`, `quiz_result`, `flashcard`, `flashcard_result`];
     if (this.validateMethodChoice) {
-      this.groupId = req.session.groupId;
-      this.userId  = req.session.userId;
+      this.idGroup = req.session.idGroup;
+      this.idUser  = req.session.idUser;
       switch (req.method) {
         case `GET`: case `DELETE`:
           this.idColumnName = `ID_FLASHCARD`;
-          this.queryId = req.params.queryId;
+          this.idQuery = req.params.idQuery;
           break;
         case `POST`: case `UPDATE`:
           this.concept    = req.body.concept;
@@ -26,11 +26,11 @@ class MockData extends Model {
   }
 
   createMockData() {
-    this.allElementypes.forEach((element) => {
+    this.allElemenTypes.forEach((element) => {
       console.log(element);
     });
   }
 }
 module.exports = {
-  Flashcard,
+  MockData,
 };

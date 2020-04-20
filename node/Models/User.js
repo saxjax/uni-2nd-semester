@@ -9,22 +9,28 @@ class User extends Model {
     super(req);
     this.elementtype = `user`;
     this.table = `user`;
-    // Session
-    this.groupId      = (typeof req.session.groupId     !== `undefined` ? req.session.groupId     : undefined);
-    this.userId  = (typeof req.session.userId    !== `undefined` ? req.session.userId     : undefined);
-    this.loggedin  = (typeof req.session.loggedin    !== `undefined` ? req.session.loggedin     : undefined);
-    // ID
-    this.idColumnName = `ID_USER`;
-    this.queryId       = (typeof req.params.queryId       !== `undefined` ? req.session.queryId      : req.session.userId);
-    // Columns
-    this.username     = (typeof req.body.username       !== `undefined` ? req.body.username       : undefined);
-    this.password     = (typeof req.body.password       !== `undefined` ? req.body.password       : undefined);
-    this.firstName    = (typeof req.body.firstName      !== `undefined` ? req.body.firstName      : undefined);
-    this.lastName     = (typeof req.body.lastName       !== `undefined` ? req.body.lastName       : undefined);
-    this.studySubject = (typeof req.body.studySubject   !== `undefined` ? req.body.studySubject   : undefined);
-    this.semester     = (typeof req.body.semester       !== `undefined` ? req.body.semester       : undefined);
-    this.university   = (typeof req.body.university     !== `undefined` ? req.body.university     : undefined);
-    this.email        = (typeof req.body.email          !== `undefined` ? req.body.email          : undefined);
+    if (this.validRequest(req)) {
+      this.idGroup = req.session.idGroup;
+      this.idUser  = req.session.idUser;
+      this.loggedIn = req.session.loggedIn;
+      switch (req.method) {
+        case `GET`: case `UPDATE`: case `DELETE`:
+          this.idColumnName = `ID_USER`;
+          this.idQuery       = req.params.idQuery;
+          break;
+        case `POST`:
+          this.username     = req.body.username;
+          this.password     = req.body.password;
+          this.firstName    = req.body.firstName;
+          this.lastName     = req.body.lastName;
+          this.studySubject = req.body.studySubject;
+          this.semester     = req.body.semester;
+          this.university   = req.body.university;
+          this.email        = req.body.email;
+          break;
+        default: break;
+      }
+    }
   }
 
   /* Formål: At validere om et brugernavn og password matcher og så returnere brugerens data

@@ -5,18 +5,19 @@ const { Evaluation } = require(`./AbstractClasses/Evaluation.js`);
 class Flashcard extends Evaluation {
   constructor(req) {
     super();
-    this.elementtype = `flashcard`;
+    this.elementType = `flashcard`;
     this.table = `flashcard`;
 
-    if (this.validateMethodChoice(req)) {
-      this.groupId = req.session.groupId;
-      this.userId  = req.session.userId;
+    if (this.validRequest(req)) {
+      this.idGroup = req.session.idGroup;
+      this.idUser  = req.session.idUser;
+      this.loggedIn = req.session.loggedIn;
       switch (req.method) {
-        case `GET`: case `DELETE`:
+        case `GET`: case `UPDATE`: case `DELETE`:
           this.idColumnName = `ID_FLASHCARD`;
-          this.queryId = req.params.queryId;
+          this.idQuery = req.params.idQuery;
           break;
-        case `POST`: case `UPDATE`:
+        case `POST`:
           this.concept    = req.body.concept;
           this.definition = req.body.definition;
           break;

@@ -3,7 +3,7 @@
     <head>
         <%- include('meta/header') %> 
         <link href="css/design.css" rel="stylesheet">
-        <link rel="stylesheet" href="../css/elementlist.css">
+        <link rel="stylesheet" href="/css/elementlist.css">
     </head>
     <body>
         <%- include('meta/navbar') %> 
@@ -12,19 +12,19 @@
             <div class="row">
                 <div class="col-12">  
                     <nav>
-                        <button class="btn btn-info" style="background-color:powderblue;">
-                            <a href="/create/section">Create New Section</a>
+                        <button class="btn btn-info">
+                            <a href="/post/document"> Opret Dokument </a>
                         </button>
                     </nav> 
                 </div>
                 <div class="col-12">
-                    <h1> SECTIONS </h1>
+                    <h1> <%= data.document.title %> </h1>
                 </div>
                 <div class="section_list">
-                    <%  if(data.section && data.section.length > 0) { data.section.forEach( (element) => { %>
+                    <%  if(data.sections && data.sections.length > 0) { data.sections.forEach( (element) => { %>
                         <a href="/rapport/<%= element.iddocument_section %>" >
                             <div class="card">
-                            <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>
+                            <div class="elementType<%= element.elementType %>">title: <%= element.title %></div>
                             <div>keywords:</div>
                             <div class="sectinKeywords"><%= element.keywords %> </div>
                             <div class="sectionContent"><%= element.teaser %></div>

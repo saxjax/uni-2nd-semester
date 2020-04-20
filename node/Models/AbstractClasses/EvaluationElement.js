@@ -1,9 +1,8 @@
-const { Database } = require(`../Database/Database.js`);
+const { Model } = require(`./Model.js`);
 
-class EvaluationElement extends Database {
+class EvaluationElement extends Model {
   constructor() {
     super();
-    this.name = `EvaluationElement`;
     this.table = null;
   }
 }

@@ -13,6 +13,8 @@ class AccessController {
     this.ejs = ``;
   }
 
+  /* Session Interaction URLs */
+
   /* UNDER CONSTRUCTION */
   async groupsPage(req, res) {
     const U = new User(req);
@@ -36,9 +38,25 @@ class AccessController {
     }
   }
 
+  /* No Session Requirement URLs */
+
   /* UNDER CONSTRUCTION */
   loginPage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/login.ejs`);
+    res.render(this.ejs);
+  }
+
+  // TODO: Mangler EJS fil
+  /* Formål: En side der angiver information om hjemmesiden.
+   *         Denne side skal være tilgængelig fra alle sider af hjemmesiden.
+   * Input : Non.
+   * Output: Visning af information om hjemmesiden, uden man behøver være User.
+   * FIXME: Implementation af denne funktionalitet kræver højst sandsynligt en ændring i Servermetoden "noSessionNoAccess"
+   *         da den blokere for alt adgang til hjemmesiden, hvis man ikke er logget ind og har valgt gruppe, hvor denne
+   *         vil være en undtagelse. Implementer gerne så denne kan være "en af flere" undtagelser.
+   */
+  async aboutPage(req, res) {
+    this.ejs = path.join(`${this.root}/www/views/about.ejs`);
     res.render(this.ejs);
   }
 }

@@ -7,16 +7,17 @@ const { Model } = require(`./AbstractClasses/Model.js`);
 class Document extends Model {
   constructor(req) {
     super();
-    this.elementtype = `document`;
+    this.elementType = `document`;
     this.table       = `document`;
     // Session from session
-    if (this.validateMethodChoice(req)) {
-      this.groupId = req.session.groupId;
-      this.userId  = req.session.userId;
+    if (this.validRequest(req)) {
+      this.idGroup = req.session.idGroup;
+      this.idUser  = req.session.idUser;
+      this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
           this.idColumnName   = `ID_DOCUMENT`;
-          this.queryId        =  req.params.queryId;
+          this.idQuery        =  req.params.idQuery;
           break;
         case `POST`:
           this.title     = req.body.title;

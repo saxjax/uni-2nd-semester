@@ -9,7 +9,6 @@ class Evaluation extends Model {
    */
   constructor() {
     super();
-    this.elementtype = null;
     this.table = null;
   }
 }

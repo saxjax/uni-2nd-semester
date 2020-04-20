@@ -3,15 +3,16 @@ const { Evaluation } = require(`./AbstractClasses/Evaluation.js`);
 class QuizQuestion extends Evaluation {
   constructor(req) {
     super();
-    this.elementtype = `quiz`;
+    this.elementType = `quiz`;
     this.table = `quiz`;
-    if (this.validateMethodChoice(req)) {
-      this.groupId = req.session.groupId;
-      this.userId  = req.session.userId;
+    if (this.validRequest(req)) {
+      this.idGroup = req.session.idGroup;
+      this.idUser  = req.session.idUser;
       switch (req.method) {
         case `GET`: case `DELETE`: case `UPDATE`:
           this.idColumnName = `ID_QUIZ_QUESTION`;
-          this.queryId = req.params.queryId;
+          this.idQuery = req.params.idQuery;
+          this.loggedIn = req.session.loggedIn;
           break;
         case `POST`:
           this.question = req.body.question;
@@ -30,11 +31,10 @@ class QuizQuestion extends Evaluation {
   async saveQuizQuestion() {
     // post quiz to database
     try {
-      await this.query(`INSERT`,
-        `idquiz = ${this.idquiz} AND
+      await this.query(`INSERT`, `
         question = ${this.question} AND
         answers = ${this.answers}
-        elementtype = ${this.elementtype} AND 
+        elementType = ${this.elementType} AND 
         correctness = ${this.correctness}`);
       return true;
     }

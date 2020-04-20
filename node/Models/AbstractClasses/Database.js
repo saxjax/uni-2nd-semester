@@ -29,12 +29,12 @@ class Database {
       host: `213.32.247.201`,
       user: `ADMIN`,
       port: `3306`,
-      password: fs.readFileSync(`../../../node/Models/AbstractClasses/password.txt`, `utf8`),
+      password: fs.readFileSync(`./node/Models/AbstractClasses/password.txt`, `utf8`),
       database: this.database,
     });
 
     this.table = `database`;
-    this.elementtype = `test`;
+    this.elementType = `test`;
     this.idColumnName = `ID_DATABASE`;
   }
 
@@ -91,7 +91,7 @@ class Database {
           reject(error);
         }
         else {
-          const outputParser = new ParseSql(this.elementtype);
+          const outputParser = new ParseSql(this.elementType);
           resolve(outputParser.parseArrayOfObjects(result));
         }
       });
@@ -118,7 +118,7 @@ class Database {
           reject(error);
         }
         else {
-          // const outputParser = new ParseSql(this.elementtype);
+          // const outputParser = new ParseSql(this.elementType);
           resolve(result);
         }
       });

@@ -16,12 +16,12 @@ const { User } = require(`../../../node/Models/User`);
 
 // nodemon tests/backend/Database/test.ParseSQL.js | .\node_modules\.bin\tap-spec
 
-/* 0 test af parseArrayOfObjects() på data som er ukendt for parseren */
+/* 0 test af parseArrayOfObjects() pï¿½ data som er ukendt for parseren */
 /* 0.0 - 0.6 */
 
 test(`Test af ParseSQL i node/Database`, (assert) => {
   console.log(`Test af parseArrayOfObjects() metoden med inputData som er ukendt for parseren`);
-  // Tests a første if-statement
+  // Tests a fï¿½rste if-statement
   reset();
   const testThis = [{ data: `data` }, 1, 0, true, false, `hejse dejsa`];
 
@@ -34,7 +34,7 @@ test(`Test af ParseSQL i node/Database`, (assert) => {
     // console.log(expected);
     assert.deepEqual(actual, expected,
       `{0.${i} Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere et for parseren ukendt input,
-     som ikke er et array, uden at ændre i det og logge en warning i processen`);
+     som ikke er et array, uden at ï¿½ndre i det og logge en warning i processen`);
   });
 
   // reset();

@@ -5,15 +5,24 @@ const { Model } = require(`./AbstractClasses/Model.js`);
 class Keyword extends Model {
   constructor(req) {
     super(req);
-    this.elementtype = `keyword`;
+    this.elementType = `keyword`;
     this.table = `document_keyword`;
-    // Session
-    this.groupId         = (typeof req.session.groupId  !== `undefined` ? req.session.groupId  : undefined);
-    this.userId  = (typeof req.session.userId    !== `undefined` ? req.session.userId     : undefined);
-    // ID
-    this.idColumnName = `ID_KEYWORD`;
-    this.queryId      = (typeof req.params.queryId !== `undefined` ? req.params.queryId : undefined);
-    // Columns
+
+    if (this.validRequest(req)) {
+      this.idGroup = req.session.idGroup;
+      this.idUser  = req.session.idUser;
+      switch (req.method) {
+        case `GET`: case `UPDATE`: case `DELETE`:
+          this.idColumnName = `ID_KEYWORD`;
+          this.idQuery      = req.params.idQuery;
+          this.loggedIn = req.session.loggedIn;
+          break;
+        case `POST`:
+          // none yet
+          break;
+        default: break;
+      }
+    }
   }
 }
 module.exports = {
