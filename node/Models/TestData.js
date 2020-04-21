@@ -14,7 +14,7 @@ class TestData {
       method: `TEST`, session: {}, params: {}, body: {},
     };
     this.defaults     = {
-      // elementtype: ``,
+      elementType: `test`,
       idGroup: `11111111-aaaa-bbbb-1111-111111111111`,
       idUser: `11111111-aaaa-bbbb-1111-111111111111`,
       idKeyword: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -24,7 +24,7 @@ class TestData {
       idFlashcard: `11111111-aaaa-bbbb-1111-111111111111`,
       idQuestion: `11111111-aaaa-bbbb-1111-111111111111`,
       idQuiz: `11111111-aaaa-bbbb-1111-111111111111`,
-      userName: `1.Testelement-user-name`,
+      username: `1.Testelement-user-name`,
       password: `1.Testelement-password`,
       firstName: `1.Testelement-first-name`,
       lastName: `1.Testelement-last-name`,
@@ -42,13 +42,13 @@ class TestData {
       answer3: `1.Testelement-answ3`,
       answer4: `1.Testelement-answ4`,
       correctness: `0000`,
-      sectionNumber: 0,
+      number: 0,
       content: `1.Testelement-content`,
       teaser: `1.Testelement-teaser`,
       title: `1.Testelement-title`,
     };
     // this.doc           = new Document(this.defaults.req, this.defaults);
-    // this.sec           = new Section(this.defaults.req, this.defaults);
+    this.sec           = new Section(this.req);
     // this.keyword       = new Keyword(this.defaults);
     // this.quiz          = new Quiz(this.defaults);
     // this.quizQuestion  = new QuizQuestion(this.defaults);
@@ -61,9 +61,20 @@ class TestData {
   //   return this.doc;
   // }
 
-  // get section() {
-  //   return this.sec;
-  // }
+  get section() {
+    this.sec.elementType = `section`;
+    this.sec.table = `document_section`;
+    // this.sec.idSection = this.idSection();
+    this.sec.idDocument = this.defaults.idSection;
+    this.sec.idUser = this.defaults.idUser;
+    this.sec.idGroup = this.defaults.idGroup;
+    this.sec.title = this.defaults.title;
+    this.sec.content = this.defaults.content;
+    this.sec.number = this.defaults.number;
+    this.sec.teaser = this.defaults.teaser;
+    this.sec.keywords = this.defaults.keywords;
+    return this.sec;
+  }
 
   // get keyword() {
   //   return this.keyword;
@@ -94,123 +105,123 @@ class TestData {
   }
 
   get idUser() {
-    return this.defaults;
+    return this.defaults.idUser;
   }
 
   get idKeyword() {
-    return this.defaults;
+    return this.defaults.idKeyword;
   }
 
   get idDocument() {
-    return this.defaults;
+    return this.defaults.idDocument;
   }
 
   get idDocumentSection() {
-    return this.defaults;
+    return this.defaults.idDocumentSection;
   }
 
   get idSection() {
-    return this.defaults;
+    return this.defaults.idSection;
   }
 
   get idFlashcard() {
-    return this.defaults;
+    return this.defaults.idFlashcard;
   }
 
   get idQuestion() {
-    return this.defaults;
+    return this.defaults.idQuestion;
   }
 
   get idQuiz() {
-    return this.defaults;
+    return this.defaults.idQuiz;
   }
 
-  get userName() {
-    return this.defaults;
+  get username() {
+    return this.defaults.username;
   }
 
   get password() {
-    return this.defaults;
+    return this.defaults.password;
   }
 
   get firstName() {
-    return this.defaults;
+    return this.defaults.firstName;
   }
 
   get lastName() {
-    return this.defaults;
+    return this.defaults.lastName;
   }
 
   get email() {
-    return this.defaults;
+    return this.defaults.email;
   }
 
   get studySubject() {
-    return this.defaults;
+    return this.defaults.studySubject;
   }
 
   get semester() {
-    return this.defaults;
+    return this.defaults.semester;
   }
 
   get university() {
-    return this.defaults;
+    return this.defaults.university;
   }
 
   get keyword() {
-    return this.defaults;
+    return this.defaults.keyword;
   }
 
   get keywords() {
-    return this.defaults;
+    return this.defaults.keywords;
   }
 
   get concept() {
-    return this.defaults;
+    return this.defaults.concept;
   }
 
   get definition() {
-    return this.defaults;
+    return this.defaults.definition;
   }
 
   get question() {
-    return this.defaults;
+    return this.defaults.question;
   }
 
   get answer1() {
-    return this.defaults;
+    return this.defaults.answer1;
   }
 
   get answer2() {
-    return this.defaults;
+    return this.defaults, this.answer2;
   }
 
   get answer3() {
-    return this.defaults;
+    return this.defaults.answer3;
   }
 
   get answer4() {
-    return this.defaults;
+    return this.defaults.answer4;
   }
 
   get correctness() {
-    return this.defaults;
+    return this.defaults.correctness;
   }
 
   get sectionNumber() {
-    return this.defaults;
+    return this.defaults.number;
   }
 
   get content() {
-    return this.defaults;
+    return this.defaults.content;
   }
 
   get teaser() {
-    return this.defaults;
+    return this.defaults.teaser;
   }
 
   get title() {
-    return this.defaults;
+    return this.defaults.title;
   }
 }
 

@@ -17,7 +17,7 @@ const { Keyword } = require(`../../../node/Models/Keyword`);
 const { User } = require(`../../../node/Models/User`);
 const { TestData } = require(`../../../node/Models/TestData`);
 // const req = { session: {}, params: {}, body: {} };
-const testData = new testData();
+const testData = new TestData();
 
 /* 0 test af parseArrayOfObjects() på data som er ukendt for parseren */
 /* 0.0 - 0.6 */
@@ -832,124 +832,144 @@ test(`Test 3.7 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
 /* 4.x Test første element i hver tabel i datbasen */
 
 
-/* 4.1 */
-// DOCUMENT DB
-test(`Test 4.1 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra DOCUMENT tabellen`, async (assert) => {
-  console.log(`\r\n4.x Test af de enkelte tabeller i SQL databasen\n`);
+// /* 4.1 */
+// // DOCUMENT DB
+// test(`Test 4.1 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra DOCUMENT tabellen`, async (assert) => {
+//   console.log(`\r\n4.x Test af de enkelte tabeller i SQL databasen\n`);
 
-  p.reset();
-
-  const req = { session: {}, params: {}, body: {} };
-  const D =  new Document(req);
-  let inputData = [];
-  const  TestDocument = testData.document();
-
-  expected = [
-    [
-      {
-        TestDocument,
-      },
-      // {
-      //   elementType: `document`,
-      //   table: `document`,
-      //   idGroup: `11111111-aaaa-bbbb-1111-111111111111`,
-      //   idUser: `11111111-aaaa-bbbb-1111-111111111111`,
-      //   idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
-      //   title: `1.Testelement-title`,
-      // },
-
-    ],
-  ];
-
-  inputData = await D.query(`SELECT *`, `ID_DOCUMENT = "11111111-aaaa-bbbb-1111-111111111111"`);
-  actual = [inputData];
-
-  console.log(`Test 4.1`);
-  console.log(inputData);
-  // console.log(`Test 4.1`);
-  // console.log(`test values : input->actual==expectet`);
-  // console.log(inputData, `->`, actual, `==`, expected);
-
-  assert.deepEqual(actual, expected,
-    `(4.1){  Metoden sammenligne en U-parset version af kolonnenavne i DOCUMENT fra sql databasen`);
-  assert.end();
-});
-
-
-// // SECTION DB
-// /* 4.2 */
-// test(`Test 4.2 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra SECTION`, async (assert) => {
 //   p.reset();
 
 //   const req = { session: {}, params: {}, body: {} };
-//   const S = new Section(req);
+//   const D =  new Document(req);
 //   let inputData = [];
-//   const  TestData = testData.section();
+//   const  TestDocument = testData.document();
 
 //   expected = [
 //     [
 //       {
-//         T,
+//         TestDocument,
 //       },
+//       // {
+//       //   elementType: `document`,
+//       //   table: `document`,
+//       //   idGroup: `11111111-aaaa-bbbb-1111-111111111111`,
+//       //   idUser: `11111111-aaaa-bbbb-1111-111111111111`,
+//       //   idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
+//       //   title: `1.Testelement-title`,
+//       // },
 
-//       {
-//         elementtype: `section`,
-//         idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
-//         idSection: `11111111-aaaa-bbbb-1111-111111111111`,
-//         sectionNumber: `0`,
-//         title: `1.Testelement-title`,
-//         content: `1.testelement-content`,
-//         teaser: `1.testelement-teaser`,
-//         keywords: `1.testelement-keywords`,
-//       },
 //     ],
 //   ];
 
-//   inputData = await S.query(`SELECT *`, `ID_DOCUMENT_SECTION = "11111111-aaaa-bbbb-1111-111111111111"`);
-
+//   inputData = await D.query(`SELECT *`, `ID_DOCUMENT = "11111111-aaaa-bbbb-1111-111111111111"`);
 //   actual = [inputData];
 
-//   console.log(`Test 4.2`);
-//   // console.log(`test if input->actual==expecvalues :t`);
+//   console.log(`Test 4.1`);
+//   console.log(inputData);
+//   // console.log(`Test 4.1`);
+//   // console.log(`test values : input->actual==expectet`);
 //   // console.log(inputData, `->`, actual, `==`, expected);
 
 //   assert.deepEqual(actual, expected,
-//     `(4.2){  Metoden skal kunne returnere en U-parset version af kolonnenavne i SECTION fra sql databasen`);
-
+//     `(4.1){  Metoden sammenligne en U-parset version af kolonnenavne i DOCUMENT fra sql databasen`);
 //   assert.end();
 // });
 
 
-// QUIZ DB
-/* 4.3 */
-test(`Test 4.3 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra quiz tabellen`, async (assert) => {
+// SECTION DB
+/* 4.2 */
+test(`Test 4.2 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra SECTION`, async (assert) => {
   p.reset();
-  const req = { method: `TEST`, session: {idGroup: testData.idGroup}, params: {}, body: {} };
-  const Q = new Quiz(req);
+
+  const req = { session: {}, params: {}, body: {} };
+  const S = new Section(req);
   let inputData = [];
+  const  TestSection = testData.section;
+  delete TestSection.database;
+  delete TestSection.connect;
+  delete TestSection.table;
+  delete TestSection.idColumnName;
+  delete TestSection.idColumnGroup;
+  delete TestSection.elementtype;
+
+  delete TestSection.idColumnUser;
+  p.parseArrayOfObjects([TestSection]);
+  console.log(TestSection);
   expected = [
     [
-      { COLUMN_NAME: `ID_QUIZ` },
-      { COLUMN_NAME: `ID_DOCUMENT` },
-      { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
-      { COLUMN_NAME: `SECTION_TITLE` },
-      { COLUMN_NAME: `ID_USER_GROUP` },
+
+      TestSection,
+
+      // {
+      //   elementtype: `section`,
+      //   idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
+      //   idSection: `11111111-aaaa-bbbb-1111-111111111111`,
+      //   sectionNumber: `0`,
+      //   title: `1.Testelement-title`,
+      //   content: `1.testelement-content`,
+      //   teaser: `1.testelement-teaser`,
+      //   keywords: `1.testelement-keywords`,
+      // },
+      {
+        elementType: `section`,
+        idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
+        idSection: `11111111-aaaa-bbbb-1111-111111111111`,
+        sectionNumber: `0`,
+        title: `1.Testelement-title`,
+        content: `1.testelement-content`,
+        teaser: `1.testelement-teaser`,
+        keywords: `1.testelement-keywords`,
+      },
     ],
   ];
-  inputData = await Q.queryUnparsedData(`HEAD`, `COLUMN_NAME`);
+
+  inputData = await S.query(`SELECT *`, `ID_DOCUMENT_SECTION = "11111111-aaaa-bbbb-1111-111111111111"`);
 
   actual = [inputData];
 
-  console.log(`Test 4.3`);
-  // console.log(`test values : input->actual==expectet`);
+  console.log(`Test 4.2`);
+  // console.log(`test if input->actual==expecvalues :t`);
   // console.log(inputData, `->`, actual, `==`, expected);
 
   assert.deepEqual(actual, expected,
-    `(4.3){  Metoden skal kunne sammenligne U-parset version af en QUIZ fra sql databasen med expectet`);
+    `(4.2){  Metoden skal kunne returnere en U-parset version af kolonnenavne i SECTION fra sql databasen`);
 
   assert.end();
 });
+
+
+// // QUIZ DB
+// /* 4.3 */
+// test(`Test 4.3 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra quiz tabellen`, async (assert) => {
+//   p.reset();
+//   const req = {
+//     method: `TEST`, session: { idGroup: testData.idGroup }, params: {}, body: {},
+//   };
+//   const Q = new Quiz(req);
+//   let inputData = [];
+//   expected = [
+//     [
+//       { COLUMN_NAME: `ID_QUIZ` },
+//       { COLUMN_NAME: `ID_DOCUMENT` },
+//       { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
+//       { COLUMN_NAME: `ELEMENT_TYPE` },
+//       { COLUMN_NAME: `SECTION_TITLE` },
+//       { COLUMN_NAME: `ID_USER_GROUP` },
+//     ],
+//   ];
+//   inputData = await Q.queryUnparsedData(`HEAD`, `COLUMN_NAME`);
+
+//   actual = [inputData];
+
+//   console.log(`Test 4.3`);
+//   // console.log(`test values : input->actual==expectet`);
+//   // console.log(inputData, `->`, actual, `==`, expected);
+
+//   assert.deepEqual(actual, expected,
+//     `(4.3){  Metoden skal kunne sammenligne U-parset version af en QUIZ fra sql databasen med expectet`);
+
+//   assert.end();
+// });
 
 
 // // QUIZ QUESTION DB

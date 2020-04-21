@@ -5,6 +5,16 @@
  * Klassen skal kunne parse alle former for input.
  * Hvis inputtypen er ukendt, så skal den dermed blot sende data videre med en warning om at elementTypen ikke er kendt.
  */
+
+const { Document } = require(`./Document`);
+const { Section } = require(`./Section`);
+const { Quiz } = require(`./Quiz`);
+const { QuizQuestion } = require(`./QuizQuestion`);
+const { Flashcard } = require(`./Flashcard`);
+const { Keyword } = require(`./Keyword`);
+const { User } = require(`./User`);
+const { Group } = require(`./Group`);
+
 class ParseSql {
   constructor(elementType) {
     this.parsedData = [];
@@ -53,6 +63,7 @@ class ParseSql {
    * Output: Et parset dataobjekt, som kan forståes på frontend
    */
   parseSection(data) {
+    let tempSection = new Section();
     let teaser = ``;
     if (data.SECTION_TEASER === null) {
       teaser = data.SECTION_CONTENT.slice(0, 200);
@@ -60,16 +71,27 @@ class ParseSql {
     else {
       teaser = data.SECTION_TEASER;
     }
-
+      tempSection.elementType = data.ELEMENT_TYPE,
+      tempSection.idSection = data.ID_DOCUMENT_SECTION,
+      tempSection.idDocument = data.ID_DOCUMENT,
+      tempSection.idUser = data.ID_USER,
+      tempSection.idGroup = data.ID_USER_GROUP,
+      tempSection.number = data.SECTION_NUMBER,
+      tempSection.title = data.SECTION_TITLE,
+      tempSection.content = data.SECTION_CONTENT,
+      tempSection.teaser,
+      tempSection.keywords = data.KEYWORDS,
     return {
-      elementType: data.ELEMENT_TYPE,
-      idDocument: data.ID_DOCUMENT,
-      idSection: data.ID_DOCUMENT_SECTION,
-      sectionNumber: data.SECTION_NUMBER,
-      title: data.SECTION_TITLE,
-      content: data.SECTION_CONTENT,
-      teaser,
-      keywords: data.KEYWORDS,
+      // elementType: data.ELEMENT_TYPE,
+      // idSection: data.ID_DOCUMENT_SECTION,
+      // idDocument: data.ID_DOCUMENT,
+      // idUser: data.ID_USER,
+      // idGroup: data.ID_USER_GROUP,
+      // number: data.SECTION_NUMBER,
+      // title: data.SECTION_TITLE,
+      // content: data.SECTION_CONTENT,
+      // teaser,
+      // keywords: data.KEYWORDS,
     };
   }
 
