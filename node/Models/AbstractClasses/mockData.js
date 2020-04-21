@@ -8,7 +8,7 @@ class MockData extends Model {
     this.elementtype = ``;
     this.table = ``;
     this.allElemenTypes = [`group`, `user`, `document`, `section`, `quiz`, `quiz_question`, `quiz_result`, `flashcard`, `flashcard_result`];
-    if (this.validateMethodChoice) {
+    if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
       this.idUser  = req.session.idUser;
       switch (req.method) {

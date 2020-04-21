@@ -38,7 +38,8 @@ class User extends Model {
    * Output: En row af data fra 1 bruger.
    */
   async loginValid() {
-    return this.query(`SELECT *`, `username = "${this.username}" AND password = "${this.password}"`)
+    console.log(`username ${this.username} AND password ${this.password}`);
+    return this.query(`SELECT *`, `USER_NAME = "${this.username}" AND PASSWORD = "${this.password}"`)
       .then((result) => result)
       .catch((error) => error);
   }
@@ -54,7 +55,7 @@ class User extends Model {
   async validateRegister() {
     let validationCheck = false;
     if (!isEmpty(this.username) && !isEmpty(this.firstName) && !isEmpty(this.lastName) && !isEmpty(this.email)) {
-      this.data = await this.query(`SELECT *`, `username = "${this.username}" OR email = "${this.email}"`);
+      this.data = await this.query(`SELECT *`, `USER_NAME = "${this.username}" OR EMAIL = "${this.email}"`);
       if (this.data.length > 0) {
         console.log(`User already registered`);
       }

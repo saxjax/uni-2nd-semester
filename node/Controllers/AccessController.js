@@ -2,6 +2,7 @@
 /* eslint no-console: off */
 const path = require(`path`);
 const { User } = require(`../Models/User`);
+const { Group } = require(`../Models/Group`);
 
 /* UNDER CONSTRUCTION */
 
@@ -15,12 +16,21 @@ class AccessController {
 
   /* Session Interaction URLs */
 
-  /* UNDER CONSTRUCTION */
+  /* UNDER CONSTRUCTION 
+   *
+   * FIXME: Grundet vi ikke kan lave en "rigtig" many-to-many operation mellem user og group, så bliver denne
+   *        funktion en smule bøvlet. Ligeledes er groupIdFromUser ikke
+   */
   async groupsPage(req, res) {
     const U = new User(req);
-    U.table = `user_group`;
+
+    const groupIdFromUser = await U.query(`SELECT ${U.idColumnGroup}`, `${U.idColumnUser} = "${U.idUser}"`);
+    const G = new Group(req);
+    G.idGroup = groupIdFromUser[0].ID_USER_GROUP;
+
     const data = {
-      group: await U.query(`SELECT *`, `${U.idColumnName} = "${U.queryId}"`),
+      user: await U.getThisUserData(),
+      group: await G.getThisGroupData(),
     };
     this.ejs = path.join(`${this.root}/www/views/groups.ejs`);
     res.render(this.ejs, { data });
