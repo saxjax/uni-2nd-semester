@@ -38,14 +38,8 @@ class AccessController {
 
   /* UNDER CONSTRUCTION */
   registerPage(req, res) {
-    const Registered = new User(req);
-    if (Registered.alreadyLoggedIn()) {
-      res.redirect(`/`);
-    }
-    else {
-      this.ejs = path.join(`${this.root}/www/views/register.ejs`);
-      res.render(this.ejs);
-    }
+    this.ejs = path.join(`${this.root}/www/views/register.ejs`);
+    res.render(this.ejs);
   }
 
   /* No Session Requirement URLs */
