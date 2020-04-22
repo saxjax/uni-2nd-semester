@@ -22,6 +22,7 @@ class ParseSql {
     }
     for (let i = 0; i < data.length; i++) {
       switch (data[i].ELEMENT_TYPE) {
+        case `test`:             this.parsedData.push(this.parseTest(data[i]));            break;
         case `section`:          this.parsedData.push(this.parseSection(data[i]));         break;
         case `quiz`:             this.parsedData.push(this.parseQuiz(data[i]));            break;
         case `quiz_question`:    this.parsedData.push(this.parseQuizQuestion(data[i]));    break;
@@ -31,7 +32,7 @@ class ParseSql {
         case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));         break;
         case `user`:             this.parsedData.push(this.parseUser(data[i]));            break;
         case `user_group`:    this.parsedData.push(this.parseGroup(data[i]));              break;
-        default:
+        default: // FIXME: defaulten SKAL være at der throwes en error (vil jeg mene)
           this.parsedData.push(data[i]);
           console.warn(`WARNING: elementType "${data[i].elementType}" is not defined. Parsing skipped!`);
           break;
@@ -46,6 +47,14 @@ class ParseSql {
   reset() {
     this.parsedData = [];
     this.elementType = ``;
+  }
+
+  /* Formål: At have en funktion der returnere testdata, når database modulet testes via Tape.
+   * Input:  Et dataobjekt af typen "test" fra parse metoden.
+   * Output: Et uparset objekt, der blot bruges til at se om ELEMENT_TYPE bliver korrekt parset.
+   */
+  parseTest(data) {
+    return data;
   }
 
   /* Formål: At parse Section-data
