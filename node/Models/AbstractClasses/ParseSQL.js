@@ -5,6 +5,7 @@
  * Klassen skal kunne parse alle former for input.
  * Hvis inputtypen er ukendt, så skal den dermed blot sende data videre med en warning om at elementTypen ikke er kendt.
  */
+
 class ParseSql {
   constructor(elementType) {
     this.parsedData = [];
@@ -53,6 +54,7 @@ class ParseSql {
    * Output: Et parset dataobjekt, som kan forståes på frontend
    */
   parseSection(data) {
+    // const tempSection = new Section(req);
     let teaser = ``;
     if (data.SECTION_TEASER === null) {
       teaser = data.SECTION_CONTENT.slice(0, 200);
@@ -60,16 +62,17 @@ class ParseSql {
     else {
       teaser = data.SECTION_TEASER;
     }
-
     return {
-      elementType: data.ELEMENT_TYPE,
-      idDocument: data.ID_DOCUMENT,
-      idSection: data.ID_DOCUMENT_SECTION,
-      sectionNumber: data.SECTION_NUMBER,
-      title: data.SECTION_TITLE,
-      content: data.SECTION_CONTENT,
+      elementType: `${data.ELEMENT_TYPE}`,
+      idDocument: `${data.ID_DOCUMENT}`,
+      idSection: `${data.ID_DOCUMENT_SECTION}`,
+      idUser: `${data.ID_USER}`,
+      idGroup: `${data.ID_USER_GROUP}`,
+      number: `${data.SECTION_NUMBER}`,
+      title: `${data.SECTION_TITLE}`,
+      content: `${data.SECTION_CONTENT}`,
       teaser,
-      keywords: data.KEYWORDS,
+      keywords: `${data.KEYWORDS}`,
     };
   }
 
@@ -180,6 +183,11 @@ class ParseSql {
     };
   }
 
+  /* Formål: At parse User-data
+   * Input:  Et dataobjekt af typen "Group" fra parse metoden.
+   * Output: Et parset dataobjekt, som kan forståes på frontend
+   * FIXME: Metoden skal udvikles
+   */
   parseGroup(data) {
     return {
       elementType: `${data.ELEMENT_TYPE}`,

@@ -34,6 +34,7 @@ class Model extends Database {
                        || req.method.toUpperCase() === `DELETE`);
       methodNeedsBodyInRequest   = (req.method.toUpperCase() === `POST`);
     }
+
     else {
       return false;
     }
@@ -50,6 +51,7 @@ class Model extends Database {
         console.warn(`Params (hvis get/update/delete) eller Body (hvis Post) er ikke oprettet!`);
       }
     }
+
     else {
       console.warn(`Session er ikke oprettet!`);
       valid = false;

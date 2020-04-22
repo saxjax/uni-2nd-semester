@@ -27,6 +27,20 @@ class Section extends Model {
           this.keywords = req.body.keywords;
           this.number   = req.body.number;
           break;
+        case `TEST`:
+          this.elementtype = `section`;
+          this.table = `document_section`;
+          this.idSection =  undefined;
+          this.idDocument =  undefined;
+          this.idUser =  undefined;
+          this.idGroup =  undefined;
+          this.title =  undefined;
+          this.content =  undefined;
+          this.number =  undefined;
+          this.teaser =  undefined;
+          this.keywords =  undefined;
+          break;
+
         default: break;
       }
     }
