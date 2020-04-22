@@ -268,36 +268,7 @@ test(`Test 1.5 af parseFlashcard() i node/Database ved elementType flashcard`, (
 });
 
 /* 1.6 */
-test(`Test 1.6 af parseKeyword() i node/Database ved elementType keyword`, (assert) => {
-  resetParsedData();
-  const inputData = {
-    ID_KEYWORD: `11111111-aaaa-bbbb-1111-111111111111`,
-    ID_DOCUMENT: `11111111-aaaa-bbbb-1111-111111111111`,
-    ID_DOCUMENT_SECTION: `11111111-aaaa-bbbb-1111-111111111111`,
-    KEYWORD: `keyword Test`,
-    ELEMENT_TYPE: `keyword`,
-  };
-  expected = {
-    idKeyword: `11111111-aaaa-bbbb-1111-111111111111`,
-    idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
-    idDocumentSection: `11111111-aaaa-bbbb-1111-111111111111`,
-    keyword: `keyword Test`,
-    elementType: `keyword`,
-  };
-  actual = p.parseKeyword(inputData);
-
-  console.log(`Test 1.6 parseKeyword()`);
-  // console.log(`test values : input->actual==expectet`);
-  // console.log(inputData, `->`, actual, `==`, expected);
-
-  assert.deepEqual(actual, expected,
-    `(1.6){ Metoden skal kunne returnere en parset version af et KEYWORD data`);
-
-  assert.end();
-});
-
-/* 1.7 */
-test(`Test 1.7 af parseUser() i node/Database ved elementType user`, (assert) => {
+test(`Test 1.6 af parseUser() i node/Database ved elementType user`, (assert) => {
   resetParsedData();
   const inputData = {
     ELEMENT_TYPE: `user`,
@@ -326,12 +297,41 @@ test(`Test 1.7 af parseUser() i node/Database ved elementType user`, (assert) =>
 
   actual = p.parseUser(inputData);
 
-  console.log(`Test 1.7 parseUser()`);
+  console.log(`Test 1.6 parseUser()`);
   // console.log(`test values : input->actual==expectet`);
   // console.log(inputData, `->`, actual, `==`, expected);
 
   assert.deepEqual(actual, expected,
-    `(1.7){ Metoden skal kunne returnere en parset version af USER data`);
+    `(1.6){ Metoden skal kunne returnere en parset version af USER data`);
+
+  assert.end();
+});
+
+/* 1.7 */
+test(`Test 1.7 af parseKeyword() i node/Database ved elementType keyword`, (assert) => {
+  resetParsedData();
+  const inputData = {
+    ID_KEYWORD: `11111111-aaaa-bbbb-1111-111111111111`,
+    ID_DOCUMENT: `11111111-aaaa-bbbb-1111-111111111111`,
+    ID_DOCUMENT_SECTION: `11111111-aaaa-bbbb-1111-111111111111`,
+    KEYWORD: `keyword Test`,
+    ELEMENT_TYPE: `keyword`,
+  };
+  expected = {
+    idKeyword: `11111111-aaaa-bbbb-1111-111111111111`,
+    idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
+    idDocumentSection: `11111111-aaaa-bbbb-1111-111111111111`,
+    keyword: `keyword Test`,
+    elementType: `keyword`,
+  };
+  actual = p.parseKeyword(inputData);
+
+  console.log(`Test 1.7 parseKeyword()`);
+  // console.log(`test values : input->actual==expectet`);
+  // console.log(inputData, `->`, actual, `==`, expected);
+
+  assert.deepEqual(actual, expected,
+    `(1.7){ Metoden skal kunne returnere en parset version af et KEYWORD data`);
 
   assert.end();
 });
