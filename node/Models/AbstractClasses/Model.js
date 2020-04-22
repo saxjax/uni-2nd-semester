@@ -62,13 +62,8 @@ class Model extends Database {
    * Output: En enkel værdi ud fra id og kolonne, der bruges til at konstruere objektet.
    */
   async getThis(column) {
-    let choice = ``;
-    if (column) {
-      choice = column;
-    }
-    else {
-      choice = `*`;
-    }
+    const choice = column || `*`;
+
     return this.query(`SELECT ${choice}`, `${this.idColumnName} = "${this.idQuery}"`)
       .then((result) => result)
       .catch((error) => error);
@@ -140,14 +135,14 @@ class Model extends Database {
    */
   parseElementTypesTable(choice) {
     switch (choice) {
-      case `Document`: return `document`;
-      case `Flashcard`: return `flashcard`;
-      case `Group`: return `user_group`;
-      case `Keyword`: return `keyword`;
-      case `Quiz`: return `quiz`;
+      case `Document`:     return `document`;
+      case `Flashcard`:    return `flashcard`;
+      case `Group`:        return `user_group`;
+      case `Keyword`:      return `keyword`;
+      case `Quiz`:         return `quiz`;
       case `QuizQuestion`: return `quiz_question`;
-      case `Section`: return `document_section`;
-      case `User`: return `user`;
+      case `Section`:      return `document_section`;
+      case `User`:         return `user`;
       default: throw new Error(`WARNING: Element Type not implemented in parseElementTypesTable in Model`);
     }
   }
