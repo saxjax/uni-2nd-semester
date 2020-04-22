@@ -16,7 +16,7 @@ class AccessController {
 
   /* Session Interaction URLs */
 
-  /* UNDER CONSTRUCTION 
+  /* UNDER CONSTRUCTION
    *
    * FIXME: Grundet vi ikke kan lave en "rigtig" many-to-many operation mellem user og group, så bliver denne
    *        funktion en smule bøvlet. Ligeledes er groupIdFromUser ikke

@@ -14,12 +14,7 @@ function pad(str, newStrLen, padChar) {
   // This means that there's padding which has to be applied
   else {
     const padding = Array(paddingLength + 1).join(padChar);
-    if (newStrLen > 0) {
-      newStr = str + padding;
-    }
-    else {
-      newStr = padding + str;
-    }
+    newStr = newStrLen > 0 ? str + padding : padding + str;
   }
   return newStr;
 }

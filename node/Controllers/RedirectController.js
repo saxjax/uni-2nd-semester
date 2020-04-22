@@ -3,7 +3,7 @@ const path = require(`path`);
 const { User } = require(`../Models/User.js`);
 const { Section } = require(`../Models/Section.js`);
 
-/* UNDER CONSTRUCTION */
+/* FIXME: UNDER CONSTRUCTION */
 
 class RedirectController {
   /* UNDER CONSTRUCTION */
@@ -13,10 +13,10 @@ class RedirectController {
     this.ejs = ``;
   }
 
-  /* UNDER CONSTRUCTION */
+  /* FIXME: UNDER CONSTRUCTION */
   dbdown(req, res) {
     this.ejs = path.join(`${this.root}/www/ejs/database_down.ejs`);
-    res.render(this.ejs);
+    res.render(this.ejs); // FIXME: Implementer brug af statuskode 503 (https://httpstatuses.com/503)
   }
 
   /* Formål: At autentificere at bruger og password kombinationen findes i databasen
@@ -36,7 +36,7 @@ class RedirectController {
       res.redirect(`/`);
     }
     else {
-      res.redirect(`/register`);
+      res.redirect(`/register`); // FIXME: Implementer brug af statuskode 422 ved invalid
     }
   }
 
