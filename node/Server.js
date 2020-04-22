@@ -251,8 +251,9 @@ class Server {
   sessionMiddleware() {
     this.app.use(session({
       key: `user_sid`,
-      userId: `NA`,
-      idGroup: `NA`,
+      userId: `N/A`,
+      idGroup: `N/A`,
+      groupName: `N/A`,
       loggedIn: false,
       secret: `SECRET_SALT_CODE_BY_MIKE123456789`,
       resave: false,
