@@ -19,6 +19,19 @@ class QuizQuestion extends Evaluation {
           this.answers = req.body.answers.split(`;`);
           this.correctness = req.body.correctness;
           break;
+        case `TEST`:
+          this.elementtype = `quiz_question`;
+          this.table = `quiz_question`;
+          this.idSection =  undefined;
+          this.idDocument =  undefined;
+          this.idUser =  undefined;
+          this.idGroup =  undefined;
+          this.question =  undefined;
+          this.answer1 =  undefined;
+          this.answer2 =  undefined;
+          this.answer3 =  undefined;
+          this.answer4 =  undefined;
+          break;
         default: break;
       }
     }

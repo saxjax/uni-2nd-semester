@@ -251,10 +251,14 @@ class Server {
   sessionMiddleware() {
     this.app.use(session({
       key: `user_sid`,
+      userId: `N/A`,
+      idGroup: `N/A`,
+      groupName: `N/A`,
+      loggedIn: false,
       secret: `SECRET_SALT_CODE_BY_MIKE123456789`,
       resave: false,
       saveUninitialized: false,
-      cookie: { maxAge: 600000 },
+      cookie: { maxAge: 3600000 },
     }));
     if (this.skipAccess) {
       this.app.use(this.createTestUserAndidGroup);
