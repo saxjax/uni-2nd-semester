@@ -36,7 +36,7 @@ class RedirectController {
       res.redirect(`/`);
     }
     else {
-      res.redirect(`/login`); // FIXME: Implementer brug af statuskode 422 ved invalid login
+      res.redirect(`/register`); // FIXME: Implementer brug af statuskode 422 ved invalid
     }
   }
 
