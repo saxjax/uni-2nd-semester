@@ -326,8 +326,11 @@ class Server {
 }
 
 function isAccessURL(req) {
+  if (/session/.test(req.url)) {
+    return true;
+  }
   switch (req.url) {
-    case `/login`: case `/auth/user`: case `/groups`: case /session/.test(req.url): case `/register`:
+    case `/login`: case `/auth/user`: case `/groups`: case `/register`:
       return true;
     default:
       return false;
