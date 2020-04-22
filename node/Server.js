@@ -258,7 +258,7 @@ class Server {
       secret: `SECRET_SALT_CODE_BY_MIKE123456789`,
       resave: false,
       saveUninitialized: false,
-      cookie: { maxAge: 600000 },
+      cookie: { maxAge: 3600000 },
     }));
     if (this.skipAccess) {
       this.app.use(this.createTestUserAndidGroup);
