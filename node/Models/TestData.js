@@ -42,7 +42,7 @@ class TestData {
       answer3: `1.Testelement-answ3`,
       answer4: `1.Testelement-answ4`,
       correctness: `0000`,
-      number: 0,
+      number: `0`,
       content: `1.Testelement-content`,
       teaser: `1.Testelement-teaser`,
       title: `1.Testelement-title`,
@@ -64,13 +64,13 @@ class TestData {
   get section() {
     this.sec.elementType = `section`;
     this.sec.table = `document_section`;
-    // this.sec.idSection = this.idSection();
     this.sec.idDocument = this.defaults.idSection;
+    this.sec.idSection = this.idSection;
     this.sec.idUser = this.defaults.idUser;
     this.sec.idGroup = this.defaults.idGroup;
+    this.sec.number = this.defaults.number;
     this.sec.title = this.defaults.title;
     this.sec.content = this.defaults.content;
-    this.sec.number = this.defaults.number;
     this.sec.teaser = this.defaults.teaser;
     this.sec.keywords = this.defaults.keywords;
     return this.sec;
@@ -223,6 +223,18 @@ class TestData {
   get title() {
     return this.defaults.title;
   }
+
+  // stripExtraDataFromObject(Obj) {
+  //   const MyObj = Obj.clone;
+  //   delete MyObj.database;
+  //   delete MyObj.connect;
+  //   delete MyObj.table;
+  //   delete MyObj.idColumnName;
+  //   delete MyObj.idColumnGroup;
+  //   delete MyObj.elementtype;
+  //   delete MyObj.idColumnUser;
+  //   return MyObj;
+  // }
 }
 
 module.exports = {

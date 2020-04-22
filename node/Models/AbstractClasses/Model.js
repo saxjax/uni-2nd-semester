@@ -34,9 +34,7 @@ class Model extends Database {
                        || req.method.toUpperCase() === `DELETE`);
       methodNeedsBodyInRequest   = (req.method.toUpperCase() === `POST`);
     }
-    // else if (req.method.toUpperCase() === `TEST`) {
-    //   return true;
-    // }
+
     else {
       return false;
     }

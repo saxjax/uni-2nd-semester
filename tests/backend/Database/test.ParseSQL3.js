@@ -25,12 +25,12 @@ const testData = new TestData();
 test(`Test 0.x af ParseSQL i node/Database`, (assert) => {
   console.log(`Test af parseArrayOfObjects() metoden med inputData som er ukendt for parseren`);
   // Tests a første if-statement
-  reset();
+  resetParsedData();
   const testThis = [{ data: `data` }, 1, 0, true, false, `hejse dejsa`];
 
   testThis.forEach((inputData, i) => {
     expected = inputData;
-    reset();
+    resetParsedData();
     actual = p.parseArrayOfObjects(inputData);
     console.log(`test 0.${i} if in->actual == expected`);
     // console.log(inputData, actual, `==`, expected);
@@ -40,7 +40,7 @@ test(`Test 0.x af ParseSQL i node/Database`, (assert) => {
      som ikke er et array, uden at ændre i det og logge en warning i processen`);
   });
 
-  // reset();
+  // resetParsedData();
   // const inputData = 1;
   // expected = 1;
   // actual = p.parseArrayOfObjects(1);
@@ -48,41 +48,41 @@ test(`Test 0.x af ParseSQL i node/Database`, (assert) => {
   //   `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrÃ¦rt input,
   //      som ikke er et array, uden at Ã¦ndre i det og logge en warning i processen`);
 
-  //   reset();
+  //   resetParsedData();
   //   expected = true;
   //   actual = p.parseArrayOfObjects(true);
   //   assert.deepEqual(actual, expected,
   //     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrÃ¦rt input,
   //      som ikke er et array, uden at Ã¦ndre i det og logge en warning i processen`);
 
-  //   reset();
+  //   resetParsedData();
   //   expected = false;
   //   actual = p.parseArrayOfObjects(false);
   //   assert.deepEqual(actual, expected,
   //     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrÃ¦rt input,
   //      som ikke er et array, uden at Ã¦ndre i det og logge en warning i processen`);
 
-  //   reset();
+  //   resetParsedData();
   //   expected = `hejsa dejsa`;
   //   actual = p.parseArrayOfObjects(`hejsa dejsa`);
   //   assert.deepEqual(actual, expected,
   //     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrÃ¦rt input,
   //      som ikke er et array, uden at Ã¦ndre i det og logge en warning i processen`);
 
-  //   // Tests af ukendt elementtype
+  //   // Tests af ukendt elementType
 
-  //   reset();
+  //   resetParsedData();
   //   expected = [{
-  //     elementtype: `lmao`,
+  //     elementType: `lmao`,
   //     data: `data`,
   //   }];
   //   actual = p.parseArrayOfObjects([{
-  //     elementtype: `lmao`,
+  //     elementType: `lmao`,
   //     data: `data`,
   //   }]);
   //   assert.deepEqual(actual, expected,
   //     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere input af typen array,
-  //      med ukendt elementtype i det indre objekt, uden at Ã¦ndre i det og logge en warning i processen`);
+  //      med ukendt elementType i det indre objekt, uden at Ã¦ndre i det og logge en warning i processen`);
 
   //   console.log(`Test af parseSection() metoden`);
   //   // Test uden teaser
@@ -100,19 +100,19 @@ test(`Test 0.x af ParseSQL i node/Database`, (assert) => {
 /* 1.1 */
 // TODO:
 // TESTvAF PARSE DOCUMENT
-test(`Test 1. af parseXXXXXX() i node/Database ved elementtype `, (assert) => {
+test(`Test 1. af parseXXXXXX() i node/Database ved elementType `, (assert) => {
   console.log(`1.x test af de enkelte parse funktioner`);
   console.log(`Test 1.1`);
 
 
-  p.reset();
+  resetParsedData();
   const inputData = {
     ID_DOCUMENT: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
     DOCUMENT_TITLE: `fiktiv viden`,
     ELEMENT_TYPE: `document`,
   };
   expected = {
-    elementtype: `document`,
+    elementType: `document`,
     idDocument: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
     title: `fiktiv viden`,
   };
@@ -128,8 +128,8 @@ test(`Test 1. af parseXXXXXX() i node/Database ved elementtype `, (assert) => {
 /* 1.2 */
 /* SECTION */
 // Test med teaser
-test(`Test 1. af parseXXXXXX() i node/Database ved elementtype section `, (assert) => {
-  p.reset();
+test(`Test 1. af parseXXXXXX() i node/Database ved elementType section `, (assert) => {
+  resetParsedData();
   const inputData = {
     ID_DOCUMENT_SECTION: `78c14a9a-6f59-11ea-9983-2c4d54532c7a`,
     ID_DOCUMENT: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
@@ -140,14 +140,16 @@ test(`Test 1. af parseXXXXXX() i node/Database ved elementtype section `, (asser
     ELEMENT_TYPE: `section`,
   };
   expected = {
-    elementtype: `section`,
+    elementType: `section`,
     idDocument: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
     idSection: `78c14a9a-6f59-11ea-9983-2c4d54532c7a`,
-    sectionNumber: 9.9,
+    idUser: `undefined`,
+    idGroup: `undefined`,
+    number: `9.9`,
     title: `fiktiv viden`,
     content: `lidt tekst 3`,
     teaser: `En lille tisser`,
-    keywords: undefined,
+    keywords: `undefined`,
   };
 
   actual = p.parseSection(inputData);
@@ -163,7 +165,8 @@ test(`Test 1. af parseXXXXXX() i node/Database ved elementtype section `, (asser
 
 /* 1.3 */
 /* QUIZ */
-test(`Test 1.3 af parseQuiz() i node/Database ved elementtype quiz`, (assert) => {
+test(`Test 1.3 af parseQuiz() i node/Database ved elementType quiz`, (assert) => {
+  resetParsedData();
   const inputData = {
     ID_QUIZ: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
     ID_DOCUMENT: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
@@ -172,12 +175,12 @@ test(`Test 1.3 af parseQuiz() i node/Database ved elementtype quiz`, (assert) =>
     ELEMENT_TYPE: `quiz`,
   };
   expected = {
-    elementtype: `quiz`,
+    elementType: `quiz`,
     idQuiz: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
     idDocument: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
     idDocumentSection: `78c14a9a-6f59-11ea-9983-2c4d54532c7a`,
     title: `fiktiv viden`,
-    keywords: undefined,
+    keywords: `undefined`,
   };
   actual = p.parseQuiz(inputData);
 
@@ -192,7 +195,8 @@ test(`Test 1.3 af parseQuiz() i node/Database ved elementtype quiz`, (assert) =>
 });
 
 /* 1.4 */
-test(`Test 1.4 af parseQuizQuestion() i node/Database ved elementtype quiz_question`, (assert) => {
+test(`Test 1.4 af parseQuizQuestion() i node/Database ved elementType quiz_question`, (assert) => {
+  resetParsedData();
   const inputData = {
     ID_QUIZ_QUESTION: `11111111-aaaa-bbbb-1111-111111111111`,
     ID_QUIZ: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -228,7 +232,8 @@ test(`Test 1.4 af parseQuizQuestion() i node/Database ved elementtype quiz_quest
 });
 
 /* 1.5 */
-test(`Test 1.5 af parseFlashcard() i node/Database ved elementtype flashcard`, (assert) => {
+test(`Test 1.5 af parseFlashcard() i node/Database ved elementType flashcard`, (assert) => {
+  resetParsedData();
   const inputData =  {
     ID_FLASHCARD: `11111111-aaaa-bbbb-1111-111111111111`,
     ID_USER: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -240,7 +245,7 @@ test(`Test 1.5 af parseFlashcard() i node/Database ved elementtype flashcard`, (
     ELEMENT_TYPE: `flashcard`,
   };
   expected = {
-    elementtype: `flashcard`,
+    elementType: `flashcard`,
     idFlashcard: `11111111-aaaa-bbbb-1111-111111111111`,
     idUser: `11111111-aaaa-bbbb-1111-111111111111`,
     idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -263,7 +268,8 @@ test(`Test 1.5 af parseFlashcard() i node/Database ved elementtype flashcard`, (
 });
 
 /* 1.6 */
-test(`Test 1.6 af parseKeyword() i node/Database ved elementtype keyword`, (assert) => {
+test(`Test 1.6 af parseKeyword() i node/Database ved elementType keyword`, (assert) => {
+  resetParsedData();
   const inputData = {
     ID_KEYWORD: `11111111-aaaa-bbbb-1111-111111111111`,
     ID_DOCUMENT: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -276,7 +282,7 @@ test(`Test 1.6 af parseKeyword() i node/Database ved elementtype keyword`, (asse
     idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
     idDocumentSection: `11111111-aaaa-bbbb-1111-111111111111`,
     keyword: `keyword Test`,
-    elementtype: `keyword`,
+    elementType: `keyword`,
   };
   actual = p.parseKeyword(inputData);
 
@@ -291,7 +297,8 @@ test(`Test 1.6 af parseKeyword() i node/Database ved elementtype keyword`, (asse
 });
 
 /* 1.7 */
-test(`Test 1.7 af parseUser() i node/Database ved elementtype user`, (assert) => {
+test(`Test 1.7 af parseUser() i node/Database ved elementType user`, (assert) => {
+  resetParsedData();
   const inputData = {
     ELEMENT_TYPE: `user`,
     ID_USER: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -305,7 +312,7 @@ test(`Test 1.7 af parseUser() i node/Database ved elementtype user`, (assert) =>
     UNIVERSITY: `MIT`,
   };
   expected = {
-    elementtype: `user`,
+    elementType: `user`,
     idUser: `11111111-aaaa-bbbb-1111-111111111111`,
     userName: `Test user`,
     // password: `****`,
@@ -337,7 +344,7 @@ test(`Test 2.1 af parseArrayOfObjects(DOCUMENT) i node/Database`, (assert) => {
   console.log(`2.x Test af parseArrayOfObjects()`);
 
   console.log(`Test 2.1`);
-  p.reset();
+  resetParsedData();
   const inputData = [{
     ID_DOCUMENT: `11111111-aaaa-bbbb-1111-111111111111`,
     ID_USER: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -351,7 +358,7 @@ test(`Test 2.1 af parseArrayOfObjects(DOCUMENT) i node/Database`, (assert) => {
       idUser: `11111111-aaaa-bbbb-1111-111111111111`,
       idUserGroup: `11111111-aaaa-bbbb-1111-111111111111`,
       title: `Test Title`,
-      elementtype: `document`,
+      elementType: `document`,
     },
   ];
 
@@ -369,7 +376,7 @@ test(`Test 2.1 af parseArrayOfObjects(DOCUMENT) i node/Database`, (assert) => {
 /* 2.2 */
 // SECTION
 test(`Test 2.2 af parseArrayOfObjects() i node/Database`, (assert) => {
-  p.reset();
+  resetParsedData();
   const inputData =  [{
     ID_DOCUMENT_SECTION: `78c14a9a-6f59-11ea-9983-2c4d54532c7a`,
     ID_DOCUMENT: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
@@ -380,14 +387,16 @@ test(`Test 2.2 af parseArrayOfObjects() i node/Database`, (assert) => {
     ELEMENT_TYPE: `section`,
   }];
   expected = [{
-    elementtype: `section`,
+    elementType: `section`,
     idDocument: `0f6ed223-6dda-11ea-9983-2c4d54532c7a`,
     idSection: `78c14a9a-6f59-11ea-9983-2c4d54532c7a`,
-    sectionNumber: 9.9,
+    idUser: `undefined`,
+    idGroup: `undefined`,
+    number: `9.9`,
     title: `fiktiv viden`,
     content: `lidt tekst 3`,
     teaser: `lidt tekst 3`,
-    keywords: undefined,
+    keywords: `undefined`,
   }];
 
   actual = p.parseArrayOfObjects(inputData);
@@ -404,8 +413,8 @@ test(`Test 2.2 af parseArrayOfObjects() i node/Database`, (assert) => {
 
 /* 2.3 */
 // QUIZ
-test(`Test 2.3 af parseArrayOfObjects() i node/Database ved elementtype quiz`, (assert) => {
-  p.reset();
+test(`Test 2.3 af parseArrayOfObjects() i node/Database ved elementType quiz`, (assert) => {
+  resetParsedData();
   const inputData = [{
     ID_QUIZ: `11111111-aaaa-bbbb-1111-111111111111`,
     ID_DOCUMENT: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -414,7 +423,7 @@ test(`Test 2.3 af parseArrayOfObjects() i node/Database ved elementtype quiz`, (
     ELEMENT_TYPE: `quiz`,
   }];
   expected = [{
-    elementtype: `quiz`,
+    elementType: `quiz`,
     idQuiz: `11111111-aaaa-bbbb-1111-111111111111`,
     idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
     idDocumentSection: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -436,8 +445,8 @@ test(`Test 2.3 af parseArrayOfObjects() i node/Database ved elementtype quiz`, (
 
 /* 2.4 */
 // QUIZQUESTION
-test(`Test 2.4 af parseArrayOfObjects() i node/Database ved elementtype quiz_question`, (assert) => {
-  p.reset();
+test(`Test 2.4 af parseArrayOfObjects() i node/Database ved elementType quiz_question`, (assert) => {
+  resetParsedData();
   const inputData = [{
     ID_QUIZ_QUESTION: `11111111-aaaa-bbbb-1111-111111111111`,
     ID_QUIZ: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -473,8 +482,8 @@ test(`Test 2.4 af parseArrayOfObjects() i node/Database ved elementtype quiz_que
 
 /* 2.5 */
 // FLASHCARD
-test(`Test 2.5 af parseArrayOfObjects() i node/Database ved elementtype flashcard`, (assert) => {
-  p.reset();
+test(`Test 2.5 af parseArrayOfObjects() i node/Database ved elementType flashcard`, (assert) => {
+  resetParsedData();
 
   const inputData = [{
     ID_FLASHCARD: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -487,7 +496,7 @@ test(`Test 2.5 af parseArrayOfObjects() i node/Database ved elementtype flashcar
     ELEMENT_TYPE: `flashcard`,
   }];
   expected = [{
-    elementtype: `flashcard`,
+    elementType: `flashcard`,
     idFlashcard: `11111111-aaaa-bbbb-1111-111111111111`,
     idUser: `11111111-aaaa-bbbb-1111-111111111111`,
     idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -511,8 +520,8 @@ test(`Test 2.5 af parseArrayOfObjects() i node/Database ved elementtype flashcar
 
 /* 2.6 */
 // KEYWORD
-test(`Test 2.6 af parseArrayOfObjects() i node/Database ved elementtype keyword`, (assert) => {
-  p.reset();
+test(`Test 2.6 af parseArrayOfObjects() i node/Database ved elementType keyword`, (assert) => {
+  resetParsedData();
   const inputData = [{
     ID_KEYWORD: `11111111-aaaa-bbbb-1111-111111111111`,
     ID_DOCUMENT: `11111111-aaaa-bbbb-1111-111111111111`,
@@ -526,7 +535,7 @@ test(`Test 2.6 af parseArrayOfObjects() i node/Database ved elementtype keyword`
     idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
     idDocumentSection: `11111111-aaaa-bbbb-1111-111111111111`,
     keyword: `keyword Test`,
-    elementtype: `keyword`,
+    elementType: `keyword`,
   }];
 
   actual = p.parseArrayOfObjects(inputData);
@@ -543,8 +552,8 @@ test(`Test 2.6 af parseArrayOfObjects() i node/Database ved elementtype keyword`
 
 /* 2.7 */
 // USER
-test(`Test 2.7 af parseArrayOfObjects() i node/Database ved elementtype user`, (assert) => {
-  p.reset();
+test(`Test 2.7 af parseArrayOfObjects() i node/Database ved elementType user`, (assert) => {
+  resetParsedData();
 
   const inputData = [{
     ELEMENT_TYPE: `user`,
@@ -560,10 +569,9 @@ test(`Test 2.7 af parseArrayOfObjects() i node/Database ved elementtype user`, (
   }];
 
   expected = [{
-    elementtype: `user`,
+    elementType: `user`,
     idUser: `11111111-aaaa-bbbb-1111-111111111111`,
-    userName: `Test user`,
-    // password: `****`,
+    username: `Test user`,
     firstName: `test fornavn`,
     lastName: `test efternavn`,
     email: `test@email.com`,
@@ -591,7 +599,7 @@ test(`Test 2.7 af parseArrayOfObjects() i node/Database ved elementtype user`, (
 test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af kolonne navne fra DOCUMENT tabellen`, async (assert) => {
   console.log(`\r\n3.x Test af de enkelte tabeller i SQL databasen\n`);
 
-  p.reset();
+  resetParsedData();
 
   const req = { session: {}, params: {}, body: {} };
   const D =  new Document(req);
@@ -617,7 +625,7 @@ test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   // console.log(inputData, `->`, actual, `==`, expected);
 
   assert.deepEqual(actual, expected,
-    `(3.1){  Metoden sammenligne en U-parset version af kolonnenavne i DOCUMENT fra sql databasen`);
+    `(3.1){  Metoden sammenligne en U-parset version af kolonnenavne i DOCUMENT fra sql databasen med forventet indhold`);
   assert.end();
 });
 
@@ -625,7 +633,7 @@ test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
 // SECTION DB
 /* 3.2 */
 test(`Test 3.2 af Database-setup i vores SQLdatabase, ved hentning af kolonne navne fra SECTION`, async (assert) => {
-  p.reset();
+  resetParsedData();
 
   const req = { session: {}, params: {}, body: {} };
   const S = new Section(req);
@@ -635,13 +643,14 @@ test(`Test 3.2 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
     [
       { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
       { COLUMN_NAME: `ID_DOCUMENT` },
+      { COLUMN_NAME: `ID_USER_GROUP` },
       { COLUMN_NAME: `SECTION_TITLE` },
       { COLUMN_NAME: `ELEMENT_TYPE` },
       { COLUMN_NAME: `SECTION_NUMBER` },
       { COLUMN_NAME: `SECTION_CONTENT` },
       { COLUMN_NAME: `SECTION_TEASER` },
       { COLUMN_NAME: `KEYWORDS` },
-      { COLUMN_NAME: `ID_USER_GROUP` },
+      { COLUMN_NAME: `ID_USER` },
     ],
   ];
 
@@ -654,7 +663,7 @@ test(`Test 3.2 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   // console.log(inputData, `->`, actual, `==`, expected);
 
   assert.deepEqual(actual, expected,
-    `(3.2){  Metoden skal kunne returnere en U-parset version af kolonnenavne i SECTION fra sql databasen`);
+    `(3.2){  Metoden skal kunne returnere en U-parset version af kolonnenavne i SECTION fra sql databasen med forventet indhold`);
 
   assert.end();
 });
@@ -663,7 +672,7 @@ test(`Test 3.2 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
 // QUIZ DB
 /* 3.3 */
 test(`Test 3.3 af Database-setup i vores SQLdatabase, ved hentning af kolonne navne fra quiz tabellen`, async (assert) => {
-  p.reset();
+  resetParsedData();
   const req = { session: {}, params: {}, body: {} };
   const Q = new Quiz(req);
   let inputData = [];
@@ -686,7 +695,7 @@ test(`Test 3.3 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   // console.log(inputData, `->`, actual, `==`, expected);
 
   assert.deepEqual(actual, expected,
-    `(3.3){  Metoden skal kunne sammenligne U-parset version af en QUIZ fra sql databasen med expectet`);
+    `(3.3){  Metoden skal kunne sammenligne U-parset version af en QUIZ fra sql databasen med forventet indhold`);
 
   assert.end();
 });
@@ -695,7 +704,7 @@ test(`Test 3.3 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
 // QUIZ QUESTION DB
 /* 3.4 */
 test(`Test 3.4 af Database-setup i vores SQLdatabase, ved hentning af kolonne navne fra QUIZ QUESTION tabellen`, async (assert) => {
-  p.reset();
+  resetParsedData();
 
   const req = { session: {}, params: {}, body: {} };
   const Qq = new QuizQuestion(req);
@@ -718,7 +727,7 @@ test(`Test 3.4 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   // console.log(inputData, `->`, actual, `==`, expected);
 
   assert.deepEqual(actual, expected,
-    `(3.4){  Metoden skal sammenligne en U-parset version af et QUIZ QUESTION fra sql databasen med expectet`);
+    `(3.4){  Metoden skal sammenligne en U-parset version af et QUIZ QUESTION fra sql databasen med forventet indhold`);
 
   assert.end();
 });
@@ -727,7 +736,7 @@ test(`Test 3.4 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
 // FLASHCARD DB
 /* 3.5 */
 test(`Test 3.5 af Database-setup i vores SQLdatabase, ved hentning af kolonne navne fra flashcard tabellen`, async (assert) => {
-  p.reset();
+  resetParsedData();
 
   const req = { session: {}, params: {}, body: {} };
   const F = new Flashcard(req);
@@ -752,7 +761,7 @@ test(`Test 3.5 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   // console.log(inputData, `->`, actual, `==`, expected);
 
   assert.deepEqual(actual, expected,
-    `(3.5){  Metoden skal sammenligne en U-parset version af et FLASHCARD fra sql databasen`);
+    `(3.5){  Metoden skal sammenligne en U-parset version af et FLASHCARD fra sql databasen med forventet indhold`);
 
   assert.end();
 });
@@ -761,7 +770,7 @@ test(`Test 3.5 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
 // USER DB
 /* 3.6 */
 test(`Test 3.6 af Database-setup i vores SQLdatabase, ved hentning af kolonne navne fra User tabellen`, async (assert) => {
-  p.reset();
+  resetParsedData();
   // arrange
   let inputData = [];
   const req = { session: {}, params: {}, body: {} };
@@ -793,7 +802,7 @@ test(`Test 3.6 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   // console.log(inputData, `->`, actual, `==`, expected);
 
   assert.deepEqual(actual, expected,
-    `(3.6){  Metoden skal sammenligne en U-parset version af en USER fra sql databasen med expectet`);
+    `(3.6){  Metoden skal sammenligne en U-parset version af en USER fra sql databasen med forventet indhold`);
 
   assert.end();
 });
@@ -804,7 +813,7 @@ test(`Test 3.6 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
 // KEYWORD DB
 /* 3.7 */
 test(`Test 3.7 af Database-setup i vores SQLdatabase, ved hentning af kolonne navne fra keyword tabellen`, async (assert) => {
-  p.reset();
+  resetParsedData();
 
   const req = { session: {}, params: {}, body: {} };
   const K = new Keyword(req);
@@ -824,54 +833,43 @@ test(`Test 3.7 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   // console.log(inputData, `->`, actual, `==`, expected);
 
   assert.deepEqual(actual, expected,
-    `(3.7){  Metoden skal sammenligne en U-parset version af et KEYWORD fra sql databasen expectet`);
+    `(3.7){  Metoden skal sammenligne en U-parset version af et KEYWORD fra sql databasen med forventet indhold`);
 
   assert.end();
 });
 
-/* 4.x Test første element i hver tabel i datbasen */
+/* 4.x For hver elementType hentes tilhørende testelement i databasen vha query() funktionen som henter og parser elementet.
+* Det returnerede objekt sammenholdes med et tilsvarende objekt fra testData klassen
+* Formål: at teste om vores objekter får det data de forventer fra databasen.
+* grundet at vi pt ikke bruger objekter som primær datacontainer i programmet så er her blot oprettet tests som kan aktiveres
+* løbende som vi får objekterne  implementeret.
+* testfunktionerne stripper testData.xxxx objektet for alle ekstra properties som ikke desideret omhandler vores primærdata data
+*/
 
 
 // /* 4.1 */
 // // DOCUMENT DB
-// test(`Test 4.1 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra DOCUMENT tabellen`, async (assert) => {
-//   console.log(`\r\n4.x Test af de enkelte tabeller i SQL databasen\n`);
-
-//   p.reset();
-
+// test(`Test 4.1 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra DOCUMENT`, async (assert) => {
+//   resetParsedData();
+//   console.log(`Test 4.1`);
 //   const req = { session: {}, params: {}, body: {} };
-//   const D =  new Document(req);
+//   const S = new Document(req);
 //   let inputData = [];
-//   const  TestDocument = testData.document();
+
+//   const  TestDocument = stripExtraDataFromObject(testData.document);
 
 //   expected = [
 //     [
-//       {
-//         TestDocument,
-//       },
-//       // {
-//       //   elementType: `document`,
-//       //   table: `document`,
-//       //   idGroup: `11111111-aaaa-bbbb-1111-111111111111`,
-//       //   idUser: `11111111-aaaa-bbbb-1111-111111111111`,
-//       //   idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
-//       //   title: `1.Testelement-title`,
-//       // },
-
+//       TestDocument,
 //     ],
 //   ];
 
-//   inputData = await D.query(`SELECT *`, `ID_DOCUMENT = "11111111-aaaa-bbbb-1111-111111111111"`);
+//   inputData = await S.query(`SELECT *`, `ID_DOCUMENT = "${testData.idDocument}"`);
 //   actual = [inputData];
 
-//   console.log(`Test 4.1`);
-//   console.log(inputData);
-//   // console.log(`Test 4.1`);
-//   // console.log(`test values : input->actual==expectet`);
-//   // console.log(inputData, `->`, actual, `==`, expected);
-
 //   assert.deepEqual(actual, expected,
-//     `(4.1){  Metoden sammenligne en U-parset version af kolonnenavne i DOCUMENT fra sql databasen`);
+//     `(4.1){  Metoden skal kunne hente et DOCUMENT ud fra et testid ${testData.idDocument} og sammenholde det hentede med vores testData.document`);
+
 //   assert.end();
 // });
 
@@ -879,203 +877,161 @@ test(`Test 3.7 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
 // SECTION DB
 /* 4.2 */
 test(`Test 4.2 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra SECTION`, async (assert) => {
-  p.reset();
-
+  resetParsedData();
+  console.log(`Test 4.2`);
   const req = { session: {}, params: {}, body: {} };
   const S = new Section(req);
   let inputData = [];
-  const  TestSection = testData.section;
-  delete TestSection.database;
-  delete TestSection.connect;
-  delete TestSection.table;
-  delete TestSection.idColumnName;
-  delete TestSection.idColumnGroup;
-  delete TestSection.elementtype;
 
-  delete TestSection.idColumnUser;
-  p.parseArrayOfObjects([TestSection]);
-  console.log(TestSection);
+  const  TestSection = stripExtraDataFromObject(testData.section);
+
   expected = [
     [
-
       TestSection,
-
-      // {
-      //   elementtype: `section`,
-      //   idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
-      //   idSection: `11111111-aaaa-bbbb-1111-111111111111`,
-      //   sectionNumber: `0`,
-      //   title: `1.Testelement-title`,
-      //   content: `1.testelement-content`,
-      //   teaser: `1.testelement-teaser`,
-      //   keywords: `1.testelement-keywords`,
-      // },
-      {
-        elementType: `section`,
-        idDocument: `11111111-aaaa-bbbb-1111-111111111111`,
-        idSection: `11111111-aaaa-bbbb-1111-111111111111`,
-        sectionNumber: `0`,
-        title: `1.Testelement-title`,
-        content: `1.testelement-content`,
-        teaser: `1.testelement-teaser`,
-        keywords: `1.testelement-keywords`,
-      },
     ],
   ];
 
-  inputData = await S.query(`SELECT *`, `ID_DOCUMENT_SECTION = "11111111-aaaa-bbbb-1111-111111111111"`);
-
+  inputData = await S.query(`SELECT *`, `ID_DOCUMENT_SECTION = "${testData.idDocumentSection}"`);
   actual = [inputData];
 
-  console.log(`Test 4.2`);
-  // console.log(`test if input->actual==expecvalues :t`);
-  // console.log(inputData, `->`, actual, `==`, expected);
-
   assert.deepEqual(actual, expected,
-    `(4.2){  Metoden skal kunne returnere en U-parset version af kolonnenavne i SECTION fra sql databasen`);
+    `(4.2){  Metoden skal kunne hente en section ud fra et testid ${testData.idDocumentSection} og sammenholde det hentede med vores testData.section`);
 
   assert.end();
 });
 
-
+// // FIXME: bør omskrives så den bruger Quiz objekt og testData.quiz
 // // QUIZ DB
 // /* 4.3 */
-// test(`Test 4.3 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra quiz tabellen`, async (assert) => {
-//   p.reset();
-//   const req = {
-//     method: `TEST`, session: { idGroup: testData.idGroup }, params: {}, body: {},
-//   };
-//   const Q = new Quiz(req);
+// test(`Test 4.3 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra QUIZ`, async (assert) => {
+//   resetParsedData();
+//   console.log(`Test 4.3`);
+//   const req = { session: {}, params: {}, body: {} };
+//   const S = new Quiz(req);
 //   let inputData = [];
+
+//   const  TestQuiz = stripExtraDataFromObject(testData.quiz);
+
 //   expected = [
 //     [
-//       { COLUMN_NAME: `ID_QUIZ` },
-//       { COLUMN_NAME: `ID_DOCUMENT` },
-//       { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
-//       { COLUMN_NAME: `ELEMENT_TYPE` },
-//       { COLUMN_NAME: `SECTION_TITLE` },
-//       { COLUMN_NAME: `ID_USER_GROUP` },
+//       TestQuiz,
 //     ],
 //   ];
-//   inputData = await Q.queryUnparsedData(`HEAD`, `COLUMN_NAME`);
 
+//   inputData = await S.query(`SELECT *`, `ID_QUIZ = "${testData.idDocumentSection}"`);
 //   actual = [inputData];
 
-//   console.log(`Test 4.3`);
-//   // console.log(`test values : input->actual==expectet`);
-//   // console.log(inputData, `->`, actual, `==`, expected);
-
 //   assert.deepEqual(actual, expected,
-//     `(4.3){  Metoden skal kunne sammenligne U-parset version af en QUIZ fra sql databasen med expectet`);
+//     `(4.3){  Metoden skal kunne hente en QUIZ ud fra et testid ${testData.idDocumentSection} og sammenholde det hentede med vores testData.quiz`);
 
 //   assert.end();
 // });
 
-
+// FIXME: bør omskrives så den bruger QuizQuestion objekt og testData.quizQuestion
 // // QUIZ QUESTION DB
 // /* 4.4 */
-// test(`Test 4.4 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra QUIZ QUESTION tabellen`, async (assert) => {
-//   p.reset();
-
+// test(`Test 4.4 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra QUIZ QUESTION`, async (assert) => {
+//   resetParsedData();
+//   console.log(`Test 4.4`);
 //   const req = { session: {}, params: {}, body: {} };
-//   const Qq = new QuizQuestion(req);
+//   const S = new QuizQuestion(req);
 //   let inputData = [];
+
+//   const  TestQuizQuestion = stripExtraDataFromObject(testData.quizQuestion);
+
 //   expected = [
 //     [
-//       { COLUMN_NAME: `ID_QUIZ` },
-//       { COLUMN_NAME: `ID_DOCUMENT` },
-//       { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
-//       { COLUMN_NAME: `ELEMENT_TYPE` },
-//       { COLUMN_NAME: `SECTION_TITLE` },
-//       { COLUMN_NAME: `ID_USER_GROUP` },
+//       TestQuizQuestion,
 //     ],
-
 //   ];
-//   inputData = await Qq.queryUnparsedData(`HEAD`, `COLUMN_NAME`);
 
-//   actual = [inputData];  console.log(`Test 4.4`);
-//   // console.log(`test if input->actual==expecvalues :t`);
-//   // console.log(inputData, `->`, actual, `==`, expected);
+//   inputData = await S.query(`SELECT *`, `ID_QUIZ_QUESTION = "${testData.idQuestion}"`);
+//   actual = [inputData];
 
 //   assert.deepEqual(actual, expected,
-//     `(4.4){  Metoden skal sammenligne en U-parset version af et QUIZ QUESTION fra sql databasen med expectet`);
+//     `(4.4){  Metoden skal kunne hente en QUIZ QUESTION ud fra et testid ${testData.idQuestion} og sammenholde det hentede med vores testData.quizQuestion`);
 
 //   assert.end();
 // });
 
 
+// FIXME: bør omskrives så den bruger Flashcard objekt og testData.flashcard
 // // FLASHCARD DB
 // /* 4.5 */
-// test(`Test 4.5 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra flashcard tabellen`, async (assert) => {
-//   p.reset();
-
+// test(`Test 4.5 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra FLASHCARD`, async (assert) => {
+//   resetParsedData();
+//   console.log(`Test 4.5`);
 //   const req = { session: {}, params: {}, body: {} };
-//   const F = new Flashcard(req);
+//   const S = new Flashcard(req);
 //   let inputData = [];
+
+//   const  TestFlashcard = stripExtraDataFromObject(testData.flashcard);
+
 //   expected = [
 //     [
-//       { COLUMN_NAME: `ID_FLASHCARD` },
-//       { COLUMN_NAME: `ID_USER` },
-//       { COLUMN_NAME: `ID_DOCUMENT` },
-//       { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
-//       { COLUMN_NAME: `CONCEPT` },
-//       { COLUMN_NAME: `DEFINITION` },
-//       { COLUMN_NAME: `ELEMENT_TYPE` },
-//       { COLUMN_NAME: `ID_USER_GROUP` },
+//       TestFlashcard,
 //     ],
 //   ];
-//   inputData = await F.queryUnparsedData(`HEAD`, `COLUMN_NAME`);
+
+//   inputData = await S.query(`SELECT *`, `ID_FLASHCARD = "${testData.idFlashcard}"`);
 //   actual = [inputData];
 
-//   console.log(`Test 4.5`);
-//   // console.log(`test values : input->actual==expectet`);
-//   // console.log(inputData, `->`, actual, `==`, expected);
-
 //   assert.deepEqual(actual, expected,
-//     `(4.5){  Metoden skal sammenligne en U-parset version af et FLASHCARD fra sql databasen`);
+//     `(4.5){  Metoden skal kunne hente et flashcard ud fra et testid ${testData.idFlashcard} og sammenholde det hentede med vores testData.section`);
 
 //   assert.end();
 // });
 
 
+// FIXME: bør omskrives så den bruger User objekt og testData.User
 // // USER DB
 // /* 4.6 */
-// test(`Test 4.6 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra User tabellen`, async (assert) => {
-//   p.reset();
-//   // arrange
-//   let inputData = [];
+// test(`Test 4.6 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra USER`, async (assert) => {
+//   resetParsedData();
+//   console.log(`Test 4.6`);
 //   const req = { session: {}, params: {}, body: {} };
-//   const U = new User(req);
+//   const S = new User(req);
+//   let inputData = [];
+
+//   const  TestUser = stripExtraDataFromObject(testData.user);
 
 //   expected = [
 //     [
-//       { COLUMN_NAME: `ID_USER` },
-//       { COLUMN_NAME: `ID_USER_GROUP` },
-//       { COLUMN_NAME: `USER_NAME` },
-//       { COLUMN_NAME: `PASSWORD` },
-//       { COLUMN_NAME: `FIRST_NAME` },
-//       { COLUMN_NAME: `LAST_NAME` },
-//       { COLUMN_NAME: `EMAIL` },
-//       { COLUMN_NAME: `STUDY_SUBJECT` },
-//       { COLUMN_NAME: `SEMESTER` },
-//       { COLUMN_NAME: `UNIVERSITY` },
-//       { COLUMN_NAME: `ELEMENT_TYPE` },
+//       TestUser,
 //     ],
 //   ];
 
-//   // act
-//   inputData = await U.queryUnparsedData(`HEAD`, `COLUMN_NAME`);
+//   inputData = await S.query(`SELECT *`, `ID_USER = "${testData.idUser}"`);
 //   actual = [inputData];
 
-//   // assert
-//   console.log(`Test 4.6`);
-//   const nextSection = new Section({}, { idSection: `røvOgNøgler`, idUser: `migselv` });
-//   console.log(nextSection);
-//   // console.log(`test values : input->actual==expectet`);
-//   // console.log(inputData, `->`, actual, `==`, expected);
+//   assert.deepEqual(actual, expected,
+//     `(4.6){  Metoden skal kunne hente en user ud fra et testid ${testData.idUser} og sammenholde det hentede med vores testData.user`);
+
+//   assert.end();
+// });
+
+// // // KEYWORD DB
+// // /* 4.7 */
+// test(`Test 4.7 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra KEYWORD`, async (assert) => {
+//   resetParsedData();
+//   console.log(`Test 4.7`);
+//   const req = { session: {}, params: {}, body: {} };
+//   const S = new Keyword(req);
+//   let inputData = [];
+
+//   const  TestKeyword = stripExtraDataFromObject(testData.keyword);
+
+//   expected = [
+//     [
+//       TestKeyword,
+//     ],
+//   ];
+
+//   inputData = await S.query(`SELECT *`, `ID_KEYWORD = "${testData.idKeyword}"`);
+//   actual = [inputData];
 
 //   assert.deepEqual(actual, expected,
-//     `(4.6){  Metoden skal sammenligne en U-parset version af en USER fra sql databasen med expectet`);
+//     `(4.7){  Metoden skal kunne hente en keyword ud fra et testid ${testData.idKeyword} og sammenholde det hentede med vores testData.keyword`);
 
 //   assert.end();
 // });
@@ -1091,6 +1047,18 @@ test(`Test 4.2 af Database-setup i vores SQLdatabase, ved hentning af 1.test-ele
 // //   });
 // // }
 
-// function reset() {
-//   p.parsedData = [];
-// }
+function resetParsedData() {
+  p.parsedData = [];
+}
+
+function stripExtraDataFromObject(Obj) {
+  const tempObj = Obj;
+  delete tempObj.database;
+  delete tempObj.connect;
+  delete tempObj.table;
+  delete tempObj.idColumnName;
+  delete tempObj.idColumnGroup;
+  delete tempObj.elementtype;
+  delete tempObj.idColumnUser;
+  return tempObj;
+}

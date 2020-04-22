@@ -30,15 +30,15 @@ class Section extends Model {
         case `TEST`:
           this.elementtype = `section`;
           this.table = `document_section`;
-          this.idSection = idSection || undefined;
-          this.idDocument = idDocument || undefined;
-          this.idUser = idUser || undefined;
-          this.idGroup = idGroup || undefined;
-          this.title = title || undefined;
-          this.content = content || undefined;
-          this.number = number || undefined;
-          this.teaser = teaser || undefined;
-          this.keywords = keywords || undefined;
+          this.idSection =  undefined;
+          this.idDocument =  undefined;
+          this.idUser =  undefined;
+          this.idGroup =  undefined;
+          this.title =  undefined;
+          this.content =  undefined;
+          this.number =  undefined;
+          this.teaser =  undefined;
+          this.keywords =  undefined;
           break;
 
         default: break;
