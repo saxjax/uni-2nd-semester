@@ -286,16 +286,13 @@ class Server {
    *         Hvordan det gøres er dog lettere usikkert.
    */
   noSessionNoAccess(req, res, next) {
-    const isAccessURL = (req.url === `/login` || req.url === `/auth/user` || req.url === `/groups` || /session/.test(req.url));
-    if (isAccessURL) {
+    if (isAccessURL(req)) {
       next();
     }
-    else if (!req.session.idUser) {
-      console.warn(`Du har ikke et validt idUser og er dermed blevet omdirigeret til login siden!`);
+    else if (!req.session.idUser) { // Du har ikke et validt idUser og er dermed blevet omdirigeret til login siden!
       res.redirect(`/login`);
     }
-    else if (!req.session.idGroup) {
-      console.warn(`Du har ikke et validt idGroup og er dermed blevet omdirigeret til login siden!`);
+    else if (!req.session.idGroup) { // Du har ikke et validt idUser og er dermed blevet omdirigeret til login siden!
       res.redirect(`/groups`);
     }
     else {
@@ -321,6 +318,15 @@ class Server {
     const date = (new Date()).toUTCString();
     console.log(`GOT ${reqMethod}: ${reqUrl} -- ${date}`);
     next();
+  }
+}
+
+function isAccessURL(req) {
+  switch (req.url) {
+    case `/login`: case `/auth/user`: case `/groups`: case /session/.test(req.url): case `/register`:
+      return true;
+    default:
+      return false;
   }
 }
 
