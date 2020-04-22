@@ -253,6 +253,7 @@ class Server {
       key: `user_sid`,
       userId: `NA`,
       idGroup: `NA`,
+      groupName: `NA`,
       loggedIn: false,
       secret: `SECRET_SALT_CODE_BY_MIKE123456789`,
       resave: false,
