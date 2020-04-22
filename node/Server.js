@@ -286,16 +286,16 @@ class Server {
    *         Hvordan det gøres er dog lettere usikkert.
    */
   noSessionNoAccess(req, res, next) {
-    if (!req.session.idUser) {
-      if (this.debug) {
-        console.warn(`Du har ikke et validt idUser og er dermed blevet omdirigeret til login siden!`);
-      }
+    const isAccessURL = (req.url === `/login` || req.url === `/auth/user` || req.url === `/groups` || /session/.test(req.url));
+    if (isAccessURL) {
+      next();
+    }
+    else if (!req.session.idUser) {
+      console.warn(`Du har ikke et validt idUser og er dermed blevet omdirigeret til login siden!`);
       res.redirect(`/login`);
     }
     else if (!req.session.idGroup) {
-      if (this.debug) {
-        console.warn(`Du har ikke et validt idGroup og er dermed blevet omdirigeret til login siden!`);
-      }
+      console.warn(`Du har ikke et validt idGroup og er dermed blevet omdirigeret til login siden!`);
       res.redirect(`/groups`);
     }
     else {

@@ -1,4 +1,4 @@
-const path = require(`path`);
+// const path = require(`path`);
 // const { Document } = require(`../Document/Document`);
 // const { Section } = require(`../Section/Section`);
 // const { Quiz } = require(`../Evaluation/Quiz`);
@@ -31,14 +31,9 @@ class TestController {
 
   async test3(req, res) {
     const test1 = (typeof req.params.queryId       !== `undefined` ? req.params.queryId      : undefined);
-    const test2 = (req.params ? req.params.queryId : undefined);
     console.log(test1);
     console.log(`test2 = ${test2}`);
     res.send(`Se i log`);
-  }
-
-  createSection(req, res) {
-    res.render(path.join(`${this.root}/www/views/createSection.ejs`));
   }
 }
 

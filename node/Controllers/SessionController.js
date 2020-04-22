@@ -20,12 +20,13 @@ class SessionController {
   async userSession(req, res) {
     const currentUser = new User(req);
     const data = await currentUser.loginValid();
+    console.log(`data ${data[0]}`);
     if (data.fatal) {
       res.redirect(`/dbdown`);
     }
     else if (data.length > 0) {
-      req.session.userId = data[0].iduser;
-      req.session.loggedin = true;
+      req.session.idUser = data[0].idUser;
+      req.session.loggedIn = true;
       req.session.username = data[0].username;
       res.redirect(`/`);
     }
@@ -40,9 +41,10 @@ class SessionController {
    */
   async groupSession(req, res) {
     const G = new Group(req);
-    const data = await G.getThis();
+    G.idGroup = req.params.idQuery;
+    const data = await G.getThisGroupData();
     if (data) {
-      req.session.groupId = data[0].iduser_group;
+      req.session.idGroup = data[0].idGroup;
       req.session.groupname = data[0].name;
       res.redirect(`/`);
     }
