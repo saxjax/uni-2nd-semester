@@ -910,7 +910,8 @@ test(`Test 4.2 af Database-setup i vores SQLdatabase, ved hentning af 1.test-ele
 //   const S = new Quiz(req);
 //   let inputData = [];
 
-//   const  TestQuiz = stripExtraDataFromObject(testData.quiz);
+//   const  TestQuiz = undefined;// stripExtraDataFromObject(testData.quiz);
+//   console.log(TestQuiz);
 
 //   expected = [
 //     [
@@ -918,11 +919,11 @@ test(`Test 4.2 af Database-setup i vores SQLdatabase, ved hentning af 1.test-ele
 //     ],
 //   ];
 
-//   inputData = await S.query(`SELECT *`, `ID_QUIZ = "${testData.idDocumentSection}"`);
+//   inputData = await S.query(`SELECT *`, `ID_QUIZ = "${testData.idQuiz}"`);
 //   actual = [inputData];
 
 //   assert.deepEqual(actual, expected,
-//     `(4.3){  Metoden skal kunne hente en QUIZ ud fra et testid ${testData.idDocumentSection} og sammenholde det hentede med vores testData.quiz`);
+//     `(4.3){  Metoden skal kunne hente en QUIZ ud fra et testid ${testData.idQuiz} og sammenholde det hentede med vores testData.quiz`);
 
 //   assert.end();
 // });

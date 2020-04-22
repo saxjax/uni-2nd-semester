@@ -50,7 +50,7 @@ class TestData {
     // this.doc           = new Document(this.defaults.req, this.defaults);
     this.sec           = new Section(this.req);
     // this.keyword       = new Keyword(this.defaults);
-    // this.quiz          = new Quiz(this.defaults);
+    // this.quiz          = new Quiz(this.req);
     // this.quizQuestion  = new QuizQuestion(this.defaults);
     // this.flashcard     = new Flashcard(this.defaults);
     // this.user          = new User(this.defaults);

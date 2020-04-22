@@ -2,7 +2,14 @@
 
 const { Model } = require(`./AbstractClasses/Model`);
 
-/* Section er det objekt som indeholder data vedrÃ¸rende de afsnit der findes i et dokument.
+/* Section er det objekt som indeholder data vedrørende de afsnit der findes i et dokument.
+* en section oprettes ved at.....
+* det er muligt at oprette et section object med alle elementer sat til undefined til test brug.
+* dettes bruges af testData klassen som opretter opjekter med predefinerede data.
+* for at oprette en tom section gøres følgende:
+const req = {method: `TEST`, session: {}, params: {}, body: {},};
+const sec = new Section(req);
+
  * UDVID MED INFORMATION NÃ…R SECTION ER DESIGNET
  */
 
