@@ -25,6 +25,8 @@ const textoff = false;
  *
  * KRAVSSPECIFIKATIONER FINDES Paa OVERLEAF!
  * Se under 4_Design/Database.tex nederst paa siden.
+ * Den eneste specielle er dog "Implementations Test", som ikke omhandler et specifikt krav/design, men
+ * som omhandler test af implementationsmæssige overvejelser.
  */
 
 /* Denne test gør brug af pregenereret data i MySQL databasen som er:
@@ -45,14 +47,14 @@ async function resetDB() {
   try {
     await object.query(`CUSTOM`, `DELETE FROM ${object.database}.${object.table}`, textoff);
     await object.query(`CUSTOM`, `INSERT INTO ${object.database}.${object.table} 
-             (TEST_OPTION_1, TEST_OPTION_2, TEST_OPTION_3, TEST_OPTION_4, TEST_OPTION_5_FLOAT)
-              VALUES ("test1", "test2", "test3", NULL, "1")`, textoff);
+             (TEST_OPTION_1, TEST_OPTION_2, TEST_OPTION_3, TEST_OPTION_4, TEST_OPTION_5_FLOAT, ELEMENT_TYPE)
+              VALUES ("test1", "test2", "test3", NULL, "1", "test")`, textoff);
     await object.query(`CUSTOM`, `INSERT INTO ${object.database}.${object.table} 
-              (TEST_OPTION_1, TEST_OPTION_2, TEST_OPTION_3, TEST_OPTION_4, TEST_OPTION_5_FLOAT)
-               VALUES ("test4", "test5", "test6", NULL, "1.2")`, textoff);
+              (TEST_OPTION_1, TEST_OPTION_2, TEST_OPTION_3, TEST_OPTION_4, TEST_OPTION_5_FLOAT, ELEMENT_TYPE)
+               VALUES ("test4", "test5", "test6", NULL, "1.2", "test")`, textoff);
     await object.query(`CUSTOM`, `INSERT INTO ${object.database}.${object.table} 
-               (TEST_OPTION_1, TEST_OPTION_2, TEST_OPTION_3, TEST_OPTION_4, TEST_OPTION_5_FLOAT)
-                VALUES ("test7", "test8", "test9", NULL, "-123")`, textoff);
+               (TEST_OPTION_1, TEST_OPTION_2, TEST_OPTION_3, TEST_OPTION_4, TEST_OPTION_5_FLOAT, ELEMENT_TYPE)
+                VALUES ("test7", "test8", "test9", NULL, "-123", "test")`, textoff);
   }
   catch (err) {
     throw (new Error(`Databasen er IKKE opsat korrekt! Check setupDB i Databasens tests`));
@@ -82,12 +84,12 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
 
   /* 2.1 */
   try {
-    expected = `SELECT * FROM ${object.database}.${object.table} WHERE testfield = "test"`;
+    expected = `SELECT *, ELEMENT_TYPE FROM ${object.database}.${object.table} WHERE testfield = "test"`;
     actual = object.inputParser(`SELECT *`, `testfield = "test"`);
     assert.equal(actual, expected,
       `(2.1.1) (get) Databasen skal kunne omskrive sit input til en valid SQL streng efter metodevalg`);
 
-    expected = `INSERT INTO ${object.database}.${object.table} (testfield1, testfield2) VALUES ("test1", "test2")`;
+    expected = `INSERT INTO ${object.database}.${object.table} (testfield1, testfield2, ELEMENT_TYPE) VALUES ("test1", "test2", "test")`;
     actual = object.inputParser(`INSERT`, `testfield1 = "test1" AND testfield2 = "test2"`);
     assert.equal(actual, expected,
       `(2.1.2) (post) Databasen skal kunne omskrive sit input til en valid SQL streng efter metodevalg`);
@@ -339,6 +341,43 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   assert.equal(actual, expected,
     `(3.7.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente ints og floats fra databasen.`);
 
+  /* 3.8 */
+  try {
+    actualObject = await object.query(`SELECT *`);
+    actual = false;
+  }
+  catch (error) {
+    actual = true;
+  }
+
+  expected = `test`;
+  actual = actualObject[0].ELEMENT_TYPE;
+  assert.true(actual,
+    `(3.8.1) Databasen skal ikke kunne hente alt data fra en tabel i et opslag.`);
+
+  /* 3.9 */
+  try {
+    actualObject = await object.query(`SELECT TEST_OPTION_1`);
+  }
+  catch (error) {
+    console.log(`TEST FORKERT IMPLEMENTERET PGA: ${error}`);
+  }
+
+  expected = `test`;
+  actual = actualObject[0].ELEMENT_TYPE;
+  assert.equal(expected, actual,
+    `(3.9.1) Det skal fremgå af de data som Databasen henter, hvilken type data der er tale om.`);
+
+  expected = `test`;
+  actual = actualObject[0].ELEMENT_TYPE;
+  assert.equal(expected, actual,
+    `(3.9.2) Det skal fremgå af de data som Databasen henter, hvilken type data der er tale om.`);
+
+  expected = `test`;
+  actual = actualObject[0].ELEMENT_TYPE;
+  assert.equal(expected, actual,
+    `(3.9.3) Det skal fremgå af de data som Databasen henter, hvilken type data der er tale om.`);
+
   /* 4.1  */
   try {
     await object.query(`INSERT`, `TEST_OPTION_1 = "test10" AND TEST_OPTION_2 = "test11" AND TEST_OPTION_3 = "test12" 
@@ -521,41 +560,41 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   /* 7.1 */
   try {
     actualObject = await object.query(`HEAD`);
-
-    expected = `ID_DATABASE`;
-    actual = actualObject[0].COLUMN_NAME;
-    assert.equal(actual, expected,
-      `(7.1.1) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
-
-    expected = `TEST_OPTION_1`;
-    actual = actualObject[1].COLUMN_NAME;
-    assert.equal(actual, expected,
-      `(7.1.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
-
-    expected = `TEST_OPTION_2`;
-    actual = actualObject[2].COLUMN_NAME;
-    assert.equal(actual, expected,
-      `(7.1.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
-
-    expected = `TEST_OPTION_3`;
-    actual = actualObject[3].COLUMN_NAME;
-    assert.equal(actual, expected,
-      `(7.1.4) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
-
-    expected = `TEST_OPTION_4`;
-    actual = actualObject[4].COLUMN_NAME;
-    assert.equal(actual, expected,
-      `(7.1.5) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
-
-    expected = `TEST_OPTION_5_FLOAT`;
-    actual = actualObject[5].COLUMN_NAME;
-    assert.equal(actual, expected,
-      `(7.1.6) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
   }
   catch (error) {
     assert.true(false,
-      `7.1 Head metoden er IKKE implementeret endnu! med fejl: ${error}`);
+      `7.1 Head metoden er implementeret forkert! med fejl: ${error}`);
   }
+
+  expected = `ID_DATABASE`;
+  actual = actualObject[0].COLUMN_NAME;
+  assert.equal(actual, expected,
+    `(7.1.1) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+
+  expected = `TEST_OPTION_1`;
+  actual = actualObject[1].COLUMN_NAME;
+  assert.equal(actual, expected,
+    `(7.1.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+
+  expected = `TEST_OPTION_2`;
+  actual = actualObject[2].COLUMN_NAME;
+  assert.equal(actual, expected,
+    `(7.1.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+
+  expected = `TEST_OPTION_3`;
+  actual = actualObject[3].COLUMN_NAME;
+  assert.equal(actual, expected,
+    `(7.1.4) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+
+  expected = `TEST_OPTION_4`;
+  actual = actualObject[4].COLUMN_NAME;
+  assert.equal(actual, expected,
+    `(7.1.5) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+
+  expected = `TEST_OPTION_5_FLOAT`;
+  actual = actualObject[5].COLUMN_NAME;
+  assert.equal(actual, expected,
+    `(7.1.6) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
 
   /* 8.1 */
   expected = true;

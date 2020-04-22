@@ -811,6 +811,8 @@ test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   assert.deepEqual(actual, expected,
     `(3.1){  Metoden skal kunne returnere en U-parset version af kolonnenavne i DOCUMENT fra sql databasen`);
 
+  D.connect.end();
+
   /* 3.2 */
   // SECTION DB
   p.reset();
@@ -842,6 +844,8 @@ test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   assert.deepEqual(actual, expected,
     `(3.2){  Metoden skal kunne returnere en U-parset version af kolonnenavne i SECTION fra sql databasen`);
 
+  S.connect.end();
+
   /* 3.3 */
   // QUIZ DB
   p.reset();
@@ -869,6 +873,8 @@ test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   assert.deepEqual(actual, expected,
     `(3.3){  Metoden skal kunne returnere en U-parset version af kolonnenavne i QUIZ fra sql databasen`);
 
+  Q.connect.end();
+
   /* 3.4 */
   // QUIZ QUESTION DB
   p.reset();
@@ -895,6 +901,8 @@ test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
 
   assert.deepEqual(actual, expected,
     `(3.4){  Metoden skal kunne returnere en U-parset version af kolonnenavne i QUIZ QUESTION fra sql databasen`);
+
+  Qq.connect.end();
 
   /* 3.5 */
   // FLASHCARD DB
@@ -924,6 +932,8 @@ test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
 
   assert.deepEqual(actual, expected,
     `(3.5){  Metoden skal kunne returnere en U-parset version af kolonnenavne i FLASHCARD fra sql databasen`);
+
+  F.connect.end();
 
   /* 3.6 */
   // USER DB
@@ -962,6 +972,8 @@ test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   assert.deepEqual(actual, expected,
     `(3.6){  Metoden skal kunne returnere en U-parset version af kolonnenavne i USER fra sql databasen`);
 
+  U.connect.end();
+
   /* 3.7 */
   // KEYWORD DB
   p.reset();
@@ -986,6 +998,7 @@ test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   assert.deepEqual(actual, expected,
     `(3.7){  Metoden skal kunne returnere en U-parset version af kolonnenavne i KEYWORD fra sql databasen`);
 
+  K.connect.end();
 
   assert.end();
 });
