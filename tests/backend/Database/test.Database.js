@@ -23,10 +23,15 @@ const textoff = false;
  * head     (dvs. faa information om resourcerne i SQLdatabasen.)
  * options: (dvs. faa information om brugen af databasen og dens resourcer.)
  *
- * KRAVSSPECIFIKATIONER FINDES Paa OVERLEAF!
- * Se under 4_Design/Database.tex nederst paa siden.
- * Den eneste specielle er dog "Implementations Test", som ikke omhandler et specifikt krav/design, men
- * som omhandler test af implementationsmæssige overvejelser.
+ * Kravsspecifikationer.
+ * 1: Database.js skal have adgang til MySQL databasen.
+ * 2: Database.js skal kunne omskrive sine parametre til en valid sql streng
+ * 3: Database.js skal kunne hente data fra MySQL databasen
+ * 4: Database.js skal kunne oprette data til MySQL databasen
+ * 5: Database.js skal kunne opdatere data til MySQL databasen
+ * 6: Database.js skal kunne slette data fra MySQL databasen
+ * 7: Database.js skal kunne give metadata om tabellerne i MySQL databasen
+ * 8: Database.js skal kunne give information om hvordan Database.js API fungere
  */
 
 /* Denne test gør brug af pregenereret data i MySQL databasen som er:
@@ -38,7 +43,7 @@ const textoff = false;
  *    Størstedelen af tests vil foregaa paa TEST_OPTION_1-3,
  *    hvor TEST_OPTION_4 bruges til at teste funktionaliteter paa ikke unikke operationer.
  */
-/* Input: Intet, men bruger "object" variablen.
+/* Input: Intet, men bruger "object" variablen globalt.
  * Output: Har som sideeffect at gendanne tabellen til sine oprindelige værdier.
  * Formål: Kaldes i slutningen af testen for at gendanne værdierne.
  *         Dette gør at testen er fuldstændig selvstændig i sine tests.
@@ -66,6 +71,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
 
   object = new Database();
   /* 1.1 */
+  console.log(`1: Databasen skal have adgang til MySQL databasen.`);
   try {
     await object.connect.connect(async (err) => {
       if (err) {
@@ -83,6 +89,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   await resetDB();
 
   /* 2.1 */
+  console.log(`2: Databasen skal kunne omskrive sine parametre til en valid sql streng`);
   try {
     expected = `SELECT *, ELEMENT_TYPE FROM ${object.database}.${object.table} WHERE testfield = "test"`;
     actual = object.inputParser(`SELECT *`, `testfield = "test"`);
@@ -126,6 +133,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     `(2.2) Databasen skal give en fejlmeddelse, hvis et input ikke kan omskrives til en valid SQL streng.`);
 
   /* 3.1 */
+  console.log(`3: Database.js skal kunne hente data fra MySQL databasen`);
   try {
     actualObject = await object.query(`SELECT TEST_OPTION_1`, `TEST_OPTION_1 = "test1"`);
 
@@ -379,6 +387,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     `(3.9.3) Det skal fremgå af de data som Databasen henter, hvilken type data der er tale om.`);
 
   /* 4.1  */
+  console.log(`4: Database.js skal kunne oprette data til MySQL databasen`);
   try {
     await object.query(`INSERT`, `TEST_OPTION_1 = "test10" AND TEST_OPTION_2 = "test11" AND TEST_OPTION_3 = "test12" 
                          AND TEST_OPTION_4 = "ikkeNull" AND TEST_OPTION_5_FLOAT = 1.42`);
@@ -456,6 +465,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     `(4.4) Databasen skal kunne gemme emails.`);
 
   /* 5.1 */
+  console.log(`5: Database.js skal kunne opdatere data til MySQL databasen`);
   try {
     await object.query(`UPDATE`, `TEST_OPTION_1 = "test1_modificeret" WHERE TEST_OPTION_1 = "test1"`);
   }
@@ -517,6 +527,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     `(5.4) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne give en fejlmeddelse, hvis dataene der ønskes opdateret ikke findes`);
 
   /* 6.1 */
+  console.log(`6: Database.js skal kunne slette data fra MySQL databasen`);
   try {
     await object.query(`DELETE`, `TEST_OPTION_1 = "test10"`);
     expected = true;
@@ -558,6 +569,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
 
 
   /* 7.1 */
+  console.log(`7: Database.js skal kunne give metadata om tabellerne i MySQL databasen`);
   try {
     actualObject = await object.query(`HEAD`);
   }
@@ -597,6 +609,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     `(7.1.6) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
 
   /* 8.1 */
+  console.log(`8: Database.js skal kunne give information om hvordan Database.js API fungere`);
   expected = true;
   actual = object.info(textoff);
   assert.equal(actual, expected,

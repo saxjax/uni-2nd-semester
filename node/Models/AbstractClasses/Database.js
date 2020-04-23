@@ -158,7 +158,6 @@ class Database {
       switch (choice) {
         case `INSERT`: {
           const dataArr = this.insertSplitter(data);
-          console.log(dataArr);
           sql = `INSERT INTO ${this.database}.${this.table} (${dataArr.columns}, ELEMENT_TYPE) VALUES (${dataArr.values}, "${this.elementType}")`;
           break;
         }
@@ -251,8 +250,7 @@ class Database {
     while (!done) {
       dataArr.columns += /^\w+/.exec(dataCopy);
       dataCopy = dataCopy.slice(`${/^\w+/.exec(dataCopy)} = `.length, dataCopy.length);
-      if (/^"\w+([\.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.test(dataCopy)) { // Test for om det er en mail
-        console.log(`THIS SHOULD NOT HAPPEN MOTHERFUCKING SNAKES ON THIS MOTHERFUCKING PLANE`);
+      if (/^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.test(dataCopy)) { // Test for om det er en mail
         dataArr.values += /^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy);
         dataCopy = dataCopy.slice(`${/^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy)} `.length, dataCopy.length);
       }

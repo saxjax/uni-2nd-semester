@@ -18,6 +18,7 @@ let object = new Navn(request);
  * Alle kravsspecifikationer vil desuden være direkte relaterbare til hvad der står her
  */
 
+/* Kravsspecifikationer */
 /* Indsæt her KRAVSSPECIFIKATIONERNE der gør at klassens/funktionens formål opfyldes
  * Beskriv ikke metoderne, men formålene, eks:
  * Database adgang
@@ -25,6 +26,13 @@ let object = new Navn(request);
  * IKKE!!!
  * Connect()
  * 1.1: Connect metoden skal tilkoble databasen
+ */
+
+/* Hjælperfunktioner */
+/* Beskriv her de hjælperfunktioner som skal bruges i testen
+ * Dette kunne være noget som at genstarte databasens test database til default værdierne i starten eller slutningen.
+ * Det første det skal beskrives er derefter selvfølgelig hjælperfunktionerne, som skal dokumenteres seperat.
+ * Eg. Giv først et overblik over alle hjælpefunktioner (og hvorfor) og dokumenter dem derefter, før der testes.
  */
 
 test(`Test af X i node/objektNavn`, async (assert) => {

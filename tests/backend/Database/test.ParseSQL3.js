@@ -15,16 +15,50 @@ const { QuizQuestion } = require(`../../../node/Models/QuizQuestion`);
 const { Flashcard } = require(`../../../node/Models/Flashcard`);
 const { Keyword } = require(`../../../node/Models/Keyword`);
 const { User } = require(`../../../node/Models/User`);
-const { TestData } = require(`../../../node/Models/TestData`);
+const { TestData } = require(`../../../node/Models/TestClasses/TestData`);
 // const req = { session: {}, params: {}, body: {} };
 const testData = new TestData();
 
-/* 0 test af parseArrayOfObjects() på data som er ukendt for parseren */
-/* 0.0 - 0.6 */
+/* Dokumentation */
+/* ParseSQL er den klasse som sikrer at de data vi får fra MySQL Databasen bliver parset til et JavaScript format (camelCase)
+ * Parserens eneste opgave er dermed, at omskrive variabelnavnet som man tilgår data til camelCase, ud fra den elementType dataene er i.
+ */
 
-test(`Test 0.x af ParseSQL i node/Database`, (assert) => {
+/* Kravsspecifikationer
+ */
+
+/* Hjælperfunktioner
+ * 0: test af parseArrayOfObjects() på data som er ukendt for parseren
+ */
+
+/* Formål: At eksplicitere at parserens data skal resettes, så der bliver gjort klart til en ny test
+ * Input : Intet, omend der bruges den globale ParseSQL klasse (p)
+ * Output: At p.parsedData er lig et tomt array, som hvis der skulle initialiseres en ny klasse.
+ */
+function resetParsedData() {
+  p.parsedData = [];
+}
+
+/* Formål: FIXME: Det ved jeg ikke, i forhold til test øjemed (Martin) 
+ * Input :
+ * Output:
+ */
+function stripExtraDataFromObject(Obj) {
+  const tempObj = Obj;
+  delete tempObj.database;
+  delete tempObj.connect;
+  delete tempObj.table;
+  delete tempObj.idColumnName;
+  delete tempObj.idColumnGroup;
+  delete tempObj.elementtype;
+  delete tempObj.idColumnUser;
+  return tempObj;
+}
+
+test(`Test af ParseSQL i node/Database`, (assert) => {
+  /* 1.1 */
   console.log(`Test af parseArrayOfObjects() metoden med inputData som er ukendt for parseren`);
-  // Tests a første if-statement
+
   resetParsedData();
   const testThis = [{ data: `data` }, 1, 0, true, false, `hejse dejsa`];
 
@@ -39,55 +73,6 @@ test(`Test 0.x af ParseSQL i node/Database`, (assert) => {
       `{0.${i} Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere et for parseren ukendt input,
      som ikke er et array, uden at ændre i det og logge en warning i processen`);
   });
-
-  // resetParsedData();
-  // const inputData = 1;
-  // expected = 1;
-  // actual = p.parseArrayOfObjects(1);
-  // assert.deepEqual(actual, expected,
-  //   `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrÃ¦rt input,
-  //      som ikke er et array, uden at Ã¦ndre i det og logge en warning i processen`);
-
-  //   resetParsedData();
-  //   expected = true;
-  //   actual = p.parseArrayOfObjects(true);
-  //   assert.deepEqual(actual, expected,
-  //     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrÃ¦rt input,
-  //      som ikke er et array, uden at Ã¦ndre i det og logge en warning i processen`);
-
-  //   resetParsedData();
-  //   expected = false;
-  //   actual = p.parseArrayOfObjects(false);
-  //   assert.deepEqual(actual, expected,
-  //     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrÃ¦rt input,
-  //      som ikke er et array, uden at Ã¦ndre i det og logge en warning i processen`);
-
-  //   resetParsedData();
-  //   expected = `hejsa dejsa`;
-  //   actual = p.parseArrayOfObjects(`hejsa dejsa`);
-  //   assert.deepEqual(actual, expected,
-  //     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere arbitrÃ¦rt input,
-  //      som ikke er et array, uden at Ã¦ndre i det og logge en warning i processen`);
-
-  //   // Tests af ukendt elementType
-
-  //   resetParsedData();
-  //   expected = [{
-  //     elementType: `lmao`,
-  //     data: `data`,
-  //   }];
-  //   actual = p.parseArrayOfObjects([{
-  //     elementType: `lmao`,
-  //     data: `data`,
-  //   }]);
-  //   assert.deepEqual(actual, expected,
-  //     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere input af typen array,
-  //      med ukendt elementType i det indre objekt, uden at Ã¦ndre i det og logge en warning i processen`);
-
-  //   console.log(`Test af parseSection() metoden`);
-  //   // Test uden teaser
-  //   assert.deepEqual(actual, expected,
-  //     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne returnere en parset version af inputtet med en selvkonstrueret teaser`);
 
   assert.end();
 });
@@ -1048,19 +1033,3 @@ test(`Test 4.2 af Database-setup i vores SQLdatabase, ved hentning af 1.test-ele
 // //     callback(array1Val, array2Val);
 // //   });
 // // }
-
-function resetParsedData() {
-  p.parsedData = [];
-}
-
-function stripExtraDataFromObject(Obj) {
-  const tempObj = Obj;
-  delete tempObj.database;
-  delete tempObj.connect;
-  delete tempObj.table;
-  delete tempObj.idColumnName;
-  delete tempObj.idColumnGroup;
-  delete tempObj.elementtype;
-  delete tempObj.idColumnUser;
-  return tempObj;
-}

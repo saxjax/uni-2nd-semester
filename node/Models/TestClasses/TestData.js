@@ -1,12 +1,12 @@
 
-const { Document } = require(`./Document`);
-const { Section } = require(`./Section`);
-const { Quiz } = require(`./Quiz`);
-const { QuizQuestion } = require(`./QuizQuestion`);
-const { Flashcard } = require(`./Flashcard`);
-const { Keyword } = require(`./Keyword`);
-const { User } = require(`./User`);
-const { Group } = require(`./Group`);
+const { Document } = require(`../Document`);
+const { Section } = require(`../Section`);
+const { Quiz } = require(`../Quiz`);
+const { QuizQuestion } = require(`../QuizQuestion`);
+const { Flashcard } = require(`../Flashcard`);
+const { Keyword } = require(`../Keyword`);
+const { User } = require(`../User`);
+const { Group } = require(`../Group`);
 
 /* Formål: Denne klasse skal levere testbare versioner af alle vores objekter (Document, Section, QuizQuestion....) som kan sammenlignes med tilsvarende data i SQLDatabasen.
 * Ud fra hver klasse kan man oprette et objekt af typen (Document, Section, QuizQuestion....)
