@@ -158,6 +158,7 @@ class Database {
       switch (choice) {
         case `INSERT`: {
           const dataArr = this.insertSplitter(data);
+          console.log(dataArr);
           sql = `INSERT INTO ${this.database}.${this.table} (${dataArr.columns}, ELEMENT_TYPE) VALUES (${dataArr.values}, "${this.elementType}")`;
           break;
         }
@@ -239,7 +240,9 @@ class Database {
    *         mellem INSERT kontra de andre SELECT, DELETE og UPDATE.
    * Input : faar data parameteren fra et INSERT query
    * Output: Returnere et JSON objekt, hvor dataene er udsplittet i columns og deres vaerdier.
-  */
+   * FIXME: At the moment we are not able to upload anything with a space in between words
+   */
+
   insertSplitter(data) {
     let done = false;
     let dataCopy = data;
@@ -249,12 +252,13 @@ class Database {
       dataArr.columns += /^\w+/.exec(dataCopy);
       dataCopy = dataCopy.slice(`${/^\w+/.exec(dataCopy)} = `.length, dataCopy.length);
       if (/^"\w+([\.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.test(dataCopy)) { // Test for om det er en mail
+        console.log(`THIS SHOULD NOT HAPPEN MOTHERFUCKING SNAKES ON THIS MOTHERFUCKING PLANE`);
         dataArr.values += /^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy);
         dataCopy = dataCopy.slice(`${/^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy)} `.length, dataCopy.length);
       }
       else {
-        dataArr.values += /^"\w+"/.exec(dataCopy);
-        dataCopy = dataCopy.slice(`${/^"\w+"/.exec(dataCopy)} `.length, dataCopy.length);
+        dataArr.values += /^"\S+"/.exec(dataCopy);
+        dataCopy = dataCopy.slice(`${/^"\S+"/.exec(dataCopy)} `.length, dataCopy.length);
       }
       try {
         if (/^\w+/.exec(dataCopy)[0] === `AND`) {

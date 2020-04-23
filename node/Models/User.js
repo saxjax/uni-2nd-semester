@@ -7,7 +7,7 @@ const { Model } = require(`./AbstractClasses/Model.js`);
 class User extends Model {
   constructor(req) {
     super(req);
-    this.elementtype = `user`;
+    this.elementType = `user`;
     this.table = `user`;
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
@@ -40,7 +40,7 @@ class User extends Model {
   async loginValid() {
     return this.query(`SELECT *`, `USER_NAME = "${this.username}" AND PASSWORD = "${this.password}"`)
       .then((result) => result)
-      .catch((error) => error);no
+      .catch((error) => error); no;
   }
 
   alreadyLoggedIn() {

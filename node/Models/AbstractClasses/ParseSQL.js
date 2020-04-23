@@ -39,7 +39,6 @@ class ParseSql {
           break;
       }
     }
-
     return this.parsedData;
   }
 
