@@ -90,6 +90,9 @@ class Database {
           }
           reject(error);
         }
+        else if (!/SELECT/.test(choice)) { // Parseren er kun relevant når der hentes data fra databasen (eg. et select)
+          resolve(result);
+        }
         else {
           const outputParser = new ParseSql(this.elementType);
           resolve(outputParser.parseArrayOfObjects(result));
@@ -125,10 +128,6 @@ class Database {
     });
   }
 
-  /*
-  * FIXME: HEAD skal returnere alle kollonne navne for den givne tabel
-  */
-  /* UNDER CONSTRUCTION */
   /* Input:  Metoden modtager de valg som brugeren har lavet
    *         Metoden indtager ogsaa texton parameter, som frakobles info() kald under test af catching af errors, men ellers altid er true.
    *        (`HEAD`,`COLUMN_NAME`) giver os column navne retur fra databasen
@@ -149,17 +148,17 @@ class Database {
     }
     else if (/^SELECT [A-Za-z0-9*]+/.test(choice)) {
       if (data === undefined || data === ``) {
-        sql = `${choice} FROM ${this.database}.${this.table}`;
+        sql = `${choice}, ELEMENT_TYPE FROM ${this.database}.${this.table}`;
       }
       else {
-        sql = `${choice} FROM ${this.database}.${this.table} WHERE ${data}`;
+        sql = `${choice}, ELEMENT_TYPE FROM ${this.database}.${this.table} WHERE ${data}`;
       }
     }
     else {
       switch (choice) {
         case `INSERT`: {
           const dataArr = this.insertSplitter(data);
-          sql = `INSERT INTO ${this.database}.${this.table} (${dataArr.columns}) VALUES (${dataArr.values})`;
+          sql = `INSERT INTO ${this.database}.${this.table} (${dataArr.columns}, ELEMENT_TYPE) VALUES (${dataArr.values}, "${this.elementType}")`;
           break;
         }
         case `UPDATE`:
@@ -169,7 +168,12 @@ class Database {
           sql = `DELETE FROM ${this.database}.${this.table} WHERE ${data}`;
           break;
         case `HEAD`:
-          sql = `SELECT ${data} FROM information_schema.columns WHERE table_schema = "${this.database}" AND table_name = "${this.table}" `;
+          if (data === undefined || data === ``) {
+            sql = `SELECT * FROM information_schema.columns WHERE table_schema = "${this.database}" AND table_name = "${this.table}"`;
+          }
+          else {
+            sql = `SELECT ${data} FROM information_schema.columns WHERE table_schema = "${this.database}" AND table_name = "${this.table}"`;
+          }
           break;
         case `CUSTOM`:
           if (texton) {
@@ -178,7 +182,7 @@ class Database {
           sql = data;
           break;
         default:
-          console.log(`ERROR: der blev ikke valgt\nSELECT, INSERT, UPDATE, DELETE eller CUSTOM\n`);
+          console.log(`ERROR: der blev ikke valgt\nSELECT, INSERT, UPDATE, DELETE, HEAD eller CUSTOM\n`);
       }
     }
 
@@ -244,8 +248,14 @@ class Database {
     while (!done) {
       dataArr.columns += /^\w+/.exec(dataCopy);
       dataCopy = dataCopy.slice(`${/^\w+/.exec(dataCopy)} = `.length, dataCopy.length);
-      dataArr.values += /".*?"/.exec(dataCopy);
-      dataCopy = dataCopy.slice(`${/".*?"/.exec(dataCopy)} `.length, dataCopy.length);
+      if (/^"\w+([\.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.test(dataCopy)) { // Test for om det er en mail
+        dataArr.values += /^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy);
+        dataCopy = dataCopy.slice(`${/^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy)} `.length, dataCopy.length);
+      }
+      else {
+        dataArr.values += /^"\w+"/.exec(dataCopy);
+        dataCopy = dataCopy.slice(`${/^"\w+"/.exec(dataCopy)} `.length, dataCopy.length);
+      }
       try {
         if (/^\w+/.exec(dataCopy)[0] === `AND`) {
           dataArr.columns += `, `;
