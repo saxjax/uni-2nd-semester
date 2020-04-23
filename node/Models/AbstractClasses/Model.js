@@ -79,24 +79,34 @@ class Model extends Database {
   /* Formål: At kunne tilgå data om den gruppe man er en del af såsom gruppens navn med videre.
    * Input : Et objekt der er oprettet med et idGroup i session
    * Output: Den row i user_group tabellen der svarer til idGroup
+   * trueObjectTable variablen bruges til at gemme objektets oprindelige tabel
+   * dette gøres for midlertidigt at assigne this.table til usertabellen så man kan få userdata.
+   * Dette gøres så vi ikke behøver at oprette et user objekt til hvert eneste metode, da id´et allerede ligger i den pågældende session.
    */
   async getThisGroupData() {
+    const trueObjectTable = this.table;
     this.table = `USER_GROUP`;
     const data = await this.query(`SELECT *`, `${this.idColumnGroup} = "${this.idGroup}"`)
       .then((result) => result)
       .catch((error) => error);
+    this.table = trueObjectTable;
     return data;
   }
 
   /* Formål: At kunne tilgå data om den user man er såsom ens username med videre.
-   * Input : Et objekt der er oprettet med et idUser i session
-   * Output: Den row i user tabellen der svarer til idUser
-   */
+  * Input : Et objekt der er oprettet med et idUser i session
+  * Output: Den row i user tabellen der svarer til idUser
+  * trueObjectTable variablen bruges til at gemme objektets oprindelige tabel
+  * dette gøres for midlertidigt at assigne this.table til usertabellen så man kan få userdata.
+  * Dette gøres så vi ikke behøver at oprette et user objekt til hvert eneste metode, da id´et allerede ligger i den pågældende session.
+  */
   async getThisUserData() {
+    const trueObjectTable = this.table;
     this.table = `USER`;
     const data = this.query(`SELECT *`, `${this.idColumnUser} = "${this.idUser}"`)
       .then((result) => result)
       .catch((error) => error);
+    this.table = trueObjectTable;
     return data;
   }
 

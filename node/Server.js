@@ -50,7 +50,7 @@ class Server {
     if (this.debug) {
       this.testPatterns();
     }
-    
+
     return this.app.listen(this.port, () => console.log(`${this.name} startin up on ${this.port}`));
   }
 
@@ -121,11 +121,11 @@ class Server {
     // this.app.get(`/put/document/:idQuery`, (req, res) => Show.putDocumentPage(req, res));
 
     // Sections
-    this.app.get(`/view/section/recipient`,         (req, res) => Show.viewSectionRecipientPage(req, res));
+    this.app.get(`/view/sections/recipient`,         (req, res) => Show.viewSectionsRecipientPage(req, res));
     // this.app.get(`/view/section/expert`,            (req, res) => Show.viewSectionExpertPage(req, res));
     this.app.get(`/view/section/document/:idQuery`, (req, res) => Show.viewSectionDocumentPage(req, res));
     this.app.get(`/post/section`,                 (req, res) => Show.postSectionPage(req, res));
-    // this.app.get(`/view/section/:idQuery`,          (req, res) => Show.viewSectionPage(req, res));
+    this.app.get(`/view/section/:idQuery`,          (req, res) => Show.viewSectionPage(req, res));
     // this.app.get(`/put/section/:idQuery`,        (req, res) => Show.putSectionPage(req, res));
 
     // Evaluations
