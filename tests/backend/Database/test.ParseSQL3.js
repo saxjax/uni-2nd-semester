@@ -25,10 +25,14 @@ const testData = new TestData();
  */
 
 /* Kravsspecifikationer
+ * 0: test af parseArrayOfObjects() på data som er ukendt for parseren
+ * 1: test af de enkelte parse funktioner
+ * 2: test af parseArrayOfObjects(), for at sikre elementType bliver korrekt vurderet
+ * 3: Test af at kolonne navnene fra databasen er de samme som parseren forventer
  */
 
 /* Hjælperfunktioner
- * 0: test af parseArrayOfObjects() på data som er ukendt for parseren
+ *
  */
 
 /* Formål: At eksplicitere at parserens data skal resettes, så der bliver gjort klart til en ny test
@@ -39,11 +43,11 @@ function resetParsedData() {
   p.parsedData = [];
 }
 
-/* Formål: FIXME: Det ved jeg ikke, i forhold til test øjemed (Martin) 
+/* Formål: FIXME: Det ved jeg ikke, i forhold til test øjemed (Martin)
  * Input :
  * Output:
  */
-function stripExtraDataFromObject(Obj) {
+function stripAllNonDatabaseDataFrom(Obj) {
   const tempObj = Obj;
   delete tempObj.database;
   delete tempObj.connect;
@@ -80,14 +84,11 @@ test(`Test af ParseSQL i node/Database`, (assert) => {
 
 // nodemon tests/backend/Database/test.ParseSQL.js | .\node_modules\.bin\tap-spec
 
-/* 1 test af de enkelte parse funktioner */
-
 /* 1.1 */
 // TODO:
 // TESTvAF PARSE DOCUMENT
 test(`Test 1. af parseXXXXXX() i node/Database ved elementType `, (assert) => {
-  console.log(`1.x test af de enkelte parse funktioner`);
-  console.log(`Test 1.1`);
+  console.log(`1 test af de enkelte parse funktioner`);
 
 
   resetParsedData();
@@ -321,8 +322,6 @@ test(`Test 1.7 af parseKeyword() i node/Database ved elementType keyword`, (asse
   assert.end();
 });
 
-
-/* 2.x test af parseArrayOfObjects() funktionen som switcher pÃ¥ indkommende elementtypes */
 /* 2.1 */
 /* DOCUMENT */
 test(`Test 2.1 af parseArrayOfObjects(DOCUMENT) i node/Database`, (assert) => {
@@ -387,8 +386,6 @@ test(`Test 2.2 af parseArrayOfObjects() i node/Database`, (assert) => {
   actual = p.parseArrayOfObjects(inputData);
 
   console.log(`Test 2.2`);
-  // console.log(`test values : input->actual==expectet`);
-  // console.log(inputData, `->`, actual, `==`, expected);
 
   assert.deepEqual(actual, expected,
     `(2.2){ Metoden skal kunne returnere en parset version af SECTION data`);
@@ -582,7 +579,7 @@ test(`Test 2.7 af parseArrayOfObjects() i node/Database ved elementType user`, (
 /* 3.1 */
 // DOCUMENT DB
 test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af kolonne navne fra DOCUMENT tabellen`, async (assert) => {
-  console.log(`\r\n3.x Test af de enkelte tabeller i SQL databasen\n`);
+  console.log(`3.x Test af de enkelte tabeller i SQL databasen`);
 
   resetParsedData();
 
@@ -611,6 +608,9 @@ test(`Test 3.1 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
 
   assert.deepEqual(actual, expected,
     `(3.1){  Metoden sammenligne en U-parset version af kolonnenavne i DOCUMENT fra sql databasen med forventet indhold`);
+
+  D.connect.end();
+
   assert.end();
 });
 
@@ -650,6 +650,8 @@ test(`Test 3.2 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   assert.deepEqual(actual, expected,
     `(3.2){  Metoden skal kunne returnere en U-parset version af kolonnenavne i SECTION fra sql databasen med forventet indhold`);
 
+  S.connect.end();
+
   assert.end();
 });
 
@@ -682,6 +684,8 @@ test(`Test 3.3 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   assert.deepEqual(actual, expected,
     `(3.3){  Metoden skal kunne sammenligne U-parset version af en QUIZ fra sql databasen med forventet indhold`);
 
+  Q.connect.end();
+
   assert.end();
 });
 
@@ -713,6 +717,8 @@ test(`Test 3.4 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
 
   assert.deepEqual(actual, expected,
     `(3.4){  Metoden skal sammenligne en U-parset version af et QUIZ QUESTION fra sql databasen med forventet indhold`);
+
+  Qq.connect.end();
 
   assert.end();
 });
@@ -747,6 +753,8 @@ test(`Test 3.5 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
 
   assert.deepEqual(actual, expected,
     `(3.5){  Metoden skal sammenligne en U-parset version af et FLASHCARD fra sql databasen med forventet indhold`);
+
+  F.connect.end();
 
   assert.end();
 });
@@ -789,6 +797,8 @@ test(`Test 3.6 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   assert.deepEqual(actual, expected,
     `(3.6){  Metoden skal sammenligne en U-parset version af en USER fra sql databasen med forventet indhold`);
 
+  U.connect.end();
+
   assert.end();
 });
 
@@ -820,6 +830,8 @@ test(`Test 3.7 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
   assert.deepEqual(actual, expected,
     `(3.7){  Metoden skal sammenligne en U-parset version af et KEYWORD fra sql databasen med forventet indhold`);
 
+  K.connect.end();
+
   assert.end();
 });
 
@@ -841,7 +853,7 @@ test(`Test 3.7 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
 //   const S = new Document(req);
 //   let inputData = [];
 
-//   const  TestDocument = stripExtraDataFromObject(testData.document);
+//   const  TestDocument = stripAllNonDatabaseDataFrom(testData.document);
 
 //   expected = [
 //     [
@@ -859,16 +871,17 @@ test(`Test 3.7 af Database-setup i vores SQLdatabase, ved hentning af kolonne na
 // });
 
 
-// SECTION DB
+// SECTION DB FIXME: FIXME: Burde virke
 /* 4.2 */
+
 test(`Test 4.2 af Database-setup i vores SQLdatabase, ved hentning af 1.test-element fra SECTION`, async (assert) => {
   resetParsedData();
-  console.log(`Test 4.2`);
   const req = { session: {}, params: {}, body: {} };
-  const S = new Section(req);
+  const SectionObject = new Section(req);
+
   let inputData = [];
 
-  const  TestSection = stripExtraDataFromObject(testData.section);
+  const  TestSection = stripAllNonDatabaseDataFrom(testData.section);
 
   expected = [
     [
@@ -876,14 +889,15 @@ test(`Test 4.2 af Database-setup i vores SQLdatabase, ved hentning af 1.test-ele
     ],
   ];
 
-  inputData = await S.query(`SELECT *`, `ID_DOCUMENT_SECTION = "${testData.idDocumentSection}"`);
+  inputData = await SectionObject.query(`SELECT *`, `ID_DOCUMENT_SECTION = "${testData.idDocumentSection}"`);
   actual = [inputData];
 
   assert.deepEqual(actual, expected,
     `(4.2){  Metoden skal kunne hente en section ud fra et testid ${testData.idDocumentSection} og sammenholde det hentede med vores testData.section`);
 
+  SectionObject.connect.end();
+
   assert.end();
-  S.connect.end();
 });
 
 // // FIXME: bør omskrives så den bruger Quiz objekt og testData.quiz
@@ -896,7 +910,7 @@ test(`Test 4.2 af Database-setup i vores SQLdatabase, ved hentning af 1.test-ele
 //   const S = new Quiz(req);
 //   let inputData = [];
 
-//   const  TestQuiz = undefined;// stripExtraDataFromObject(testData.quiz);
+//   const  TestQuiz = undefined;// stripAllNonDatabaseDataFrom(testData.quiz);
 //   console.log(TestQuiz);
 
 //   expected = [
@@ -924,7 +938,7 @@ test(`Test 4.2 af Database-setup i vores SQLdatabase, ved hentning af 1.test-ele
 //   const S = new QuizQuestion(req);
 //   let inputData = [];
 
-//   const  TestQuizQuestion = stripExtraDataFromObject(testData.quizQuestion);
+//   const  TestQuizQuestion = stripAllNonDatabaseDataFrom(testData.quizQuestion);
 
 //   expected = [
 //     [
@@ -952,7 +966,7 @@ test(`Test 4.2 af Database-setup i vores SQLdatabase, ved hentning af 1.test-ele
 //   const S = new Flashcard(req);
 //   let inputData = [];
 
-//   const  TestFlashcard = stripExtraDataFromObject(testData.flashcard);
+//   const  TestFlashcard = stripAllNonDatabaseDataFrom(testData.flashcard);
 
 //   expected = [
 //     [
@@ -980,7 +994,7 @@ test(`Test 4.2 af Database-setup i vores SQLdatabase, ved hentning af 1.test-ele
 //   const S = new User(req);
 //   let inputData = [];
 
-//   const  TestUser = stripExtraDataFromObject(testData.user);
+//   const  TestUser = stripAllNonDatabaseDataFrom(testData.user);
 
 //   expected = [
 //     [
@@ -1006,7 +1020,7 @@ test(`Test 4.2 af Database-setup i vores SQLdatabase, ved hentning af 1.test-ele
 //   const S = new Keyword(req);
 //   let inputData = [];
 
-//   const  TestKeyword = stripExtraDataFromObject(testData.keyword);
+//   const  TestKeyword = stripAllNonDatabaseDataFrom(testData.keyword);
 
 //   expected = [
 //     [

@@ -78,7 +78,7 @@ class TestData {
       teaser: `1.Testelement-teaser`,
       title: `1.Testelement-title`,
     };
-    // this.doc           = new Document(this.defaults.req, this.defaults);
+    // this.document           = new Document(this.defaults.req, this.defaults);
     this.sec           = new Section(this.req);
     // this.keyword       = new Keyword(this.defaults);
     // this.quiz          = new Quiz(this.req);
