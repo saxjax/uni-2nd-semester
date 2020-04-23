@@ -55,15 +55,12 @@ class Section extends Model {
 
   async insertSectionToDatabase() {
     try {
-      await this.query(`INSERT`, `SECTION_TITLE = "${this.title}" AND SECTION_CONTENT = "${this.content}" AND KEYWORDS = "${this.keywords}" AND SECTION_NUMBER = "${this.number}" AND ID_USER_GROUP = "${this.idGroup}" AND ID_USER = "${this.idUser}"`);
-
-      /* await this.query(`INSERT`, `SECTION_TITLE = "${this.title}" `
+      await this.query(`INSERT`, `SECTION_TITLE = "${this.title}" `
                        + `AND SECTION_CONTENT = "${this.content}" `
                        + `AND KEYWORDS = "${this.keywords}" `
                        + `AND SECTION_NUMBER = "${this.number}" `
                        + `AND ID_USER_GROUP = "${this.idGroup}" `
                        + `AND ID_USER = "${this.idUser}"`);
-                       */
     }
     catch (error) {
       console.log(error);

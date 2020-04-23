@@ -251,15 +251,10 @@ class Database {
     while (!done) {
       dataArr.columns += /^\w+/.exec(dataCopy);
       dataCopy = dataCopy.slice(`${/^\w+/.exec(dataCopy)} = `.length, dataCopy.length);
-      if (/^"\w+([\.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.test(dataCopy)) { // Test for om det er en mail
-        console.log(`THIS SHOULD NOT HAPPEN MOTHERFUCKING SNAKES ON THIS MOTHERFUCKING PLANE`);
-        dataArr.values += /^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy);
-        dataCopy = dataCopy.slice(`${/^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy)} `.length, dataCopy.length);
-      }
-      else {
-        dataArr.values += /^"\S+"/.exec(dataCopy);
-        dataCopy = dataCopy.slice(`${/^"\S+"/.exec(dataCopy)} `.length, dataCopy.length);
-      }
+
+      dataArr.values += /^".*?"/.exec(dataCopy);
+      dataCopy = dataCopy.slice(`${/^".*?"/.exec(dataCopy)} `.length, dataCopy.length);
+
       try {
         if (/^\w+/.exec(dataCopy)[0] === `AND`) {
           dataArr.columns += `, `;
