@@ -50,7 +50,7 @@ class Server {
     if (this.debug) {
       this.testPatterns();
     }
-
+    
     return this.app.listen(this.port, () => console.log(`${this.name} startin up on ${this.port}`));
   }
 
