@@ -7,6 +7,9 @@
     </head>
     <body>
         <%- include('meta/navbar') %> 
+        <p>
+            <a href="/post/section">create a new section</a>
+        </p>
         <ol>
             <% data.sections.forEach((section) => { %>
                 <li>
@@ -22,11 +25,6 @@
                 <% }); %> 
             </ol>
             
-        <button>
-            <a href="/insert/section">Crate new section!</a>
-        </button>
-
-
         <%- include('meta/footer') %> 
   </body>
   <script src="js/view-design.js"></script>

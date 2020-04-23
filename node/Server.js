@@ -191,6 +191,7 @@ class Server {
     const Creator = new CreateController();
     this.app.post(`/post/group`, (req, res) => Creator.createGroup(req, res));
     this.app.post(`/post/user`, (req, res) => Creator.createUser(req, res));
+    this.app.post(`/post/section`, (req, res) => Creator.createSection(req, res));
     this.app.post(`/post/quiz`, (req, res) => Creator.createQuiz(req, res));
   }
 

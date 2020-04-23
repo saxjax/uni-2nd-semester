@@ -1,8 +1,8 @@
 /* eslint-disable guard-for-in */
 /* eslint no-console: off */
-const { User } = require(`../Models/User`);
 const { Group } = require(`../Models/Group`);
-
+const { User } = require(`../Models/User`);
+const { Section } = require(`../Models/Section`);
 /* UNDER CONSTRUCTION */
 
 class CreateController {
@@ -30,6 +30,18 @@ class CreateController {
     try {
       await U.save();
       res.redirect(`/login`);
+    }
+    catch (error) {
+      res.redirect(`/dbdown`);
+    }
+  }
+
+  /* UNDER CONSTRUCTION */
+  async createSection(req, res) {
+    const S = new Section(req);
+    try {
+      await S.insertSectionToDatabase();
+      res.redirect(`/view/sections/recipient`);
     }
     catch (error) {
       res.redirect(`/dbdown`);
