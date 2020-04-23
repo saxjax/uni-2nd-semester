@@ -240,7 +240,9 @@ class Database {
    *         mellem INSERT kontra de andre SELECT, DELETE og UPDATE.
    * Input : faar data parameteren fra et INSERT query
    * Output: Returnere et JSON objekt, hvor dataene er udsplittet i columns og deres vaerdier.
-  */
+   * FIXME: At the moment we are not able to upload anything with a space in between words
+   */
+
   insertSplitter(data) {
     let done = false;
     let dataCopy = data;
