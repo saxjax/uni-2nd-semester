@@ -3,6 +3,8 @@
 const express = require(`express`);
 const upload = require(`express-fileupload`);
 const session = require(`express-session`);
+const MySQLStore = require(`express-mysql-session`)(session);
+const fs = require(`fs`);
 const bodyParser = require(`body-parser`);
 
 const { ViewController } = require(`./Controllers/ViewController`);
@@ -11,6 +13,7 @@ const { SessionController } = require(`./Controllers/SessionController`);
 const { RedirectController } = require(`./Controllers/RedirectController`);
 const { CreateController } = require(`./Controllers/CreateController`);
 const { TestController } = require(`./Controllers/TestController`);
+const { Database } = require(`./Models/AbstractClasses/Database`);
 const pad = require(`./HelperFunctions/Pad`);
 
 /* Server er et objekt der opretter webapplikationen.
@@ -244,11 +247,15 @@ class Server {
     this.app.use(bodyParser.json());
   }
 
+
   /* Formål: At opstille den session som gør at programmet kan "huske" hvilken gruppe man er en del af samt hvilken bruger man er
    * Input : Non
    * Output: Muligheden for at tilgå req.session, samt et autogeneret login hvis man har sat skipAccess i settings til true.
    */
   sessionMiddleware() {
+    const DBconnect = new Database();
+    const sessionStore = new MySQLStore(DBconnect.DBinfo);
+
     this.app.use(session({
       key: `user_sid`,
       userId: `N/A`,
@@ -256,6 +263,7 @@ class Server {
       groupName: `N/A`,
       loggedIn: false,
       secret: `SECRET_SALT_CODE_BY_MIKE123456789`,
+      store: sessionStore,
       resave: false,
       saveUninitialized: false,
       cookie: { maxAge: 3600000 },
