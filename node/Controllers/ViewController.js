@@ -123,7 +123,7 @@ class ViewController {
    * Input : En session med userId og groupId
    * Output: En liste af de sections som er lagt op i gruppen.
    */
-  async viewSectionRecipientPage(req, res) {
+  async viewSectionsRecipientPage(req, res) {
     const Recipient = new Group(req);
 
     const data = {
@@ -131,7 +131,7 @@ class ViewController {
       user: await Recipient.getThisUserData(),
       sections: await Recipient.getAllElementsOfType(`Section`),
     };
-    this.ejs = path.join(`${this.root}/www/views/viewSectionRecipient.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/viewSectionsRecipient.ejs`);
     res.render(this.ejs, { data });
   }
 
@@ -195,7 +195,7 @@ class ViewController {
     const data = {
       group: await Sec.getThisGroupData(),
       user: await Sec.getThisUserData(),
-      document: await Sec.getThis(),
+      section: await Sec.getThis(),
     };
     this.ejs = path.join(`${this.root}/www/views/viewSection.ejs`);
     res.render(this.ejs, { data });
@@ -211,7 +211,7 @@ class ViewController {
     const data = {
       group: await Sec.getThisGroupData(),
       user: await Sec.getThisUserData(),
-      document: await Sec.getThis(),
+      section: await Sec.getThis(),
     };
     this.ejs = path.join(`${this.root}/www/views/putSection.ejs`);
     res.render(this.ejs, { data });
