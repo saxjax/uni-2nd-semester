@@ -40,7 +40,7 @@ class User extends Model {
   async loginValid() {
     return this.query(`SELECT *`, `USER_NAME = "${this.username}" AND PASSWORD = "${this.password}"`)
       .then((result) => result)
-      .catch((error) => error);
+      .catch((error) => error);no
   }
 
   alreadyLoggedIn() {
@@ -50,7 +50,10 @@ class User extends Model {
     return false;
   }
 
-  /* UNDER CONSTRUCTION */
+  /* Formål: Checker først om register req indeholder de nødvendige informationer og derefter om brugen allerede
+   * er oprettet i database
+   * input: Request sendt fra register form
+   * Output: True/false */
   async validateRegister() {
     let validationCheck = false;
     if (!isEmpty(this.username) && !isEmpty(this.firstName) && !isEmpty(this.lastName) && !isEmpty(this.email)) {
