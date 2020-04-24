@@ -25,13 +25,14 @@ class Database {
    */
   constructor() {
     this.database = `p2`;
-    this.connect = mysql.createConnection({
+    this.dbConfig = {
       host: `213.32.247.201`,
       user: `ADMIN`,
       port: `3306`,
       password: fs.readFileSync(`./node/Models/AbstractClasses/password.txt`, `utf8`),
       database: this.database,
-    });
+    };
+    this.connect = mysql.createConnection(this.dbConfig);
 
     this.table = `database`;
     this.elementType = `test`;

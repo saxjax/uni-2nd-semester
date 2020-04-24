@@ -47,12 +47,12 @@ class RedirectController {
   async RegisterNewUser(req, res) {
     const newUser = new User(req);
     if (await newUser.validateRegister()) {
-      if(await newUser.createUser()) {
+      if (await newUser.createUser()) {
         res.redirect(`/`);
       }
       else {
         res.redirect(`/register`);
-      }      
+      }
     }
     else {
       console.log(`User could not be validated`);
