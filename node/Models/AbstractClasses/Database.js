@@ -101,33 +101,6 @@ class Database {
     });
   }
 
-  /* Formål: modtag uparset data fra databasen, funktionen virker som query funktionen uden parser.
-            Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overridet.
-   *         Dette oger kode genbrug, samt sikre fornuftig testning paa tvaers af hele programmet i forhold til databasen.
-   * Input:  Metoden modtager de valg som brugeren har lavet, og gennem parser metoden, faar noget brugbar SQL,
-   *         Der kan vaere et get, post, put eller delete.
-   *         Metoden indtager ogsaa texton parameter, som frakobles info() kald under test af catching af errors, men ellers altid er true.
-   * Output: Metoden outputter den parsede data hentet fra SQL databasen, ud fra den givne SQL streng
-   */
-  async queryUnparsedData(choice, data, texton = true) {
-    this.sql = this.inputParser(choice, data, texton);
-    return new Promise((resolve, reject) => {
-      this.connect.query(this.sql, (error, result) => {
-        if (error) {
-          if (texton) {
-            console.log(`Here at node/Database/Database.js-data the error \n${error.code}\n
-            and ${error.stack}`);
-          }
-          reject(error);
-        }
-        else {
-          // const outputParser = new ParseSql(this.elementType);
-          resolve(result);
-        }
-      });
-    });
-  }
-
   /* Input:  Metoden modtager de valg som brugeren har lavet
    *         Metoden indtager ogsaa texton parameter, som frakobles info() kald under test af catching af errors, men ellers altid er true.
    *        (`HEAD`,`COLUMN_NAME`) giver os column navne retur fra databasen

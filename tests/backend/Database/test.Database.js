@@ -78,12 +78,12 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
         throw err;
       }
     });
-    expected = true;
+    actual = true;
   }
   catch (err) {
-    expected = false;
+    actual = false;
   }
-  assert.true(expected,
+  assert.true(actual,
     `(1.1) {Altid true hvis der IKKE sker en error} Databasen skal have adgang til SQL databasen.`);
 
   await resetDB();

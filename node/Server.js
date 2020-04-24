@@ -212,11 +212,7 @@ class Server {
    * Output: Setup af muligheden for udviklere at teste ting før de implementeres.
    */
   testPatterns() {
-    const Tester = new TestController();
-    this.app.get(`/test`, (req, res) => Tester.test(req, res));
-    this.app.get(`/test2`, (req, res) => Tester.test2(req, res));
-    this.app.get(`/test3`, (req, res) => Tester.test3(req, res));
-    this.app.get(`/test3/:idQuery`, (req, res) => Tester.test3(req, res));
+    // const Tester = new TestController();
   }
 
   /* Formål: Opsætning af en viewEngine så det er muligt at render ejs filer.
