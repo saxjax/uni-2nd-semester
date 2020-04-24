@@ -1,3 +1,4 @@
+
 const { Document } = require(`./Document`);
 const { Section } = require(`./Section`);
 const { Quiz } = require(`./Quiz`);
@@ -7,7 +8,37 @@ const { Keyword } = require(`./Keyword`);
 const { User } = require(`./User`);
 const { Group } = require(`./Group`);
 
-
+/* Formål: Denne klasse skal levere testbare versioner af alle vores objekter (Document, Section, QuizQuestion....) som kan sammenlignes med tilsvarende data i SQLDatabasen.
+* Ud fra hver klasse kan man oprette et objekt af typen (Document, Section, QuizQuestion....)
+*
+* For at gøre objekterne testbare stiller klassen TestData objekter til rådighed med forud definerede property-værdi par.
+* Default værdierne, som bruges til at oprette testobjekterne, er defineret i  TestData constructorens property this.defaults.
+*
+* For hvert objekt findes der en table i SQLDatabasen (navngivet : document, section, quiz_question....).
+* I hver af disse tables findes ét testobjekt med samme properties og default værdier som det tilsvarende Objekt TestData klassen.
+*
+* Det betyder: Et objekt kan hentes i SQLdatabasen vha. en query på en af defaultværdierne , samme objekt kan hentes i TestData klassen
+* Indhold fra de to objekter kan sammenlignes, derved kan det verificeres, at vores objekter og SQLDatabasens repræsentation af samme stemmer overens.
+* altså hvis jeg beder om en Section fra databasen, får jeg så en Section tilbage som indeholder de data som jeg forventer at en Section skal indeholde
+*eks:
+* opret et TestData Section objekt:
+* const testdata = new TestData()
+* testSection = testdata.section
+*
+* hent data på en tilsvarende testSection fra SQLDatabasen:
+* const req = { session: {}, params: {}, body: {} };
+* const S = new Section(req);
+* const testSectionDB = await S.query(`SELECT *`, `ID_DOCUMENT_SECTION = "${testData.idDocumentSection}"`);
+* TODO: gør det muligt at oprette TestData objekt på :
+* -Document
+* -Quiz
+* -QuizQuestion
+* -Flashcard
+* -Keyword
+* -User
+* -Group
+* og aktiver de tilhørende test i test.ParseSQL.js
+*/
 class TestData {
   constructor() {
     this.req = {
@@ -56,11 +87,13 @@ class TestData {
     // this.user          = new User(this.defaults);
     // this.group         = new Group(this.defaults);
   }
-
+  // TODO: tilføj properties for Document
   // get document() {
   //   return this.doc;
   // }
 
+  // Formål: Returnerer ALTID en Section med default værdier.
+  // Anvend:const testsection = testdata.section
   get section() {
     this.sec.elementType = `section`;
     this.sec.table = `document_section`;
@@ -76,30 +109,46 @@ class TestData {
     return this.sec;
   }
 
+  // TODO: tilføj properties for Keyword
+  // Formål: Returnerer ALTID et Keyword med default værdier.
+  // Anvend:const testkeyword = testdata.keyword
   // get keyword() {
   //   return this.keyword;
   // }
+  // TODO: tilføj properties for Quiz
+  // Formål: Returnerer ALTID en Quiz med default værdier.
+  // Anvend:const testquiz = testdata.quiz
+  // get quiz() {
+  //   return this.quiz;
+  // }
+  // TODO: tilføj properties for QuizQuestion
+  // Formål: Returnerer ALTID en QuizQuestion med default værdier.
+  // Anvend:const testquizQuestion = testdata.quizQuestion
+  // get quizQuestion() {
+  //   return this.quizQuestion;
+  // }
+  // TODO: tilføj properties for Flashcard
+  // Formål: Returnerer ALTID en Flashcard med default værdier.
+  // Anvend:const testflashcard = testdata.flashcard
+  // get flashcard() {
+  //   return this.flashcard;
+  // }
+  // TODO: tilføj properties for User
+  // Formål: Returnerer ALTID en User med default værdier.
+  // Anvend:const testuser = testdata.user
+  // get user() {
+  //   return this.user;
+  // }
+  // TODO: tilføj properties for group
+  // Formål: Returnerer ALTID en Group med default værdier.
+  // Anvend:const testgroup = testdata.group
+  // get group() {
+  //   return this.group;
+  // }
 
-  get quiz() {
-    return this.quiz;
-  }
-
-  get quizQuestion() {
-    return this.quizQuestion;
-  }
-
-  get flashcard() {
-    return this.flashcard;
-  }
-
-  get user() {
-    return this.user;
-  }
-
-  get group() {
-    return this.group;
-  }
-
+  /* Formål: returnerer ALTID default defineret idGroup.
+  * samme procedure for alle følgende gettere.
+  */
   get idGroup() {
     return this.defaults.idGroup;
   }
@@ -224,6 +273,10 @@ class TestData {
     return this.defaults.title;
   }
 
+  /* FORMÅL: returner et objekt som kun indeholder de data som er program data.
+  * Fjern ekstra properties som SQLDatabase ip, port, password, connection info o.lig
+  */
+  // TODO: fix den så man kan skrive xxxxx.stripExtraDataFromObject()
   // stripExtraDataFromObject(Obj) {
   //   const MyObj = Obj.clone;
   //   delete MyObj.database;

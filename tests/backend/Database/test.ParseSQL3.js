@@ -898,6 +898,7 @@ test(`Test 4.2 af Database-setup i vores SQLdatabase, ved hentning af 1.test-ele
     `(4.2){  Metoden skal kunne hente en section ud fra et testid ${testData.idDocumentSection} og sammenholde det hentede med vores testData.section`);
 
   assert.end();
+  S.connect.end();
 });
 
 // // FIXME: bør omskrives så den bruger Quiz objekt og testData.quiz
