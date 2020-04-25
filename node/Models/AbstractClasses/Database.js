@@ -102,33 +102,6 @@ class Database {
     });
   }
 
-  /* Formål: modtag uparset data fra databasen, funktionen virker som query funktionen uden parser.
-            Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overridet.
-   *         Dette oger kode genbrug, samt sikre fornuftig testning paa tvaers af hele programmet i forhold til databasen.
-   * Input:  Metoden modtager de valg som brugeren har lavet, og gennem parser metoden, faar noget brugbar SQL,
-   *         Der kan vaere et get, post, put eller delete.
-   *         Metoden indtager ogsaa texton parameter, som frakobles info() kald under test af catching af errors, men ellers altid er true.
-   * Output: Metoden outputter den parsede data hentet fra SQL databasen, ud fra den givne SQL streng
-   */
-  async queryUnparsedData(choice, data, texton = true) {
-    this.sql = this.inputParser(choice, data, texton);
-    return new Promise((resolve, reject) => {
-      this.connect.query(this.sql, (error, result) => {
-        if (error) {
-          if (texton) {
-            console.log(`Here at node/Database/Database.js-data the error \n${error.code}\n
-            and ${error.stack}`);
-          }
-          reject(error);
-        }
-        else {
-          // const outputParser = new ParseSql(this.elementType);
-          resolve(result);
-        }
-      });
-    });
-  }
-
   /* Input:  Metoden modtager de valg som brugeren har lavet
    *         Metoden indtager ogsaa texton parameter, som frakobles info() kald under test af catching af errors, men ellers altid er true.
    *        (`HEAD`,`COLUMN_NAME`) giver os column navne retur fra databasen
@@ -159,7 +132,6 @@ class Database {
       switch (choice) {
         case `INSERT`: {
           const dataArr = this.insertSplitter(data);
-          console.log(dataArr);
           sql = `INSERT INTO ${this.database}.${this.table} (${dataArr.columns}, ELEMENT_TYPE) VALUES (${dataArr.values}, "${this.elementType}")`;
           break;
         }
@@ -252,10 +224,13 @@ class Database {
     while (!done) {
       dataArr.columns += /^\w+/.exec(dataCopy);
       dataCopy = dataCopy.slice(`${/^\w+/.exec(dataCopy)} = `.length, dataCopy.length);
-
+      // Dette er stadig udkommenteret, for at sikre det kan klare testene
+      // if (/^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.test(dataCopy)) { // Test for om det er en mail
+      //   dataArr.values += /^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy);
+      //   dataCopy = dataCopy.slice(`${/^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy)} `.length, dataCopy.length);
+      // }
       dataArr.values += /^".*?"/.exec(dataCopy);
       dataCopy = dataCopy.slice(`${/^".*?"/.exec(dataCopy)} `.length, dataCopy.length);
-
       try {
         if (/^\w+/.exec(dataCopy)[0] === `AND`) {
           dataArr.columns += `, `;

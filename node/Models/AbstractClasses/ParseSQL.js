@@ -33,10 +33,7 @@ class ParseSql {
         case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));         break;
         case `user`:             this.parsedData.push(this.parseUser(data[i]));            break;
         case `user_group`:    this.parsedData.push(this.parseGroup(data[i]));              break;
-        default: // FIXME: defaulten SKAL være at der throwes en error (vil jeg mene)
-          this.parsedData.push(data[i]);
-          console.warn(`WARNING: elementType "${data[i].elementType}" is not defined. Parsing skipped!`);
-          break;
+        default: throw new Error(`elementType er IKKE oprettet i Parseren!`);
       }
     }
     return this.parsedData;
@@ -54,6 +51,15 @@ class ParseSql {
    * Output: Et uparset objekt, der blot bruges til at se om ELEMENT_TYPE bliver korrekt parset.
    */
   parseTest(data) {
+    return data;
+  }
+
+  /* TODO: */
+  /* Formål: At parse Document-data
+   * Input:  Et dataobjekt af typen "document" fra parse metoden.
+   * Output: Et parset dataobjekt, som kan forståes på frontend
+   */
+  parseDocument(data) {
     return data;
   }
 
