@@ -229,7 +229,7 @@ class ViewController {
       group: await Recipient.getThisGroupData(),
       user: await Recipient.getThisUserData(),
       quizzes: await Recipient.getAllElementsOfType(`Quiz`),
-      flashcards: await Recipient.getAllElementsOfType(`Flashcard`),
+      flashcards: await Recipient.getAllElementsOfType(`Flashcard`), // FIXME: Ikke oprettet endnu
     };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsRecipient.ejs`);
     res.render(this.ejs, { data });
@@ -364,10 +364,11 @@ class ViewController {
    *        Det er vigtigt, at strukturen for hvordan det løses på, er den samme for alle de andre URL'er.
    */
   async postQuizPage(req, res) {
-    const Expert = new User(req);
+    const ExpertGroup = new Group(req);
     const data = {
-      group: await Expert.getThisGroupData(),
-      user: await Expert.getThisUserData(),
+      group: await ExpertGroup.getThisGroupData(),
+      user: await ExpertGroup.getThisUserData(),
+      sections: await ExpertGroup.getAllElementsOfType(`Section`),
     };
     this.ejs = path.join(`${this.root}/www/views/postQuiz.ejs`);
     res.render(this.ejs, { data });

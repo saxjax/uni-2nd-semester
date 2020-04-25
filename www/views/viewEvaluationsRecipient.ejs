@@ -11,8 +11,8 @@
     <div class="container" id="content">
       <div class="row">
           <nav>
-              <a href="/insert/quiz">Opret Quiz</a>
-              <a href="/insert/flashcard">Opret Flashcard</a>
+              <a href="/post/quiz">Opret Quiz</a>
+              <a href="/post/flashcard">Opret Flashcard</a>
           </nav> 
       </div>
         <div class="row">
@@ -22,7 +22,6 @@
                 <form action="/evalueringer" method="POST">
                     <label> Vælg det afsnit du ønsker at finde evalueringer til</label><br>
                     <input type="text" id="section" name="section"><br>
-                    
                     <input type="submit">
                 </form>
               </div>
@@ -38,14 +37,14 @@
               <div class="leftside">
                 <div class="quizzes">
                   <h2> QUIZ </h2>
-                  <% data.quizzes.forEach((element) =>{ %>
-                    <a href="/evalueringer/<%= element.elementtype %>/<%= element.idquiz %>"> 
+                  <% if (data.quizzes) { data.quizzes.forEach((element) =>{ %>
+                    <a href="/evalueringer/<%= element.elementType %>/<%= element.idquiz %>"> 
                       <div class="card">
-                      <div class="elementType<%= element.elementtype %>">title: <%= element.title %></div>
-                      <div class="question"><%= element.question %></div>
-                      </div>    
+                        <div class="elementType<%= element.elementType %>">title: <%= element.title %></div>
+                        <div class="question"><%= element.question %></div>
+                      </div>
                     </a>
-                  <% }); %>
+                  <% });} %>
                 </div>
               </div>
             </div>
@@ -53,14 +52,14 @@
               <div class="rightside">
                 <div class="flashcards">
                   <h2> FLASHCARDS </h2>
-                  <% data.flashcards.forEach(element =>{ %>
+                  <% if (data.flashcards) { data.flashcards.forEach(element => { %>
                     <a href="/evalueringer/<%= element.elementtype %>/<%= element.idflashcard %>"> 
                       <div class="card">
                       <div class="elementType<%= element.elementtype %>">Title: <%= element.title %></div>
                       <div class="notion">Begreb: <%= element.concept %></div>
                       </div>    
                     </a>
-                    <% }); %>
+                    <% });} %>
                 </div>
               </div>
             </div>

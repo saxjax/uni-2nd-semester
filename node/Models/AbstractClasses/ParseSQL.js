@@ -23,7 +23,11 @@ class ParseSql {
       return data;
     }
     if (!data.length > 0) {
+<<<<<<< HEAD
       return [{ RowDataPacket: {} }];
+=======
+      return [{}];
+>>>>>>> 196ef65e07d4c012be8ed0905eefe28188610677
     }
     for (let i = 0; i < data.length; i++) {
       switch (data[i].ELEMENT_TYPE) {
@@ -100,11 +104,12 @@ class ParseSql {
    */
   parseQuiz(data) {
     return {
+      sectionTitle: `${data.SECTION_TITLE}`,
       elementType: `${data.ELEMENT_TYPE}`,
       idQuiz: `${data.ID_QUIZ}`,
       idDocument: `${data.ID_DOCUMENT}`,
       idDocumentSection: `${data.ID_DOCUMENT_SECTION}`,
-      title: `${data.SECTION_TITLE}`,
+      title: `${data.QUIZ_TITLE}`,
       keywords: undefined,
     };
   }

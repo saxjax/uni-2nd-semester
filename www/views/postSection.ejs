@@ -8,18 +8,22 @@
   <body>
     <%- include('meta/navbar') %>
     <div class="container" id="content" style="text-align: center; font-weight: bold;">
-  		  <h1>Make a new section!</h1>
-            <form action="/post/section" method="POST">
-                <label for="">Section Title:</label><br>
-                <input name="title" type="text" size="60%" placeholder="Section Title" required><br>
-                <label for="">Section Number:</label><br>
-                <input name="number" type="text" size="60%" placeholder="1.1" required><br>
-                <label for="">Section content:</label><br>
-                <textarea name="content" placeholder="Please put in the content here!" cols="80" rows="15" required></textarea><br>
-                <label for="">keywords:</label><br>
-                <input name="keywords" type="text" size="80%" placeholder="Keyword1,Keyword2, etc.." required><br><br>
-  		          <input type="submit" value="Create!">
-		        </form>
+  		<h1>Make a new section!</h1>
+      <form action="/post/section" method="POST">
+        <label for="title">Section Title:</label><br>
+        <input name="title" id="title" type="text" size="60%" placeholder="Section Title" required><br>
+
+        <label for="number">Section Number:</label><br>
+        <input name="number" id="number" type="text" size="60%" placeholder="1.1" required><br>
+
+        <label for="content">Section content:</label><br>
+        <textarea name="content" id="content" placeholder="Please put in the content here!" cols="80" rows="15" required></textarea><br>
+
+        <label for="keywords">keywords:</label><br>
+        <input name="keywords" id="keywords" type="text" size="80%" placeholder="Keyword1,Keyword2, etc.." required><br><br>
+
+  		  <input type="submit" value="Create!">
+		  </form>
     </div>
   	<%- include(`meta/footer.ejs`) %> 
   </body>

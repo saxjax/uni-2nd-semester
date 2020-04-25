@@ -16,6 +16,30 @@ class TestController {
     this.root = __dirname.slice(0, -(`node/Controllers`.length));
     this.ejs = ``;
   }
+
+  async test(req, res) {
+    req.session.groupId = `34701dd1-7c29-11ea-86e2-2c4d54532c7a`;
+    const G = new Group(req);
+    const data = {
+      document: await G.getAll(`document`),
+    };
+    res.send(`Yes its a test! the documents are ${data}`);
+  }
+
+  async test2(req, res) {
+    res.send(req.session.groupId);
+  }
+
+  async test3(req, res) {
+    const test1 = (typeof req.params.queryId       !== `undefined` ? req.params.queryId      : undefined);
+    console.log(test1);
+    console.log(`test2 = ${test2}`);
+    res.send(`Se i log`);
+  }
+
+  async whatever(req, res) {
+    res.redirect(503, `/dbdown`);
+  }
 }
 
 module.exports = {

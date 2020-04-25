@@ -22,7 +22,7 @@ class SessionController {
     const data = await currentUser.loginValid();
     console.log(`data ${data[0]}`);
     if (data.fatal) {
-      res.redirect(`/dbdown`);
+      res.redirect(503, `/dbdown`);
     }
     else if (data.length > 0) {
       req.session.idUser = data[0].idUser;
@@ -30,8 +30,8 @@ class SessionController {
       req.session.username = data[0].username;
       res.redirect(`/`);
     }
-    else {
-      res.redirect(`/register`);
+    else {                       // FIXME: Dokumentation mangler - hvornår rammer man denne else-clause?
+      res.redirect(`/register`); // FIXME: Statuskode indsættes
     }
   }
 
@@ -48,8 +48,8 @@ class SessionController {
       req.session.groupname = data[0].name;
       res.redirect(`/`);
     }
-    else {
-      res.redirect(`/groups`);
+    else {                     // FIXME: Dokumentation mangler - hvornår rammer man denne else-clause?
+      res.redirect(`/groups`); // FIXME: Statuskode indsættes
     }
   }
 }

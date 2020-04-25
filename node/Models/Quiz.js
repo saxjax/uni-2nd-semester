@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 const { Evaluation } = require(`./AbstractClasses/Evaluation.js`);
 
 class Quiz extends Evaluation {
@@ -16,7 +18,8 @@ class Quiz extends Evaluation {
           this.idQuery = req.params.idQuery;
           break;
         case `POST`:
-          // none yet
+          this.title = req.body.quizTitle;
+          this.associatedIdSection = req.body.selectSection;
           break;
         case `TEST`:
           this.elementType = `quiz`;
@@ -29,6 +32,19 @@ class Quiz extends Evaluation {
         default: break;
       }
     }
+  }
+
+  async insertToDatabase() {
+    try {
+      await this.query(`INSERT`, `QUIZ_TITLE = "${this.title}" `
+                     + `AND ID_USER_GROUP = "${this.idGroup}" `
+                     + `AND ID_DOCUMENT_SECTION = "${this.associatedIdSection}"`);
+    }
+    catch (error) {
+      console.log(error);
+      return error;
+    }
+    return true;
   }
 }
 module.exports = {
