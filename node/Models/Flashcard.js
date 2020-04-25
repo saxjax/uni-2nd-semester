@@ -13,6 +13,8 @@ class Flashcard extends Evaluation {
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
       this.idUser  = req.session.idUser;
+      // this.idDocument?
+      // this.idSection?
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
@@ -26,6 +28,26 @@ class Flashcard extends Evaluation {
         default: console.warn(`Metode ikke oprettet?`); break;
       }
     }
+  }
+
+  /* Formål:
+   * Input :
+   * Output:
+   */
+  async insertToDatabase() {
+    try {
+      await this.query(`ID_USER_GROUP = "${this.idGroup}" `
+                 + `AND ID_USER = "${this.idUser}" `
+                 + `AND ID_DOCUMENT = "${this.idDocument}" `
+                 + `AND ID_DOCUMENT_SECTION = "${this.idSection}" `
+                 + `AND CONCEPT = "${this.concept}" `
+                 + `AND DEFINITION = "${this.definition}"`);
+    }
+    catch (error) {
+      console.log(error);
+      return false;
+    }
+    return true;
   }
 }
 module.exports = {

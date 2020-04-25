@@ -47,7 +47,7 @@ class RedirectController {
   async RegisterNewUser(req, res) {
     const newUser = new User(req);
     if (await newUser.validateRegister()) {
-      if (await newUser.createUser()) {
+      if (await newUser.insertToDatabase()) {
         res.redirect(`/`);
       }
       else {

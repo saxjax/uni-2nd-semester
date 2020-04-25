@@ -26,6 +26,22 @@ class Group extends Model {
       }
     }
   }
+
+  /* Formål:
+   * Input :
+   * Output:
+   */
+  async insertToDatabase() {
+    try {
+      await this.query(`ID_USER_GROUP = "${this.idGroup}" `
+                 + `AND NAME = "${this.name}"`);
+    }
+    catch (error) {
+      console.log(error);
+      return false;
+    }
+    return true;
+  }
 }
 
 module.exports = {

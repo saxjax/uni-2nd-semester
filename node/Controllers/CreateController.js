@@ -18,7 +18,7 @@ class CreateController {
   async createGroup(req, res) {
     const G = new Group(req);
     try {
-      await G.save();
+      await G.insertToDatabase();
       res.redirect(`/groups`);
     }
     catch (error) {
@@ -30,7 +30,7 @@ class CreateController {
   async createUser(req, res) {
     const U = new User(req);
     try {
-      await U.save();
+      await U.insertToDatabase();
       res.redirect(`/login`);
     }
     catch (error) {
@@ -42,7 +42,7 @@ class CreateController {
   async createSection(req, res) {
     const S = new Section(req);
     try {
-      await S.insertSectionToDatabase();
+      await S.insertToDatabase();
       res.redirect(`/view/sections/recipient`);
     }
     catch (error) {

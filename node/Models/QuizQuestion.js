@@ -1,6 +1,13 @@
+/* eslint no-console: off */
+
 const { Evaluation } = require(`./AbstractClasses/Evaluation.js`);
 
+/* MANGLER DESIGN!!!!
+ * Det kan vel ikke passe at vi hardcoder 4 svarmuligheder? kommaseparering/opreting af ny sql database /whatever er muligheder
+ */
+// TODO:
 class QuizQuestion extends Evaluation {
+  // TODO:
   constructor(req) {
     super();
     this.elementType = `quiz`;
@@ -8,6 +15,9 @@ class QuizQuestion extends Evaluation {
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
       this.idUser  = req.session.idUser;
+      // this.idDocument?
+      // this.idSection?
+      this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `DELETE`: case `UPDATE`:
           this.idColumnName = `ID_QUIZ_QUESTION`;
@@ -37,27 +47,27 @@ class QuizQuestion extends Evaluation {
     }
   }
 
-  // UNDER CONSTRUCTION!
-  // upload the single quizQuestion to databse
-  // input: Question
-  // output: true, if it was possible to upload, otherwise false
-  async saveQuizQuestion() {
-    // post quiz to database
+  // TODO: Kan ikke laves før design af hvordan quizquestion skal laves er fastsat.
+  /* Formål:
+   * Input :
+   * Output:
+   */
+  async insertToDatabase() {
     try {
-      await this.query(`INSERT`, `
-        question = ${this.question} AND
-        answers = ${this.answers}
-        elementType = ${this.elementType} AND 
-        correctness = ${this.correctness}`);
-      return true;
+      await this.query(`ID_USER_GROUP = "${this.idGroup}" `
+        + `AND ID_USER = "${this.idUser}" `
+        + `AND ID_DOCUMENT = "${this.idDocument}" `
+        + `AND ID_DOCUMENT_SECTION = "${this.idSection}" `
+        + `AND SOMETHING MORE? = "${this.something}"`);
     }
     catch (error) {
-      console.log(`there was an error: ${error}`);
+      console.log(error);
       return false;
     }
+    return true;
   }
 
-  // UNDER CONSTRUCTION!
+  // TODO:
   // input: req
   // output: for digit string ex. 1100
   // translates true/false of all answers into a binary string

@@ -40,7 +40,7 @@ class User extends Model {
   async loginValid() {
     return this.query(`SELECT *`, `USER_NAME = "${this.username}" AND PASSWORD = "${this.password}"`)
       .then((result) => result)
-      .catch((error) => error); no;
+      .catch((error) => error);
   }
 
   alreadyLoggedIn() {
@@ -72,9 +72,10 @@ class User extends Model {
    * Input : N/A
    * Output: True/False
    */
-  async createUser() {
+  async insertToDatabase() {
     try {
-      await this.query(`INSERT`, `USER_NAME = "${this.username}" `
+      await this.query(`INSERT`, `ID_USER_GROUP = ${this.idGroup} `
+                     + `AND USER_NAME = "${this.username}" `
                      + `AND PASSWORD = "${this.password}" `
                      + `AND FIRST_NAME = "${this.firstName}" `
                      + `AND LAST_NAME = "${this.lastName}" `
@@ -88,7 +89,6 @@ class User extends Model {
       console.log(`${error}`);
       return false;
     }
-    console.log(`User created with username: ${this.username}`);
     return true;
   }
 }

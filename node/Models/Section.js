@@ -35,7 +35,7 @@ class Section extends Model {
           this.number   = req.body.number;
           break;
         case `TEST`:
-          this.elementtype = `section`;
+          this.elementType = `section`;
           this.table = `document_section`;
           this.idSection =  undefined;
           this.idDocument =  undefined;
@@ -53,7 +53,7 @@ class Section extends Model {
     }
   }
 
-  async insertSectionToDatabase() {
+  async insertToDatabase() {
     try {
       await this.query(`INSERT`, `SECTION_TITLE = "${this.title}" `
                        + `AND SECTION_CONTENT = "${this.content}" `

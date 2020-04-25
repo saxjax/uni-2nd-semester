@@ -9,7 +9,6 @@ class Document extends Model {
     super();
     this.elementType = `document`;
     this.table       = `document`;
-    // Session from session
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
       this.idUser  = req.session.idUser;
@@ -25,6 +24,23 @@ class Document extends Model {
         default: break;
       }
     }
+  }
+
+  /* Formål:
+   * Input :
+   * Output:
+   */
+  async insertToDatabase() {
+    try {
+      await this.query(`ID_USER_GROUP = "${this.idGroup}" `
+                 + `AND ID_USER = ${this.idUser} `
+                 + `AND TITLE = "${this.title}"`);
+    }
+    catch (error) {
+      console.log(error);
+      return false;
+    }
+    return true;
   }
 }
 

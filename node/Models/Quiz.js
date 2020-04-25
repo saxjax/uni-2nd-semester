@@ -11,6 +11,7 @@ class Quiz extends Evaluation {
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
       this.idUser  = req.session.idUser;
+      // this.idDocument?
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
@@ -19,13 +20,13 @@ class Quiz extends Evaluation {
           break;
         case `POST`:
           this.title = req.body.quizTitle;
-          this.associatedIdSection = req.body.selectSection;
+          this.idSection = req.body.selectSection;
           break;
         case `TEST`:
           this.elementType = `quiz`;
           this.idQuiz = undefined;
           this.idDocument = undefined;
-          this.idDocumentSection = undefined;
+          this.idSection = undefined;
           this.title = undefined;
           this.keywords = undefined;
           break;
@@ -36,13 +37,15 @@ class Quiz extends Evaluation {
 
   async insertToDatabase() {
     try {
-      await this.query(`INSERT`, `QUIZ_TITLE = "${this.title}" `
-                     + `AND ID_USER_GROUP = "${this.idGroup}" `
-                     + `AND ID_DOCUMENT_SECTION = "${this.associatedIdSection}"`);
+      await this.query(`ID_USER_GROUP = "${this.idGroup}" `
+                 + `AND ID_USER = "${this.idUser}" `
+                 + `AND ID_DOCUMENT = "${this.idDocument}" `
+                 + `AND ID_DOCUMENT_SECTION = "${this.idSection}" `
+                 + `AND TITLE = "${this.title}"`);
     }
     catch (error) {
       console.log(error);
-      return error;
+      return false;
     }
     return true;
   }
