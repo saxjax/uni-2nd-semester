@@ -13,13 +13,17 @@ class ParseSql {
   }
 
   /* Formål: Dette er tiltænkt som den overordnede funktion, som bliver kaldt fra Database.js
-   * Input:  Et array af data - kan godt modtage forskellige elementTyper i samme array
-   * Output: Et array af data, som er parset/oversat fra databasesprog til frontendsprog eller et tomt array, hvis data er tom.
+   * Input:  Et array af data - kan godt modtage forskellige elementTyper i samme array eller et tomt array
+   * Output: Hvis der modtages et tomt array er det stadig en valid query. Der returneres så blot et tomt objekt.
+   *         Et array af data, som er parset/oversat fra databasesprog til frontendsprog eller et tomt array, hvis data er tom.
    */
   parseArrayOfObjects(data) {
     if (!Array.isArray(data)) {
       console.warn(`WARNING: This data package is not an array. Parsing skipped!`);
       return data;
+    }
+    if (!data.length > 0) {
+      return {};
     }
     for (let i = 0; i < data.length; i++) {
       switch (data[i].ELEMENT_TYPE) {
@@ -33,10 +37,7 @@ class ParseSql {
         case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));         break;
         case `user`:             this.parsedData.push(this.parseUser(data[i]));            break;
         case `user_group`:    this.parsedData.push(this.parseGroup(data[i]));              break;
-        default: // FIXME: defaulten SKAL være at der throwes en error (vil jeg mene)
-          this.parsedData.push(data[i]);
-          console.warn(`WARNING: elementType "${data[i].elementType}" is not defined. Parsing skipped!`);
-          break;
+        default: throw new Error(`elementType er IKKE oprettet i Parseren!`);
       }
     }
     return this.parsedData;
@@ -54,6 +55,15 @@ class ParseSql {
    * Output: Et uparset objekt, der blot bruges til at se om ELEMENT_TYPE bliver korrekt parset.
    */
   parseTest(data) {
+    return data;
+  }
+
+  /* TODO: */
+  /* Formål: At parse Document-data
+   * Input:  Et dataobjekt af typen "document" fra parse metoden.
+   * Output: Et parset dataobjekt, som kan forståes på frontend
+   */
+  parseDocument(data) {
     return data;
   }
 
