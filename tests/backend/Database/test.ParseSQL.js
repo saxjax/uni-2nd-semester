@@ -12,6 +12,7 @@ const { QuizQuestion } = require(`../../../node/Models/QuizQuestion`);
 const { Flashcard } = require(`../../../node/Models/Flashcard`);
 const { Keyword } = require(`../../../node/Models/Keyword`);
 const { User } = require(`../../../node/Models/User`);
+const { Group } = require(`../../../node/Models/Group`);
 
 const p = new ParseSql(); // Parseren som er objektet for alle disse test.
 
@@ -38,29 +39,11 @@ function resetParsedData() {
   p.parsedData = [];
 }
 
-/* Formål: At "strippe" alle ikke-database relevante data fra objektet, så objektet bliver identisk med det der er på MySQL databasen.
-           Dette gøres så der kan laves en assert.deepEqual på objektets testdata kontra MySQL databasens testdata.
- * Input : Et objekt
- * Output: Et objekt der er i overenstemmelse med MySQL databasen
- */
-/*
-function stripAllNonDatabaseDataFrom(Obj) {
-  const tempObj = Obj;
-  delete tempObj.database;
-  delete tempObj.connect;
-  delete tempObj.table;
-  delete tempObj.idColumnName;
-  delete tempObj.idColumnGroup;
-  delete tempObj.elementtype;
-  delete tempObj.idColumnUser;
-  return tempObj;
-} */
-
 test(`Test af ParseSQL i node/Database`, async (assert) => {
   /* Setup af variable der genbruges */
   // const testData = new TestData(); // Objektet der indeholder de testdata, som Parseren kan teste på.
   let inputData; // Det objekt eller den værdi som skal inputtes i en funktion for at den kan give et testbart output
-  let expected;  // Værdien eller objektet som det forventes at actual bliver
+  let expected;  // Værdien eller objektet som det forventes at actual bliver, når der kaldes en funktion med inputData
   let actual;    // Objektet eller værdien som relatere sig til selve objektet
 
   /* 1 */
@@ -277,7 +260,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   assert.deepEqual(actual, expected,
     `(2.7){ Metoden skal kunne returnere en parset version af et KEYWORD data`);
 
-  /* 2.7 */
+  /* 2.8 */
   resetParsedData();
   inputData = {
     ELEMENT_TYPE: `group`,
@@ -692,6 +675,24 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
     `(4.7){  Parserens forventede Keyword kolonnennavne skal stemme overens med MySQL Databasens keyword kolonnenavne`);
 
   K.connect.end();
+
+  /* 4.8 */
+  resetParsedData();
+
+  const G = new Group(req);
+  expected = [
+    [
+      { COLUMN_NAME: `ELEMENT_TYPE` },
+      { COLUMN_NAME: `ID_USER_GROUP` },
+      { COLUMN_NAME: `NAME` },
+    ],
+  ];
+  actual = [await K.query(`HEAD`, `COLUMN_NAME`)];
+
+  assert.deepEqual(actual, expected,
+    `(4.8){  Parserens forventede Group kolonnennavne skal stemme overens med MySQL Databasens user_group kolonnenavne`);
+
+  G.connect.end();
 
   assert.end();
 });
