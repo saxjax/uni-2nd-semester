@@ -14,8 +14,8 @@ class RedirectController {
   }
 
   /* FIXME: UNDER CONSTRUCTION */
-  dbdown(req, res) {
-    this.ejs = path.join(`${this.root}/www/ejs/database_down.ejs`);
+  dbDown(req, res) {
+    this.ejs = path.join(`${this.root}/www/views/dbDown.ejs`);
     res.render(this.ejs); // FIXME: Implementer brug af statuskode 503 (https://httpstatuses.com/503)
   }
 
@@ -27,7 +27,7 @@ class RedirectController {
     const currentUser = new User(req);
     this.data = await currentUser.loginValid();
     if (this.data.fatal) {
-      res.redirect(`/dbdown`);
+      res.redirect(503, `/dbdown`);
     }
     else if (this.data.length > 0) {
       req.session.userId = currentUser.getThis(``);
@@ -36,7 +36,7 @@ class RedirectController {
       res.redirect(`/`);
     }
     else {
-      res.redirect(`/register`); // FIXME: Implementer brug af statuskode 422 ved invalid
+      res.redirect(422, `/register`); // FIXME: Implementer brug af statuskode 422 ved invalid
     }
   }
 
@@ -51,12 +51,11 @@ class RedirectController {
         res.redirect(`/`);
       }
       else {
-        res.redirect(`/register`);
+        res.redirect(400, `/register`);
       }
     }
-    else {
-      console.log(`User could not be validated`);
-      res.redirect(`/register`);
+    else { // User could not be validated
+      res.redirect(400, `/register`);
     }
   }
 
@@ -94,10 +93,15 @@ class RedirectController {
   }
 
   async createSection(req, res) {
-    const newSection = new Section(req);
-    const testInsert = await newSection.insertSectionToDatabase();
-    console.log(testInsert);
-    res.redirect(`/rapport`);
+    try {
+      const newSection = new Section(req);
+      const testInsert = await newSection.insertSectionToDatabase();
+      console.log(testInsert); // FIXME: FJERNES!!
+      res.redirect(`/rapport`);
+    }
+    catch (error) {
+      res.redirect(503, `/dbdown`);
+    }
   }
 }
 

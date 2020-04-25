@@ -53,7 +53,7 @@ class Server {
       this.testPatterns();
     }
 
-    return this.app.listen(this.port, () => console.log(`${this.name} startin up on ${this.port}`));
+    return this.app.listen(this.port, () => console.log(`${this.name} startin up on http://localhost:${this.port}/`));
   }
 
   /* Formål: At opstille alle de funktioner som loader og viser de ejs filer
@@ -177,7 +177,7 @@ class Server {
    */
   redirectPatterns() {
     const Redirect = new RedirectController();
-    this.app.get(`/dbdown`,                    (req, res) => Redirect.dbdown(req, res));
+    this.app.get(`/dbdown`,                    (req, res) => Redirect.dbDown(req, res));
     this.app.post(`/upload/rapport`,           (req, res) => Redirect.UploadRapport(req, res));
     this.app.post(`/upload/evalueringer`,      (req, res) => Redirect.UploadEvalueringer(req, res));
     this.app.post(`/register`,                 (req, res) => Redirect.RegisterNewUser(req, res));
@@ -191,10 +191,10 @@ class Server {
    */
   createPatterns() {
     const Creator = new CreateController();
-    this.app.post(`/post/group`, (req, res) => Creator.createGroup(req, res));
-    this.app.post(`/post/user`, (req, res) => Creator.createUser(req, res));
+    this.app.post(`/post/group`,   (req, res) => Creator.createGroup(req, res));
+    this.app.post(`/post/user`,    (req, res) => Creator.createUser(req, res));
     this.app.post(`/post/section`, (req, res) => Creator.createSection(req, res));
-    this.app.post(`/post/quiz`, (req, res) => Creator.createQuiz(req, res));
+    this.app.post(`/post/quiz`,    (req, res) => Creator.createQuiz(req, res));
   }
 
   /* Formål: Struktur for de URL Patterns der sletter data i databasen.
@@ -219,6 +219,7 @@ class Server {
     this.app.get(`/test2`, (req, res) => Tester.test2(req, res));
     this.app.get(`/test3`, (req, res) => Tester.test3(req, res));
     this.app.get(`/test3/:idQuery`, (req, res) => Tester.test3(req, res));
+    this.app.get(`/whatever`, (req, res) => Tester.whatever(req, res));
   }
 
   /* Formål: Opsætning af en viewEngine så det er muligt at render ejs filer.
@@ -318,7 +319,7 @@ class Server {
     this.app.use(this.logger);
   }
 
-  /* Formål: Et testværktøj der sørger for at give information til udvikleren om hvordan programmet fungere
+  /* Formål: Et testværktøj der sørger for at give information til udvikleren om indgående requests
    * Input : Et request
    * Output: En log i kommandoprompten som angiver metodevalg, url samt tidspunktet i requestet.
    */

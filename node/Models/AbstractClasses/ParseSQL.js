@@ -90,11 +90,12 @@ class ParseSql {
    */
   parseQuiz(data) {
     return {
+      sectionTitle: `${data.SECTION_TITLE}`,
       elementType: `${data.ELEMENT_TYPE}`,
       idQuiz: `${data.ID_QUIZ}`,
       idDocument: `${data.ID_DOCUMENT}`,
       idDocumentSection: `${data.ID_DOCUMENT_SECTION}`,
-      title: `${data.SECTION_TITLE}`,
+      title: `${data.QUIZ_TITLE}`,
       keywords: undefined,
     };
   }

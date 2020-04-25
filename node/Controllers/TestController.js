@@ -35,6 +35,10 @@ class TestController {
     console.log(`test2 = ${test2}`);
     res.send(`Se i log`);
   }
+
+  async whatever(req, res) {
+    res.redirect(503, `/dbdown`);
+  }
 }
 
 module.exports = {
