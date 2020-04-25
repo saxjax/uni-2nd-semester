@@ -12,7 +12,6 @@ const { QuizQuestion } = require(`../../../node/Models/QuizQuestion`);
 const { Flashcard } = require(`../../../node/Models/Flashcard`);
 const { Keyword } = require(`../../../node/Models/Keyword`);
 const { User } = require(`../../../node/Models/User`);
-const { TestData } = require(`../../../node/Models/TestClasses/TestData`);
 
 const p = new ParseSql(); // Parseren som er objektet for alle disse test.
 
