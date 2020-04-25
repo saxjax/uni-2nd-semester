@@ -25,13 +25,14 @@ class Database {
    */
   constructor() {
     this.database = `p2`;
-    this.connect = mysql.createConnection({
+    this.dbConfig = {
       host: `213.32.247.201`,
       user: `ADMIN`,
       port: `3306`,
       password: fs.readFileSync(`./node/Models/AbstractClasses/password.txt`, `utf8`),
       database: this.database,
-    });
+    };
+    this.connect = mysql.createConnection(this.dbConfig);
 
     this.table = `database`;
     this.elementType = `test`;
@@ -223,14 +224,13 @@ class Database {
     while (!done) {
       dataArr.columns += /^\w+/.exec(dataCopy);
       dataCopy = dataCopy.slice(`${/^\w+/.exec(dataCopy)} = `.length, dataCopy.length);
-      if (/^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.test(dataCopy)) { // Test for om det er en mail
-        dataArr.values += /^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy);
-        dataCopy = dataCopy.slice(`${/^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy)} `.length, dataCopy.length);
-      }
-      else {
-        dataArr.values += /^"\S+"/.exec(dataCopy);
-        dataCopy = dataCopy.slice(`${/^"\S+"/.exec(dataCopy)} `.length, dataCopy.length);
-      }
+      // Dette er stadig udkommenteret, for at sikre det kan klare testene
+      // if (/^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.test(dataCopy)) { // Test for om det er en mail
+      //   dataArr.values += /^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy);
+      //   dataCopy = dataCopy.slice(`${/^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy)} `.length, dataCopy.length);
+      // }
+      dataArr.values += /^".*?"/.exec(dataCopy);
+      dataCopy = dataCopy.slice(`${/^".*?"/.exec(dataCopy)} `.length, dataCopy.length);
       try {
         if (/^\w+/.exec(dataCopy)[0] === `AND`) {
           dataArr.columns += `, `;

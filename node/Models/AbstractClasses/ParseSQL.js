@@ -186,6 +186,7 @@ class ParseSql {
     return {
       elementType: `${data.ELEMENT_TYPE}`,
       idUser: `${data.ID_USER}`,
+      idGroup: `${data.ID_USER_GROUP}`,
       username: `${data.USER_NAME}`,
       // password: `${data.PASSWORD}`,
       firstName: `${data.FIRST_NAME}`,

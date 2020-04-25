@@ -23,15 +23,15 @@ class AccessController {
    */
   async groupsPage(req, res) {
     const U = new User(req);
-
     const groupIdFromUser = await U.query(`SELECT ${U.idColumnGroup}`, `${U.idColumnUser} = "${U.idUser}"`);
     const G = new Group(req);
-    G.idGroup = groupIdFromUser[0].ID_USER_GROUP;
+    G.idGroup = groupIdFromUser[0].idGroup;
 
     const data = {
       user: await U.getThisUserData(),
       group: await G.getThisGroupData(),
     };
+    console.log(data);
     this.ejs = path.join(`${this.root}/www/views/groups.ejs`);
     res.render(this.ejs, { data });
   }

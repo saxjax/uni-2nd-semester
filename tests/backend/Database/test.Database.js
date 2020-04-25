@@ -455,13 +455,14 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
 
   /* 4.4 */
   try {
-    actualObject = await object.query(`INSERT`, `TEST_OPTION_1 = "test@test.dk"`, textoff);
-    actual = false;
+    actualObject = await object.query(`INSERT`, `TEST_OPTION_1 = "test@test.dk"`);
   }
   catch (error) {
-    actual = true;
+    actual = false;
   }
-  assert.true(actual,
+  actual = await object.query(`SELECT TEST_OPTION_1`, `TEST_OPTION_1 = "test@test.dk"`);
+  expected = `test@test.dk`;
+  assert.equal(actual[0].TEST_OPTION_1, expected,
     `(4.4) Databasen skal kunne gemme emails.`);
 
   /* 5.1 */
