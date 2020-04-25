@@ -33,6 +33,30 @@ class User extends Model {
     }
   }
 
+  /* Formål: At oprette en bruger i databasen hvis validering returnerer 'True'
+   * Input : N/A
+   * Output: True/False
+   */
+  async insertToDatabase() {
+    try {
+      await this.query(`INSERT`, `ID_USER_GROUP = ${this.idGroup} `
+                     + `AND USER_NAME = "${this.username}" `
+                     + `AND PASSWORD = "${this.password}" `
+                     + `AND FIRST_NAME = "${this.firstName}" `
+                     + `AND LAST_NAME = "${this.lastName}" `
+                     + `AND UNIVERSITY = "${this.university}" `
+                     + `AND STUDY_SUBJECT = "${this.studySubject}" `
+                     + `AND EMAIL = "${this.email}" `
+                     + `AND SEMESTER = "${this.semester}"`);
+    }
+    catch (error) {
+      console.log(`User with username: ${this.username} FAILED to be created`);
+      console.log(`${error}`);
+      return false;
+    }
+    return true;
+  }
+
   /* Formål: At validere om et brugernavn og password matcher og så returnere brugerens data
    * Input : Et brugernavn og et password.
    * Output: En row af data fra 1 bruger.
@@ -66,30 +90,6 @@ class User extends Model {
       }
     }
     return validationCheck;
-  }
-
-  /* Formål: At oprette en bruger i databasen hvis validering returnerer 'True'
-   * Input : N/A
-   * Output: True/False
-   */
-  async insertToDatabase() {
-    try {
-      await this.query(`INSERT`, `ID_USER_GROUP = ${this.idGroup} `
-                     + `AND USER_NAME = "${this.username}" `
-                     + `AND PASSWORD = "${this.password}" `
-                     + `AND FIRST_NAME = "${this.firstName}" `
-                     + `AND LAST_NAME = "${this.lastName}" `
-                     + `AND UNIVERSITY = "${this.university}" `
-                     + `AND STUDY_SUBJECT = "${this.studySubject}" `
-                     + `AND EMAIL = "${this.email}" `
-                     + `AND SEMESTER = "${this.semester}"`);
-    }
-    catch (error) {
-      console.log(`User with username: ${this.username} FAILED to be created`);
-      console.log(`${error}`);
-      return false;
-    }
-    return true;
   }
 }
 
