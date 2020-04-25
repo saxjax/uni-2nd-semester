@@ -231,7 +231,6 @@ class ViewController {
       quizzes: await Recipient.getAllElementsOfType(`Quiz`),
       flashcards: await Recipient.getAllElementsOfType(`Flashcard`), // FIXME: Ikke oprettet endnu
     };
-    console.log(data.flashcards);
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsRecipient.ejs`);
     res.render(this.ejs, { data });
   }

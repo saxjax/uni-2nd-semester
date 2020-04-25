@@ -37,14 +37,14 @@
               <div class="leftside">
                 <div class="quizzes">
                   <h2> QUIZ </h2>
-                  <% data.quizzes.forEach((element) =>{ %>
+                  <% if (data.quizzes) { data.quizzes.forEach((element) =>{ %>
                     <a href="/evalueringer/<%= element.elementType %>/<%= element.idquiz %>"> 
                       <div class="card">
                         <div class="elementType<%= element.elementType %>">title: <%= element.title %></div>
                         <div class="question"><%= element.question %></div>
                       </div>
                     </a>
-                  <% }); %>
+                  <% });} %>
                 </div>
               </div>
             </div>
