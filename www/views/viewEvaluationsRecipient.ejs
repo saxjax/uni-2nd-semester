@@ -52,14 +52,14 @@
               <div class="rightside">
                 <div class="flashcards">
                   <h2> FLASHCARDS </h2>
-                  <% data.flashcards.forEach(element =>{ %>
+                  <% if (data.flashcards) { data.flashcards.forEach(element => { %>
                     <a href="/evalueringer/<%= element.elementtype %>/<%= element.idflashcard %>"> 
                       <div class="card">
                       <div class="elementType<%= element.elementtype %>">Title: <%= element.title %></div>
                       <div class="notion">Begreb: <%= element.concept %></div>
                       </div>    
                     </a>
-                    <% }); %>
+                    <% });} %>
                 </div>
               </div>
             </div>

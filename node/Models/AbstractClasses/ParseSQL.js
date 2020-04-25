@@ -23,7 +23,7 @@ class ParseSql {
       return data;
     }
     if (!data.length > 0) {
-      return {};
+      return [{}];
     }
     for (let i = 0; i < data.length; i++) {
       switch (data[i].ELEMENT_TYPE) {
