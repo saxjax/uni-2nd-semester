@@ -22,12 +22,8 @@ class ParseSql {
       console.warn(`WARNING: This data package is not an array. Parsing skipped!`);
       return data;
     }
-    if (!data.length > 0) {
-<<<<<<< HEAD
+    if (data.length === 0) {
       return [{ RowDataPacket: {} }];
-=======
-      return [{}];
->>>>>>> 196ef65e07d4c012be8ed0905eefe28188610677
     }
     for (let i = 0; i < data.length; i++) {
       switch (data[i].ELEMENT_TYPE) {
