@@ -3,6 +3,8 @@
 const { Group } = require(`../Models/Group`);
 const { User } = require(`../Models/User`);
 const { Section } = require(`../Models/Section`);
+const { Quiz } = require(`../Models/Quiz`);
+
 /* UNDER CONSTRUCTION */
 
 class CreateController {
@@ -20,7 +22,7 @@ class CreateController {
       res.redirect(`/groups`);
     }
     catch (error) {
-      res.redirect(`/dbdown`);
+      res.redirect(503, `/dbdown`);
     }
   }
 
@@ -32,7 +34,7 @@ class CreateController {
       res.redirect(`/login`);
     }
     catch (error) {
-      res.redirect(`/dbdown`);
+      res.redirect(503, `/dbdown`);
     }
   }
 
@@ -44,7 +46,19 @@ class CreateController {
       res.redirect(`/view/sections/recipient`);
     }
     catch (error) {
-      res.redirect(`/dbdown`);
+      res.redirect(503, `/dbdown`);
+    }
+  }
+
+  /* FIXME: UNDER CONSTRUCTION */
+  async createQuiz(req, res) {
+    const Q = new Quiz(req);
+    try {
+      await Q.insertToDatabase();
+      res.redirect(`/view/evaluations/recipient`);
+    }
+    catch (error) {
+      res.redirect(503, `/dbdown`);
     }
   }
 }
