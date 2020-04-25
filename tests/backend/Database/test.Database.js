@@ -386,6 +386,19 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   assert.equal(expected, actual,
     `(3.9.3) Det skal fremgå af de data som Databasen henter, hvilken type data der er tale om.`);
 
+  /* 3.10 */
+  try {
+    actualObject = await object.query(`SELECT *`, `TEST_OPTION_1 = "This doesnt exist"`);
+  }
+  catch (error) {
+    console.log(`TEST FORKERT IMPLEMENTERET PGA: ${error}`);
+  }
+
+  expected = `[{"RowDataPacket":{}}]`;
+  actual = JSON.stringify(actualObject);
+  assert.equal(expected, actual,
+    `(3.10) {Forventet: ${expected} Reel: ${actual}} Databasen skal returnere et tomt objekt indkapslet i en RowDataPacket hvis objektet ikke findes`);
+
   /* 4.1  */
   console.log(`4: Database.js skal kunne oprette data til MySQL databasen`);
   try {
@@ -583,18 +596,15 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     await object.query(`DELETE`, `TEST_OPTION_1 = "test10"`);
     expected = true;
     actualObject = await object.query(`SELECT *`, `TEST_OPTION_1 = "test10"`);
-    if (actualObject.length > 0) {
-      actual = false;
-    }
-    else {
-      actual = true;
-    }
+
+    expected = `[{"RowDataPacket":{}}]`;
+    actual = JSON.stringify(actualObject);
     assert.equal(actual, expected,
       `(6.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne slette en row i databasen`);
   }
   catch (err) {
     assert.true(false,
-      `(6.1) Ikke fejlede med denne fejl: ${err}`);
+      `(6.1) Testen fejlede med denne fejl: ${err}`);
   }
 
   try {
@@ -604,7 +614,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   catch (error) {
     actual = true;
   }
-  assert.equal(actual, expected,
+  assert.true(actual,
     `(6.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne give en fejlmeddelse, hvis dataene der ønskes slettet ikke findes`);
 
   /* 6.3 */
@@ -615,8 +625,8 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   catch (error) {
     actual = true;
   }
-  assert.equal(actual, expected,
-    `(6.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal ikke kunne slette en hel tabel.`);
+  assert.true(actual,
+    `(6.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal ikke kunne slette en hel tabel.`);
 
 
   /* 7.1 */

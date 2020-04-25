@@ -14,7 +14,7 @@ class ParseSql {
 
   /* Formål: Dette er tiltænkt som den overordnede funktion, som bliver kaldt fra Database.js
    * Input:  Et array af data - kan godt modtage forskellige elementTyper i samme array eller et tomt array
-   * Output: Hvis der modtages et tomt array er det stadig en valid query. Der returneres så blot et tomt objekt.
+   * Output: Hvis der modtages et tomt array er det stadig en valid query. Der returneres så blot en tom RowDataPacket
    *         Et array af data, som er parset/oversat fra databasesprog til frontendsprog eller et tomt array, hvis data er tom.
    */
   parseArrayOfObjects(data) {
@@ -23,7 +23,7 @@ class ParseSql {
       return data;
     }
     if (!data.length > 0) {
-      return {};
+      return [{ RowDataPacket: {} }];
     }
     for (let i = 0; i < data.length; i++) {
       switch (data[i].ELEMENT_TYPE) {
