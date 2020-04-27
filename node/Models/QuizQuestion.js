@@ -10,7 +10,7 @@ class QuizQuestion extends Evaluation {
   // TODO:
   constructor(req) {
     super();
-    this.elementType = `quiz`;
+    this.elementType = `quiz_question`;
     this.table = `quiz`;
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;

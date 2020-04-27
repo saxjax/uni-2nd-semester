@@ -26,7 +26,7 @@ class ParseSql {
     for (let i = 0; i < data.length; i++) { // Looper igennem "data" og parser alle RowDataPacket til camelCase
       switch (data[i].ELEMENT_TYPE) {
         case `test`:             this.parsedData.push(this.parseTest(data[i]));            break;
-        case `group`:            this.parsedData.push(this.parseGroup(data[i]));           break;
+        case `user_group`:       this.parsedData.push(this.parseGroup(data[i]));           break;
         case `user`:             this.parsedData.push(this.parseUser(data[i]));            break;
         case `document`:         this.parsedData.push(this.parseDocument(data[i]));        break;
         case `section`:          this.parsedData.push(this.parseSection(data[i]));         break;

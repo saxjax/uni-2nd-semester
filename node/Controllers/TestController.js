@@ -27,7 +27,9 @@ class TestController {
   }
 
   async test2(req, res) {
-    res.send(req.session.groupId);
+    const data = fetch(`https://www.warcraftlogs.com/v1/oauth/access_token`);
+    console.log(data);
+    res.send(data);
   }
 
   async test3(req, res) {

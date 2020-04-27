@@ -7,7 +7,7 @@ const { Model } = require(`./AbstractClasses/Model`);
 class Group extends Model {
   constructor(req) {
     super();
-    this.elementType = `group`;
+    this.elementType = `user_group`;
     this.table = `user_group`;
 
     if (this.validRequest(req)) {
