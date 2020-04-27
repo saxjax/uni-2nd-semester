@@ -2,14 +2,13 @@
 
 /* ParseSql er en hjælpeklasse til Database.js.
  * ParseSql parser den SQL, som vi får leveret af databasen til et format, som frontend kan forstå
- * Klassen skal kunne parse alle former for input.
- * Hvis inputtypen er ukendt, så skal den dermed blot sende data videre med en warning om at elementTypen ikke er kendt.
+ * Klassen skal kunne parse alle former for input fra databasen, og sikre at JavaScript siden 
+ * af programmet stemmer overens med MySQL siden
  */
 
 class ParseSql {
-  constructor(elementType) {
+  constructor() {
     this.parsedData = [];
-    this.elementType = elementType;
   }
 
   /* Formål: Dette er tiltænkt som den overordnede funktion, som bliver kaldt fra Database.js
@@ -18,16 +17,18 @@ class ParseSql {
    *         Et array af data, som er parset/oversat fra databasesprog til frontendsprog eller et tomt array, hvis data er tom.
    */
   parseArrayOfObjects(data) {
-    if (!Array.isArray(data)) {
-      console.warn(`WARNING: This data package is not an array. Parsing skipped!`);
-      return data;
+    if (!Array.isArray(data)) { // giver en fejl hvis data ikke er et array
+      throw new Error(`Data sendt til parseren er ikke et array, og kommer derfor ikke fra Database Modulet`);
     }
-    if (data.length === 0) {
+    if (data.length === 0) { // returnere en tom RowDataPacket hvis data er et tomt array (se Output)
       return [{ RowDataPacket: {} }];
     }
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) { // Looper igennem "data" og parser alle RowDataPacket til camelCase
       switch (data[i].ELEMENT_TYPE) {
         case `test`:             this.parsedData.push(this.parseTest(data[i]));            break;
+        case `group`:            this.parsedData.push(this.parseGroup(data[i]));           break;
+        case `user`:             this.parsedData.push(this.parseUser(data[i]));            break;
+        case `document`:         this.parsedData.push(this.parseDocument(data[i]));        break;
         case `section`:          this.parsedData.push(this.parseSection(data[i]));         break;
         case `quiz`:             this.parsedData.push(this.parseQuiz(data[i]));            break;
         case `quiz_question`:    this.parsedData.push(this.parseQuizQuestion(data[i]));    break;
@@ -35,19 +36,10 @@ class ParseSql {
         case `flashcard`:        this.parsedData.push(this.parseFlashcard(data[i]));       break;
         case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i])); break;
         case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));         break;
-        case `user`:             this.parsedData.push(this.parseUser(data[i]));            break;
-        case `user_group`:    this.parsedData.push(this.parseGroup(data[i]));              break;
         default: throw new Error(`elementType er IKKE oprettet i Parseren!`);
       }
     }
     return this.parsedData;
-  }
-
-  /* nulstil parser mlm kald
-  */
-  reset() {
-    this.parsedData = [];
-    this.elementType = ``;
   }
 
   /* Formål: At have en funktion der returnere testdata, når database modulet testes via Tape.
@@ -58,13 +50,53 @@ class ParseSql {
     return data;
   }
 
+  /* Formål: At parse Group-data
+   * Input:  Et dataobjekt af typen "Group" fra parse metoden.
+   * Output: Et parset dataobjekt, som kan forståes på frontend
+   * FIXME: Metoden skal udvikles
+   */
+  parseGroup(data) {
+    return {
+      elementType: `${data.ELEMENT_TYPE}`,
+      idGroup: `${data.ID_USER_GROUP}`,
+      name: `${data.NAME}`,
+    };
+  }
+
+  /* Formål: At parse User-data
+   * Input:  Et dataobjekt af typen "user" fra parse metoden.
+   * Output: Et parset dataobjekt, som kan forståes på frontend
+   * FIXME: Metoden skal udvikles
+   */
+  parseUser(data) {
+    return {
+      elementType: `${data.ELEMENT_TYPE}`,
+      idUser: `${data.ID_USER}`,
+      idGroup: `${data.ID_USER_GROUP}`,
+      username: `${data.USER_NAME}`,
+      // password: `${data.PASSWORD}`, // password parses ikke, da det kan være en mulig sikkerhedsbrist
+      firstName: `${data.FIRST_NAME}`,
+      lastName: `${data.LAST_NAME}`,
+      email: `${data.EMAIL}`,
+      studySubject: `${data.STUDY_SUBJECT}`,
+      semester: `${data.SEMESTER}`,
+      university: `${data.UNIVERSITY}`,
+    };
+  }
+
   /* TODO: */
   /* Formål: At parse Document-data
    * Input:  Et dataobjekt af typen "document" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
    */
   parseDocument(data) {
-    return data;
+    return {
+      elementType: `${data.ELEMENT_TYPE}`,
+      idUser: `${data.ID_USER}`,
+      idGroup: `${data.ID_USER_GROUP}`,
+      idDocument: `${data.ID_DOCUMENT}`,
+      title: `${data.TITLE}`,
+    };
   }
 
   /* Formål: At parse Section-data
@@ -72,9 +104,8 @@ class ParseSql {
    * Output: Et parset dataobjekt, som kan forståes på frontend
    */
   parseSection(data) {
-    // const tempSection = new Section(req);
     let teaser = ``;
-    if (data.SECTION_TEASER === null) {
+    if (data.SECTION_TEASER === null) { // opretter en teaser hvis der ikke er en i forvejen
       teaser = data.SECTION_CONTENT.slice(0, 200);
     }
     else {
@@ -94,13 +125,13 @@ class ParseSql {
     };
   }
 
+  // TODO: keywords er undefined
   /* Formål: At parse Quiz-data
    * Input:  Et dataobjekt af typen "quiz" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
    */
   parseQuiz(data) {
     return {
-      sectionTitle: `${data.SECTION_TITLE}`,
       elementType: `${data.ELEMENT_TYPE}`,
       idQuiz: `${data.ID_QUIZ}`,
       idDocument: `${data.ID_DOCUMENT}`,
@@ -116,7 +147,7 @@ class ParseSql {
    */
   parseQuizQuestion(data) {
     return {
-      idQuestion: `${data.ID_QUIZ_QUESTION}`,
+      idQuizQuestion: `${data.ID_QUIZ_QUESTION}`,
       idQuiz: `${data.ID_QUIZ}`,
       question: `${data.QUESTION}`,
       answer1: `${data.ANSWER_1}`,
@@ -179,40 +210,6 @@ class ParseSql {
       keyword: `${data.KEYWORD}`,
       elementType: `${data.ELEMENT_TYPE}`,
 
-    };
-  }
-
-  /* Formål: At parse User-data
-   * Input:  Et dataobjekt af typen "user" fra parse metoden.
-   * Output: Et parset dataobjekt, som kan forståes på frontend
-   * FIXME: Metoden skal udvikles
-   */
-  parseUser(data) {
-    return {
-      elementType: `${data.ELEMENT_TYPE}`,
-      idUser: `${data.ID_USER}`,
-      idGroup: `${data.ID_USER_GROUP}`,
-      username: `${data.USER_NAME}`,
-      // password: `${data.PASSWORD}`,
-      firstName: `${data.FIRST_NAME}`,
-      lastName: `${data.LAST_NAME}`,
-      email: `${data.EMAIL}`,
-      studySubject: `${data.STUDY_SUBJECT}`,
-      semester: `${data.SEMESTER}`,
-      university: `${data.UNIVERSITY}`,
-    };
-  }
-
-  /* Formål: At parse User-data
-   * Input:  Et dataobjekt af typen "Group" fra parse metoden.
-   * Output: Et parset dataobjekt, som kan forståes på frontend
-   * FIXME: Metoden skal udvikles
-   */
-  parseGroup(data) {
-    return {
-      elementType: `${data.ELEMENT_TYPE}`,
-      idGroup: `${data.ID_USER_GROUP}`,
-      name: `${data.NAME}`,
     };
   }
 }
