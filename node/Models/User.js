@@ -56,7 +56,7 @@ class User extends Model {
    * Output: True/false */
   async validateRegister() {
     let validationCheck = false;
-    if (!isEmpty(this.username) && !isEmpty(this.firstName) && !isEmpty(this.lastName) && !isEmpty(this.email)) {
+    if (!isEmpty(this.username) && !isEmpty(this.firstName) && !isEmpty(this.lastName) && !isEmpty(this.email)) { // FIXME: Logisk udtryk bliver lavet om til metodekald
       this.data = await this.query(`SELECT *`, `USER_NAME = "${this.username}" OR EMAIL = "${this.email}"`);
       if (this.data.length > 0) {
         console.log(`User already registered`);

@@ -23,11 +23,7 @@ class ParseSql {
       return data;
     }
     if (!data.length > 0) {
-<<<<<<< HEAD
       return [{ RowDataPacket: {} }];
-=======
-      return [{}];
->>>>>>> 196ef65e07d4c012be8ed0905eefe28188610677
     }
     for (let i = 0; i < data.length; i++) {
       switch (data[i].ELEMENT_TYPE) {
