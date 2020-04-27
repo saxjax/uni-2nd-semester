@@ -48,9 +48,10 @@ class QuizQuestion extends Evaluation {
   }
 
   // TODO: Kan ikke laves før design af hvordan quizquestion skal laves er fastsat.
-  /* Formål:
-   * Input :
-   * Output:
+  /* Formål: At kunne oprette den givne model i databasen ud fra posted data fra en form.
+             Der bliver desuden automatisk oprettet de forskellige dependencies/foreign keys som objektet tilhører.
+   * Input : Et objekt oprettet med et request med postdata i body samt user/group data i session
+   * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
     try {

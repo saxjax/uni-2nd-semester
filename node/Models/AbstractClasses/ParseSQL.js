@@ -22,7 +22,7 @@ class ParseSql {
       console.warn(`WARNING: This data package is not an array. Parsing skipped!`);
       return data;
     }
-    if (!data.length > 0) {
+    if (data.length === 0) {
       return [{ RowDataPacket: {} }];
     }
     for (let i = 0; i < data.length; i++) {
