@@ -32,6 +32,7 @@ class ViewController {
       group: await Recipient.getThisGroupData(),
       user: await Recipient.getThisUserData(),
     };
+    Promise.all([data.group, data.user]);
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs, { data });
   }
@@ -50,6 +51,7 @@ class ViewController {
       user: await Recipient.getThisUserData(),
       documents: await Recipient.getAllElementsOfType(`Document`),
     };
+    Promise.all([data.group, data.user, data.documents]);
     this.ejs = path.join(`${this.root}/www/views/viewDocumentRecipient.ejs`);
     res.render(this.ejs, { data });
   }
@@ -66,6 +68,7 @@ class ViewController {
       user: await Expert.getThisUserData(),
       documents: await Expert.getAllElementsOfType(`Document`),
     };
+    Promise.all([data.group, data.user, data.documents]);
     this.ejs = path.join(`${this.root}/www/views/viewDocumentExpert.ejs`);
     res.render(this.ejs, { data });
   }
@@ -81,6 +84,7 @@ class ViewController {
       group: await Expert.getThisGroupData(),
       user: await Expert.getThisUserData(),
     };
+    Promise.all([data.group, data.user]);
     this.ejs = path.join(`${this.root}/www/views/postDocument.ejs`);
     res.render(this.ejs, { data });
   }
@@ -97,6 +101,7 @@ class ViewController {
       user: await Doc.getThisUserData(),
       document: await Doc.getThis(),
     };
+    Promise.all([data.group, data.user, data.document]);
     this.ejs = path.join(`${this.root}/www/views/viewDocument.ejs`);
     res.render(this.ejs, { data });
   }
@@ -113,6 +118,7 @@ class ViewController {
       user: await Doc.getThisUserData(),
       document: await Doc.getThis(),
     };
+    Promise.all([data.group, data.user, data.document]);
     this.ejs = path.join(`${this.root}/www/views/putDocument.ejs`);
     res.render(this.ejs, { data });
   }
@@ -125,12 +131,12 @@ class ViewController {
    */
   async viewSectionsRecipientPage(req, res) {
     const Recipient = new Group(req);
-
     const data = {
       group: await Recipient.getThisGroupData(),
       user: await Recipient.getThisUserData(),
       sections: await Recipient.getAllElementsOfType(`Section`),
     };
+    Promise.all([data.group, data.user, data.sections]);
     this.ejs = path.join(`${this.root}/www/views/viewSectionsRecipient.ejs`);
     res.render(this.ejs, { data });
   }
@@ -147,6 +153,7 @@ class ViewController {
       user: await Expert.getThisUserData(),
       sections: await Expert.getAllElementsOfType(`Section`),
     };
+    Promise.all([data.group, data.user, data.sections]);
     this.ejs = path.join(`${this.root}/www/views/viewSectionExpert.ejs`);
     res.render(this.ejs, { data });
   }
@@ -163,6 +170,7 @@ class ViewController {
       document: await Doc.getThis(),
       sections: await Doc.getAllElementsOfType(`Section`),
     };
+    Promise.all([data.group, data.user, data.document, data.sections]);
     this.ejs = path.join(`${this.root}/www/views/viewSectionDocument.ejs`);
     res.render(this.ejs, { data });
   }
@@ -181,6 +189,7 @@ class ViewController {
       group: await Expert.getThisGroupData(),
       user: await Expert.getThisUserData(),
     };
+    Promise.all([data.group, data.user]);
     this.ejs = path.join(`${this.root}/www/views/postSection.ejs`);
     res.render(this.ejs, { data });
   }
@@ -197,6 +206,7 @@ class ViewController {
       user: await Sec.getThisUserData(),
       section: await Sec.getThis(),
     };
+    Promise.all([data.group, data.user, data.section]);
     this.ejs = path.join(`${this.root}/www/views/viewSection.ejs`);
     res.render(this.ejs, { data });
   }
@@ -213,6 +223,7 @@ class ViewController {
       user: await Sec.getThisUserData(),
       section: await Sec.getThis(),
     };
+    Promise.all([data.group, data.user, data.section]);
     this.ejs = path.join(`${this.root}/www/views/putSection.ejs`);
     res.render(this.ejs, { data });
   }
@@ -231,6 +242,7 @@ class ViewController {
       quizzes: await Recipient.getAllElementsOfType(`Quiz`),
       flashcards: await Recipient.getAllElementsOfType(`Flashcard`), // FIXME: Ikke oprettet endnu
     };
+    Promise.all([data.group, data.user, data.quizzes, data.flashcards]);
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsRecipient.ejs`);
     res.render(this.ejs, { data });
   }
@@ -248,6 +260,7 @@ class ViewController {
       quizzes: await Expert.getAllElementsOfType(`Quiz`),
       flashcards: await Expert.getAllElementsOfType(`Flashcard`),
     };
+    Promise.all([data.group, data.user, data.quizzes, data.flashcards]);
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsExpert.ejs`);
     res.render(this.ejs, { data });
   }
@@ -266,6 +279,7 @@ class ViewController {
       quizzes: await Doc.getAllElementsOfType(`Quiz`),
       flashcards: await Doc.getAllElementsOfType(`Flashcard`),
     };
+    Promise.all([data.group, data.user, data.document, data.quizzes, data.flashcards]);
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsDocument.ejs`);
     res.render(this.ejs, { data });
   }
@@ -283,6 +297,7 @@ class ViewController {
       quizzes: await Sec.getAllElementsOfType(`Quiz`),
       flashcards: await Sec.getAllElementsOfType(`Flashcard`),
     };
+    Promise.all([data.group, data.user, data.document, data.quizzes, data.flashcards]);
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsSection.ejs`);
     res.render(this.ejs, { data });
   }
@@ -301,6 +316,7 @@ class ViewController {
       user: await Recipient.getThisUserData(),
       quizzes: await Recipient.getAllElementsOfType(`Quiz`),
     };
+    Promise.all([data.group, data.user, data.quizzes]);
     this.ejs = path.join(`${this.root}/www/views/viewQuizRecipient.ejs`);
     res.render(this.ejs, { data });
   }
@@ -317,6 +333,7 @@ class ViewController {
       user: await Expert.getThisUserData(),
       quizzes: await Expert.getAllElementsOfType(`Quiz`),
     };
+    Promise.all([data.group, data.user, data.quizzes]);
     this.ejs = path.join(`${this.root}/www/views/viewQuizExpert.ejs`);
     res.render(this.ejs, { data });
   }
@@ -334,6 +351,7 @@ class ViewController {
       document: await Doc.getThis(),
       quizzes: await Doc.getAllElementsOfType(`Quiz`),
     };
+    Promise.all([data.group, data.user, data.document, data.quizzes]);
     this.ejs = path.join(`${this.root}/www/views/viewDocument.ejs`);
     res.render(this.ejs, { data });
   }
@@ -351,6 +369,7 @@ class ViewController {
       section: await Sec.getThis(),
       quizzes: await Sec.getAllElementsOfType(`Quiz`),
     };
+    Promise.all([data.group, data.user, data.section, data.quizzes]);
     this.ejs = path.join(`${this.root}/www/views/viewQuizSection.ejs`);
     res.render(this.ejs, { data });
   }
@@ -370,6 +389,7 @@ class ViewController {
       user: await ExpertGroup.getThisUserData(),
       sections: await ExpertGroup.getAllElementsOfType(`Section`),
     };
+    Promise.all([data.group, data.user, data.sections]);
     this.ejs = path.join(`${this.root}/www/views/postQuiz.ejs`);
     res.render(this.ejs, { data });
   }
@@ -387,6 +407,7 @@ class ViewController {
       quiz: await Q.getThis(),
       questions: await Q.getAllElementsOfType(`QuizQuestion`),
     };
+    Promise.all([data.group, data.user, data.quiz, data.questions]);
     this.ejs = path.join(`${this.root}/www/views/viewQuiz.ejs`);
     res.render(this.ejs, { data });
   }
@@ -404,6 +425,7 @@ class ViewController {
       quiz: await Q.getThis(),
       questions: await Q.getAllElementsOfType(`QuizQuestion`),
     };
+    Promise.all([data.group, data.user, data.quiz, data.questions]);
     this.ejs = path.join(`${this.root}/www/views/putQuiz.ejs`);
     res.render(this.ejs, { data });
   }
@@ -421,6 +443,7 @@ class ViewController {
       user: await Recipient.getThisUserData(),
       flashcards: await Recipient.getAllElementsOfType(`Flashcard`),
     };
+    Promise.all([data.group, data.user, data.flashcards]);
     this.ejs = path.join(`${this.root}/www/views/viewFlashcardRecipient.ejs`);
     res.render(this.ejs, { data });
   }
@@ -437,6 +460,7 @@ class ViewController {
       user: await Expert.getThisUserData(),
       flashcards: await Expert.getAllElementsOfType(`Flashcard`),
     };
+    Promise.all([data.group, data.user, data.flashcards]);
     this.ejs = path.join(`${this.root}/www/views/viewFlashcardExpert.ejs`);
     res.render(this.ejs, { data });
   }
@@ -454,6 +478,7 @@ class ViewController {
       document: await Doc.getThis(),
       flashcards: await Doc.getAllElementsOfType(`Flashcard`),
     };
+    Promise.all([data.group, data.user, data.document, data.flashcards]);
     this.ejs = path.join(`${this.root}/www/views/viewFlashcardDocument.ejs`);
     res.render(this.ejs, { data });
   }
@@ -471,6 +496,7 @@ class ViewController {
       section: await Sec.getThis(),
       flashcards: await Sec.getAllElementsOfType(`Flashcard`),
     };
+    Promise.all([data.group, data.user, data.section, data.flashcards]);
     this.ejs = path.join(`${this.root}/www/views/viewFlashcardSection.ejs`);
     res.render(this.ejs, { data });
   }
@@ -489,6 +515,7 @@ class ViewController {
       group: await Expert.getThisGroupData(),
       user: await Expert.getThisUserData(),
     };
+    Promise.all([data.group, data.user]);
     this.ejs = path.join(`${this.root}/www/views/postFlashcard.ejs`);
     res.render(this.ejs, { data });
   }
@@ -505,6 +532,7 @@ class ViewController {
       user: await F.getThisUserData(),
       flashcard: await F.getThis(),
     };
+    Promise.all([data.group, data.user, data.flashcard]);
     this.ejs = path.join(`${this.root}/www/views/viewDocument.ejs`);
     res.render(this.ejs, { data });
   }
@@ -521,6 +549,7 @@ class ViewController {
       user: await F.getThisUserData(),
       flashcard: await F.getThis(),
     };
+    Promise.all([data.group, data.user, data.flashcard]);
     this.ejs = path.join(`${this.root}/www/views/putFlashcard.ejs`);
     res.render(this.ejs, { data });
   }
@@ -539,6 +568,7 @@ class ViewController {
       user: await Recipient.getThisUserData(),
       keywords: await Recipient.getAllElementsOfType(`Keyword`),
     };
+    Promise.all([data.group, data.user, data.keywords]);
     this.ejs = path.join(`${this.root}/www/views/viewKeywordRecipient.ejs`);
     res.render(this.ejs, { data });
   }
@@ -555,6 +585,7 @@ class ViewController {
       user: await Expert.getThisUserData(),
       keywords: await Expert.getAllElementsOfType(`Keyword`),
     };
+    Promise.all([data.group, data.user, data.keywords]);
     this.ejs = path.join(`${this.root}/www/views/viewKeywordExpert.ejs`);
     res.render(this.ejs, { data });
   }
@@ -572,6 +603,7 @@ class ViewController {
       document: await Doc.getThis(),
       keywords: await Doc.getAllElementsOfType(`Keyword`),
     };
+    Promise.all([data.group, data.user, data.document, data.keywords]);
     this.ejs = path.join(`${this.root}/www/views/viewKeywordDocument.ejs`);
     res.render(this.ejs, { data });
   }
@@ -589,6 +621,7 @@ class ViewController {
       section: await Sec.getThis(),
       keywords: await Sec.getAllElementsOfType(`Keyword`),
     };
+    Promise.all([data.group, data.user, data.section, data.keywords]);
     this.ejs = path.join(`${this.root}/www/views/viewKeywordSection.ejs`);
     res.render(this.ejs, { data });
   }
@@ -607,6 +640,7 @@ class ViewController {
       group: await Expert.getThisGroupData(),
       user: await Expert.getThisUserData(),
     };
+    Promise.all([data.group, data.user]);
     this.ejs = path.join(`${this.root}/www/views/postKeyword.ejs`);
     res.render(this.ejs, { data });
   }
@@ -623,6 +657,7 @@ class ViewController {
       user: await K.getThisUserData(),
       document: await K.getThis(),
     };
+    Promise.all([data.group, data.user, data.document]);
     this.ejs = path.join(`${this.root}/www/views/viewKeyword.ejs`);
     res.render(this.ejs, { data });
   }
@@ -639,6 +674,7 @@ class ViewController {
       user: await K.getThisUserData(),
       keyword: await K.getThis(),
     };
+    Promise.all([data.group, data.user, data.keyword]);
     this.ejs = path.join(`${this.root}/www/views/putKeyword.ejs`);
     res.render(this.ejs, { data });
   }
