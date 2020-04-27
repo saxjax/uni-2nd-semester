@@ -16,7 +16,7 @@ class RedirectController {
   /* FIXME: UNDER CONSTRUCTION */
   dbDown(req, res) {
     this.ejs = path.join(`${this.root}/www/views/dbDown.ejs`);
-    res.render(this.ejs); // FIXME: Implementer brug af statuskode 503 (https://httpstatuses.com/503)
+    res.render(this.ejs);
   }
 
   /* Formål: At autentificere at bruger og password kombinationen findes i databasen
@@ -36,7 +36,7 @@ class RedirectController {
       res.redirect(`/`);
     }
     else {
-      res.redirect(422, `/register`); // FIXME: Implementer brug af statuskode 422 ved invalid
+      res.redirect(422, `/register`);
     }
   }
 
@@ -70,7 +70,7 @@ class RedirectController {
           console.log(err);
         }
         else {
-          console.log(`File Uploaded`);
+          console.log(`File Uploaded`); // FIXME: Bør nok ikke console.logges, men i stedet sendes med res tilbage
         }
       });
     }
@@ -83,7 +83,7 @@ class RedirectController {
     this.addNewSection(newSection, newKeywords);
 
     this.ejs = path.join(`${this.root}/www/views/rapportafsnit.ejs`);
-    res.render(this.ejs, { section: req.body.name_of_section, content: null });
+    res.render(this.ejs, { section: req.body.name_of_section, content: null }); // FIXME: Snake-case
   }
 
   /* UNDER CONSTRUCTION */
