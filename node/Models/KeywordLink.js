@@ -4,11 +4,11 @@ const { Model } = require(`./AbstractClasses/Model.js`);
 
 /* FIXME: UNDER CONSTRUCTION */
 
-class Keyword extends Model {
+class KeywordLink extends Model {
   constructor(req) {
     super(req);
-    this.elementType = `keyword`;
-    this.table = `keyword`;
+    this.elementType = `keyword_link`;
+    this.table = `keyword_link`;
 
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
@@ -18,7 +18,7 @@ class Keyword extends Model {
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
-          this.idColumnName = `ID_KEYWORD`;
+          this.idColumnName = `ID_KEYWORD_LINK`;
           this.idQuery      = req.params.idQuery;
           break;
         case `POST`:
@@ -41,7 +41,7 @@ class Keyword extends Model {
       await this.query(`ID_USER_GROUP = "${this.idGroup}" `
                  + `AND ID_USER = "${this.idUser}"`);
       */
-      throw new Error(`Keyword er IKKE implementeret som sit eget selvstændige objekt med selvstændig tabel!`);
+      throw new Error(`Keyword_link er IKKE implementeret som sit eget selvstændige objekt med selvstændig tabel!`);
     }
     catch (error) {
       console.log(error);
@@ -51,5 +51,5 @@ class Keyword extends Model {
   }
 }
 module.exports = {
-  Keyword,
+  KeywordLink,
 };

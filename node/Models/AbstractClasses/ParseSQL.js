@@ -36,6 +36,9 @@ class ParseSql {
         case `flashcard`:        this.parsedData.push(this.parseFlashcard(data[i]));       break;
         case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i])); break;
         case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));         break;
+        case `keyword_link`:          this.parsedData.push(this.parseKeywordLink(data[i]));         break;
+
+
         default: throw new Error(`elementType er IKKE oprettet i Parseren!`);
       }
     }
