@@ -183,6 +183,7 @@ class Server {
     this.app.post(`/upload/evalueringer`,      (req, res) => Redirect.UploadEvalueringer(req, res));
     this.app.post(`/register`,                 (req, res) => Redirect.RegisterNewUser(req, res));
     this.app.post(`/create/section`,           (req, res) => Redirect.createSection(req, res));
+    this.app.get(`/keyword`,                   (req, res) => Redirect.keyword(req, res));
   }
 
   /* Formål: Struktur for de URL Patterns der indsætter data i databasen.
