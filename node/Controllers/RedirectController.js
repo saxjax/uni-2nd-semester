@@ -2,6 +2,7 @@
 const path = require(`path`);
 const { User } = require(`../Models/User.js`);
 const { Section } = require(`../Models/Section.js`);
+const { Keyword } = require(`../Models/Keyword.js`);
 
 /* FIXME: UNDER CONSTRUCTION */
 
@@ -103,7 +104,15 @@ class RedirectController {
       res.redirect(503, `/dbdown`);
     }
   }
+
+  async keyword(req, res) {
+    const newKeyword = new Keyword(req);
+    const arrayKeywords = [`Kylling`, `Kebab`, `Abe`, `Bille`, `Cirkus`, `Batman`, `Superman`, `NytKeyword25`];
+    const testfunction = newKeyword.createKeywords(arrayKeywords);
+    res.redirect(`/`);
+  }
 }
+
 
 module.exports = {
   RedirectController,
