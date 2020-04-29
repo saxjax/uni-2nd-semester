@@ -131,12 +131,12 @@ class ViewController {
    */
   async viewSectionsRecipientPage(req, res) {
     const Recipient = new Group(req);
-    const data = {
-      group: await Recipient.getThisGroupData(),
-      user: await Recipient.getThisUserData(),
-      sections: await Recipient.getAllElementsOfType(`Section`),
-    };
-    Promise.all([data.group, data.user, data.sections]);
+    const dataArray = await Promise.all([
+      Recipient.getThisGroupData(),               // dataArray[0]
+      Recipient.getThisUserData(),                // dataArray[1]
+      Recipient.getAllElementsOfType(`Section`),  // dataArray[2]
+    ]);
+    const data = { group: dataArray[0], user: dataArray[1], sections: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewSectionsRecipient.ejs`);
     res.render(this.ejs, { data });
   }
