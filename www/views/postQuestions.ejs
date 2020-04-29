@@ -5,19 +5,20 @@
     <title>GroupHub | Create Questions</title>
     <link rel="stylesheet" href="/css/design.css">
     <link rel="stylesheet" href="/css/postQuestions.css">
+    <script defer src="/js/addAnotherQuestion.js"></script>
 </head>
 <body>
-    <%- include('meta/navbar') %> 
-    <div class="container" id="content">
-        <h1>Create new questions!</h1>
-        <form action="/post/questions" method="POST" id="quizQuestionsForm">
-            <button type="button" class="addAnotherQuestionButton">Add another question</button>
-            <button id="submit">Submit</button>
-            <p id="questionNumDisplay">Number of questions: 0</p>
-            <button type="button" class="addAnotherQuestionButton">Add another question</button>
-        </form>
-    </div>
-    <%- include('meta/footer') %> 
-    <script src="/js/addAnotherQuestion.js"></script>
+  <%- include('meta/navbar') %> 
+  <div class="container" id="content">
+    <h1>Create new questions!</h1>
+    <button type="button" class="addAnotherQuestionButton">Add another question</button>
+    <!--Det her bliver fyldt ind fra den tilhørende JS-fil, når brugeren trykker på knappen-->
+    <form action="/post/questions" method="POST" id="quizQuestionsForm">
+      <button id="submit">Submit</button>
+    </form>
+    <p id="questionCountDisplay">Number of questions: 0</p>
+    <button type="button" class="addAnotherQuestionButton">Add another question</button>
+  </div>
+  <%- include('meta/footer') %> 
 </body>
 </html>

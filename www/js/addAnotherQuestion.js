@@ -1,77 +1,83 @@
+/* HEAD */
 
-// Inserts a DOM node before the given element
-function insertDomNode(tagName, insBeforeThisElem, text, selectors) {
-  const node = createDomNode(tagName, text, selectors);
+// Indsætter et DOM-element før insBeforeThisElem
+function insertDomNode(tagName, insBeforeThisElem, innerHTML, selectors) {
+  const node = createDomNode(tagName, innerHTML, selectors);
   insBeforeThisElem.parentNode.insertBefore(node, insBeforeThisElem);
   return node;
 }
 
-// Appends a DOM node to the given parent
-function appendDomNode(tagName, parent, text, selectors) {
-  const node = createDomNode(tagName, text, selectors);
+// Indsætter et DOM-element, som en child til den givne parent
+function appendDomNode(tagName, parent, innerHTML, selectors) {
+  const node = createDomNode(tagName, innerHTML, selectors);
   parent.appendChild(node);
   return node;
 }
 
-function createDomNode(tagName, text, selectors) {
+function createDomNode(tagName, innerHTML, selectors) {
   const elem = document.createElement(tagName);
-  if (selectors) {
-    for (const selector of selectors) {
-      elem[selector.type] = selector.val;
-    }
-  }
+  // Apply innerHTML
   switch (tagName) {
-    case `p`:      elem.appendChild(document.createTextNode(text)); break;
-    case `button`: elem.innerHTML = text;                           break;
-    default:                                                        break;
+    case `p`:
+      elem.appendChild(document.createTextNode(innerHTML)); break;
+    case `button`: case `label`:
+      elem.innerHTML = innerHTML;                           break;
+    default:                                                break; // "default" sker når tagName ikke skal have et innerHTML
+  }
+  // Apply css
+  if (selectors) {
+    for (let i = 0; i < selectors.length; i++) {
+      const selectorType = Object.getOwnPropertyNames(selectors[i])[0]; // Enten "id" eller "class"
+      switch (selectorType) {
+        case    `id`: elem.id = selectors[i].id;              break;
+        case `class`: elem.classList.add(selectors[i].class); break;
+        default: throw new Error(`That's not a valid selector type. Only "class" and "id" are available.`);
+      }
+    }
   }
   return elem;
 }
 
-const form = document.getElementById(`quizQuestionsForm`);
+/* BODY */
+
+// const form = document.getElementById(`quizQuestionsForm`); FIXME: Slettes hvis ikke den skal bruges
 const buttons = document.querySelectorAll(`.addAnotherQuestionButton`);
 const submitButton = document.getElementById(`submit`);
-const questionNumDisplay = document.getElementById(`questionNumDisplay`);
-let questionNum = 0;
+const questionCountDisplay = document.getElementById(`questionCountDisplay`);
+let questionCount = 0;
 
+addAnotherQuestion(); // Tilføjer automatisk et spørgsmål, når htmlen er loadet.
 buttons.forEach((button) => {
   button.addEventListener(`click`, addAnotherQuestion);
 });
 
 function addAnotherQuestion() {
-  createDiv();
-  const currentDiv = document.getElementById(`div${questionNum}`);
-  const input = document.createElement(`INPUT`);
-  const label = document.createElement(`LABEL`);
-  label.innerHTML = `Question ${questionNum}`;
-  input.placeholder = `Question ${questionNum}`;
-  input.name = `question${questionNum}`;
-  currentDiv.appendChild(label);
-  currentDiv.appendChild(input);
-  createAnswerFields(currentDiv);
-  questionNum++;
-  questionNumDisplay.innerHTML = `Number of questions: ${questionNum}`;
+  questionCount++;
+  const questionContainer = insertDomNode(`div`, submitButton, undefined, [{ class: `questionContainer` }]); // FIXME: Jacob: Bør dette ikke være en class? Tidligere: id: `div${questionCount}`
+  const questionLabel = appendDomNode(`label`, questionContainer, `Question ${questionCount}`); // Indsæt label for="someID"
+  questionLabel.htmlFor = `question${questionCount}`;
+  appendDomNode(`br`, questionContainer);
+
+  const input = appendDomNode(`input`, questionContainer, undefined, [{ id: `question${questionCount}` }]);
+  input.placeholder = `Question ${questionCount}`;
+  input.name = `question${questionCount}`;
+  appendDomNode(`br`, questionContainer);
+
+  createAnswerFields(questionContainer);
+
+  questionCountDisplay.innerHTML = `Number of questions: ${questionCount}`;
 }
 
-function createDiv() {
-  const newDiv = document.createElement(`DIV`);
-  newDiv.id = `div${questionNum}`;
-  form.insertBefore(newDiv, submitButton);
-}
-
-function createAnswerFields(currentDiv) {
-  for (let i = 0; i < 4; i++) {
-    const inputAnswer = document.createElement(`INPUT`);
-    inputAnswer.placeholder = `Question${questionNum}Answer${i}`;
-    inputAnswer.name = `Question${questionNum}Answer${i}`;
-    currentDiv.appendChild(inputAnswer);
-    console.log(`Should have`);
+function createAnswerFields(questionContainer) {
+  for (let i = 1; i <= 4; i++) {
+    const inputAnswer = appendDomNode(`input`, questionContainer);
+    inputAnswer.placeholder = `Answer ${i}`;
+    inputAnswer.name = `Question${questionCount}Answer${i}`;
   }
-  const correctAnswer = document.createElement(`INPUT`);
+  const correctAnswer = appendDomNode(`input`, questionContainer);
   correctAnswer.type = `Number`;
   correctAnswer.placeholder = `Correct answer`;
   correctAnswer.min = `1`;
   correctAnswer.max = `4`;
-  correctAnswer.id = `correctAnswerQuestion${questionNum}`;
-  currentDiv.appendChild(correctAnswer);
+  correctAnswer.id = `correctAnswerQuestion${questionCount}`;
 }
