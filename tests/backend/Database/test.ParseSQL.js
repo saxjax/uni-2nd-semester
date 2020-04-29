@@ -359,12 +359,13 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
       { COLUMN_NAME: `ID_DOCUMENT` },
       { COLUMN_NAME: `ID_USER_GROUP` },
       { COLUMN_NAME: `SECTION_TITLE` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
       { COLUMN_NAME: `SECTION_NUMBER` },
       { COLUMN_NAME: `SECTION_CONTENT` },
       { COLUMN_NAME: `SECTION_TEASER` },
       { COLUMN_NAME: `KEYWORDS` },
       { COLUMN_NAME: `ID_USER` },
+      { COLUMN_NAME: `ELEMENT_TYPE` },
+
     ],
   ];
 
@@ -380,12 +381,13 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   const Q = new Quiz(req);
   expected = [
     [
+      { COLUMN_NAME: `QUIZ_TITLE` },
       { COLUMN_NAME: `ID_QUIZ` },
       { COLUMN_NAME: `ID_DOCUMENT` },
       { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
-      { COLUMN_NAME: `SECTION_TITLE` },
+      { COLUMN_NAME: `ID_USER` },
       { COLUMN_NAME: `ID_USER_GROUP` },
+      { COLUMN_NAME: `ELEMENT_TYPE` },
     ],
   ];
   inputData = await Q.query(`HEAD`, `COLUMN_NAME`);
@@ -402,19 +404,22 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   const Qq = new QuizQuestion(req);
   expected = [
     [
+      { COLUMN_NAME: `ID_QUIZ_QUESTION` },
       { COLUMN_NAME: `ID_QUIZ` },
-      { COLUMN_NAME: `ID_DOCUMENT` },
-      { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
+      { COLUMN_NAME: `QUESTION` },
+      { COLUMN_NAME: `ANSWER_1` },
+      { COLUMN_NAME: `ANSWER_2` },
+      { COLUMN_NAME: `ANSWER_3` },
+      { COLUMN_NAME: `ANSWER_4` },
+      { COLUMN_NAME: `CORRECT_ANSWER` },
       { COLUMN_NAME: `ELEMENT_TYPE` },
-      { COLUMN_NAME: `SECTION_TITLE` },
-      { COLUMN_NAME: `ID_USER_GROUP` },
     ],
 
   ];
   actual = [await Qq.query(`HEAD`, `COLUMN_NAME`)];
 
   assert.deepEqual(actual, expected,
-    `(4.4){  Parserens forventede kolonner skal stemme overens med MySQL Databasens quiz kolonnenavne`);
+    `(4.4){  Parserens forventede kolonner skal stemme overens med MySQL Databasens quizQuestion kolonnenavne`);
   Qq.connect.end();
 
   /* 4.5 */
@@ -429,14 +434,15 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
       { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
       { COLUMN_NAME: `CONCEPT` },
       { COLUMN_NAME: `DEFINITION` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
       { COLUMN_NAME: `ID_USER_GROUP` },
+      { COLUMN_NAME: `ELEMENT_TYPE` },
+
     ],
   ];
   actual = [await F.query(`HEAD`, `COLUMN_NAME`)];
 
   assert.deepEqual(actual, expected,
-    `(4.5){  Parserens forventede kolonner skal stemme overens med MySQL Databasens quiz_question kolonnenavne`);
+    `(4.5){  Parserens forventede kolonner skal stemme overens med MySQL Databasens flashcard kolonnenavne`);
   F.connect.end();
 
   /* 4.6 */
@@ -471,8 +477,8 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   const K = new Keyword(req);
   expected = [
     [
-      { COLUMN_NAME: `ELEMENT_TYPE` },
       { COLUMN_NAME: `KEYWORD` },
+      { COLUMN_NAME: `ELEMENT_TYPE` },
     ],
   ];
   actual = [await K.query(`HEAD`, `COLUMN_NAME`)];
@@ -488,9 +494,10 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   const G = new Group(req);
   expected = [
     [
-      { COLUMN_NAME: `ELEMENT_TYPE` },
+
       { COLUMN_NAME: `ID_USER_GROUP` },
       { COLUMN_NAME: `NAME` },
+      { COLUMN_NAME: `ELEMENT_TYPE` },
     ],
   ];
   actual = [await G.query(`HEAD`, `COLUMN_NAME`)];

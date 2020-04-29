@@ -2,7 +2,7 @@
 
 /* ParseSql er en hjælpeklasse til Database.js.
  * ParseSql parser den SQL, som vi får leveret af databasen til et format, som frontend kan forstå
- * Klassen skal kunne parse alle former for input fra databasen, og sikre at JavaScript siden 
+ * Klassen skal kunne parse alle former for input fra databasen, og sikre at JavaScript siden
  * af programmet stemmer overens med MySQL siden
  */
 
@@ -135,7 +135,7 @@ class ParseSql {
       elementType: `${data.ELEMENT_TYPE}`,
       idQuiz: `${data.ID_QUIZ}`,
       idDocument: `${data.ID_DOCUMENT}`,
-      idDocumentSection: `${data.ID_DOCUMENT_SECTION}`,
+      idSection: `${data.ID_DOCUMENT_SECTION}`,
       title: `${data.QUIZ_TITLE}`,
       keywords: undefined,
     };
@@ -179,7 +179,7 @@ class ParseSql {
       idFlashcard: `${data.ID_FLASHCARD}`,
       idUser: `${data.ID_USER}`,
       idDocument: `${data.ID_DOCUMENT}`,
-      idDocumentSection: `${data.ID_DOCUMENT_SECTION}`,
+      idSection: `${data.ID_DOCUMENT_SECTION}`,
 
       concept: `${data.CONCEPT}`,
       definition: `${data.DEFINITION}`,
@@ -205,14 +205,26 @@ class ParseSql {
   parseKeyword(data) {
     return {
       idKeyword: `${data.ID_KEYWORD}`,
-      idDocument: `${data.ID_DOCUMENT}`,
-      idDocumentSection: `${data.ID_DOCUMENT_SECTION}`,
       keyword: `${data.KEYWORD}`,
+      elementType: `${data.ELEMENT_TYPE}`,
+    };
+  }
+
+
+  parseKeywordLink(data) {
+    return {
+      idKeywordLink: `${data.ID_KEYWORD_LINK}`,
+      idKeyword: `${data.ID_KEYWORD}`,
+      idQuiz: `${data.ID_QUIZ}`,
+      idQuizQuestion: `${data.ID_QUIZ_QUESTION}`,
+      idDocument: `${data.ID_DOCUMENT}`,
+      idSection: `${data.ID_DOCUMENT_SECTION}`,
       elementType: `${data.ELEMENT_TYPE}`,
 
     };
   }
 }
+
 
 module.exports = {
   ParseSql,
