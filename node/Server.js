@@ -145,6 +145,7 @@ class Server {
     // this.app.get(`/view/quiz/document/:idQuery`, (req, res) => Show.viewQuizDocumentPage(req, res));
     // this.app.get(`/view/quiz/section/:idQuery`,  (req, res) => Show.viewQuizSectionPage(req, res));
     this.app.get(`/post/quiz`,                 (req, res) => Show.postQuizPage(req, res));
+    this.app.get(`/post/questions`,                 (req, res) => Show.postQuestionsPage(req, res));
     this.app.get(`/view/quiz/:idQuery`,          (req, res) => Show.viewQuizPage(req, res));
     // this.app.get(`/put/quiz/:idQuery`,        (req, res) => Show.putQuizPage(req, res));
 
@@ -195,6 +196,7 @@ class Server {
     this.app.post(`/post/user`,    (req, res) => Creator.createUser(req, res));
     this.app.post(`/post/section`, (req, res) => Creator.createSection(req, res));
     this.app.post(`/post/quiz`,    (req, res) => Creator.createQuiz(req, res));
+    this.app.post(`/post/questions`,    (req, res) => Creator.createQuestions(req, res));
   }
 
   /* Formål: Struktur for de URL Patterns der sletter data i databasen.

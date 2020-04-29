@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('meta/header') %> 
+    <title>GroupHub | Create Questions</title>
+    <link rel="stylesheet" href="/css/design.css">
+    <link rel="stylesheet" href="/css/postQuestions.css">
+</head>
+<body>
+    <%- include('meta/navbar') %> 
+    <div class="container" id="content">
+        <h1>Create new questions!</h1>
+        <form action="/post/questions" method="POST" id="quizQuestionsForm">
+            <button type="button" class="addAnotherQuestionButton">Add another question</button>
+            <button id="submit">Submit</button>
+            <p id="questionNumDisplay">Number of questions: 0</p>
+            <button type="button" class="addAnotherQuestionButton">Add another question</button>
+        </form>
+    </div>
+    <%- include('meta/footer') %> 
+    <script src="/js/addAnotherQuestion.js"></script>
+</body>
+</html>

@@ -394,6 +394,19 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
+  async postQuestionsPage(req, res) {
+    const Q = new Quiz(req);
+    const data = {
+      group: await Q.getThisGroupData(),
+      user: await Q.getThisUserData(),
+      quiz: await Q.getThis(),
+      // questions: await Q.getAllElementsOfType(`QuizQuestion`),
+    };
+    Promise.all([data.group, data.user, data.quiz, data.questions]);
+    this.ejs = path.join(`${this.root}/www/views/postQuestions.ejs`);
+    res.render(this.ejs, { data });
+  }
+
   // TODO: Mangler EJS
   /* Formål: BESKRIV EJS FORMÅL HER
    * Input : Et request med et queryId samt en session med userId og groupId
@@ -429,6 +442,7 @@ class ViewController {
     this.ejs = path.join(`${this.root}/www/views/putQuiz.ejs`);
     res.render(this.ejs, { data });
   }
+
 
   /* Flashcard Views TODO: */
 
