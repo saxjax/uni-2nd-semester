@@ -55,7 +55,19 @@ class CreateController {
     const Q = new Quiz(req);
     try {
       await Q.insertToDatabase();
-      res.redirect(`/view/evaluations/recipient`);
+      res.redirect(`/post/questions`);
+    }
+    catch (error) {
+      res.redirect(503, `/dbdown`);
+    }
+  }
+
+  /* FIXME: UNDER CONSTRUCTION */
+  async createQuestions(req, res) {
+    const Q = new Quiz(req);
+    try {
+      await Q.insertToDatabase();
+      res.redirect(`/post/questions`);
     }
     catch (error) {
       res.redirect(503, `/dbdown`);

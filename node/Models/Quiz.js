@@ -42,11 +42,9 @@ class Quiz extends Evaluation {
    */
   async insertToDatabase() {
     try {
-      await this.query(`ID_USER_GROUP = "${this.idGroup}" `
-                 + `AND ID_USER = "${this.idUser}" `
-                 + `AND ID_DOCUMENT = "${this.idDocument}" `
-                 + `AND ID_DOCUMENT_SECTION = "${this.idSection}" `
-                 + `AND TITLE = "${this.title}"`);
+      await this.query(`INSERT`, `QUIZ_TITLE = "${this.title}" `
+                       + `AND ID_DOCUMENT_SECTION = "${this.idSection}" `
+                       + `AND ID_USER_GROUP = "${this.idGroup}"`);
     }
     catch (error) {
       console.log(error);
