@@ -71,7 +71,6 @@ class Keyword extends Model {
   async createKeywords(keywordArray) {
     let queryString = keywordArray.sort();
     queryString = this.makeKeywordQueryString(keywordArray);
-
     const existingKeywords = await this.getExistingKeywords(queryString);
 
     const insertArray = keywordArray.filter((n) => !existingKeywords.includes(n)); // Subtract existing keywords from input to determine if it needs to be inserted.
@@ -86,7 +85,7 @@ class Keyword extends Model {
     }
   }
 
-  /* Formål: Finde alle keywords som allerede eksisterer i databasen.
+  /* Formål: Finde hvilke keywords fra et input array som allerede eksisterer i databasen.
    * Input : Array af Keywords
    * Output: Array af eksisterende Keywords
    */
