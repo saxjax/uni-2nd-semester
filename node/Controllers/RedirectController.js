@@ -108,7 +108,13 @@ class RedirectController {
   async keyword(req, res) {
     const newKeyword = new Keyword(req);
     const arrayKeywords = [`Kylling`, `Kebab`, `Abe`, `Bille`, `Cirkus`, `Batman`, `Superman`, `NytKeyword25`];
-    const testfunction = newKeyword.createKeywords(arrayKeywords);
+    const idLinks = {
+      idDocument: `testIDDocument`,
+
+      idQuiz: `testIDQuiz`,
+      idQuizQuestion: `testIDQuizQuestion`,
+    };
+    const testfunction = newKeyword.insertToDatabase(idLinks, arrayKeywords);
     res.redirect(`/`);
   }
 }

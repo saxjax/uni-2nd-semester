@@ -5,28 +5,12 @@ const { Model } = require(`./AbstractClasses/Model.js`);
 /* FIXME: UNDER CONSTRUCTION */
 
 class KeywordLink extends Model {
-  constructor(req) {
-    super(req);
+  constructor(input) {
+    super(input);
     this.elementType = `keyword_link`;
     this.table = `keyword_link`;
 
-    if (this.validRequest(req)) {
-      this.idGroup = req.session.idGroup;
-      this.idUser  = req.session.idUser;
-      // this.idDocument?
-      // this.idSection?
-      this.loggedIn = req.session.loggedIn;
-      switch (req.method) {
-        case `GET`: case `UPDATE`: case `DELETE`:
-          this.idColumnName = `ID_KEYWORD_LINK`;
-          this.idQuery      = req.params.idQuery;
-          break;
-        case `POST`:
-          // none yet
-          break;
-        default: break;
-      }
-    }
+    this.idDocument = input.idDocument;
   }
 
   // TODO: Objektet eksistere formelt set ikke, da det ikke er sin egen tabel.

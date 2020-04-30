@@ -29,39 +29,76 @@ class Keyword extends Model {
     }
   }
 
-  // TODO: Objektet eksistere formelt set ikke, da det ikke er sin egen tabel.
   /* Formål: At kunne oprette den givne model i databasen ud fra posted data fra en form.
              Der bliver desuden automatisk oprettet de forskellige dependencies/foreign keys som objektet tilhører.
-   * Input : Et objekt oprettet med et request med postdata i body samt user/group data i session
+   * Input : Object som indeholder reference ID'er og array af Keywords.
    * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
 
-  /* INPUT:
-  idLinks[
-    ID_DOCUMENT       : ``,
-    ID_SECTION        : ``,
-    ID_QUIZ           : ``,
-    ID_QUIZ_QUESTION  : ``,
-  ]
+  /* INPUT OBJECT:
+     idLinks{
+       idDocument: `123-abc-fff`,
+       idSection: `345-efg-fff`,
+       idQuiz: `542-gds-fff`,
+       idQuizQuestion: `653-asd-fff`,
+     }
 
-  keywordArray  ["","",""]
+     INPUT ARRAY:
+     keywordArray  ["Kylling","Abe","Bille"]
   */
 
   async insertToDatabase(idLinks, keywordArray) {
-    try {
+    this.createKeywords(keywordArray);
+    this.createKeywordLinks(idLinks, keywordArray);
+    console.log(idLinks);
+    /* try {
       this.createKeywords(keywordArray);
-      /* linkIDSToKeywords(); */
-      /*
-      await this.query(`ID_USER_GROUP = "${this.idGroup}" `
-                 + `AND ID_USER = "${this.idUser}"`);
-      */
+       //linkIDSToKeywords();
       throw new Error(`Keyword er IKKE implementeret som sit eget selvstændige objekt med selvstændig tabel!`);
     }
     catch (error) {
       console.log(error);
       return false;
     }
-    return true;
+    return true; */
+  }
+
+  /* Formål: At oprette reference ID'er mellem input keywords og input ID'er i keyword_link tabellen.
+   * Input : Object af ID'er og array af Keywords
+   * Output: N/A
+   */
+  async createKeywordLinks(idLinks, keywordArray) {
+    const keywordIdArray = await this.makeKeywordIdArray(keywordArray);
+    const idDocument = idLinks.idDocument === undefined ? `` : idLinks.idDocument;
+    const idSection = idLinks.idSection === undefined ? `` : idLinks.idSection;
+    const idQuiz = idLinks.Quiz === undefined ? `` : idLinks.Quiz;
+    const idQuizQuestion = idLinks.idQuizQuestion === undefined ? `` : idLinks.idQuizQuestion;
+
+    let keywordIdInsertString;
+    let keywordLinkExist;
+
+    keywordIdArray.forEach(async (idKeyword) =>  {
+      try {
+        keywordLinkExist = await this.query(`CUSTOM`, `SELECT * FROM keyword_link WHERE`
+                                        + ` ID_DOCUMENT = "${idDocument}"`
+                                        + ` AND ID_SECTION = "${idSection}"`
+                                        + ` AND ID_QUIZ = "${idQuiz}"`
+                                        + ` AND ID_QUIZ_QUESTION = "${idQuizQuestion}"`
+                                        + ` AND ID_KEYWORD = "${idKeyword}"`);
+      }
+      catch (error) {
+        console.log(`Could not select rows from keyword links table ERROR: ${error}`);
+      }
+      if (keywordLinkExist.length === 0) {
+        keywordIdInsertString = `("${idDocument}","${idSection}","${idQuiz}","${idQuizQuestion}","${idKeyword}")`;
+        try {
+          await this.query(`CUSTOM`, `INSERT INTO keyword_link (ID_DOCUMENT,ID_SECTION,ID_QUIZ,ID_QUIZ_QUESTION,ID_KEYWORD) VALUES ${keywordIdInsertString}`);
+        }
+        catch (error) {
+          console.log(`Could not insert keyword links to database ERROR: ${error}`);
+        }
+      }
+    });
   }
 
   /* Formål: Oprette Keywords som ikke eksisterer i databasen.
@@ -83,6 +120,23 @@ class Keyword extends Model {
         console.log(`Could not insert keywords into table ERROR: ${error}`);
       }
     }
+  }
+
+  async makeKeywordIdArray(keywordArray) {
+    const queryString = this.makeKeywordQueryString(keywordArray);
+    let queryResult;
+    try {
+      queryResult = await this.query(`CUSTOM`, `SELECT * FROM ${this.table} WHERE KEYWORD in (${queryString}) ORDER BY KEYWORD`);
+    }
+    catch (error) {
+      console.log(`Could not select keywords from database ERROR: ${error}`);
+    }
+
+    const keywordIdArray = [];
+    for (let i = 0; i < queryResult.length; i++) {
+      keywordIdArray.push(queryResult[i].ID_KEYWORD);
+    }
+    return keywordIdArray;
   }
 
   /* Formål: Finde hvilke keywords fra et input array som allerede eksisterer i databasen.
