@@ -2,7 +2,7 @@
 
 /* ParseSql er en hjælpeklasse til Database.js.
  * ParseSql parser den SQL, som vi får leveret af databasen til et format, som frontend kan forstå
- * Klassen skal kunne parse alle former for input fra databasen, og sikre at JavaScript siden 
+ * Klassen skal kunne parse alle former for input fra databasen, og sikre at JavaScript siden
  * af programmet stemmer overens med MySQL siden
  */
 
@@ -36,6 +36,9 @@ class ParseSql {
         case `flashcard`:        this.parsedData.push(this.parseFlashcard(data[i]));       break;
         case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i])); break;
         case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));         break;
+        case `keyword_link`:          this.parsedData.push(this.parseKeywordLink(data[i]));         break;
+
+
         default: throw new Error(`elementType er IKKE oprettet i Parseren!`);
       }
     }
@@ -135,7 +138,7 @@ class ParseSql {
       elementType: `${data.ELEMENT_TYPE}`,
       idQuiz: `${data.ID_QUIZ}`,
       idDocument: `${data.ID_DOCUMENT}`,
-      idDocumentSection: `${data.ID_DOCUMENT_SECTION}`,
+      idSection: `${data.ID_DOCUMENT_SECTION}`,
       title: `${data.QUIZ_TITLE}`,
       keywords: undefined,
     };
@@ -179,7 +182,7 @@ class ParseSql {
       idFlashcard: `${data.ID_FLASHCARD}`,
       idUser: `${data.ID_USER}`,
       idDocument: `${data.ID_DOCUMENT}`,
-      idDocumentSection: `${data.ID_DOCUMENT_SECTION}`,
+      idSection: `${data.ID_DOCUMENT_SECTION}`,
 
       concept: `${data.CONCEPT}`,
       definition: `${data.DEFINITION}`,
@@ -205,14 +208,61 @@ class ParseSql {
   parseKeyword(data) {
     return {
       idKeyword: `${data.ID_KEYWORD}`,
-      idDocument: `${data.ID_DOCUMENT}`,
-      idDocumentSection: `${data.ID_DOCUMENT_SECTION}`,
       keyword: `${data.KEYWORD}`,
+      elementType: `${data.ELEMENT_TYPE}`,
+    };
+  }
+
+
+  parseKeywordLink(data) {
+    return {
+      idKeywordLink: `${data.ID_KEYWORD_LINK}`,
+      idKeyword: `${data.ID_KEYWORD}`,
+      idQuiz: `${data.ID_QUIZ}`,
+      idQuizQuestion: `${data.ID_QUIZ_QUESTION}`,
+      idDocument: `${data.ID_DOCUMENT}`,
+      idSection: `${data.ID_DOCUMENT_SECTION}`,
       elementType: `${data.ELEMENT_TYPE}`,
 
     };
   }
 }
+
+// convertBetweenCodenameAndDBName(name){
+//   switch (name) {
+
+//       case `idKeywordLink` = `ID_KEYWORD_LINK` :
+
+//       case `idKeyword` = `ID_KEYWORD`,
+//       case `idQuiz` = `ID_QUIZ`,
+//       case`idQuizQuestion` = `ID_QUIZ_QUESTION`,
+//       case`idDocument` = `ID_DOCUMENT`,
+//       case`idSection` = `ID_DOCUMENT_SECTION`,
+//       `elementType` = `ELEMENT_TYPE`,
+//       `keyword` = `KEYWORD`,
+//       `idFlashcard` = `ID_FLASHCARD`,
+//       `idUser` = `ID_USER`,
+//       `concept` = `CONCEPT`,
+//       `definition` = `DEFINITION`,
+//       `correctness` = `CORRECT_ANSWER`,
+//       `question` = `QUESTION`,
+//       `answer1` = `ANSWER_1`,
+//       `answer2` = `ANSWER_2`,
+//       `answer3` = `ANSWER_3`,
+//       `answer4` = `ANSWER_4`,
+//       `title` = `QUIZ_TITLE`,
+//       `idGroup` = `ID_USER_GROUP`,
+//       `username` = `USER_NAME`,
+//       `password` = `PASSWORD`, // password parses ikke, da det kan være en mulig sikkerhedsbrist
+//       case`firstName` = `FIRST_NAME`,
+//       case`lastName` = `LAST_NAME`,
+//       case`email` = `EMAIL`,
+//       case`studySubject` = `STUDY_SUBJECT`,
+//       case`semester` = `SEMESTER`,
+//       case`university` = `UNIVERSITY`,
+
+// }
+
 
 module.exports = {
   ParseSql,

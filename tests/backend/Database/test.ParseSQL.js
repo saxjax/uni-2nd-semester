@@ -11,6 +11,7 @@ const { Quiz } = require(`../../../node/Models/Quiz`);
 const { QuizQuestion } = require(`../../../node/Models/QuizQuestion`);
 const { Flashcard } = require(`../../../node/Models/Flashcard`);
 const { Keyword } = require(`../../../node/Models/Keyword`);
+const { KeywordLink } = require(`../../../node/Models/KeywordLink`);
 const { User } = require(`../../../node/Models/User`);
 const { Group } = require(`../../../node/Models/Group`);
 
@@ -166,6 +167,19 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   assert.equal(actual, expected,
     `(2.7){ Metoden skal kunne returnere en parset version af et KEYWORD data`);
 
+  /* 2.7.1 */
+  resetParsedData();
+  inputData = {
+    ID_KEYWORD_LINK: `TestDataDerSkalParses`,
+  };
+  expected = `TestDataDerSkalParses`;
+
+  actual = p.parseKeywordLink(inputData).idKeywordLink;
+
+  assert.equal(actual, expected,
+    `(2.7.1){ Metoden skal kunne returnere en parset version af et KEYWORD_LINK data`);
+
+
   /* 2.8 */
   resetParsedData();
   inputData = {
@@ -269,26 +283,8 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
     assert.false(true, `(3.5) Flashcard er ikke oprettet i parseren`);
   }
 
+
   /* 3.6 */
-  resetParsedData();
-
-  inputData = [{
-    ID_KEYWORD: `TestDataDerSkalParses`,
-    ELEMENT_TYPE: `keyword`,
-  }];
-
-  expected = `TestDataDerSkalParses`;
-
-  try {
-    actual = p.parseArrayOfObjects(inputData);
-    assert.equal(actual[0].idKeyword, expected,
-      `(3.6){ Metoden skal parse keyword data, når ELEMENT_TYPE = "keyword"`);
-  }
-  catch (error) {
-    assert.false(true, `(3.6) Keyword er ikke oprettet i parseren`);
-  }
-
-  /* 3.7 */
   resetParsedData();
 
   inputData = [{
@@ -301,17 +297,57 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   try {
     actual = p.parseArrayOfObjects(inputData);
     assert.equal(actual[0].idUser, expected,
-      `(3.7){ Metoden skal parse user data, når ELEMENT_TYPE = "user"`);
+      `(3.6){ Metoden skal parse user data, når ELEMENT_TYPE = "user"`);
   }
   catch (error) {
-    assert.false(true, `(3.7) User er ikke oprettet i parseren`);
+    assert.false(true, `(3.6) User er ikke oprettet i parseren`);
   }
+
+
+  /* 3.7 */
+  resetParsedData();
+
+  inputData = [{
+    ID_KEYWORD: `TestDataDerSkalParses`,
+    ELEMENT_TYPE: `keyword`,
+  }];
+
+  expected = `TestDataDerSkalParses`;
+
+  try {
+    actual = p.parseArrayOfObjects(inputData);
+    assert.equal(actual[0].idKeyword, expected,
+      `(3.7){ Metoden skal parse keyword data, når ELEMENT_TYPE = "keyword"`);
+  }
+  catch (error) {
+    assert.false(true, `(3.7) Keyword er ikke oprettet i parseren`);
+  }
+
+  /* 3.7.1 */
+  resetParsedData();
+
+  inputData = [{
+    ID_KEYWORD_LINK: `TestDataDerSkalParses`,
+    ELEMENT_TYPE: `keyword_link`,
+  }];
+
+  expected = `TestDataDerSkalParses`;
+
+  try {
+    actual = p.parseArrayOfObjects(inputData);
+    assert.equal(actual[0].idKeywordLink, expected,
+      `(3.7.1){ Metoden skal parse keyword_link data, når ELEMENT_TYPE = "keyword_link"`);
+  }
+  catch (error) {
+    assert.false(true, `(3.7.1) Keyword_link er ikke oprettet i parseren`);
+  }
+
 
   /* 3.8 */
   resetParsedData();
 
   inputData = [{
-    ELEMENT_TYPE: `group`,
+    ELEMENT_TYPE: `user_group`,
     ID_USER_GROUP: `TestDataDerSkalParses`,
   }];
 
@@ -359,12 +395,13 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
       { COLUMN_NAME: `ID_DOCUMENT` },
       { COLUMN_NAME: `ID_USER_GROUP` },
       { COLUMN_NAME: `SECTION_TITLE` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
       { COLUMN_NAME: `SECTION_NUMBER` },
       { COLUMN_NAME: `SECTION_CONTENT` },
       { COLUMN_NAME: `SECTION_TEASER` },
       { COLUMN_NAME: `KEYWORDS` },
       { COLUMN_NAME: `ID_USER` },
+      { COLUMN_NAME: `ELEMENT_TYPE` },
+
     ],
   ];
 
@@ -380,12 +417,13 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   const Q = new Quiz(req);
   expected = [
     [
+      { COLUMN_NAME: `QUIZ_TITLE` },
       { COLUMN_NAME: `ID_QUIZ` },
       { COLUMN_NAME: `ID_DOCUMENT` },
       { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
-      { COLUMN_NAME: `SECTION_TITLE` },
+      { COLUMN_NAME: `ID_USER` },
       { COLUMN_NAME: `ID_USER_GROUP` },
+      { COLUMN_NAME: `ELEMENT_TYPE` },
     ],
   ];
   inputData = await Q.query(`HEAD`, `COLUMN_NAME`);
@@ -402,19 +440,22 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   const Qq = new QuizQuestion(req);
   expected = [
     [
+      { COLUMN_NAME: `ID_QUIZ_QUESTION` },
       { COLUMN_NAME: `ID_QUIZ` },
-      { COLUMN_NAME: `ID_DOCUMENT` },
-      { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
+      { COLUMN_NAME: `QUESTION` },
+      { COLUMN_NAME: `ANSWER_1` },
+      { COLUMN_NAME: `ANSWER_2` },
+      { COLUMN_NAME: `ANSWER_3` },
+      { COLUMN_NAME: `ANSWER_4` },
+      { COLUMN_NAME: `CORRECT_ANSWER` },
       { COLUMN_NAME: `ELEMENT_TYPE` },
-      { COLUMN_NAME: `SECTION_TITLE` },
-      { COLUMN_NAME: `ID_USER_GROUP` },
     ],
 
   ];
   actual = [await Qq.query(`HEAD`, `COLUMN_NAME`)];
 
   assert.deepEqual(actual, expected,
-    `(4.4){  Parserens forventede kolonner skal stemme overens med MySQL Databasens quiz kolonnenavne`);
+    `(4.4){  Parserens forventede kolonner skal stemme overens med MySQL Databasens quizQuestion kolonnenavne`);
   Qq.connect.end();
 
   /* 4.5 */
@@ -429,14 +470,15 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
       { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
       { COLUMN_NAME: `CONCEPT` },
       { COLUMN_NAME: `DEFINITION` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
       { COLUMN_NAME: `ID_USER_GROUP` },
+      { COLUMN_NAME: `ELEMENT_TYPE` },
+
     ],
   ];
   actual = [await F.query(`HEAD`, `COLUMN_NAME`)];
 
   assert.deepEqual(actual, expected,
-    `(4.5){  Parserens forventede kolonner skal stemme overens med MySQL Databasens quiz_question kolonnenavne`);
+    `(4.5){  Parserens forventede kolonner skal stemme overens med MySQL Databasens flashcard kolonnenavne`);
   F.connect.end();
 
   /* 4.6 */
@@ -471,8 +513,9 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   const K = new Keyword(req);
   expected = [
     [
-      { COLUMN_NAME: `ELEMENT_TYPE` },
+      { COLUMN_NAME: `ID_KEYWORD` },
       { COLUMN_NAME: `KEYWORD` },
+      { COLUMN_NAME: `ELEMENT_TYPE` },
     ],
   ];
   actual = [await K.query(`HEAD`, `COLUMN_NAME`)];
@@ -482,15 +525,38 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
 
   K.connect.end();
 
+  /* 4.7.1 */
+  resetParsedData();
+
+  const Kl = new KeywordLink(req);
+  expected = [
+    [
+      { COLUMN_NAME: `ID_KEYWORD_LINK` },
+      { COLUMN_NAME: `ID_KEYWORD` },
+      { COLUMN_NAME: `ID_QUIZ` },
+      { COLUMN_NAME: `ID_QUIZ_QUESTION` },
+      { COLUMN_NAME: `ID_DOCUMENT` },
+      { COLUMN_NAME: `ID_SECTION` },
+      { COLUMN_NAME: `ELEMENT_TYPE` },
+    ],
+  ];
+  actual = [await Kl.query(`HEAD`, `COLUMN_NAME`)];
+
+  assert.deepEqual(actual, expected,
+    `(4.7.1){  Parserens forventede kolonner skal stemme overens med MySQL Databasens keyword_link kolonnenavne`);
+
+  Kl.connect.end();
+
   /* 4.8 */
   resetParsedData();
 
   const G = new Group(req);
   expected = [
     [
-      { COLUMN_NAME: `ELEMENT_TYPE` },
+
       { COLUMN_NAME: `ID_USER_GROUP` },
       { COLUMN_NAME: `NAME` },
+      { COLUMN_NAME: `ELEMENT_TYPE` },
     ],
   ];
   actual = [await G.query(`HEAD`, `COLUMN_NAME`)];

@@ -2,6 +2,7 @@
 const path = require(`path`);
 const { User } = require(`../Models/User.js`);
 const { Section } = require(`../Models/Section.js`);
+const { Keyword } = require(`../Models/Keyword.js`);
 
 /* FIXME: UNDER CONSTRUCTION */
 
@@ -103,7 +104,22 @@ class RedirectController {
       res.redirect(503, `/dbdown`);
     }
   }
+
+  // test  må slettes senere
+  async keyword(req, res) {
+    const newKeyword = new Keyword(req);
+    const arrayKeywords = [`Kylling`, `Kebab`, `Abe`, `Bille`, `Cirkus`, `Batman`, `Superman`, `NytKeyword25`];
+    const idLinks = {
+      idDocument: `testIDDocument`,
+
+      idQuiz: `testIDQuiz`,
+      idQuizQuestion: `testIDQuizQuestion`,
+    };
+    const testfunction = newKeyword.insertToDatabase(idLinks, arrayKeywords);
+    res.redirect(`/`);
+  }
 }
+
 
 module.exports = {
   RedirectController,
