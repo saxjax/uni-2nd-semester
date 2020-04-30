@@ -1,11 +1,12 @@
 /* eslint no-console: off */
 
-// const { Model } = require(`./AbstractClasses/Model.js`);
+const { Model } = require(`./AbstractClasses/Model.js`);
 
-class KeywordLink {
-  constructor({
+class KeywordLink extends Model {
+  constructor(req, {
     idKeyword = ``, idDocument = ``, idSection = ``, idQuiz = ``, idQuizQuestion = ``, idFlashcard = ``,
   } = {}) {
+    super(req);
     this.elementType = `keyword_link`;
     this.table = `keyword_link`;
 

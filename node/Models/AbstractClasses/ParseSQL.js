@@ -94,11 +94,12 @@ class ParseSql {
    */
   parseDocument(data) {
     return {
-      elementType: `${data.ELEMENT_TYPE}`,
+      idDocument: `${data.ID_DOCUMENT}`,
       idUser: `${data.ID_USER}`,
       idGroup: `${data.ID_USER_GROUP}`,
-      idDocument: `${data.ID_DOCUMENT}`,
       title: `${data.TITLE}`,
+      elementType: `${data.ELEMENT_TYPE}`,
+
     };
   }
 
@@ -226,42 +227,115 @@ class ParseSql {
 
     };
   }
+
+
+  convertNameBetweenCodeAndDB(name) {
+    switch (name) {
+      case `idKeywordLink`:  case `ID_KEYWORD_LINK`:
+        return name === `ID_KEYWORD_LINK` ? `idKeywordLink` :  `ID_KEYWORD_LINK`;
+        // break;
+
+      case `idKeyword`: case `ID_KEYWORD`:
+        return name === `ID_KEYWORD` ? `idKeyword` : `ID_KEYWORD`;
+        // break;
+
+      case `idQuiz`: case `ID_QUIZ`:
+        return name === `ID_QUIZ` ?  `idQuiz` : `ID_QUIZ`;
+        // break;
+
+      case `idQuizQuestion`: case `ID_QUIZ_QUESTION`:
+        return name === `ID_QUIZ_QUESTION` ? `idQuizQuestion` : `ID_QUIZ_QUESTION`;
+        // break;
+
+      case `idDocument`: case `ID_DOCUMENT`:
+        return name === `ID_DOCUMENT` ? `idDocument` : `ID_DOCUMENT`;
+        // break;
+
+      case `idSection`: case `ID_DOCUMENT_SECTION`:
+        return name === `ID_DOCUMENT_SECTION` ? `idSection` : `ID_DOCUMENT_SECTION`;
+        // break;
+
+      case `elementType`: case `ELEMENT_TYPE`:
+        return name === `ELEMENT_TYPE` ?  `elementType` : `ELEMENT_TYPE`;
+        // break;
+
+      case `keyword`: case `KEYWORD`:
+        return name === `KEYWORD` ? `keyword` : `KEYWORD`;
+        // break;
+
+      case `idFlashcard`: case `ID_FLASHCARD`:
+        return name === `ID_FLASHCARD` ? `idFlashcard` : `ID_FLASHCARD`;
+        // break;
+
+      case `idUser`: case `ID_USER`:
+        return name === `ID_USER` ? `idUser` : `ID_USER`;
+        // break;
+
+      case `concept`: case `CONCEPT`:
+        return name === `CONCEPT` ? `concept` : `CONCEPT`;
+        // break;
+
+      case `definition`: case `DEFINITION`:
+        return name === `DEFINITION` ? `definition` : `DEFINITION`;
+        // break;
+
+      case `correctness`: case `CORRECT_ANSWER`:
+        return name === `CORRECT_ANSWER` ? `correctness` : `CORRECT_ANSWER`;
+        // break;
+
+      case `question`: case `QUESTION`:
+        return name === `QUESTION` ?  `question` : `QUESTION`;
+        // break;
+
+      case `answers`: case `ANSWERS`:
+        return name === `ANSWERS` ? `answers` : `ANSWERS`;
+        // break;
+
+      case `quizTitle`: case `QUIZ_TITLE`:
+        return name === `QUIZ_TITLE` ?  `quizTitle` : `QUIZ_TITLE`;
+        // break;
+
+      case `idGroup`: case `ID_USER_GROUP`:
+        return name === `ID_USER_GROUP` ?  `idGroup` : `ID_USER_GROUP`;
+        // break;
+
+      case `username`: case `USER_NAME`:
+        return name === `USER_NAME` ?  `username` : `USER_NAME`;
+        // break;
+
+      case `password`: case `PASSWORD`:
+        return name === `PASSWORD` ? `password` : `PASSWORD`;
+        // break;
+
+      case `firstName`: case `FIRST_NAME`:
+        return name === `FIRST_NAME` ? `firstName` : `FIRST_NAME`;
+        // break;
+
+      case `lastName`: case `LAST_NAME`:
+        return name === `LAST_NAME` ? `lastName` : `LAST_NAME`;
+        // break;
+
+      case `email`: case `EMAIL`:
+        return name === `EMAIL` ? `email` : `EMAIL`;
+        // break;
+
+      case `studySubject`: case `STUDY_SUBJECT`:
+        return name === `STUDY_SUBJECT` ?  `studySubject` : `STUDY_SUBJECT`;
+        // break;
+
+      case `semester`: case `SEMESTER`:
+        return name === `SEMESTER` ?  `semester` : `SEMESTER`;
+        // break;
+
+      case `university`: case `UNIVERSITY`:
+        return name === `UNIVERSITY` ?  `university` : `UNIVERSITY`;
+        // break;
+
+      default:
+        return name;
+    }
+  }
 }
-
-// convertBetweenCodenameAndDBName(name){
-//   switch (name) {
-
-//       case `idKeywordLink` = `ID_KEYWORD_LINK` :
-
-//       case `idKeyword` = `ID_KEYWORD`,
-//       case `idQuiz` = `ID_QUIZ`,
-//       case`idQuizQuestion` = `ID_QUIZ_QUESTION`,
-//       case`idDocument` = `ID_DOCUMENT`,
-//       case`idSection` = `ID_DOCUMENT_SECTION`,
-//       `elementType` = `ELEMENT_TYPE`,
-//       `keyword` = `KEYWORD`,
-//       `idFlashcard` = `ID_FLASHCARD`,
-//       `idUser` = `ID_USER`,
-//       `concept` = `CONCEPT`,
-//       `definition` = `DEFINITION`,
-//       `correctness` = `CORRECT_ANSWER`,
-//       `question` = `QUESTION`,
-//       `answer1` = `ANSWER_1`,
-//       `answer2` = `ANSWER_2`,
-//       `answer3` = `ANSWER_3`,
-//       `answer4` = `ANSWER_4`,
-//       `title` = `QUIZ_TITLE`,
-//       `idGroup` = `ID_USER_GROUP`,
-//       `username` = `USER_NAME`,
-//       `password` = `PASSWORD`, // password parses ikke, da det kan være en mulig sikkerhedsbrist
-//       case`firstName` = `FIRST_NAME`,
-//       case`lastName` = `LAST_NAME`,
-//       case`email` = `EMAIL`,
-//       case`studySubject` = `STUDY_SUBJECT`,
-//       case`semester` = `SEMESTER`,
-//       case`university` = `UNIVERSITY`,
-
-// }
 
 
 module.exports = {

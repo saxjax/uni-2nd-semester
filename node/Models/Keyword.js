@@ -2,6 +2,7 @@
 
 const { Model } = require(`./AbstractClasses/Model.js`);
 const { KeywordLink } = require(`./KeywordLink`);
+const { P } = require(`./AbstractClasses/ParseSQL`);
 
 /* FIXME: UNDER CONSTRUCTION */
 
