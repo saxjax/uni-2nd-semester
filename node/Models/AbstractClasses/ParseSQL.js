@@ -228,6 +228,41 @@ class ParseSql {
   }
 }
 
+// convertBetweenCodenameAndDBName(name){
+//   switch (name) {
+
+//       case `idKeywordLink` = `ID_KEYWORD_LINK` :
+
+//       case `idKeyword` = `ID_KEYWORD`,
+//       case `idQuiz` = `ID_QUIZ`,
+//       case`idQuizQuestion` = `ID_QUIZ_QUESTION`,
+//       case`idDocument` = `ID_DOCUMENT`,
+//       case`idSection` = `ID_DOCUMENT_SECTION`,
+//       `elementType` = `ELEMENT_TYPE`,
+//       `keyword` = `KEYWORD`,
+//       `idFlashcard` = `ID_FLASHCARD`,
+//       `idUser` = `ID_USER`,
+//       `concept` = `CONCEPT`,
+//       `definition` = `DEFINITION`,
+//       `correctness` = `CORRECT_ANSWER`,
+//       `question` = `QUESTION`,
+//       `answer1` = `ANSWER_1`,
+//       `answer2` = `ANSWER_2`,
+//       `answer3` = `ANSWER_3`,
+//       `answer4` = `ANSWER_4`,
+//       `title` = `QUIZ_TITLE`,
+//       `idGroup` = `ID_USER_GROUP`,
+//       `username` = `USER_NAME`,
+//       `password` = `PASSWORD`, // password parses ikke, da det kan være en mulig sikkerhedsbrist
+//       case`firstName` = `FIRST_NAME`,
+//       case`lastName` = `LAST_NAME`,
+//       case`email` = `EMAIL`,
+//       case`studySubject` = `STUDY_SUBJECT`,
+//       case`semester` = `SEMESTER`,
+//       case`university` = `UNIVERSITY`,
+
+// }
+
 
 module.exports = {
   ParseSql,

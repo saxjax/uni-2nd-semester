@@ -1,6 +1,7 @@
 /* eslint no-console: off */
 
 const { Model } = require(`./AbstractClasses/Model.js`);
+const { KeywordLink } = require(`./KeywordLink`);
 
 /* FIXME: UNDER CONSTRUCTION */
 
@@ -46,60 +47,69 @@ class Keyword extends Model {
      INPUT ARRAY:
      keywordArray  ["Kylling","Abe","Bille"]
   */
-
+  // FIXME: lav check om createkeywords og createKeywordLinks har oprettet det de skal i databasen og return true
   async insertToDatabase(idLinks, keywordArray) {
-    this.createKeywords(keywordArray);
-    this.createKeywordLinks(idLinks, keywordArray);
-    console.log(idLinks);
-    /* try {
-      this.createKeywords(keywordArray);
-       //linkIDSToKeywords();
-      throw new Error(`Keyword er IKKE implementeret som sit eget selvstændige objekt med selvstændig tabel!`);
-    }
-    catch (error) {
-      console.log(error);
-      return false;
-    }
-    return true; */
+    await this.createKeywords(keywordArray);
+    await this.createKeywordLinks(idLinks, keywordArray);
+
+    // return true;
   }
 
-  /* Formål: At oprette reference ID'er mellem input keywords og input ID'er i keyword_link tabellen.
+  /* Formål: At oprette reference ID'er mellem input keywords og input ID'er i ${keywordLink.table} tabellen.
    * Input : Object af ID'er og array af Keywords
    * Output: N/A
    */
   async createKeywordLinks(idLinks, keywordArray) {
+    const keywordLink = new KeywordLink(idLinks);
     const keywordIdArray = await this.makeKeywordIdArray(keywordArray);
-    const idDocument = idLinks.idDocument === undefined ? `` : idLinks.idDocument;
-    const idSection = idLinks.idSection === undefined ? `` : idLinks.idSection;
-    const idQuiz = idLinks.Quiz === undefined ? `` : idLinks.Quiz;
-    const idQuizQuestion = idLinks.idQuizQuestion === undefined ? `` : idLinks.idQuizQuestion;
-
-    let keywordIdInsertString;
     let keywordLinkExist;
 
     keywordIdArray.forEach(async (idKeyword) =>  {
-      try {
-        keywordLinkExist = await this.query(`CUSTOM`, `SELECT * FROM keyword_link WHERE`
-                                        + ` ID_DOCUMENT = "${idDocument}"`
-                                        + ` AND ID_SECTION = "${idSection}"`
-                                        + ` AND ID_QUIZ = "${idQuiz}"`
-                                        + ` AND ID_QUIZ_QUESTION = "${idQuizQuestion}"`
-                                        + ` AND ID_KEYWORD = "${idKeyword}"`);
-      }
-      catch (error) {
-        console.log(`Could not select rows from keyword links table ERROR: ${error}`);
-      }
+      keywordLinkExist = await this.checkIfKeywordLinkExist(keywordLink, idKeyword);
+
       if (keywordLinkExist.length === 0) {
-        keywordIdInsertString = `("${idDocument}","${idSection}","${idQuiz}","${idQuizQuestion}","${idKeyword}")`;
-        try {
-          await this.query(`CUSTOM`, `INSERT INTO keyword_link (ID_DOCUMENT,ID_SECTION,ID_QUIZ,ID_QUIZ_QUESTION,ID_KEYWORD) VALUES ${keywordIdInsertString}`);
-        }
-        catch (error) {
-          console.log(`Could not insert keyword links to database ERROR: ${error}`);
-        }
+        await this.insertKeywordLink(keywordLink, idKeyword);
       }
     });
   }
+
+
+  /* Formål: Checker om der eksistere en tupel i databasen med præcis samme data som vi ønsker at oprette
+   * Input : KeywordLink Object med et keyword
+   * Output: De tupler fra SQLdatabasen som indeholder præcis samme data som input parametrene giver.
+   */
+  async checkIfKeywordLinkExist(keywordLink, idKeyword) {
+    let keywordLinkExist;
+
+    try {
+      keywordLinkExist = await this.query(`CUSTOM`, `SELECT * FROM ${keywordLink.table} WHERE`
+                                      + ` ID_DOCUMENT = "${keywordLink.idDocument}"`
+                                      + ` AND ID_SECTION = "${keywordLink.idSection}"`
+                                      + ` AND ID_QUIZ = "${keywordLink.idQuiz}"`
+                                      + ` AND ID_QUIZ_QUESTION = "${keywordLink.idQuizQuestion}"`
+                                      + ` AND ID_KEYWORD = "${idKeyword}"`);
+    }
+    catch (error) {
+      console.log(`Could not select rows from keyword links table ERROR: ${error}`);
+    }
+    return keywordLinkExist;
+  }
+
+
+  /* Formål: Opretter en tupel i SQLdatabasen med refference id'erne for et givent keyword
+   * Input : KeywordLink Object med et keyword
+   * Output: N/A
+   */
+  async insertKeywordLink(keywordLink, idKeyword) {
+    const keywordIdInsertString = `("${keywordLink.idDocument}","${keywordLink.idSection}","${keywordLink.idQuiz}","${keywordLink.idQuizQuestion}","${idKeyword}")`;
+    try {
+      await this.query(`CUSTOM`, `INSERT INTO ${keywordLink.table} (ID_DOCUMENT,ID_SECTION,ID_QUIZ,ID_QUIZ_QUESTION,ID_KEYWORD) VALUES ${keywordIdInsertString}`);
+    }
+    catch (error) {
+      console.log(`Could not insert keyword links to database ERROR: ${error}`);
+    }
+  }
+
 
   /* Formål: Oprette Keywords som ikke eksisterer i databasen.
    * Input : Array af Keywords
@@ -118,10 +128,15 @@ class Keyword extends Model {
       }
       catch (error) {
         console.log(`Could not insert keywords into table ERROR: ${error}`);
+        return false;
       }
     }
   }
 
+  /* Formål: Opretter et array af idKeyword som matcher ordene i et array af keywords.
+   * Input : Array af keywords
+   * Output: Array af idKeyword
+   */
   async makeKeywordIdArray(keywordArray) {
     const queryString = this.makeKeywordQueryString(keywordArray);
     let queryResult;
@@ -159,9 +174,9 @@ class Keyword extends Model {
     return existingKeywords;
   }
 
-  /* Formål: Oprette en string til SQL SELECT af keywords.
+  /* Formål: Oprette en string til SQL INSERT ud fra et array af keywords.
    * Input : Array af Keywords
-   * Output: N/A
+   * Output: String til brug i VALUES clause i INSERT  statement
    */
   makeKeywordInsertString(keywordArray) {
     let queryString = ``;
@@ -176,9 +191,9 @@ class Keyword extends Model {
     return queryString;
   }
 
-  /* Formål: Oprette en string til SQL INSERT af keywords.
+  /* Formål: Oprette en string til SQL SELECT ud fra et array af keywords.
    * Input : Array af Keywords
-   * Output: N/A
+   * Output: String til brug i WHERE clause i et SELECT statement
    */
   makeKeywordQueryString(keywordArray) {
     let queryString = ``;

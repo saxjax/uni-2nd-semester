@@ -105,6 +105,7 @@ class RedirectController {
     }
   }
 
+  // test  må slettes senere
   async keyword(req, res) {
     const newKeyword = new Keyword(req);
     const arrayKeywords = [`Kylling`, `Kebab`, `Abe`, `Bille`, `Cirkus`, `Batman`, `Superman`, `NytKeyword25`];
