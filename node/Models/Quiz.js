@@ -38,7 +38,7 @@ class Quiz extends Evaluation {
   /* Formål: At kunne oprette den givne model i databasen ud fra posted data fra en form.
              Der bliver desuden automatisk oprettet de forskellige dependencies/foreign keys som objektet tilhører.
    * Input : Et objekt oprettet med et request med postdata i body samt user/group data i session
-   * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
+   * Output: Quizzens ID hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
     try {
@@ -50,7 +50,17 @@ class Quiz extends Evaluation {
       console.log(error);
       return false;
     }
-    return true;
+    let queryResult = 0;
+    try {
+      queryResult = await this.query(`SELECT ID_QUIZ`, `QUIZ_TITLE = "${this.title}" `
+                       + `AND ID_DOCUMENT_SECTION = "${this.idSection}" `
+                       + `AND ID_USER_GROUP = "${this.idGroup}"`);
+    }
+    catch (error) {
+      console.log(error);
+      return false;
+    }
+    return queryResult[0].idQuiz;
   }
 }
 module.exports = {

@@ -6,19 +6,18 @@
     <link rel="stylesheet" href="/css/design.css">
     <link rel="stylesheet" href="/css/postQuestions.css">
     <script defer src="/js/addAnotherQuestion.js"></script>
-</head>
-<body>
-  <%- include('meta/navbar') %> 
-  <div class="container" id="content">
-    <h1>Create new questions!</h1>
-    <button type="button" class="addAnotherQuestionButton">Add another question</button>
-    <!--Det her bliver fyldt ind fra den tilhørende JS-fil, når brugeren trykker på knappen-->
-    <form action="/post/questions" method="POST" id="quizQuestionsForm">
+    <script defer src="/js/postQuizQuestions.js"></script>
+  </head>
+  <body>
+    <%- include('meta/navbar') %> 
+    <div class="container" id="content">
+      <h1 id="quizTitleHeader"><!-- Create new questions for ${titleQuiz} (inserted from JS) --></h1>
+      <button type="button" class="addAnotherQuestionButton">Add another question</button>
+      <!--Det her bliver fyldt ind fra den tilhørende JS-fil, når brugeren trykker på knappen addAnotherQuestionButton-->
       <button id="submit">Submit</button>
-    </form>
-    <p id="questionCountDisplay">Number of questions: 0</p>
-    <button type="button" class="addAnotherQuestionButton">Add another question</button>
-  </div>
-  <%- include('meta/footer') %> 
-</body>
+      <p id="questionCountDisplay">Number of questions: 0</p>
+      <button type="button" class="addAnotherQuestionButton">Add another question</button>
+    </div>
+    <%- include('meta/footer') %> 
+  </body>
 </html>

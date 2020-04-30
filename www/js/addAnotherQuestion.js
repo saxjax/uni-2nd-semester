@@ -14,13 +14,14 @@ function appendDomNode(tagName, parent, innerHTML, selectors) {
   return node;
 }
 
-function createDomNode(tagName, innerHTML, selectors) {
+function createDomNode(tagNameParam, innerHTML, selectors) {
+  const tagName = tagNameParam.toUpperCase();
   const elem = document.createElement(tagName);
   // Apply innerHTML
   switch (tagName) {
-    case `p`:
+    case `P`:
       elem.appendChild(document.createTextNode(innerHTML)); break;
-    case `button`: case `label`:
+    case `BUTTON`: case `LABEL`:
       elem.innerHTML = innerHTML;                           break;
     default:                                                break; // "default" sker når tagName ikke skal have et innerHTML
   }
@@ -46,38 +47,42 @@ const submitButton = document.getElementById(`submit`);
 const questionCountDisplay = document.getElementById(`questionCountDisplay`);
 let questionCount = 0;
 
+// ON LOAD //
+// Includes quiz name in quizTitleHeader
+const urlParams = new URLSearchParams(window.location.search);
+const titleQuiz = urlParams.get(`titleQuiz`);
+const quizTitleHeader = document.getElementById(`quizTitleHeader`);
+quizTitleHeader.innerHTML = `Create new questions for ${titleQuiz}`;
+
 addAnotherQuestion(); // Tilføjer automatisk et spørgsmål, når htmlen er loadet.
+// /ON LOAD //
+
 buttons.forEach((button) => {
   button.addEventListener(`click`, addAnotherQuestion);
 });
 
 function addAnotherQuestion() {
   questionCount++;
-  const questionContainer = insertDomNode(`div`, submitButton, undefined, [{ class: `questionContainer` }]); // FIXME: Jacob: Bør dette ikke være en class? Tidligere: id: `div${questionCount}`
-  const questionLabel = appendDomNode(`label`, questionContainer, `Question ${questionCount}`); // Indsæt label for="someID"
-  questionLabel.htmlFor = `question${questionCount}`;
-  appendDomNode(`br`, questionContainer);
-
-  const input = appendDomNode(`input`, questionContainer, undefined, [{ id: `question${questionCount}` }]);
-  input.placeholder = `Question ${questionCount}`;
-  input.name = `question${questionCount}`;
-  appendDomNode(`br`, questionContainer);
-
+  const questionContainer = insertDomNode(`DIV`, submitButton, undefined, [{ class: `questionContainer` }]);
+  const questionLabel = appendDomNode(`LABEL`, questionContainer, `Question ${questionCount}`); // Indsæt label for="someID"
+  questionLabel.htmlFor = `question${questionCount}`; // Corresponds to the input.id
+  appendDomNode(`BR`, questionContainer);
+  const questionInput = appendDomNode(`INPUT`, questionContainer, undefined, [{ id: `question${questionCount}` }, { class: `questionInput` }]);
+  questionInput.placeholder = `Question ${questionCount}`;
+  questionInput.name = `question${questionCount}`;
+  appendDomNode(`BR`, questionContainer);
   createAnswerFields(questionContainer);
-
   questionCountDisplay.innerHTML = `Number of questions: ${questionCount}`;
 }
 
 function createAnswerFields(questionContainer) {
   for (let i = 1; i <= 4; i++) {
-    const inputAnswer = appendDomNode(`input`, questionContainer);
-    inputAnswer.placeholder = `Answer ${i}`;
-    inputAnswer.name = `Question${questionCount}Answer${i}`;
+    const correctAnswerCheckbox = appendDomNode(`INPUT`, questionContainer, undefined, [{ class: `correctAnswerCheckbox` }]);
+    correctAnswerCheckbox.type = `checkbox`;
+    correctAnswerCheckbox.title = `Click to mark as correct answer`;
+    correctAnswerCheckbox.name = `Question${questionCount}AnswerCheckbox${i}`;
+    const answerInput = appendDomNode(`INPUT`, questionContainer, undefined, [{ class: `answerInput` }]);
+    answerInput.placeholder = `Answer ${i}`;
+    answerInput.name = `Question${questionCount}Answer${i}`;
   }
-  const correctAnswer = appendDomNode(`input`, questionContainer);
-  correctAnswer.type = `Number`;
-  correctAnswer.placeholder = `Correct answer`;
-  correctAnswer.min = `1`;
-  correctAnswer.max = `4`;
-  correctAnswer.id = `correctAnswerQuestion${questionCount}`;
 }

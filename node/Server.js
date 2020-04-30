@@ -246,8 +246,8 @@ class Server {
    */
   bodyParserMiddleware() {
     this.app.use(upload());
-    this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
+    this.app.use(bodyParser.urlencoded({ extended: true }));
   }
 
   /* Formål: At opstille den session som gør at programmet kan "huske" hvilken gruppe man er en del af samt hvilken bruger man er
