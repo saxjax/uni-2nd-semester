@@ -108,14 +108,16 @@ class RedirectController {
   // test  må slettes senere
   async keyword(req, res) {
     const newKeyword = new Keyword(req);
-    const arrayKeywords = [`Kylling`, `Kebab`, `Abe`, `Bille`, `Cirkus`, `Batman`, `Superman`, `NytKeyword25`];
-    const idLinks = {
-      idDocument: `testIDDocument`,
+    // const arrayKeywords = [`Kylling`, `Kebab`, `Abe`, `Bille`, `Cirkus`, `Batman`, `Superman`, `NytKeyword25`];
+    // const idLinks = {
+    //   idDocument: `testIDDocument`,
 
-      idQuiz: `testIDQuiz`,
-      idQuizQuestion: `testIDQuizQuestion`,
-    };
-    const testfunction = newKeyword.insertToDatabase(idLinks, arrayKeywords);
+    //   idQuiz: `testIDQuiz`,
+    //   idQuizQuestion: `testIDQuizQuestion`,
+    // };
+    // const testfunction = newKeyword.insertToDatabase(idLinks, arrayKeywords);
+    const testFunc = await newKeyword.getRefIdKeyword(`kylling`, `quiz`);
+    console.log(testFunc);
     res.redirect(`/`);
   }
 }

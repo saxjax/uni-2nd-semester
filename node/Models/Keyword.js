@@ -30,6 +30,65 @@ class Keyword extends Model {
     }
   }
 
+
+  /* Formål: Hent Array af id'er som linker til keyword knyttet til en bestemt elementtype
+   * Input : Et keyword og en elementType
+   * Output: Et array af id'er
+   */
+  async getRefIdKeyword(keyword, elementType) {
+    let idCollumn = ``;
+    switch (elementType) {
+      case `document`:
+        idCollumn = `ID_DOCUMENT`;
+        break;
+
+      case `section`:
+        idCollumn = `ID_SECTION`;
+        break;
+
+
+      case `quiz`:
+        idCollumn = `ID_QUIZ`;
+        break;
+
+
+      case `quiz_question`:
+        idCollumn = `ID_QUIZ_QUESTION`;
+        break;
+
+
+      case `flashcard`:
+        idCollumn = `ID_FLASHCARD`;
+        break;
+
+
+      default:
+        break;
+    }
+    return this.getIdFromCollumn(keyword, idCollumn);
+  }
+
+
+  /* Formål: Hent Array af id'er som linker til et keyword
+   * Input : Et keyword og en elementType
+   * Output: Et array af id'er
+   */
+  async getIdFromCollumn(keyword, idCollumn) {
+    const idKeyword =  await this.query(`SELECT *`, `KEYWORD = "${keyword}"`);
+    const DocumentsIdData =  await this.query(`CUSTOM`, `SELECT ${idCollumn} `
+                                            + `FROM keyword_link `
+                                            + `WHERE ID_KEYWORD = "${idKeyword[0].idKeyword}" `
+                                            + `AND ${idCollumn} IS NOT NULL `
+                                            + `AND ${idCollumn} != "" `
+                                            + `GROUP BY ${idCollumn}`);
+    const DocumentsIdArrray = [];
+    DocumentsIdData.forEach((element) => {
+      DocumentsIdArrray.push(element[idCollumn]);
+    });
+    return DocumentsIdArrray;
+  }
+
+
   /* Formål: At kunne oprette den givne model i databasen ud fra posted data fra en form.
              Der bliver desuden automatisk oprettet de forskellige dependencies/foreign keys som objektet tilhører.
    * Input : Object som indeholder reference ID'er og array af Keywords.
