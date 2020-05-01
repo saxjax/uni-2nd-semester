@@ -71,11 +71,12 @@ class QuizQuestion extends Evaluation {
    * Input : et question-objekt, som indeholder de fire ting, som man kan se i query()
    * Output: Et promise, som kommer fra query()
    */
-  insertQuestionToDatabase(question) {
+  async insertQuestionToDatabase(question) {
     try {
-      return this.query(`INSERT`, `ID_QUIZ = "${question.idQuiz}" `
+      return await this.query(`INSERT`, `ID_QUIZ = "${question.idQuiz}" `
         + `AND QUESTION = "${question.question}" `
         + `AND CORRECT_ANSWERS = "${question.correctAnswers}" `
+        + `AND KEYWORD = "${question.keyword}" `
         + `AND ANSWERS = "${question.answers}"`);
     }
     catch (error) {

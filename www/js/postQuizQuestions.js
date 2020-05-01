@@ -4,6 +4,7 @@ class Question {
     this.question       = questionContainer.getElementsByClassName(`questionInput`)[0].value;
     this.answers        = this.getAnswers(questionContainer);
     this.correctAnswers = this.getCorrectAnswers(questionContainer);
+    this.keyword        = questionContainer.getElementsByClassName(`keywordInput`)[0].value;
   }
 
   /* Formål: Få fat i quiz ID'et fra query-strengen

@@ -1,29 +1,29 @@
 /* HEAD */
 
 // Indsætter et DOM-element før insBeforeThisElem
-function insertDomNode(tagName, insBeforeThisElem, innerHTML, selectors) {
-  const node = createDomNode(tagName, innerHTML, selectors);
+function insertDomNode(tagName, insBeforeThisElem, text, selectors) {
+  const node = createDomNode(tagName, text, selectors);
   insBeforeThisElem.parentNode.insertBefore(node, insBeforeThisElem);
   return node;
 }
 
 // Indsætter et DOM-element, som en child til den givne parent
-function appendDomNode(tagName, parent, innerHTML, selectors) {
-  const node = createDomNode(tagName, innerHTML, selectors);
+function appendDomNode(tagName, parent, text, selectors) {
+  const node = createDomNode(tagName, text, selectors);
   parent.appendChild(node);
   return node;
 }
 
-function createDomNode(tagNameParam, innerHTML, selectors) {
+function createDomNode(tagNameParam, text, selectors) {
   const tagName = tagNameParam.toUpperCase();
   const elem = document.createElement(tagName);
-  // Apply innerHTML
+  // Apply text
   switch (tagName) {
     case `P`:
-      elem.appendChild(document.createTextNode(innerHTML)); break;
+      elem.appendChild(document.createTextNode(text)); break;
     case `BUTTON`: case `LABEL`:
-      elem.innerHTML = innerHTML;                           break;
-    default:                                                break; // "default" sker når tagName ikke skal have et innerHTML
+      elem.innerHTML = text;                           break;
+    default:                                                break; // "default" sker når tagName ikke skal have et text
   }
   // Apply css
   if (selectors) {
@@ -68,11 +68,14 @@ function addAnotherQuestion() {
   questionLabel.htmlFor = `question${questionCount}`; // Corresponds to the input.id
   appendDomNode(`BR`, questionContainer);
   const questionInput = appendDomNode(`INPUT`, questionContainer, undefined, [{ id: `question${questionCount}` }, { class: `questionInput` }]);
+  const keywordInput = appendDomNode(`INPUT`, questionContainer, undefined, [{ id: `keyword${questionCount}` }, { class: `keywordInput` }]);
+  keywordInput.placeholder = `Keyword ${questionCount}`;
+  keywordInput.name = `keyword${questionCount}`;
   questionInput.placeholder = `Question ${questionCount}`;
   questionInput.name = `question${questionCount}`;
   appendDomNode(`BR`, questionContainer);
   createAnswerFields(questionContainer);
-  questionCountDisplay.innerHTML = `Number of questions: ${questionCount}`;
+  questionCountDisplay.text = `Number of questions: ${questionCount}`;
 }
 
 function createAnswerFields(questionContainer) {

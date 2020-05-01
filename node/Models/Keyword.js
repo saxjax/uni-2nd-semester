@@ -108,7 +108,6 @@ class Keyword extends Model {
   */
   // FIXME: lav check om createkeywords og createKeywordLinks har oprettet det de skal i databasen og return true
   async insertToDatabase(idLinks, keywordArray) {
-    console.log(idLinks);
     await this.createKeywords(keywordArray);
     await this.createKeywordLinks(idLinks, keywordArray);
 
