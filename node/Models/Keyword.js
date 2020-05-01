@@ -11,7 +11,6 @@ class Keyword extends Model {
     super(req);
     this.elementType = `keyword`;
     this.table = `keyword`;
-
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
       this.idUser  = req.session.idUser;
@@ -109,6 +108,7 @@ class Keyword extends Model {
   */
   // FIXME: lav check om createkeywords og createKeywordLinks har oprettet det de skal i databasen og return true
   async insertToDatabase(idLinks, keywordArray) {
+    console.log(idLinks);
     await this.createKeywords(keywordArray);
     await this.createKeywordLinks(idLinks, keywordArray);
 
@@ -147,6 +147,7 @@ class Keyword extends Model {
                                       + ` AND ID_SECTION = "${keywordLink.idSection}"`
                                       + ` AND ID_QUIZ = "${keywordLink.idQuiz}"`
                                       + ` AND ID_QUIZ_QUESTION = "${keywordLink.idQuizQuestion}"`
+                                      + ` AND ID_FLASHCARD = "${keywordLink.idFlashcard}"`
                                       + ` AND ID_KEYWORD = "${idKeyword}"`);
     }
     catch (error) {
@@ -161,9 +162,9 @@ class Keyword extends Model {
    * Output: N/A
    */
   async insertKeywordLink(keywordLink, idKeyword) {
-    const keywordIdInsertString = `("${keywordLink.idDocument}","${keywordLink.idSection}","${keywordLink.idQuiz}","${keywordLink.idQuizQuestion}","${idKeyword}")`;
+    const keywordIdInsertString = `("${keywordLink.idDocument}","${keywordLink.idSection}","${keywordLink.idQuiz}","${keywordLink.idQuizQuestion}","${idKeyword}","${keywordLink.idFlashcard}")`;
     try {
-      await this.query(`CUSTOM`, `INSERT INTO ${keywordLink.table} (ID_DOCUMENT,ID_SECTION,ID_QUIZ,ID_QUIZ_QUESTION,ID_KEYWORD) VALUES ${keywordIdInsertString}`);
+      await this.query(`CUSTOM`, `INSERT INTO ${keywordLink.table} (ID_DOCUMENT,ID_SECTION,ID_QUIZ,ID_QUIZ_QUESTION,ID_KEYWORD,ID_FLASHCARD) VALUES ${keywordIdInsertString}`);
     }
     catch (error) {
       console.log(`Could not insert keyword links to database ERROR: ${error}`);
