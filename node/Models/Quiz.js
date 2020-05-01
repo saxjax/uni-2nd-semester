@@ -1,12 +1,14 @@
 /* eslint no-console: 0 */
 
 const { Evaluation } = require(`./AbstractClasses/Evaluation.js`);
+const { Keyword }    = require(`./keyword.js`);
 
 class Quiz extends Evaluation {
   constructor(req) {
     super(req);
     this.elementType = `quiz`;
     this.table = `quiz`;
+    this.req = req;
 
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
@@ -42,15 +44,25 @@ class Quiz extends Evaluation {
    * Output: Quizzens ID hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
+    let idDocument;
     try {
-      await this.query(`CUSTOM`, `INSERT INTO ${this.table} (ID_DOCUMENT_SECTION, ID_USER, ID_USER_GROUP, QUIZ_TITLE, ID_DOCUMENT) `
-                     + `VALUES ("${this.idSection}","${this.idUser}","${this.idGroup}","${this.title}", `
-                     + `(SELECT ID_DOCUMENT FROM document_section WHERE ID_DOCUMENT_SECTION = "${this.idSection}") )`);
+      idDocument = await this.query(`CUSTOM`, `SELECT ID_DOCUMENT FROM document_section WHERE ID_DOCUMENT_SECTION = "${this.idSection}"`);
     }
     catch (error) {
       console.log(error);
       return false;
     }
+
+    try {
+      await this.query(`CUSTOM`, `INSERT INTO ${this.table} (ID_DOCUMENT_SECTION, ID_USER, ID_USER_GROUP, QUIZ_TITLE, ID_DOCUMENT) `
+                     + `VALUES ("${this.idSection}","${this.idUser}","${this.idGroup}","${this.title}", `
+                     + `"${idDocument[0].ID_DOCUMENT}")`);
+    }
+    catch (error) {
+      console.log(error);
+      return false;
+    }
+
     let queryResult = 0;
     try {
       queryResult = await this.query(`SELECT ID_QUIZ`, `QUIZ_TITLE = "${this.title}" `
@@ -61,6 +73,14 @@ class Quiz extends Evaluation {
       console.log(error);
       return false;
     }
+    const insertkeyword = new Keyword(this.req);
+    const idObject = {
+      idDocument: `${idDocument[0].ID_DOCUMENT}`,
+      idSection: `${this.idSection}}`,
+      idQuiz: `${queryResult[0].idQuiz}`,
+      idQuizQuestion: ``,
+    };
+    insertkeyword.insertToDatabase(idObject, this.keywords);
 
     return queryResult[0].idQuiz;
   }
