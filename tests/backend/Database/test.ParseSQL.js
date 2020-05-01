@@ -388,8 +388,8 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   expected = [
     [
       { COLUMN_NAME: `ID_DOCUMENT` },
-      { COLUMN_NAME: `ID_USER` },
       { COLUMN_NAME: `ID_USER_GROUP` },
+      { COLUMN_NAME: `ID_USER` },
       { COLUMN_NAME: `TITLE` },
       { COLUMN_NAME: `ELEMENT_TYPE` },
     ],
@@ -408,14 +408,14 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   expected = [
     [
       { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
-      { COLUMN_NAME: `ID_DOCUMENT` },
       { COLUMN_NAME: `ID_USER_GROUP` },
+      { COLUMN_NAME: `ID_USER` },
+      { COLUMN_NAME: `ID_DOCUMENT` },
       { COLUMN_NAME: `SECTION_TITLE` },
       { COLUMN_NAME: `SECTION_NUMBER` },
       { COLUMN_NAME: `SECTION_CONTENT` },
       { COLUMN_NAME: `SECTION_TEASER` },
       { COLUMN_NAME: `KEYWORDS` },
-      { COLUMN_NAME: `ID_USER` },
       { COLUMN_NAME: `ELEMENT_TYPE` },
 
     ],
@@ -433,12 +433,12 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   const Q = new Quiz(req);
   expected = [
     [
-      { COLUMN_NAME: `QUIZ_TITLE` },
       { COLUMN_NAME: `ID_QUIZ` },
+      { COLUMN_NAME: `ID_USER_GROUP` },
+      { COLUMN_NAME: `ID_USER` },
       { COLUMN_NAME: `ID_DOCUMENT` },
       { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
-      { COLUMN_NAME: `ID_USER` },
-      { COLUMN_NAME: `ID_USER_GROUP` },
+      { COLUMN_NAME: `QUIZ_TITLE` },
       { COLUMN_NAME: `ELEMENT_TYPE` },
     ],
   ];
@@ -459,11 +459,8 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
       { COLUMN_NAME: `ID_QUIZ_QUESTION` },
       { COLUMN_NAME: `ID_QUIZ` },
       { COLUMN_NAME: `QUESTION` },
-      { COLUMN_NAME: `ANSWER_1` },
-      { COLUMN_NAME: `ANSWER_2` },
-      { COLUMN_NAME: `ANSWER_3` },
-      { COLUMN_NAME: `ANSWER_4` },
-      { COLUMN_NAME: `CORRECT_ANSWER` },
+      { COLUMN_NAME: `ANSWERS` },
+      { COLUMN_NAME: `CORRECT_ANSWERS` },
       { COLUMN_NAME: `ELEMENT_TYPE` },
     ],
 
@@ -481,12 +478,12 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   expected = [
     [
       { COLUMN_NAME: `ID_FLASHCARD` },
+      { COLUMN_NAME: `ID_USER_GROUP` },
       { COLUMN_NAME: `ID_USER` },
       { COLUMN_NAME: `ID_DOCUMENT` },
       { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
       { COLUMN_NAME: `CONCEPT` },
       { COLUMN_NAME: `DEFINITION` },
-      { COLUMN_NAME: `ID_USER_GROUP` },
       { COLUMN_NAME: `ELEMENT_TYPE` },
 
     ],
@@ -548,11 +545,12 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   expected = [
     [
       { COLUMN_NAME: `ID_KEYWORD_LINK` },
-      { COLUMN_NAME: `ID_KEYWORD` },
+      { COLUMN_NAME: `ID_DOCUMENT` },
+      { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
+
       { COLUMN_NAME: `ID_QUIZ` },
       { COLUMN_NAME: `ID_QUIZ_QUESTION` },
-      { COLUMN_NAME: `ID_DOCUMENT` },
-      { COLUMN_NAME: `ID_SECTION` },
+      { COLUMN_NAME: `ID_KEYWORD` },
       { COLUMN_NAME: `ELEMENT_TYPE` },
     ],
   ];
