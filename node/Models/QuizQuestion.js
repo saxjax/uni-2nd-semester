@@ -25,9 +25,8 @@ class QuizQuestion extends Evaluation {
           this.loggedIn = req.session.loggedIn;
           break;
         case `POST`:
-          this.question = req.body.question;
-          this.answers = req.body.answers.split(`;`);
-          this.correctness = req.body.correctness;
+          this.idQuiz = req.body[0].idQuiz;
+          this.questions = req.body;
           break;
         case `TEST`:
           this.elementtype = `quiz_question`;
@@ -47,27 +46,44 @@ class QuizQuestion extends Evaluation {
     }
   }
 
-  // TODO: Kan ikke laves før design af hvordan quizquestion skal laves er fastsat.
   /* Formål: At kunne oprette den givne model i databasen ud fra posted data fra en form.
              Der bliver desuden automatisk oprettet de forskellige dependencies/foreign keys som objektet tilhører.
    * Input : Et objekt oprettet med et request med postdata i body samt user/group data i session
    * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
+    const questionsPromiseArray = [];
+    for (let i = 0; i < this.questions.length; i++) {
+      const insertQuestionQuery = this.insertQuestionToDatabase(this.questions[i]);
+      questionsPromiseArray.push(insertQuestionQuery);
+    }
     try {
-      await this.query(`ID_USER_GROUP = "${this.idGroup}" `
-        + `AND ID_USER = "${this.idUser}" `
-        + `AND ID_DOCUMENT = "${this.idDocument}" `
-        + `AND ID_DOCUMENT_SECTION = "${this.idSection}" `
-        + `AND SOMETHING MORE? = "${this.something}"`);
+      await Promise.all(questionsPromiseArray);
+      return true;
     }
     catch (error) {
       console.log(error);
       return false;
     }
-    return true;
   }
 
+  /* Formål: At indsætte et nyt quiz question i databasen
+   * Input : et question-objekt, som indeholder de fire ting, som man kan se i query()
+   * Output: Et promise, som kommer fra query()
+   */
+  insertQuestionToDatabase(question) {
+    try {
+      return this.query(`INSERT`, `ID_QUIZ = "${question.idQuiz}" `
+        + `AND QUESTION = "${question.question}" `
+        + `AND CORRECT_ANSWERS = "${question.correctAnswers}" `
+        + `AND ANSWERS = "${question.answers}"`);
+    }
+    catch (error) {
+      return error;
+    }
+  }
+
+  // FIXME: DEPRECATED? MVH LASSE
   // TODO:
   // input: req
   // output: for digit string ex. 1100

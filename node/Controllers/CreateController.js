@@ -4,6 +4,7 @@ const { Group } = require(`../Models/Group`);
 const { User } = require(`../Models/User`);
 const { Section } = require(`../Models/Section`);
 const { Quiz } = require(`../Models/Quiz`);
+const { QuizQuestion } = require(`../Models/QuizQuestion`);
 
 /* UNDER CONSTRUCTION */
 
@@ -54,20 +55,23 @@ class CreateController {
   async createQuiz(req, res) {
     const Q = new Quiz(req);
     try {
-      await Q.insertToDatabase();
-      res.redirect(`/post/questions`);
+      const idQuiz = await Q.insertToDatabase();
+      res.redirect(`/post/questions?idQuiz=${idQuiz}&titleQuiz=${Q.title}`);
     }
     catch (error) {
       res.redirect(503, `/dbdown`);
     }
   }
 
-  /* FIXME: UNDER CONSTRUCTION */
+  /* Formål: At oprette nye quiz questions i databasen (bemærk flertal)
+   * Input : req med questions fra klienten. res som bruges til at sende en respons til klienten
+   * Output: Intet - men brugeren viderediriges med res til en ny URL
+   */
   async createQuestions(req, res) {
-    const Q = new Quiz(req);
+    const QQ = new QuizQuestion(req);
     try {
-      await Q.insertToDatabase();
-      res.redirect(`/post/questions`);
+      await QQ.insertToDatabase();
+      res.redirect(`/view/evaluations/recipient`); // TODO: Kan eventuelt senere videredirigere til siden, hvor man kan tage quizzen
     }
     catch (error) {
       res.redirect(503, `/dbdown`);

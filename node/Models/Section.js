@@ -18,6 +18,7 @@ class Section extends Model {
     super(req);
     this.elementType = `section`;
     this.table = `document_section`;
+    this.idDocument = `11111111-aaaa-bbbb-1111-111111111111`; // Hardcoded into every section - can be changed in the future
 
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
@@ -62,6 +63,7 @@ class Section extends Model {
     try {
       await this.query(`INSERT`, `SECTION_TITLE = "${this.title}" `
                        + `AND SECTION_CONTENT = "${this.content}" `
+                       + `AND ID_DOCUMENT = "${this.idDocument}" `
                        + `AND KEYWORDS = "${this.keywords}" `
                        + `AND SECTION_NUMBER = "${this.number}" `
                        + `AND ID_USER_GROUP = "${this.idGroup}" `

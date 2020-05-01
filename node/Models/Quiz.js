@@ -21,6 +21,7 @@ class Quiz extends Evaluation {
         case `POST`:
           this.title = req.body.quizTitle;
           this.idSection = req.body.selectSection;
+          this.keywords = req.body.keywords;
           break;
         case `TEST`:
           this.elementType = `quiz`;
@@ -38,11 +39,21 @@ class Quiz extends Evaluation {
   /* Formål: At kunne oprette den givne model i databasen ud fra posted data fra en form.
              Der bliver desuden automatisk oprettet de forskellige dependencies/foreign keys som objektet tilhører.
    * Input : Et objekt oprettet med et request med postdata i body samt user/group data i session
-   * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
+   * Output: Quizzens ID hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
     try {
-      await this.query(`INSERT`, `QUIZ_TITLE = "${this.title}" `
+      await this.query(`CUSTOM`, `INSERT INTO ${this.table} (ID_DOCUMENT_SECTION, ID_USER, ID_USER_GROUP, QUIZ_TITLE, ID_DOCUMENT) `
+                     + `VALUES ("${this.idSection}","${this.idUser}","${this.idGroup}","${this.title}", `
+                     + `(SELECT ID_DOCUMENT FROM document_section WHERE ID_DOCUMENT_SECTION = "${this.idSection}") )`);
+    }
+    catch (error) {
+      console.log(error);
+      return false;
+    }
+    let queryResult = 0;
+    try {
+      queryResult = await this.query(`SELECT ID_QUIZ`, `QUIZ_TITLE = "${this.title}" `
                        + `AND ID_DOCUMENT_SECTION = "${this.idSection}" `
                        + `AND ID_USER_GROUP = "${this.idGroup}"`);
     }
@@ -50,7 +61,8 @@ class Quiz extends Evaluation {
       console.log(error);
       return false;
     }
-    return true;
+
+    return queryResult[0].idQuiz;
   }
 }
 module.exports = {

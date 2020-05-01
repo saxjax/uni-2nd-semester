@@ -4,12 +4,14 @@
     <%- include('meta/header') %> 
     <title>GroupHub | New quiz</title>
     <link rel="stylesheet" href="/css/design.css">
+    <script defer src="/js/postQuiz.js"></script>
   </head>
   <body>
     <%- include('meta/navbar') %> 
     <div class="container" id="content">
       <h1>Make a new quiz</h1>
-      <form action="/post/quiz" method="POST" id="quizForm">
+      <!-- Posts via function when submitbutton is clicked -->
+      <div id="quizForm" onsubmit="return false">
         <label for="quizTitle">Quiz title:</label>
         <input type="text" id="quizTitle" name="quizTitle" placeholder="Title of quiz" required><br>
         <!-- Her skal der vælges en section ud fra en "drop down menu" eller lign.
@@ -20,9 +22,9 @@
             <option value="<%= section.idSection %>"><%= section.title %></option>
           <% }); %>
         </select><br>
-        <iput type"text" id="keywords" name="keywords" placeholder="Keywords go here!" required>
-        <input type="submit">
-      </form>
+        <button id="addKeywordButton">Add a keyword</button>
+        <input id="submitButton" type="submit">
+      </div>
     </div>
     <%- include('meta/footer') %> 
   </body>
