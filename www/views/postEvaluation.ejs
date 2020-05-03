@@ -2,22 +2,22 @@
 <html>
   <head>
     <%- include('meta/header') %> 
-    <title>GroupHub | New quiz</title>
+    <title>GroupHub | New evaluation</title>
     <link rel="stylesheet" href="/css/design.css">
-    <script defer src="/js/postQuiz.js"></script>
+    <script defer src="/js/postEvaluation.js"></script>
   </head>
   <body>
     <%- include('meta/navbar') %> 
     <div class="container" id="content">
-      <h1>Make a new quiz</h1>
+      <h1>Make a new evaluation</h1>
       <!-- Posts via function when submitbutton is clicked -->
-      <div id="quizForm" onsubmit="return false">
-        <label for="quizTitle">Quiz title:</label>
-        <input type="text" id="quizTitle" name="quizTitle" placeholder="Title of quiz" required><br>
+      <div id="evaluationForm" onsubmit="return false">
+        <label for="evaluationTitle">Evaluation title:</label>
+        <input type="text" id="evaluationTitle" name="evaluationTitle" placeholder="Title of evaluation" required><br>
         <!-- Her skal der vælges en section ud fra en "drop down menu" eller lign.
           Alle section data er medsendt i data.section-->
         <label for="selectSection">Section:</label>
-        <select id="selectSection" name="selectSection" form="quizForm" required>
+        <select id="selectSection" name="selectSection" form="evaluationForm" required>
           <% data.sections.forEach(section => { %>
             <option value="<%= section.idSection %>"><%= section.title %></option>
           <% }); %>

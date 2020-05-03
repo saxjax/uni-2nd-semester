@@ -1,19 +1,19 @@
 class Question {
   constructor(questionContainer) {
-    this.idQuiz         = this.getIdQuiz();
+    this.idEvaluation   = this.getIdEvaluation();
     this.question       = questionContainer.getElementsByClassName(`questionInput`)[0].value;
     this.answers        = this.getAnswers(questionContainer);
     this.correctAnswers = this.getCorrectAnswers(questionContainer);
     this.keyword        = questionContainer.getElementsByClassName(`keywordInput`)[0].value;
   }
 
-  /* Formål: Få fat i quiz ID'et fra query-strengen
+  /* Formål: Få fat i evaluering ID'et fra query-strengen
    * Input : -
-   * Output: Quiz ID'et i en tekststreng
+   * Output: Evaluerings ID'et i en tekststreng
    */
-  getIdQuiz() {
+  getIdEvaluation() {
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(`idQuiz`);
+    return urlParams.get(`idEvaluation`);
   }
 
   /* Formål: Få fat i de værdier, som er i svarinputfelterne, semikolonseparerede dem og returnere dem som en streng

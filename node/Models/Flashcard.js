@@ -1,10 +1,11 @@
 /* eslint no-console: 0 */
 
-const { Evaluation } = require(`./AbstractClasses/Evaluation.js`);
+const { Model }   = require(`./AbstractClasses/Model`);
+
 
 /* FIXME: UNDER CONSTRUCTION */
 
-class Flashcard extends Evaluation {
+class Flashcard extends Model {
   constructor(req) {
     super();
     this.elementType = `flashcard`;

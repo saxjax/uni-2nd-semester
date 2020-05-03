@@ -50,9 +50,9 @@ let questionCount = 0;
 // ON LOAD //
 // Includes quiz name in quizTitleHeader
 const urlParams = new URLSearchParams(window.location.search);
-const titleQuiz = urlParams.get(`titleQuiz`);
-const quizTitleHeader = document.getElementById(`quizTitleHeader`);
-quizTitleHeader.innerHTML = `Create new questions for ${titleQuiz}`;
+const titleEvaluation = urlParams.get(`titleEvaluation`);
+const evaluationTitleHeader = document.getElementById(`quizTitleHeader`);
+evaluationTitleHeader.innerHTML = `Create new questions for ${titleEvaluation}`;
 
 addAnotherQuestion(); // Tilføjer automatisk et spørgsmål, når htmlen er loadet.
 // /ON LOAD //
