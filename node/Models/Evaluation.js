@@ -46,7 +46,8 @@ class Evaluation extends Model {
   async insertToDatabase() {
     console.log(this.req.body);
     try {
-      this.idDocument = await this.query(`CUSTOM`, `SELECT ID_DOCUMENT FROM document_section WHERE ID_DOCUMENT_SECTION = "${this.idSection}"`);
+      const queryResult = await this.query(`CUSTOM`, `SELECT ID_DOCUMENT FROM document_section WHERE ID_DOCUMENT_SECTION = "${this.idSection}"`);
+      this.idDocument = queryResult[0].ID_DOCUMENT;
     }
     catch (error) {
       console.log(error);
@@ -76,8 +77,8 @@ class Evaluation extends Model {
     if (this.req.body.keywords !== []) { // If the user put any keywords they get inserted
       const insertKeyword = new Keyword(this.req);
       const idObject = {
-        idDocument: `${this.idDocument[0].ID_DOCUMENT}`,
-        idSection: `${this.idSection}}`,
+        idDocument: `${this.idDocument}`,
+        idSection: `${this.idSection}`,
         idEvaluation: `${this.idEvaluation}`,
         idEvaluationQuestion: ``,
       };
