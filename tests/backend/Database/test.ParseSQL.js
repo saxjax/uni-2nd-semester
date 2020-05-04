@@ -7,7 +7,7 @@ const test = testDecorater(tape);
 const { ParseSql } = require(`../../../node/Models/AbstractClasses/ParseSQL`);
 const { Document } = require(`../../../node/Models/Document`);
 const { Section } = require(`../../../node/Models/Section`);
-const { Quiz } = require(`../../../node/Models/Quiz`);
+const { Evaluation } = require(`../../../node/Models/Evaluation`);
 const { QuizQuestion } = require(`../../../node/Models/QuizQuestion`);
 const { Flashcard } = require(`../../../node/Models/Flashcard`);
 const { Keyword } = require(`../../../node/Models/Keyword`);
@@ -109,11 +109,11 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   /* 2.3 */
   resetParsedData();
   inputData = {
-    ID_QUIZ: `TestDataDerSkalParses`,
+    ID_EVALUATION: `TestDataDerSkalParses`,
   };
   expected = `TestDataDerSkalParses`;
 
-  actual = p.parseQuiz(inputData).idQuiz;
+  actual = p.parseEvaluation(inputData).idEvaluation;
 
   assert.equal(actual, expected,
     `(2.3){ Metoden skal kunne returnere en parset version af QUIZ data`);
@@ -250,17 +250,17 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   resetParsedData();
 
   inputData = [{
-    ID_QUIZ: `TestDataDerSkalParses`,
-    ELEMENT_TYPE: `quiz`,
+    ID_EVALUATION: `TestDataDerSkalParses`,
+    ELEMENT_TYPE: `evaluation`,
   }];
   expected = `TestDataDerSkalParses`;
   try {
     actual = p.parseArrayOfObjects(inputData);
-    assert.equal(actual[0].idQuiz, expected,
-      `(3.3){ Metoden skal parse quiz data, når ELEMENT_TYPE = "quiz"`);
+    assert.equal(actual[0].idEvaluation, expected,
+      `(3.3){ Metoden skal parse evaluation data, når ELEMENT_TYPE = "evaluation"`);
   }
   catch (error) {
-    assert.false(true, `(3.3) Quiz er ikke oprettet i parseren`);
+    assert.false(true, `(3.3) Evaluation er ikke oprettet i parseren`);
   }
 
   /* 3.4 */
@@ -430,10 +430,10 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   /* 4.3 */
   resetParsedData();
 
-  const Q = new Quiz(req);
+  const Q = new Evaluation(req);
   expected = [
     [
-      { COLUMN_NAME: `ID_QUIZ` },
+      { COLUMN_NAME: `ID_EVALUATION` },
       { COLUMN_NAME: `ID_USER_GROUP` },
       { COLUMN_NAME: `ID_USER` },
       { COLUMN_NAME: `ID_DOCUMENT` },
@@ -447,7 +447,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   actual = [inputData];
 
   assert.deepEqual(actual, expected,
-    `(4.3){  Parserens forventede kolonner skal stemme overens med MySQL Databasens quiz kolonnenavne`);
+    `(4.3){  Parserens forventede kolonner skal stemme overens med MySQL Databasens evaluation kolonnenavne`);
   Q.connect.end();
 
   /* 4.4 */
@@ -457,7 +457,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   expected = [
     [
       { COLUMN_NAME: `ID_QUIZ_QUESTION` },
-      { COLUMN_NAME: `ID_QUIZ` },
+      { COLUMN_NAME: `ID_EVALUATION` },
       { COLUMN_NAME: `QUESTION` },
       { COLUMN_NAME: `ANSWERS` },
       { COLUMN_NAME: `CORRECT_ANSWERS` },
@@ -548,7 +548,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
       { COLUMN_NAME: `ID_DOCUMENT` },
       { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
 
-      { COLUMN_NAME: `ID_QUIZ` },
+      { COLUMN_NAME: `ID_EVALUATION` },
       { COLUMN_NAME: `ID_QUIZ_QUESTION` },
       { COLUMN_NAME: `ID_KEYWORD` },
       { COLUMN_NAME: `ELEMENT_TYPE` },
