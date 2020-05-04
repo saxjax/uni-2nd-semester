@@ -1,0 +1,9 @@
+.questionDiv{
+    border: 2px solid grey;
+    margin: 2px;
+}
+
+.answer{
+    display: inline;
+    margin-right: 40px;
+}

@@ -3,10 +3,34 @@
   <head>
     <%- include('meta/header') %> 
     <link href="/css/design.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/evaluation.css">
+    <script src="/js/insertHTMLElements.js" ></script>
+    <script defer src="/js/useEvaluation.js" ></script>
   </head>
   <body>
     <%- include('meta/navbar') %> 
-    <%  console.log(data) %>
+    <script> const data = <%- JSON.stringify(data) %> </script>
+
+    <div id="allQuestions">
+      <% let questionCount = 1; %>
+      <% data.questions.forEach(question => { %>
+        <div class="questionDiv">
+          <h3> <%= question.question %> </h3>
+          <label for="">Answers: </label>
+          <% let answerCount = 1 %>
+          <% question.answers.split(`;`).forEach(answer => { %>
+            <input id = <%= `question${questionCount}answer${answerCount}` %> type="checkbox">
+            <p class = "answer" >  <%= answer %> </p>
+            <% answerCount++ %>
+          <% }); %>
+            
+        </div>
+        <% questionCount++ %>
+        
+      <% }); %>
+          
+    </div>
+
     <%- include('meta/footer') %> 
   </body>
 </html>
