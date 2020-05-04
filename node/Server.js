@@ -146,7 +146,7 @@ class Server {
     // this.app.get(`/view/evaluation/section/:idQuery`,  (req, res) => Show.viewEvaluationSectionPage(req, res));
     this.app.get(`/post/evaluation`,                 (req, res) => Show.postEvaluationPage(req, res));
     this.app.get(`/post/questions`,                 (req, res) => Show.postQuestionsPage(req, res));
-    this.app.get(`/view/evaluation/:idQuery`,          (req, res) => Show.viewEvaluationPage(req, res));
+    this.app.get(`/view/evaluations/:idQuery`,          (req, res) => Show.viewEvaluationPage(req, res));
     // this.app.get(`/put/evaluation/:idQuery`,        (req, res) => Show.putEvaluationPage(req, res));
 
     // Flashcard
