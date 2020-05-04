@@ -3,7 +3,7 @@
 const { Group } = require(`../Models/Group`);
 const { User } = require(`../Models/User`);
 const { Section } = require(`../Models/Section`);
-const { Quiz } = require(`../Models/Quiz`);
+const { Evaluation } = require(`../Models/Evaluation`);
 const { QuizQuestion } = require(`../Models/QuizQuestion`);
 
 /* UNDER CONSTRUCTION */
@@ -52,11 +52,11 @@ class CreateController {
   }
 
   /* FIXME: UNDER CONSTRUCTION */
-  async createQuiz(req, res) {
-    const Q = new Quiz(req);
+  async createEvaluation(req, res) {
+    const E = new Evaluation(req);
     try {
-      const idQuiz = await Q.insertToDatabase();
-      res.redirect(`/post/questions?idQuiz=${idQuiz}&titleQuiz=${Q.title}`);
+      const idEvaluation = await E.insertToDatabase();
+      res.redirect(`/post/questions?idEvaluation=${idEvaluation}&titleEvaluation=${E.title}`);
     }
     catch (error) {
       res.redirect(503, `/dbdown`);
@@ -71,7 +71,7 @@ class CreateController {
     const QQ = new QuizQuestion(req);
     try {
       await QQ.insertToDatabase();
-      res.redirect(`/view/evaluations/recipient`); // TODO: Kan eventuelt senere videredirigere til siden, hvor man kan tage quizzen
+      res.redirect(`/view/evaluations/recipient`); // TODO: Kan eventuelt senere videredirigere til siden, hvor man kan tage evalueringen
     }
     catch (error) {
       res.redirect(503, `/dbdown`);

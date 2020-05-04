@@ -15,10 +15,10 @@
                         <div class = "leftside"> 
                 
                             <H2> EVALUERINGER FOR AFSNITTET</H2><br>
-                            <% if(data.quizzes.length) { data.quizzes.forEach( (element) => { %>
+                            <% if(data.evaluations.length) { data.evaluations.forEach( (element) => { %>
                                 <p> Titel: <%= element.title %></p>
-                                <a href="/view/quiz/<%= element.idquiz %>">
-                                    <img id="quiz_for_section" src="/img/Design/quiz.png"><br>
+                                <a href="/view/evaluation/<%= element.idEvaluation %>">
+                                    <img id="evaluation_for_section" src="/img/Design/evaluation.png"><br>
                                 </a>
                             <% })} %>
                             <% if(data.flashcards.length) { data.flashcards.forEach( (element) => { %>

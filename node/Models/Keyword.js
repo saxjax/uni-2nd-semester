@@ -47,8 +47,8 @@ class Keyword extends Model {
         break;
 
 
-      case `quiz`:
-        idCollumn = `ID_QUIZ`;
+      case `evaluation`:
+        idCollumn = `ID_EVALUATION`;
         break;
 
 
@@ -99,7 +99,7 @@ class Keyword extends Model {
      idLinks{
        idDocument: `123-abc-fff`,
        idSection: `345-efg-fff`,
-       idQuiz: `542-gds-fff`,
+       idEvaluation: `542-gds-fff`,
        idQuizQuestion: `653-asd-fff`,
      }
 
@@ -144,7 +144,7 @@ class Keyword extends Model {
       keywordLinkExist = await this.query(`CUSTOM`, `SELECT * FROM ${keywordLink.table} WHERE`
                                       + ` ID_DOCUMENT = "${keywordLink.idDocument}"`
                                       + ` AND ID_SECTION = "${keywordLink.idSection}"`
-                                      + ` AND ID_QUIZ = "${keywordLink.idQuiz}"`
+                                      + ` AND ID_EVALUATION = "${keywordLink.idEvaluation}"`
                                       + ` AND ID_QUIZ_QUESTION = "${keywordLink.idQuizQuestion}"`
                                       + ` AND ID_FLASHCARD = "${keywordLink.idFlashcard}"`
                                       + ` AND ID_KEYWORD = "${idKeyword}"`);
@@ -161,9 +161,9 @@ class Keyword extends Model {
    * Output: N/A
    */
   async insertKeywordLink(keywordLink, idKeyword) {
-    const keywordIdInsertString = `("${keywordLink.idDocument}","${keywordLink.idSection}","${keywordLink.idQuiz}","${keywordLink.idQuizQuestion}","${idKeyword}","${keywordLink.idFlashcard}")`;
+    const keywordIdInsertString = `("${keywordLink.idDocument}","${keywordLink.idSection}","${keywordLink.idEvaluation}","${keywordLink.idQuizQuestion}","${idKeyword}","${keywordLink.idFlashcard}")`;
     try {
-      await this.query(`CUSTOM`, `INSERT INTO ${keywordLink.table} (ID_DOCUMENT,ID_SECTION,ID_QUIZ,ID_QUIZ_QUESTION,ID_KEYWORD,ID_FLASHCARD) VALUES ${keywordIdInsertString}`);
+      await this.query(`CUSTOM`, `INSERT INTO ${keywordLink.table} (ID_DOCUMENT,ID_SECTION,ID_EVALUATION,ID_QUIZ_QUESTION,ID_KEYWORD,ID_FLASHCARD) VALUES ${keywordIdInsertString}`);
     }
     catch (error) {
       console.log(`Could not insert keyword links to database ERROR: ${error}`);

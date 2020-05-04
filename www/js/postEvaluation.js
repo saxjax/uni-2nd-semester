@@ -1,7 +1,7 @@
 /* HEAD */
-class Quiz {
+class Evaluation {
   constructor(form) {
-    this.quizTitle = form.querySelector(`#quizTitle`).value;
+    this.evaluationTitle = form.querySelector(`#evaluationTitle`).value;
     this.selectSection = form.querySelector(`#selectSection`).value;
     this.keywords = this.getKeywords(form);
   }
@@ -69,14 +69,14 @@ function addKeywordField() {
 }
 
 const submitButton = document.getElementById(`submitButton`);
-submitButton.addEventListener(`click`, postQuiz);
+submitButton.addEventListener(`click`, postEvaluation);
 
-async function postQuiz() {
-  const quizForm = document.getElementById(`quizForm`);
-  const quiz = new Quiz(quizForm);
-  const response = await fetch(`/post/quiz`, {
+async function postEvaluation() {
+  const evaluationForm = document.getElementById(`evaluationForm`);
+  const evaluation = new Evaluation(evaluationForm);
+  const response = await fetch(`/post/evaluation`, {
     method: `POST`,
-    body: JSON.stringify(quiz),
+    body: JSON.stringify(evaluation),
     headers: { "Content-Type": `application/json` },
   });
   window.location.replace(response.url);

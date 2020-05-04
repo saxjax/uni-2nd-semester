@@ -1,12 +1,13 @@
 /* eslint no-console: off */
 
-const { Evaluation } = require(`./AbstractClasses/Evaluation.js`);
+const { Model }   = require(`./AbstractClasses/Model`);
+
 
 /* MANGLER DESIGN!!!!
  * Det kan vel ikke passe at vi hardcoder 4 svarmuligheder? kommaseparering/opreting af ny sql database /whatever er muligheder
  */
 // TODO:
-class QuizQuestion extends Evaluation {
+class QuizQuestion extends Model {
   // TODO:
   constructor(req) {
     super();
@@ -73,7 +74,7 @@ class QuizQuestion extends Evaluation {
    */
   async insertQuestionToDatabase(question) {
     try {
-      return await this.query(`INSERT`, `ID_QUIZ = "${question.idQuiz}" `
+      return await this.query(`INSERT`, `ID_EVALUATION = "${question.idEvaluation}" `
         + `AND QUESTION = "${question.question}" `
         + `AND CORRECT_ANSWERS = "${question.correctAnswers}" `
         + `AND KEYWORD = "${question.keyword}" `

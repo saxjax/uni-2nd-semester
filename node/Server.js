@@ -136,18 +136,18 @@ class Server {
     // this.app.get(`/view/evaluations/document/:idQuery`, (req, res) => Show.viewEvaluationsDocumentPage(req, res));
     this.app.get(`/view/evaluations/section/:idQuery`,  (req, res) => Show.viewEvaluationsSectionPage(req, res));
     /* EVALUATIONS HAR IKKE post, view/:idQuery og put, da evaluations IKKE er et objekt som sådan
-     * Evaluations er blot det objekt der håndtere de usecases, hvor man vises for alle ens quiz/flashcard sammen
+     * Evaluations er blot det objekt der håndtere de usecases, hvor man vises for alle ens evaluation/flashcard sammen
      */
 
-    // Quiz
-    // this.app.get(`/view/quiz/recipient`,         (req, res) => Show.viewQuizRecipientPage(req, res));
-    // this.app.get(`/view/quiz/expert`,            (req, res) => Show.viewQuizExpertPage(req, res));
-    // this.app.get(`/view/quiz/document/:idQuery`, (req, res) => Show.viewQuizDocumentPage(req, res));
-    // this.app.get(`/view/quiz/section/:idQuery`,  (req, res) => Show.viewQuizSectionPage(req, res));
-    this.app.get(`/post/quiz`,                 (req, res) => Show.postQuizPage(req, res));
+    // evaluation
+    // this.app.get(`/view/evaluation/recipient`,         (req, res) => Show.viewEvaluationRecipientPage(req, res));
+    // this.app.get(`/view/evaluation/expert`,            (req, res) => Show.viewEvaluationExpertPage(req, res));
+    // this.app.get(`/view/evaluation/document/:idQuery`, (req, res) => Show.viewEvaluationDocumentPage(req, res));
+    // this.app.get(`/view/evaluation/section/:idQuery`,  (req, res) => Show.viewEvaluationSectionPage(req, res));
+    this.app.get(`/post/evaluation`,                 (req, res) => Show.postEvaluationPage(req, res));
     this.app.get(`/post/questions`,                 (req, res) => Show.postQuestionsPage(req, res));
-    this.app.get(`/view/quiz/:idQuery`,          (req, res) => Show.viewQuizPage(req, res));
-    // this.app.get(`/put/quiz/:idQuery`,        (req, res) => Show.putQuizPage(req, res));
+    this.app.get(`/view/evaluation/:idQuery`,          (req, res) => Show.viewEvaluationPage(req, res));
+    // this.app.get(`/put/evaluation/:idQuery`,        (req, res) => Show.putEvaluationPage(req, res));
 
     // Flashcard
     this.app.get(`/view/flashcard/recipient`, (req, res) => Show.viewFlashcardRecipientPage(req, res));
@@ -163,7 +163,7 @@ class Server {
     // this.app.get(`/view/keyword/expert`, (req, res) => Show.viewKeywordExpertPage(req, res));
     // this.app.get(`/view/keyword/document/:idQuery`, (req, res) => Show.viewKeywordDocumentPage(req, res));
     // this.app.get(`/view/keyword/section/:idQuery`, (req, res) => Show.viewKeywordSectionPage(req, res));
-    // this.app.get(`/view/keyword/quiz/:idQuery`, (req, res) => Show.viewKeywordQuizPage(req, res));
+    // this.app.get(`/view/keyword/evaluation/:idQuery`, (req, res) => Show.viewKeywordEvaluationPage(req, res));
     // this.app.get(`/view/keyword/flashcard/:idQuery`, (req, res) => Show.viewKeywordFlashcardPage(req, res));
     // this.app.get(`/post/keyword`, (req, res) => Show.postKeywordPage(req, res));
     // this.app.get(`/view/keyword/:idQuery`,        (req, res) => Show.viewKeywordPage(req, res));
@@ -196,7 +196,7 @@ class Server {
     this.app.post(`/post/group`,   (req, res) => Creator.createGroup(req, res));
     this.app.post(`/post/user`,    (req, res) => Creator.createUser(req, res));
     this.app.post(`/post/section`, (req, res) => Creator.createSection(req, res));
-    this.app.post(`/post/quiz`,    (req, res) => Creator.createQuiz(req, res));
+    this.app.post(`/post/evaluation`,    (req, res) => Creator.createEvaluation(req, res));
     this.app.post(`/post/questions`,    (req, res) => Creator.createQuestions(req, res));
   }
 

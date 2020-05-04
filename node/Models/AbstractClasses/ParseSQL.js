@@ -25,18 +25,18 @@ class ParseSql {
     }
     for (let i = 0; i < data.length; i++) { // Looper igennem "data" og parser alle RowDataPacket til camelCase
       switch (data[i].ELEMENT_TYPE) {
-        case `test`:             this.parsedData.push(this.parseTest(data[i]));            break;
-        case `user_group`:       this.parsedData.push(this.parseGroup(data[i]));           break;
-        case `user`:             this.parsedData.push(this.parseUser(data[i]));            break;
-        case `document`:         this.parsedData.push(this.parseDocument(data[i]));        break;
-        case `section`:          this.parsedData.push(this.parseSection(data[i]));         break;
-        case `quiz`:             this.parsedData.push(this.parseQuiz(data[i]));            break;
-        case `quiz_question`:    this.parsedData.push(this.parseQuizQuestion(data[i]));    break;
-        case `quiz_result`:      this.parsedData.push(this.parseQuizResult(data[i]));      break;
-        case `flashcard`:        this.parsedData.push(this.parseFlashcard(data[i]));       break;
-        case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i])); break;
-        case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));         break;
-        case `keyword_link`:          this.parsedData.push(this.parseKeywordLink(data[i]));         break;
+        case `test`:             this.parsedData.push(this.parseTest(data[i]));             break;
+        case `user_group`:       this.parsedData.push(this.parseGroup(data[i]));            break;
+        case `user`:             this.parsedData.push(this.parseUser(data[i]));             break;
+        case `document`:         this.parsedData.push(this.parseDocument(data[i]));         break;
+        case `section`:          this.parsedData.push(this.parseSection(data[i]));          break;
+        case `evaluation`:       this.parsedData.push(this.parseEvaluation(data[i]));       break;
+        case `quiz_question`:    this.parsedData.push(this.parseQuizQuestion(data[i]));     break;
+        case `quiz_result`:      this.parsedData.push(this.parseQuizResult(data[i]));       break;
+        case `flashcard`:        this.parsedData.push(this.parseFlashcard(data[i]));        break;
+        case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i]));  break;
+        case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));          break;
+        case `keyword_link`:     this.parsedData.push(this.parseKeywordLink(data[i]));      break;
 
 
         default: throw new Error(`elementType er IKKE oprettet i Parseren!`);
@@ -131,16 +131,16 @@ class ParseSql {
 
   // TODO: keywords er undefined
   /* Formål: At parse Quiz-data
-   * Input:  Et dataobjekt af typen "quiz" fra parse metoden.
+   * Input:  Et dataobjekt af typen "evaluation" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
    */
-  parseQuiz(data) {
+  parseEvaluation(data) {
     return {
       elementType: `${data.ELEMENT_TYPE}`,
-      idQuiz: `${data.ID_QUIZ}`,
+      idEvaluation: `${data.ID_EVALUATION}`,
       idDocument: `${data.ID_DOCUMENT}`,
       idSection: `${data.ID_DOCUMENT_SECTION}`,
-      title: `${data.QUIZ_TITLE}`,
+      title: `${data.EVALUATION_TITLE}`,
       keywords: undefined,
     };
   }
@@ -152,7 +152,7 @@ class ParseSql {
   parseQuizQuestion(data) {
     return {
       idQuizQuestion: `${data.ID_QUIZ_QUESTION}`,
-      idQuiz: `${data.ID_QUIZ}`,
+      idQuiz: `${data.ID_EVALUATION}`,
       question: `${data.QUESTION}`,
       answer1: `${data.ANSWER_1}`,
       answer2: `${data.ANSWER_2}`,
@@ -219,7 +219,7 @@ class ParseSql {
     return {
       idKeywordLink: `${data.ID_KEYWORD_LINK}`,
       idKeyword: `${data.ID_KEYWORD}`,
-      idQuiz: `${data.ID_QUIZ}`,
+      idQuiz: `${data.ID_EVALUATION}`,
       idQuizQuestion: `${data.ID_QUIZ_QUESTION}`,
       idDocument: `${data.ID_DOCUMENT}`,
       idSection: `${data.ID_DOCUMENT_SECTION}`,
@@ -228,7 +228,7 @@ class ParseSql {
     };
   }
 
-
+  // FIXME: The fuck is this? 😂
   convertNameBetweenCodeAndDB(name) {
     switch (name) {
       case `idKeywordLink`:  case `ID_KEYWORD_LINK`:
@@ -239,8 +239,8 @@ class ParseSql {
         return name === `ID_KEYWORD` ? `idKeyword` : `ID_KEYWORD`;
         // break;
 
-      case `idQuiz`: case `ID_QUIZ`:
-        return name === `ID_QUIZ` ?  `idQuiz` : `ID_QUIZ`;
+      case `idQuiz`: case `ID_EVALUATION`:
+        return name === `ID_EVALUATION` ?  `idQuiz` : `ID_EVALUATION`;
         // break;
 
       case `idQuizQuestion`: case `ID_QUIZ_QUESTION`:

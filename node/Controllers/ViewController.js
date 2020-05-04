@@ -6,7 +6,7 @@ const { Group } = require(`../Models/Group`);
 const { User } = require(`../Models/User`);
 const { Document } = require(`../Models/Document`);
 const { Section } = require(`../Models/Section`);
-const { Quiz } = require(`../Models/Quiz`);
+const { Evaluation } = require(`../Models/Evaluation`);
 const { Flashcard } = require(`../Models/Flashcard`);
 const { Keyword } = require(`../Models/Keyword`);
 
@@ -240,10 +240,10 @@ class ViewController {
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),                // dataArray[0]
       Recipient.getThisUserData(),                 // dataArray[1]
-      Recipient.getAllElementsOfType(`Quiz`),      // dataArray[2]
+      Recipient.getAllElementsOfType(`Evaluation`),      // dataArray[2]
       Recipient.getAllElementsOfType(`Flashcard`), // dataArray[3]   ->   FIXME: Ikke oprettet endnu
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], quizzes: dataArray[2], flashcards: dataArray[3] };
+    const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2], flashcards: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsRecipient.ejs`);
     res.render(this.ejs, { data });
   }
@@ -258,10 +258,10 @@ class ViewController {
     const dataArray = await Promise.all([
       Expert.getThisGroupData(),                // dataArray[0]
       Expert.getThisUserData(),                 // dataArray[1]
-      Expert.getAllElementsOfType(`Quiz`),      // dataArray[2]
+      Expert.getAllElementsOfType(`Evaluation`),      // dataArray[2]
       Expert.getAllElementsOfType(`Flashcard`), // dataArray[3]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], quizzes: dataArray[2], flashcards: dataArray[3] };
+    const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2], flashcards: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsExpert.ejs`);
     res.render(this.ejs, { data });
   }
@@ -269,7 +269,7 @@ class ViewController {
   // TODO: Mangler EJS
   /* Formål: BESKRIV EJS FORMÅL HER
    * Input : En session med userId og groupId og queryId fra params
-   * Output: En liste af alle de quiz/flashcard/mm. der er tilknyttet et dokument
+   * Output: En liste af alle de evalueringer der er tilknyttet et dokument
    */
   async viewEvaluationsDocumentPage(req, res) {
     const Doc = new Document(req);
@@ -277,10 +277,10 @@ class ViewController {
       Doc.getThisGroupData(),                // dataArray[0]
       Doc.getThisUserData(),                 // dataArray[1]
       Doc.getThis(),                         // dataArray[2]
-      Doc.getAllElementsOfType(`Quiz`),      // dataArray[3]
+      Doc.getAllElementsOfType(`Evaluation`),      // dataArray[3]
       Doc.getAllElementsOfType(`Flashcard`), // dataArray[4]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], quizzes: dataArray[3], flashcards: dataArray[4] };
+    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], evaluation: dataArray[3], flashcards: dataArray[4] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsDocument.ejs`);
     res.render(this.ejs, { data });
   }
@@ -295,64 +295,64 @@ class ViewController {
       Sec.getThisGroupData(),                 // dataArray[0]
       Sec.getThisUserData(),                  // dataArray[1]
       Sec.getThis(),                          // dataArray[2]
-      Sec.getAllElementsOfType(`Quiz`),       // dataArray[3]
+      Sec.getAllElementsOfType(`Evaluation`),       // dataArray[3]
       Sec.getAllElementsOfType(`Flashcard`),  // dataArray[4]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], quizzes: dataArray[3], flashcards: dataArray[4] };
+    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], evaluations: dataArray[3], flashcards: dataArray[4] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsSection.ejs`);
     res.render(this.ejs, { data });
   }
 
-  /* Quiz Views TODO: */
+  /* Evaluation Views TODO: */
 
   // TODO: Mangler EJS
   /* Formål: BESKRIV EJS FORMÅL HER
    * Input : En session med userId og groupId
-   * Output: En liste af alle de quiz som er tilgængelige for en bruger
+   * Output: En liste af alle de evalueringer som er tilgængelige for en bruger
    */
-  async viewQuizRecipientPage(req, res) {
+  async viewEvaluationRecipientPage(req, res) {
     const Recipient = new Group(req);
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),               // dataArray[0]
       Recipient.getThisUserData(),                // dataArray[1]
-      Recipient.getAllElementsOfType(`Quiz`),     // dataArray[2]
+      Recipient.getAllElementsOfType(`Evaluation`),     // dataArray[2]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], quizzes: dataArray[2] };
-    this.ejs = path.join(`${this.root}/www/views/viewQuizRecipient.ejs`);
+    const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2] };
+    this.ejs = path.join(`${this.root}/www/views/viewEvaluationRecipient.ejs`);
     res.render(this.ejs, { data });
   }
 
   // TODO: Mangler EJS
   /* Formål: BESKRIV EJS FORMÅL HER
    * Input : En session med userId og groupId
-   * Output: En liste af alle de quiz som en User har oprettet
+   * Output: En liste af alle de evalueringer som en User har oprettet
    */
-  async viewQuizExpertPage(req, res) {
+  async viewEvaluationExpertPage(req, res) {
     const Expert = new User(req);
     const dataArray = await Promise.all([
       Expert.getThisGroupData(),               // dataArray[0]
       Expert.getThisUserData(),                // dataArray[1]
-      Expert.getAllElementsOfType(`Quiz`),     // dataArray[2]
+      Expert.getAllElementsOfType(`Evaluation`),     // dataArray[2]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], quizzes: dataArray[2] };
-    this.ejs = path.join(`${this.root}/www/views/viewQuizExpert.ejs`);
+    const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2] };
+    this.ejs = path.join(`${this.root}/www/views/viewEvaluationExpert.ejs`);
     res.render(this.ejs, { data });
   }
 
   // TODO: Mangler EJS
   /* Formål: BESKRIV EJS FORMÅL HER
    * Input : En session med userId og groupId og queryId fra params
-   * Output: En liste af alle de quiz som er tilknyttet dokumentet
+   * Output: En liste af alle de evaluations som er tilknyttet dokumentet
    */
-  async viewQuizDocumentPage(req, res) {
+  async viewEvaluationDocumentPage(req, res) {
     const Doc = new Document(req);
     const dataArray = await Promise.all([
       Doc.getThisGroupData(),               // dataArray[0]
       Doc.getThisUserData(),                // dataArray[1]
       Doc.getThis(),                        // dataArray[2]
-      Doc.getAllElementsOfType(`Quiz`),     // dataArray[3]
+      Doc.getAllElementsOfType(`Evaluation`),     // dataArray[3]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], quizzes: dataArray[3] };
+    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], evaluations: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewDocument.ejs`);
     res.render(this.ejs, { data });
   }
@@ -360,30 +360,30 @@ class ViewController {
   // TODO: Mangler EJS
   /* Formål: BESKRIV EJS FORMÅL HER
    * Input : En session med userId og groupId og queryId fra params
-   * Output: En liste med quiz tilhørende en section
+   * Output: En liste med evalueringer tilhørende en section
    */
-  async viewQuizSectionPage(req, res) {
+  async viewEvaluationSectionPage(req, res) {
     const Sec = new Section(req);
     const dataArray = await Promise.all([
       Sec.getThisGroupData(),               // dataArray[0]
       Sec.getThisUserData(),                // dataArray[1]
       Sec.getThis(),                        // dataArray[2]
-      Sec.getAllElementsOfType(`Quiz`),  // dataArray[3]
+      Sec.getAllElementsOfType(`Evaluation`),  // dataArray[3]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], section: dataArray[2], quizzes: dataArray[3] };
-    this.ejs = path.join(`${this.root}/www/views/viewQuizSection.ejs`);
+    const data = { group: dataArray[0], user: dataArray[1], section: dataArray[2], evaluations: dataArray[3] };
+    this.ejs = path.join(`${this.root}/www/views/viewEvaluationSection.ejs`);
     res.render(this.ejs, { data });
   }
 
-  /* Formål: At gøre det muligt for en bruger dynamisk at oprette en quiz så den er tillagt en
+  /* Formål: At gøre det muligt for en bruger dynamisk at oprette en evaluering så den er tillagt en
              section (og sectionens document), med et ubestemt antal spørgsmål og svarmuligheder.
    * Input : En session med userId og groupId (og muligvis document/section id?)
-   * Output: En præsentation af den form der gør det muligt at oprette en Quiz
+   * Output: En præsentation af den form der gør det muligt at oprette en evaluering
    * FIXME: Denne funktion skal gerne, på en eller anden måde, kunne vurdere om der er valgt et dokument/section på forhånd
    *        som denne post skal knyttes til.
    *        Det er vigtigt, at strukturen for hvordan det løses på, er den samme for alle de andre URL'er.
    */
-  async postQuizPage(req, res) {
+  async postEvaluationPage(req, res) {
     const ExpertGroup = new Group(req);
     const dataArray = await Promise.all([
       ExpertGroup.getThisGroupData(),               // dataArray[0]
@@ -391,19 +391,20 @@ class ViewController {
       ExpertGroup.getAllElementsOfType(`Section`),  // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], sections: dataArray[2] };
-    this.ejs = path.join(`${this.root}/www/views/postQuiz.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/postEvaluation.ejs`);
     res.render(this.ejs, { data });
   }
 
+  // FIXME: Mangler korrekt brug af Promise.all()
   async postQuestionsPage(req, res) {
-    const Q = new Quiz(req);
+    const E = new Evaluation(req);
     const data = {
-      group: await Q.getThisGroupData(),
-      user: await Q.getThisUserData(),
-      quiz: await Q.getThis(),
+      group: await E.getThisGroupData(),
+      user: await E.getThisUserData(),
+      evaluation: await E.getThis(),
       // questions: await Q.getAllElementsOfType(`QuizQuestion`),
     };
-    Promise.all([data.group, data.user, data.quiz, data.questions]);
+    Promise.all([data.group, data.user, data.evaluation, data.questions]);
     this.ejs = path.join(`${this.root}/www/views/postQuestions.ejs`);
     res.render(this.ejs, { data });
   }
@@ -411,36 +412,36 @@ class ViewController {
   // TODO: Mangler EJS
   /* Formål: BESKRIV EJS FORMÅL HER
    * Input : Et request med et queryId samt en session med userId og groupId
-   * Output: En fremvisning af en quiz og dens tilhørende spørgsmål/svar så en bruger kan tage den
+   * Output: En fremvisning af en evaluering og dens tilhørende opgaver så en bruger kan tage den
    */
-  async viewQuizPage(req, res) {
-    const Q = new Quiz(req);
+  async viewEvaluationPage(req, res) {
+    const E = new Evaluation(req);
     const dataArray = await Promise.all([
-      Q.getThisGroupData(),                    // dataArray[0]
-      Q.getThisUserData(),                     // dataArray[1]
-      Q.getThis(),                             // dataArray[2]
-      Q.getAllElementsOfType(`QuizQuestion`),  // dataArray[3]
+      E.getThisGroupData(),                    // dataArray[0]
+      E.getThisUserData(),                     // dataArray[1]
+      E.getThis(),                             // dataArray[2]
+      E.getAllElementsOfType(`QuizQuestion`),  // dataArray[3]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], quiz: dataArray[2], questions: dataArray[3] };
-    this.ejs = path.join(`${this.root}/www/views/viewQuiz.ejs`);
+    const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], questions: dataArray[3] };
+    this.ejs = path.join(`${this.root}/www/views/viewEvaluation.ejs`);
     res.render(this.ejs, { data });
   }
 
   // TODO: Mangler EJS
   /* Formål: BESKRIV EJS FORMÅL HER
    * Input : Et request med et queryId samt en session med userId og groupId
-   * Output: En fremvisning af en quiz og dens tilhørende spørgsmål/svar så en bruger kan rette den til
+   * Output: En fremvisning af en evaluering og dens tilhørende spørgsmål/svar så en bruger kan rette den til
    */
-  async putQuizPage(req, res) {
-    const Q = new Quiz(req);
+  async putEvaluationPage(req, res) {
+    const E = new Evaluation(req);
     const dataArray = await Promise.all([
-      Q.getThisGroupData(),                    // dataArray[0]
-      Q.getThisUserData(),                     // dataArray[1]
-      Q.getThis(),                             // dataArray[2]
-      Q.getAllElementsOfType(`QuizQuestion`),  // dataArray[3]
+      E.getThisGroupData(),                    // dataArray[0]
+      E.getThisUserData(),                     // dataArray[1]
+      E.getThis(),                             // dataArray[2]
+      E.getAllElementsOfType(`QuizQuestion`),  // dataArray[3]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], quiz: dataArray[2], questions: dataArray[3] };
-    this.ejs = path.join(`${this.root}/www/views/putQuiz.ejs`);
+    const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], questions: dataArray[3] };
+    this.ejs = path.join(`${this.root}/www/views/putEvaluation.ejs`);
     res.render(this.ejs, { data });
   }
 
