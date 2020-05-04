@@ -70,8 +70,9 @@ class ParseSql {
     if (data.length === 0) { // returnere en tom RowDataPacket hvis data er et tomt array (se Output)
       return [{ RowDataPacket: {} }];
     }
+    console.log(`\n\n\n ${data[0]} AND ${data[0][this.typeCol]}\n\n\n`);
     for (let i = 0; i < data.length; i++) { // Looper igennem "data" og parser alle RowDataPacket til camelCase
-      switch (data[i].ELEMENT_TYPE) {
+      switch (data[i][this.typeCol]) {
         case `test`:             this.parsedData.push(this.parseTest(data[i]));             break;
         case `user_group`:       this.parsedData.push(this.parseGroup(data[i]));            break;
         case `user`:             this.parsedData.push(this.parseUser(data[i]));             break;
@@ -84,7 +85,6 @@ class ParseSql {
         case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i]));  break;
         case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));          break;
         case `keyword_link`:     this.parsedData.push(this.parseKeywordLink(data[i]));      break;
-
         default: throw new Error(`elementType er IKKE oprettet i Parseren!`);
       }
     }

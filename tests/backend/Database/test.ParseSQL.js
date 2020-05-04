@@ -98,6 +98,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   resetParsedData();
   inputData = {
     ID_DOCUMENT_SECTION: `TestDataDerSkalParses`,
+    SECTION_CONTENT: `HelloHello`,
   };
   expected = `TestDataDerSkalParses`;
 
@@ -192,22 +193,6 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   assert.equal(actual, expected,
     `(2.8){ Metoden skal kunne returnere en parset version af et GROUP data`);
 
-
-  /* 2.9.0 */
-  resetParsedData();
-  inputData = [`ID_DOCUMENT_SECTION`, `idDocument`, `ANSWERS`, `answers`];
-  expected = [`idSection`, `ID_DOCUMENT`, `answers`, `ANSWERS`];
-
-  actual = [
-    p.convertNameBetweenCodeAndDB(inputData[0]),
-    p.convertNameBetweenCodeAndDB(inputData[1]),
-    p.convertNameBetweenCodeAndDB(inputData[2]),
-    p.convertNameBetweenCodeAndDB(inputData[3]),
-  ];
-
-  assert.deepEqual(actual, expected,
-    `(2.9.0){ Metoden skal kunne konvertere mellem  Database kollonne navne i CAPS_CAPS og tilsvande navn i classses i camalCase  `);
-
   /* 3 */
   console.log(`3 test af at parseren kan vurdere ELEMENT_TYPE korrekt`);
   /* 3.1 */
@@ -233,6 +218,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
 
   inputData =  [{
     ID_DOCUMENT_SECTION: `TestDataDerSkalParses`,
+    SECTION_CONTENT: `SomeContent`,
     ELEMENT_TYPE: `section`,
   }];
   expected = `TestDataDerSkalParses`;
