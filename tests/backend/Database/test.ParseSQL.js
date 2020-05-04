@@ -385,6 +385,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   resetParsedData();
 
   const D =  new Document(req);
+
   expected = [
     [
       { COLUMN_NAME: `ID_DOCUMENT` },

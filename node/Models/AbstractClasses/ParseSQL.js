@@ -3,12 +3,59 @@
 /* ParseSql er en hjælpeklasse til Database.js.
  * ParseSql parser den SQL, som vi får leveret af databasen til et format, som frontend kan forstå
  * Klassen skal kunne parse alle former for input fra databasen, og sikre at JavaScript siden
- * af programmet stemmer overens med MySQL siden
+ * af programmet stemmer overens med MySQL siden, som kan ses i constructoren
  */
 
 class ParseSql {
   constructor() {
     this.parsedData = [];
+    /* ID kolonner der bruges alt efter hieraki */
+    this.groupCol = `ID_USER_GROUP`;
+    this.userCol = `ID_USER`;
+    this.documentCol = `ID_DOCUMENT`;
+    this.sectionCol = `ID_DOCUMENT_SECTION`;
+    this.evaluationCol = `ID_EVALUATION`;
+    this.quizQuestionCol = `ID_QUIZ_QUESTION`;
+    this.quizQuestionResultCol = `ID_QUIZ_QUESTION_RESULT`;
+    this.flashcardCol = `ID_FLASHCARD`;
+    this.flashcardResultCol = `ID_FLASHCARD_RESULT`;
+    this.keywordCol = `ID_KEYWORD`;
+    this.keywordLinkCol = `ID_KEYWORD_LINK`;
+    /* kolonner i alle klasser */
+    this.typeCol = `ELEMENT_TYPE`;
+    /* Group kolonner */
+    this.GNameCol = `NAME`;
+    /* User kolonner */
+    this.UUsernameCol = `USER_NAME`;
+    this.UPasswordCol = `PASSWORD`;
+    this.UFirstNameCol = `FIRST_NAME`;
+    this.ULastNameCol = `LAST_NAME`;
+    this.UEmailCol = `EMAIL`;
+    this.UStudySubjectCol = `STUDY_SUBJECT`;
+    this.USemesterCol = `SEMESTER`;
+    this.UUniversityCol = `UNIVERSITY`;
+    /* Document kolonner */
+    this.DTitleCol = `TITLE`;
+    /* Section kolonner */
+    this.SContentCol = `SECTION_CONTENT`;
+    this.STeaserCol = `SECTION_TEASER`;
+    this.SNumberCol = `SECTION_NUMBER`;
+    this.SKeywordsCol = `KEYWORDS`;
+    /* Evaluation kolonner */
+    this.ETitleCol = `TITLE`;
+    this.EKeywordsCol = `KEYWORDS`;
+    /* QuizQuestion kolonner */
+    this.QQQuestionCol = `QUESTION`;
+    this.QQAnswersCol = `ANSWERS`;
+    this.QQCorrectnessCol = `CORRECT_ANSWER`;
+    /* QuizResult Kolonner */
+    /* Flashcard Kolonner */
+    this.FConceptCol = `CONCEPT`;
+    this.FDefinitionCol = `DEFINITION`;
+    this.FCorrectnessCol = `CORRECT_ANSWER`;
+    /* Keyword kolonner */
+    this.KKeywordCol = `KEYWORD`;
+    /* KeywordLink kolonner */
   }
 
   /* Formål: Dette er tiltænkt som den overordnede funktion, som bliver kaldt fra Database.js
@@ -38,7 +85,6 @@ class ParseSql {
         case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));          break;
         case `keyword_link`:     this.parsedData.push(this.parseKeywordLink(data[i]));      break;
 
-
         default: throw new Error(`elementType er IKKE oprettet i Parseren!`);
       }
     }
@@ -60,9 +106,12 @@ class ParseSql {
    */
   parseGroup(data) {
     return {
-      elementType: `${data.ELEMENT_TYPE}`,
-      idGroup: `${data.ID_USER_GROUP}`,
-      name: `${data.NAME}`,
+      elementType: `${data[this.typeCol]}`,
+      // IDs
+      idGroup: `${data[this.groupCol]}`,
+      idUser: `${data[this.userCol]}`,
+      // data
+      name: `${data[this.GNameCol]}`,
     };
   }
 
@@ -73,17 +122,19 @@ class ParseSql {
    */
   parseUser(data) {
     return {
-      elementType: `${data.ELEMENT_TYPE}`,
-      idUser: `${data.ID_USER}`,
-      idGroup: `${data.ID_USER_GROUP}`,
-      username: `${data.USER_NAME}`,
-      // password: `${data.PASSWORD}`, // password parses ikke, da det kan være en mulig sikkerhedsbrist
-      firstName: `${data.FIRST_NAME}`,
-      lastName: `${data.LAST_NAME}`,
-      email: `${data.EMAIL}`,
-      studySubject: `${data.STUDY_SUBJECT}`,
-      semester: `${data.SEMESTER}`,
-      university: `${data.UNIVERSITY}`,
+      elementType: `${data[this.typeCol]}`,
+      // IDs
+      idUser: `${data[this.userCol]}`,
+      idGroup: `${data[this.groupCol]}`,
+      // data
+      username: `${data[this.UUsernameCol]}`,
+      password: `${data[this.UPasswordCol]}`,
+      firstName: `${data[this.UFirstNameCol]}`,
+      lastName: `${data[this.ULastNameCol]}`,
+      email: `${data[this.UEmailCol]}`,
+      studySubject: `${data[this.UStudySubjectCol]}`,
+      semester: `${data[this.USemesterCol]}`,
+      university: `${data[this.UUniversityCol]}`,
     };
   }
 
@@ -94,38 +145,34 @@ class ParseSql {
    */
   parseDocument(data) {
     return {
-      idDocument: `${data.ID_DOCUMENT}`,
-      idUser: `${data.ID_USER}`,
-      idGroup: `${data.ID_USER_GROUP}`,
-      title: `${data.TITLE}`,
-      elementType: `${data.ELEMENT_TYPE}`,
-
+      elementType: `${data[this.typeCol]}`,
+      // IDs
+      idGroup: `${data[this.groupCol]}`,
+      idUser: `${data[this.userCol]}`,
+      idDocument: `${data[this.documentCol]}`,
+      // data
+      title: `${data[this.DTitleCol]}`,
     };
   }
 
-  /* Formål: At parse Section-data
+  /* Formål: At parse Section-data og at oprette en teaser hvis den ikke er gemt i databasen.
    * Input:  Et dataobjekt af typen "section" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
    */
   parseSection(data) {
-    let teaser = ``;
-    if (data.SECTION_TEASER === null) { // opretter en teaser hvis der ikke er en i forvejen
-      teaser = data.SECTION_CONTENT.slice(0, 200);
-    }
-    else {
-      teaser = data.SECTION_TEASER;
-    }
     return {
-      elementType: `${data.ELEMENT_TYPE}`,
-      idDocument: `${data.ID_DOCUMENT}`,
-      idSection: `${data.ID_DOCUMENT_SECTION}`,
-      idUser: `${data.ID_USER}`,
-      idGroup: `${data.ID_USER_GROUP}`,
-      number: `${data.SECTION_NUMBER}`,
-      title: `${data.SECTION_TITLE}`,
-      content: `${data.SECTION_CONTENT}`,
-      teaser,
-      keywords: `${data.KEYWORDS}`,
+      elementType: `${data[this.typeCol]}`,
+      // IDs
+      idGroup: `${data[this.groupCol]}`,
+      idUser: `${data[this.userCol]}`,
+      idDocument: `${data[this.documentCol]}`,
+      idSection: `${data[this.sectionCol]}`,
+      // data
+      number: `${data[this.SnumberCol]}`,
+      title: `${data[this.STitleCol]}`,
+      content: `${data[this.SContentCol]}`,
+      teaser: data[this.STeaserCol] || data[this.SContentCol].slice(0, 200),
+      keywords: `${data[this.SKeywordsCol]}`,
     };
   }
 
@@ -136,12 +183,16 @@ class ParseSql {
    */
   parseEvaluation(data) {
     return {
-      elementType: `${data.ELEMENT_TYPE}`,
-      idEvaluation: `${data.ID_EVALUATION}`,
-      idDocument: `${data.ID_DOCUMENT}`,
-      idSection: `${data.ID_DOCUMENT_SECTION}`,
-      title: `${data.EVALUATION_TITLE}`,
-      keywords: undefined,
+      elementType: `${data[this.typeCol]}`,
+      // IDs
+      idGroup: `${data[this.groupCol]}`,
+      idUser: `${data[this.userCol]}`,
+      idDocument: `${data[this.documentCol]}}`,
+      idSection: `${data[this.sectionCol]}`,
+      idEvaluation: `${data[this.evaluationCol]}`,
+      // data
+      title: `${data[this.ETitleCol]}`,
+      keywords: `${data[this.EKeywordsCol]}`,
     };
   }
 
@@ -151,14 +202,14 @@ class ParseSql {
    */
   parseQuizQuestion(data) {
     return {
-      idQuizQuestion: `${data.ID_QUIZ_QUESTION}`,
-      idQuiz: `${data.ID_EVALUATION}`,
-      question: `${data.QUESTION}`,
-      answer1: `${data.ANSWER_1}`,
-      answer2: `${data.ANSWER_2}`,
-      answer3: `${data.ANSWER_3}`,
-      answer4: `${data.ANSWER_4}`,
-      correctness: `${data.CORRECT_ANSWER}`,
+      elementType: `${data[this.typeCol]}`,
+      // IDs
+      idQuizQuestion: `${data[this.quizQuestionCol]}`,
+      idQuiz: `${data[this.evaluationCol]}`,
+      // data
+      question: `${data[this.QQQuestion]}`,
+      answers: `${data[this.QQAnswersCol]}`,
+      correctness: `${data[this.QQCorrectnessCol]}`,
     };
   }
 
@@ -168,8 +219,12 @@ class ParseSql {
    * FIXME: Metoden skal udvikles
    */
   parseQuizResult(data) {
-    console.warn(`WARNING: elementType oprettet, men parser metode IKKE oprettet!`);
-    return data;
+    return {
+      elementType: `${data[this.typeCol]}`,
+      // IDs
+      idQuizResult: `${data[this.quizQuestionResultCol]}`,
+      // data
+    };
   }
 
   /* Formål: At parse Flashcard-data
@@ -179,15 +234,16 @@ class ParseSql {
    */
   parseFlashcard(data) {
     return {
-      elementType: `${data.ELEMENT_TYPE}`,
-      idFlashcard: `${data.ID_FLASHCARD}`,
-      idUser: `${data.ID_USER}`,
-      idDocument: `${data.ID_DOCUMENT}`,
-      idSection: `${data.ID_DOCUMENT_SECTION}`,
-
-      concept: `${data.CONCEPT}`,
-      definition: `${data.DEFINITION}`,
-      correctness: `${data.CORRECT_ANSWER}`,
+      elementType: `${data[this.typeCol]}`,
+      // IDs
+      idFlashcard: `${data[this.flashcardCol]}`,
+      idUser: `${data[this.userCol]}`,
+      idDocument: `${data[this.documentCol]}`,
+      idSection: `${data[this.sectionCol]}`,
+      // data
+      concept: `${data[this.FConceptCol]}`,
+      definition: `${data[this.FDefinitionCol]}`,
+      correctness: `${data[this.FCorrectnessCol]}`,
     };
   }
 
@@ -197,8 +253,12 @@ class ParseSql {
    * FIXME: Metoden skal udvikles
    */
   parseFlashcardResult(data) {
-    console.warn(`WARNING: elementType oprettet, men parser metode IKKE oprettet!`);
-    return data;
+    return {
+      elementType: `${data[this.typeCol]}`,
+      // IDs
+      idFlashcardResult: `${data[this.flashcardResultCol]}`,
+      // data
+    };
   }
 
   /* Formål: At parse Keyword-data
@@ -208,132 +268,26 @@ class ParseSql {
    */
   parseKeyword(data) {
     return {
-      idKeyword: `${data.ID_KEYWORD}`,
-      keyword: `${data.KEYWORD}`,
-      elementType: `${data.ELEMENT_TYPE}`,
+      elementType: `${data[this.typeCol]}`,
+      // IDs
+      idKeyword: `${data[this.keywordCol]}`,
+      // data
+      keyword: `${data[this.KKeywordCol]}`,
     };
   }
-
 
   parseKeywordLink(data) {
     return {
-      idKeywordLink: `${data.ID_KEYWORD_LINK}`,
-      idKeyword: `${data.ID_KEYWORD}`,
-      idQuiz: `${data.ID_EVALUATION}`,
-      idQuizQuestion: `${data.ID_QUIZ_QUESTION}`,
-      idDocument: `${data.ID_DOCUMENT}`,
-      idSection: `${data.ID_DOCUMENT_SECTION}`,
-      elementType: `${data.ELEMENT_TYPE}`,
-
+      elementType: `${data[this.typeCol]}`,
+      // IDs
+      idDocument: `${data[this.documentCol]}`,
+      idSection: `${data[this.sectionCol]}`,
+      idEvaluation: `${data[this.evaluationCol]}`,
+      idQuizQuestion: `${data[this.quizQuestionCol]}`,
+      idKeyword: `${data[this.keywordCol]}`,
+      idKeywordLink: `${data[this.keywordLinkCol]}`,
+      // data
     };
-  }
-
-  // FIXME: The fuck is this? 😂
-  convertNameBetweenCodeAndDB(name) {
-    switch (name) {
-      case `idKeywordLink`:  case `ID_KEYWORD_LINK`:
-        return name === `ID_KEYWORD_LINK` ? `idKeywordLink` :  `ID_KEYWORD_LINK`;
-        // break;
-
-      case `idKeyword`: case `ID_KEYWORD`:
-        return name === `ID_KEYWORD` ? `idKeyword` : `ID_KEYWORD`;
-        // break;
-
-      case `idQuiz`: case `ID_EVALUATION`:
-        return name === `ID_EVALUATION` ?  `idQuiz` : `ID_EVALUATION`;
-        // break;
-
-      case `idQuizQuestion`: case `ID_QUIZ_QUESTION`:
-        return name === `ID_QUIZ_QUESTION` ? `idQuizQuestion` : `ID_QUIZ_QUESTION`;
-        // break;
-
-      case `idDocument`: case `ID_DOCUMENT`:
-        return name === `ID_DOCUMENT` ? `idDocument` : `ID_DOCUMENT`;
-        // break;
-
-      case `idSection`: case `ID_DOCUMENT_SECTION`:
-        return name === `ID_DOCUMENT_SECTION` ? `idSection` : `ID_DOCUMENT_SECTION`;
-        // break;
-
-      case `elementType`: case `ELEMENT_TYPE`:
-        return name === `ELEMENT_TYPE` ?  `elementType` : `ELEMENT_TYPE`;
-        // break;
-
-      case `keyword`: case `KEYWORD`:
-        return name === `KEYWORD` ? `keyword` : `KEYWORD`;
-        // break;
-
-      case `idFlashcard`: case `ID_FLASHCARD`:
-        return name === `ID_FLASHCARD` ? `idFlashcard` : `ID_FLASHCARD`;
-        // break;
-
-      case `idUser`: case `ID_USER`:
-        return name === `ID_USER` ? `idUser` : `ID_USER`;
-        // break;
-
-      case `concept`: case `CONCEPT`:
-        return name === `CONCEPT` ? `concept` : `CONCEPT`;
-        // break;
-
-      case `definition`: case `DEFINITION`:
-        return name === `DEFINITION` ? `definition` : `DEFINITION`;
-        // break;
-
-      case `correctness`: case `CORRECT_ANSWER`:
-        return name === `CORRECT_ANSWER` ? `correctness` : `CORRECT_ANSWER`;
-        // break;
-
-      case `question`: case `QUESTION`:
-        return name === `QUESTION` ?  `question` : `QUESTION`;
-        // break;
-
-      case `answers`: case `ANSWERS`:
-        return name === `ANSWERS` ? `answers` : `ANSWERS`;
-        // break;
-
-      case `quizTitle`: case `QUIZ_TITLE`:
-        return name === `QUIZ_TITLE` ?  `quizTitle` : `QUIZ_TITLE`;
-        // break;
-
-      case `idGroup`: case `ID_USER_GROUP`:
-        return name === `ID_USER_GROUP` ?  `idGroup` : `ID_USER_GROUP`;
-        // break;
-
-      case `username`: case `USER_NAME`:
-        return name === `USER_NAME` ?  `username` : `USER_NAME`;
-        // break;
-
-      case `password`: case `PASSWORD`:
-        return name === `PASSWORD` ? `password` : `PASSWORD`;
-        // break;
-
-      case `firstName`: case `FIRST_NAME`:
-        return name === `FIRST_NAME` ? `firstName` : `FIRST_NAME`;
-        // break;
-
-      case `lastName`: case `LAST_NAME`:
-        return name === `LAST_NAME` ? `lastName` : `LAST_NAME`;
-        // break;
-
-      case `email`: case `EMAIL`:
-        return name === `EMAIL` ? `email` : `EMAIL`;
-        // break;
-
-      case `studySubject`: case `STUDY_SUBJECT`:
-        return name === `STUDY_SUBJECT` ?  `studySubject` : `STUDY_SUBJECT`;
-        // break;
-
-      case `semester`: case `SEMESTER`:
-        return name === `SEMESTER` ?  `semester` : `SEMESTER`;
-        // break;
-
-      case `university`: case `UNIVERSITY`:
-        return name === `UNIVERSITY` ?  `university` : `UNIVERSITY`;
-        // break;
-
-      default:
-        return name;
-    }
   }
 }
 
