@@ -109,7 +109,6 @@ class ParseSql {
       elementType: `${data[this.typeCol]}`,
       // IDs
       idGroup: `${data[this.groupCol]}`,
-      idUser: `${data[this.userCol]}`,
       // data
       name: `${data[this.GNameCol]}`,
     };
@@ -235,10 +234,8 @@ class ParseSql {
     return {
       elementType: `${data[this.typeCol]}`,
       // IDs
+      idEvaluation: `${data[this.evaluationCol]}`,
       idFlashcard: `${data[this.flashcardCol]}`,
-      idUser: `${data[this.userCol]}`,
-      idDocument: `${data[this.documentCol]}`,
-      idSection: `${data[this.sectionCol]}`,
       // data
       concept: `${data[this.FConceptCol]}`,
       definition: `${data[this.FDefinitionCol]}`,
