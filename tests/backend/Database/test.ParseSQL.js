@@ -5,15 +5,17 @@ const tape = require(`tape`);
 const testDecorater = require(`tape-promise`).default;
 const test = testDecorater(tape);
 const { ParseSql } = require(`../../../node/Models/AbstractClasses/ParseSQL`);
+const { Group } = require(`../../../node/Models/Group`);
+const { User } = require(`../../../node/Models/User`);
 const { Document } = require(`../../../node/Models/Document`);
 const { Section } = require(`../../../node/Models/Section`);
 const { Evaluation } = require(`../../../node/Models/Evaluation`);
 const { QuizQuestion } = require(`../../../node/Models/QuizQuestion`);
-const { Flashcard } = require(`../../../node/Models/Flashcard`);
+const { QuizResult } = require(`../../../node/Models/QuizResult`);
+// const { Flashcard } = require(`../../../node/Models/Flashcard`);
+// const { FlashcardResult } = require(`../../../node/Models/FlashcardResult`);
 const { Keyword } = require(`../../../node/Models/Keyword`);
 const { KeywordLink } = require(`../../../node/Models/KeywordLink`);
-const { User } = require(`../../../node/Models/User`);
-const { Group } = require(`../../../node/Models/Group`);
 
 const p = new ParseSql(); // Parseren som er objektet for alle disse test.
 
@@ -98,6 +100,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   resetParsedData();
   inputData = {
     ID_DOCUMENT_SECTION: `TestDataDerSkalParses`,
+    SECTION_CONTENT: `HelloHello`,
   };
   expected = `TestDataDerSkalParses`;
 
@@ -132,6 +135,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
     `(2.4){ Metoden skal kunne returnere en parset version af et QUIZ QUESTION data`);
 
   /* 2.5 */
+  /* FLASHCARD IKKE IMPLEMENTERET!
   resetParsedData();
   inputData =  {
     ID_FLASHCARD: `TestDataDerSkalParses`,
@@ -142,7 +146,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
 
   assert.equal(actual, expected,
     `(2.5){ Metoden skal kunne returnere en parset version af et FLASHCARD data`);
-
+  */
   /* 2.6 */
   resetParsedData();
   inputData = {
@@ -192,21 +196,33 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   assert.equal(actual, expected,
     `(2.8){ Metoden skal kunne returnere en parset version af et GROUP data`);
 
-
-  /* 2.9.0 */
+  /* 2.9 */
   resetParsedData();
-  inputData = [`ID_DOCUMENT_SECTION`, `idDocument`, `ANSWERS`, `answers`];
-  expected = [`idSection`, `ID_DOCUMENT`, `answers`, `ANSWERS`];
+  inputData = {
+    ID_QUIZ_RESULT: `TestDataDerSkalParses`,
+  };
 
-  actual = [
-    p.convertNameBetweenCodeAndDB(inputData[0]),
-    p.convertNameBetweenCodeAndDB(inputData[1]),
-    p.convertNameBetweenCodeAndDB(inputData[2]),
-    p.convertNameBetweenCodeAndDB(inputData[3]),
-  ];
+  expected = `TestDataDerSkalParses`;
 
-  assert.deepEqual(actual, expected,
-    `(2.9.0){ Metoden skal kunne konvertere mellem  Database kollonne navne i CAPS_CAPS og tilsvande navn i classses i camalCase  `);
+  actual = p.parseQuizResult(inputData).idQuizResult;
+
+  assert.equal(actual, expected,
+    `(2.9){ Metoden skal kunne returnere en parset version af et QUIZ RESULT data`);
+
+  /* 2.10 */
+  /* FLASHCARD IKKE IMPLEMENTERET!
+  resetParsedData();
+  inputData = {
+    ID_FLASHCARD_RESULT: `TestDataDerSkalParses`,
+  };
+
+  expected = `TestDataDerSkalParses`;
+
+  actual = p.parseFlashcardResult(inputData).idFlashcardResult;
+
+  assert.equal(actual, expected,
+    `(2.10){ Metoden skal kunne returnere en parset version af et FLASHCARD RESULT data`);
+  */
 
   /* 3 */
   console.log(`3 test af at parseren kan vurdere ELEMENT_TYPE korrekt`);
@@ -282,6 +298,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   }
 
   /* 3.5 */
+  /* FLASHCARD IKKE IMPLEMENTERET!
   resetParsedData();
 
   inputData = [{
@@ -298,7 +315,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   catch (error) {
     assert.false(true, `(3.5) Flashcard er ikke oprettet i parseren`);
   }
-
+  */
 
   /* 3.6 */
   resetParsedData();
@@ -378,207 +395,578 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
     assert.false(true, `(3.8) Group er ikke oprettet i parseren`);
   }
 
+  /* 3.9 */
+  resetParsedData();
+
+  inputData = [{
+    ELEMENT_TYPE: `quiz_result`,
+    ID_QUIZ_RESULT: `TestDataDerSkalParses`,
+  }];
+
+  expected = `TestDataDerSkalParses`;
+
+  try {
+    actual = p.parseArrayOfObjects(inputData);
+    assert.deepEqual(actual[0].idQuizResult, expected,
+      `(3.9){ Metoden skal parse QuizResult data, når ELEMENT_TYPE = "quiz_result"`);
+  }
+  catch (error) {
+    assert.false(true, `(3.9) QuizResult er ikke oprettet i parseren`);
+  }
+
+  /* 3.10 */
+  /* FLASHCARD IKKE IMPLEMENTERET!
+  resetParsedData();
+
+  inputData = [{
+    ELEMENT_TYPE: `flashcard_result`,
+    ID_FLASHCARD_RESULT: `TestDataDerSkalParses`,
+  }];
+
+  expected = `TestDataDerSkalParses`;
+
+  try {
+    actual = p.parseArrayOfObjects(inputData);
+    assert.deepEqual(actual[0].idFlashcardResult, expected,
+      `(3.10){ Metoden skal parse FlashcardResult data, når ELEMENT_TYPE = "flaschard_result"`);
+  }
+  catch (error) {
+    assert.false(true, `(3.10) FlaschardResult er ikke oprettet i parseren`);
+  }
+  */
+
   /* 4 */
-  console.log(`4 Test af at de kolonner som parseren forventer stemmer overens med MySQL databasens kolonner`);
+  console.log(`4 Test af at de attributter som parseren forventer stemmer overens med MySQL databasens attributter`);
   const req = { session: {}, params: {}, body: {} }; // req bruges til at objekter konstrueres ud fra et validRequest (se Model metoden)
+  let actualObject = ``; // actualObject bruges til at indeholde kolonne navnene fra MySQL database siden.
+  let count = 0; // count bruges til at holde styr på, om der er oprettet lige så mange test som der er kolonnenavne, for at sikre alt bliver testet.
   /* 4.1 */
   resetParsedData();
 
-  const D =  new Document(req);
-  expected = [
-    [
-      { COLUMN_NAME: `ID_DOCUMENT` },
-      { COLUMN_NAME: `ID_USER_GROUP` },
-      { COLUMN_NAME: `ID_USER` },
-      { COLUMN_NAME: `TITLE` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
-    ],
-  ];
+  const G = new Group(req);
+  actualObject = await G.query(`HEAD`, `COLUMN_NAME`);
 
-  actual = [await D.query(`HEAD`, `COLUMN_NAME`)];
+  expected = Object.keys(p.parseGroup({})).length;
+  actual = Object.keys(actualObject).length;
+  assert.equal(actual, expected,
+    `(4.1.1){Forventet: ${expected} Reel: ${actual}} Parserens forventede Group attributter skal have lige så mange attributter som MySQL Databasens user_group kolonnenavn`);
 
-  assert.deepEqual(actual, expected,
-    `(4.1){  Parserens forventede kolonner skal stemme overens med MySQL Databasens document kolonnenavne`);
-  D.connect.end();
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.typeCol);
+  assert.true(actual,
+    `(4.1.2) Parserens forventede elementType kolonne skal stemme overens med MySQL Databasens user_group kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.groupCol);
+  assert.true(actual,
+    `(4.1.3) Parserens forventede idGroup kolonne skal stemme overens med MySQL Databasens user_group kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.GNameCol);
+  assert.true(actual,
+    `(4.1.4) Parserens forventede name kolonne skal stemme overens med MySQL Databasens user_group kolonnenavn`);
+  count++;
+
+  expected = Object.keys(p.parseGroup({})).length;
+  actual = count;
+  assert.equal(actual, expected,
+    `(4.1.5){Forventet: ${expected} Reel: ${actual}} Mængden af tests af Group attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+  count = 0;
+
+  G.connect.end();
 
   /* 4.2 */
   resetParsedData();
 
-  const S = new Section(req);
-  expected = [
-    [
-      { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
-      { COLUMN_NAME: `ID_USER_GROUP` },
-      { COLUMN_NAME: `ID_USER` },
-      { COLUMN_NAME: `ID_DOCUMENT` },
-      { COLUMN_NAME: `SECTION_TITLE` },
-      { COLUMN_NAME: `SECTION_NUMBER` },
-      { COLUMN_NAME: `SECTION_CONTENT` },
-      { COLUMN_NAME: `SECTION_TEASER` },
-      { COLUMN_NAME: `KEYWORDS` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
+  const U = new User(req);
+  actualObject = await U.query(`HEAD`, `COLUMN_NAME`);
 
-    ],
-  ];
+  expected = Object.keys(p.parseUser({})).length;
+  actual = Object.keys(actualObject).length;
+  assert.equal(actual, expected,
+    `(4.2.1){Forventet: ${expected} Reel: ${actual}} Parserens forventede User attributter skal have lige så mange attributter som MySQL Databasens user kolonnenavn`);
 
-  actual = [await S.query(`HEAD`, `COLUMN_NAME`)];
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.typeCol);
+  assert.true(actual,
+    `(4.2.2) Parserens forventede elementType kolonne skal stemme overens med MySQL Databasens user kolonnenavn`);
+  count++;
 
-  assert.deepEqual(actual, expected,
-    `(4.2){  Parserens forventede kolonner skal stemme overens med MySQL Databasens document_section kolonnenavne`);
-  S.connect.end();
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.groupCol);
+  assert.true(actual,
+    `(4.2.3) Parserens forventede idGroup kolonne skal stemme overens med MySQL Databasens user kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.userCol);
+  assert.true(actual,
+    `(4.2.4) Parserens forventede idUser kolonne skal stemme overens med MySQL Databasens user kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.UUsernameCol);
+  assert.true(actual,
+    `(4.2.5) Parserens forventede username kolonne skal stemme overens med MySQL Databasens user kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.UPasswordCol);
+  assert.true(actual,
+    `(4.2.6) Parserens forventede password kolonne skal stemme overens med MySQL Databasens user kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.UFirstNameCol);
+  assert.true(actual,
+    `(4.2.7) Parserens forventede firstName kolonne skal stemme overens med MySQL Databasens user kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.ULastNameCol);
+  assert.true(actual,
+    `(4.2.8) Parserens forventede lastLame kolonne skal stemme overens med MySQL Databasens user kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.UEmailCol);
+  assert.true(actual,
+    `(4.2.9) Parserens forventede email kolonne skal stemme overens med MySQL Databasens user kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.UStudySubjectCol);
+  assert.true(actual,
+    `(4.2.10) Parserens forventede studySubject kolonne skal stemme overens med MySQL Databasens user kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.USemesterCol);
+  assert.true(actual,
+    `(4.2.11) Parserens forventede semester kolonne skal stemme overens med MySQL Databasens user kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.UUniversityCol);
+  assert.true(actual,
+    `(4.2.12) Parserens forventede university kolonne skal stemme overens med MySQL Databasens user kolonnenavn`);
+  count++;
+
+  expected = Object.keys(p.parseUser({})).length;
+  actual = count;
+  assert.equal(actual, expected,
+    `(4.2.13){Forventet: ${expected} Reel: ${actual}} Mængden af tests af User attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+  count = 0;
+
+  U.connect.end();
 
   /* 4.3 */
   resetParsedData();
 
-  const Q = new Evaluation(req);
-  expected = [
-    [
-      { COLUMN_NAME: `ID_EVALUATION` },
-      { COLUMN_NAME: `ID_USER_GROUP` },
-      { COLUMN_NAME: `ID_USER` },
-      { COLUMN_NAME: `ID_DOCUMENT` },
-      { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
-      { COLUMN_NAME: `QUIZ_TITLE` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
-    ],
-  ];
-  inputData = await Q.query(`HEAD`, `COLUMN_NAME`);
+  const D =  new Document(req);
+  actualObject = await D.query(`HEAD`, `COLUMN_NAME`);
 
-  actual = [inputData];
+  expected = Object.keys(p.parseDocument({})).length;
+  actual = Object.keys(actualObject).length;
+  assert.equal(actual, expected,
+    `(4.3.1){Forventet: ${expected} Reel: ${actual}} Parserens forventede Document attributter skal have lige så mange attributter som MySQL Databasens document kolonnenavn`);
 
-  assert.deepEqual(actual, expected,
-    `(4.3){  Parserens forventede kolonner skal stemme overens med MySQL Databasens evaluation kolonnenavne`);
-  Q.connect.end();
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.typeCol);
+  assert.true(actual,
+    `(4.3.2) Parserens forventede elementType kolonne skal stemme overens med MySQL Databasens document kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.groupCol);
+  assert.true(actual,
+    `(4.3.3) Parserens forventede idGroup kolonne skal stemme overens med MySQL Databasens document kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.userCol);
+  assert.true(actual,
+    `(4.3.4) Parserens forventede idUser kolonne skal stemme overens med MySQL Databasens document kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.documentCol);
+  assert.true(actual,
+    `(4.3.5) Parserens forventede idDocument kolonne skal stemme overens med MySQL Databasens document kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.DTitleCol);
+  assert.true(actual,
+    `(4.3.6) Parserens forventede title kolonne skal stemme overens med MySQL Databasens document kolonnenavn`);
+  count++;
+
+  expected = Object.keys(p.parseDocument({})).length;
+  actual = count;
+  assert.equal(actual, expected,
+    `(4.3.7){Forventet: ${expected} Reel: ${actual}} Mængden af tests af Document attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+  count = 0;
+
+  D.connect.end();
 
   /* 4.4 */
   resetParsedData();
 
-  const Qq = new QuizQuestion(req);
-  expected = [
-    [
-      { COLUMN_NAME: `ID_QUIZ_QUESTION` },
-      { COLUMN_NAME: `ID_EVALUATION` },
-      { COLUMN_NAME: `QUESTION` },
-      { COLUMN_NAME: `ANSWERS` },
-      { COLUMN_NAME: `CORRECT_ANSWERS` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
-    ],
+  const S = new Section(req);
+  actualObject = await S.query(`HEAD`, `COLUMN_NAME`);
 
-  ];
-  actual = [await Qq.query(`HEAD`, `COLUMN_NAME`)];
+  expected = Object.keys(p.parseSection({})).length;
+  actual = Object.keys(actualObject).length;
+  assert.equal(actual, expected,
+    `(4.4.1){Forventet: ${expected} Reel: ${actual}} Parserens forventede Section attributter skal have lige så mange attributter som MySQL Databasens section kolonnenavn`);
 
-  assert.deepEqual(actual, expected,
-    `(4.4){  Parserens forventede kolonner skal stemme overens med MySQL Databasens quizQuestion kolonnenavne`);
-  Qq.connect.end();
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.typeCol);
+  assert.true(actual,
+    `(4.4.2) Parserens forventede elementType kolonne skal stemme overens med MySQL Databasens section kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.groupCol);
+  assert.true(actual,
+    `(4.4.3) Parserens forventede idGroup kolonne skal stemme overens med MySQL Databasens section kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.userCol);
+  assert.true(actual,
+    `(4.4.4) Parserens forventede idUser kolonne skal stemme overens med MySQL Databasens section kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.documentCol);
+  assert.true(actual,
+    `(4.4.5) Parserens forventede idDocument kolonne skal stemme overens med MySQL Databasens section kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.sectionCol);
+  assert.true(actual,
+    `(4.4.6) Parserens forventede idSection kolonne skal stemme overens med MySQL Databasens section kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.SNumberCol);
+  assert.true(actual,
+    `(4.4.7) Parserens forventede number kolonne skal stemme overens med MySQL Databasens section kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.STitleCol);
+  assert.true(actual,
+    `(4.4.8) Parserens forventede title kolonne skal stemme overens med MySQL Databasens section kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.SContentCol);
+  assert.true(actual,
+    `(4.4.9) Parserens forventede content kolonne skal stemme overens med MySQL Databasens section kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.STeaserCol);
+  assert.true(actual,
+    `(4.4.10) Parserens forventede teaser kolonne skal stemme overens med MySQL Databasens section kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.SKeywordsCol);
+  assert.true(actual,
+    `(4.2.11) Parserens forventede keywords kolonne skal stemme overens med MySQL Databasens section kolonnenavn`);
+  count++;
+
+  expected = Object.keys(p.parseSection({})).length;
+  actual = count;
+  assert.equal(actual, expected,
+    `(4.2.12){Forventet: ${expected} Reel: ${actual}} Mængden af tests af Section attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+  count = 0;
+
+  S.connect.end();
 
   /* 4.5 */
   resetParsedData();
 
-  const F = new Flashcard(req);
-  expected = [
-    [
-      { COLUMN_NAME: `ID_FLASHCARD` },
-      { COLUMN_NAME: `ID_USER_GROUP` },
-      { COLUMN_NAME: `ID_USER` },
-      { COLUMN_NAME: `ID_DOCUMENT` },
-      { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
-      { COLUMN_NAME: `CONCEPT` },
-      { COLUMN_NAME: `DEFINITION` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
+  const E = new Evaluation(req);
+  actualObject = await E.query(`HEAD`, `COLUMN_NAME`);
 
-    ],
-  ];
-  actual = [await F.query(`HEAD`, `COLUMN_NAME`)];
+  expected = Object.keys(p.parseEvaluation({})).length;
+  actual = Object.keys(actualObject).length;
+  assert.equal(actual, expected,
+    `(4.5.1){Forventet: ${expected} Reel: ${actual}} Parserens forventede Evaluation attributter skal have lige så mange attributter som MySQL Databasens section kolonnenavn`);
 
-  assert.deepEqual(actual, expected,
-    `(4.5){  Parserens forventede kolonner skal stemme overens med MySQL Databasens flashcard kolonnenavne`);
-  F.connect.end();
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.typeCol);
+  assert.true(actual,
+    `(4.5.2) Parserens forventede elementType kolonne skal stemme overens med MySQL Databasens document_section kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.groupCol);
+  assert.true(actual,
+    `(4.5.3) Parserens forventede idGroup kolonne skal stemme overens med MySQL Databasens document_section kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.userCol);
+  assert.true(actual,
+    `(4.5.4) Parserens forventede idUser kolonne skal stemme overens med MySQL Databasens document_section kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.documentCol);
+  assert.true(actual,
+    `(4.5.5) Parserens forventede idDocument kolonne skal stemme overens med MySQL Databasens document_section kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.sectionCol);
+  assert.true(actual,
+    `(4.5.6) Parserens forventede idSection kolonne skal stemme overens med MySQL Databasens document_section kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.evaluationCol);
+  assert.true(actual,
+    `(4.5.7) Parserens forventede idEvaluation kolonne skal stemme overens med MySQL Databasens document_section kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.ETitleCol);
+  assert.true(actual,
+    `(4.5.8) Parserens forventede title kolonne skal stemme overens med MySQL Databasens document_section kolonnenavn`);
+  count++;
+
+  expected = Object.keys(p.parseEvaluation({})).length;
+  actual = count;
+  assert.equal(actual, expected,
+    `(4.5.9){Forventet: ${expected} Reel: ${actual}} Mængden af tests af Evaluation attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+  count = 0;
+
+  E.connect.end();
 
   /* 4.6 */
   resetParsedData();
 
-  const U = new User(req);
-  expected = [
-    [
-      { COLUMN_NAME: `ID_USER` },
-      { COLUMN_NAME: `ID_USER_GROUP` },
-      { COLUMN_NAME: `USER_NAME` },
-      { COLUMN_NAME: `PASSWORD` },
-      { COLUMN_NAME: `FIRST_NAME` },
-      { COLUMN_NAME: `LAST_NAME` },
-      { COLUMN_NAME: `EMAIL` },
-      { COLUMN_NAME: `STUDY_SUBJECT` },
-      { COLUMN_NAME: `SEMESTER` },
-      { COLUMN_NAME: `UNIVERSITY` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
-    ],
-  ];
+  const QQ = new QuizQuestion(req);
+  actualObject = await QQ.query(`HEAD`, `COLUMN_NAME`);
 
-  actual = [await U.query(`HEAD`, `COLUMN_NAME`)];
+  expected = Object.keys(p.parseQuizQuestion({})).length;
+  actual = Object.keys(actualObject).length;
+  assert.equal(actual, expected,
+    `(4.6.1){Forventet: ${expected} Reel: ${actual}} Parserens forventede QuizQuestion attributter skal have lige så mange attributter som MySQL Databasens section kolonnenavn`);
 
-  assert.deepEqual(actual, expected,
-    `(4.6){  Parserens forventede kolonner skal stemme overens med MySQL Databasens user kolonnenavne`);
-  U.connect.end();
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.typeCol);
+  assert.true(actual,
+    `(4.6.2) Parserens forventede elementType kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.evaluationCol);
+  assert.true(actual,
+    `(4.6.3) Parserens forventede idEvaluation kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.quizQuestionCol);
+  assert.true(actual,
+    `(4.6.4) Parserens forventede idQuizQuestion kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.QQQuestionCol);
+  assert.true(actual,
+    `(4.6.5) Parserens forventede question kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.QQAnswersCol);
+  assert.true(actual,
+    `(4.6.6) Parserens forventede answers kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.QQCorrectnessCol);
+  assert.true(actual,
+    `(4.6.7) Parserens forventede correctness kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question kolonnenavn`);
+  count++;
+
+  expected = Object.keys(p.parseQuizQuestion({})).length;
+  actual = count;
+  assert.equal(actual, expected,
+    `(4.6.8){Forventet: ${expected} Reel: ${actual}} Mængden af tests af Quiz Question attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+  count = 0;
+
+  QQ.connect.end();
 
   /* 4.7 */
   resetParsedData();
 
-  const K = new Keyword(req);
-  expected = [
-    [
-      { COLUMN_NAME: `ID_KEYWORD` },
-      { COLUMN_NAME: `KEYWORD` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
-    ],
-  ];
-  actual = [await K.query(`HEAD`, `COLUMN_NAME`)];
+  const QR = new QuizResult(req);
+  actualObject = await QR.query(`HEAD`, `COLUMN_NAME`);
 
-  assert.deepEqual(actual, expected,
-    `(4.7){  Parserens forventede kolonner skal stemme overens med MySQL Databasens keyword kolonnenavne`);
+  expected = Object.keys(p.parseQuizResult({})).length;
+  actual = Object.keys(actualObject).length;
+  assert.equal(actual, expected,
+    `(4.7.1){Forventet: ${expected} Reel: ${actual}} Parserens forventede QuizResult attributter skal have lige så mange attributter som MySQL Databasens quiz_question_result kolonnenavn`);
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.typeCol);
+  assert.true(actual,
+    `(4.7.2) Parserens forventede elementType kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.quizResultCol);
+  assert.true(actual,
+    `(4.7.3) Parserens forventede idQuizResult kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
+  count++;
+
+  expected = Object.keys(p.parseQuizQuestion({})).length;
+  actual = count;
+  assert.equal(actual, expected,
+    `(4.7.4){Forventet: ${expected} Reel: ${actual}} Mængden af tests af QuizResult attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+  count = 0;
+
+  QR.connect.end();
+
+  /* 4.8 */
+  /* FLASHCARD IKKE IMPLEMENTERET!
+  resetParsedData();
+
+  const F = new Flashcard(req);
+  actualObject = await F.query(`HEAD`, `COLUMN_NAME`);
+
+  expected = Object.keys(p.parseFlashcard({})).length;
+  actual = Object.keys(actualObject).length;
+  assert.equal(actual, expected,
+    `(4.8.1){Forventet: ${expected} Reel: ${actual}} Parserens forventede Flashcard attributter skal have lige så mange attributter som MySQL Databasens flashcard kolonnenavn`);
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.typeCol);
+  assert.true(actual,
+    `(4.8.2) Parserens forventede elementType kolonne skal stemme overens med MySQL Databasens tilsvarende flaschard kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.evaluationCol);
+  assert.true(actual,
+    `(4.8.3) Parserens forventede idEvaluation kolonne skal stemme overens med MySQL Databasens tilsvarende flaschard kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.flashcardCole);
+  assert.true(actual,
+    `(4.8.4) Parserens forventede idFlashcard kolonne skal stemme overens med MySQL Databasens tilsvarende flaschard kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.FConceptCol);
+  assert.true(actual,
+    `(4.8.5) Parserens forventede concept kolonne skal stemme overens med MySQL Databasens tilsvarende flaschard kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.FDefinitionCol);
+  assert.true(actual,
+    `(4.8.6) Parserens forventede definition kolonne skal stemme overens med MySQL Databasens tilsvarende flaschard kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.FCorrectnessCol);
+  assert.true(actual,
+    `(4.8.7) Parserens forventede correctness kolonne skal stemme overens med MySQL Databasens tilsvarende flaschard kolonnenavn`);
+  count++;
+
+  expected = Object.keys(p.parseQuizQuestion({})).length;
+  actual = count;
+  assert.equal(actual, expected,
+    `(4.8.8){Forventet: ${expected} Reel: ${actual}} Mængden af tests af Flashcard attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+  count = 0;
+
+  F.connect.end();
+  */
+
+  /* 4.9 */
+  /* FLASHCARD IKKE IMPLEMENTERET!
+  resetParsedData();
+
+  const FR = new FlashcardResult(req);
+  actualObject = await FR.query(`HEAD`, `COLUMN_NAME`);
+
+  expected = Object.keys(p.parseFlashcardResult({})).length;
+  actual = Object.keys(actualObject).length;
+  assert.equal(actual, expected,
+    `(4.9.1){Forventet: ${expected} Reel: ${actual}} Parserens forventede FlashcardResult attributter skal have lige så mange attributter som MySQL Databasens flashcard_result kolonnenavn`);
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.typeCol);
+  assert.true(actual,
+    `(4.9.2) Parserens forventede elementType kolonne skal stemme overens med MySQL Databasens tilsvarende flashcard_result kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.flashcardResultCol);
+  assert.true(actual,
+    `(4.9.3) Parserens forventede idFlashcardResult kolonne skal stemme overens med MySQL Databasens tilsvarende flashcard_result kolonnenavn`);
+  count++;
+
+  expected = Object.keys(p.parseQuizQuestion({})).length;
+  actual = count;
+  assert.equal(actual, expected,
+    `(4.9.4){Forventet: ${expected} Reel: ${actual}} Mængden af tests af FlashcardResult attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+  count = 0;
+
+  FR.connect.end();
+  */
+
+  /* 4.10 */
+  resetParsedData();
+
+  const K = new Keyword(req);
+  actualObject = await K.query(`HEAD`, `COLUMN_NAME`);
+
+  expected = Object.keys(p.parseKeyword({})).length;
+  actual = Object.keys(actualObject).length;
+  assert.equal(actual, expected,
+    `(4.10.1){Forventet: ${expected} Reel: ${actual}} Parserens forventede Keyword attributter skal have lige så mange attributter som MySQL Databasens keyword kolonnenavn`);
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.typeCol);
+  assert.true(actual,
+    `(4.10.2) Parserens forventede elementType kolonne skal stemme overens med MySQL Databasens tilsvarende keyword kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.keywordCol);
+  assert.true(actual,
+    `(4.10.3) Parserens forventede idKeyword kolonne skal stemme overens med MySQL Databasens tilsvarende keyword kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.KKeywordCol);
+  assert.true(actual,
+    `(4.10.4) Parserens forventede keyword kolonne skal stemme overens med MySQL Databasens tilsvarende keyword kolonnenavn`);
+  count++;
+
+  expected = Object.keys(p.parseKeyword({})).length;
+  actual = count;
+  assert.equal(actual, expected,
+    `(4.10.5){Forventet: ${expected} Reel: ${actual}} Mængden af tests af Keyword attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+  count = 0;
 
   K.connect.end();
 
-  /* 4.7.1 */
+  /* 4.11 */
   resetParsedData();
 
-  const Kl = new KeywordLink(req);
-  expected = [
-    [
-      { COLUMN_NAME: `ID_KEYWORD_LINK` },
-      { COLUMN_NAME: `ID_DOCUMENT` },
-      { COLUMN_NAME: `ID_DOCUMENT_SECTION` },
+  const KL = new KeywordLink(req);
+  actualObject = await KL.query(`HEAD`, `COLUMN_NAME`);
 
-      { COLUMN_NAME: `ID_EVALUATION` },
-      { COLUMN_NAME: `ID_QUIZ_QUESTION` },
-      { COLUMN_NAME: `ID_KEYWORD` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
-    ],
-  ];
-  actual = [await Kl.query(`HEAD`, `COLUMN_NAME`)];
+  expected = Object.keys(p.parseKeywordLink({})).length;
+  actual = Object.keys(actualObject).length;
+  assert.equal(actual, expected,
+    `(4.11.1){Forventet: ${expected} Reel: ${actual}} Parserens forventede KeywordLink attributter skal have lige så mange attributter som MySQL Databasens keyword_link kolonnenavn`);
 
-  assert.deepEqual(actual, expected,
-    `(4.7.1){  Parserens forventede kolonner skal stemme overens med MySQL Databasens keyword_link kolonnenavne`);
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.typeCol);
+  assert.true(actual,
+    `(4.11.2) Parserens forventede elementType kolonne skal stemme overens med MySQL Databasens keyword_link kolonnenavn`);
+  count++;
 
-  Kl.connect.end();
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.documentCol);
+  assert.true(actual,
+    `(4.11.5) Parserens forventede idDocument kolonne skal stemme overens med MySQL Databasens keyword_link kolonnenavn`);
+  count++;
 
-  /* 4.8 */
-  resetParsedData();
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.sectionCol);
+  assert.true(actual,
+    `(4.11.6) Parserens forventede idSection kolonne skal stemme overens med MySQL Databasens keyword_link kolonnenavn`);
+  count++;
 
-  const G = new Group(req);
-  expected = [
-    [
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.evaluationCol);
+  assert.true(actual,
+    `(4.11.7) Parserens forventede idEvaluation kolonne skal stemme overens med MySQL Databasens keyword_link kolonnenavn`);
+  count++;
 
-      { COLUMN_NAME: `ID_USER_GROUP` },
-      { COLUMN_NAME: `NAME` },
-      { COLUMN_NAME: `ELEMENT_TYPE` },
-    ],
-  ];
-  actual = [await G.query(`HEAD`, `COLUMN_NAME`)];
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.quizQuestionCol);
+  assert.true(actual,
+    `(4.11.8) Parserens forventede idQuizQuestion kolonne skal stemme overens med MySQL Databasens keyword_link kolonnenavn`);
+  count++;
 
-  assert.deepEqual(actual, expected,
-    `(4.8){  Parserens forventede kolonner skal stemme overens med MySQL Databasens user_group kolonnenavne`);
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.flashcardCol);
+  assert.true(actual,
+    `(4.11.9) Parserens forventede idFlashcard idFlashcard skal stemme overens med MySQL Databasens keyword_link kolonnenavn`);
+  count++;
 
-  G.connect.end();
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.keywordCol);
+  assert.true(actual,
+    `(4.11.10) Parserens forventede idKeyword kolonne skal stemme overens med MySQL Databasens keyword_link kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.keywordLinkCol);
+  assert.true(actual,
+    `(4.11.11) Parserens forventede idKeywordLink kolonne skal stemme overens med MySQL Databasens keyword_link kolonnenavn`);
+  count++;
+
+  expected = Object.keys(p.parseSection({})).length;
+  actual = count;
+  assert.equal(actual, expected,
+    `(4.11.12){Forventet: ${expected} Reel: ${actual}} Mængden af tests af KeywordLink attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+  count = 0;
+
+  KL.connect.end();
 
   assert.end();
 });
