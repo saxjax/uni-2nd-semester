@@ -42,10 +42,10 @@ function createDomNode(tagNameParam, text, selectors) {
 /* BODY */
 
 // const form = document.getElementById(`quizQuestionsForm`); FIXME: Slettes hvis ikke den skal bruges
-const buttons = document.querySelectorAll(`.addAnotherQuestionButton`);
+const addAnotherQuestionButtons = document.querySelectorAll(`.addAnotherQuestionButton`);
 const submitButton = document.getElementById(`submit`);
 const questionCountDisplay = document.getElementById(`questionCountDisplay`);
-let questionCount = 0;
+let questionCount = 1;
 
 // ON LOAD //
 // Includes quiz name in quizTitleHeader
@@ -57,12 +57,11 @@ evaluationTitleHeader.innerHTML = `Create new questions for ${titleEvaluation}`;
 addAnotherQuestion(); // Tilføjer automatisk et spørgsmål, når htmlen er loadet.
 // /ON LOAD //
 
-buttons.forEach((button) => {
+addAnotherQuestionButtons.forEach((button) => {
   button.addEventListener(`click`, addAnotherQuestion);
 });
 
 function addAnotherQuestion() {
-  questionCount++;
   const questionContainer = insertDomNode(`DIV`, submitButton, undefined, [{ class: `questionContainer` }]);
   const questionLabel = appendDomNode(`LABEL`, questionContainer, `Question ${questionCount}`); // Indsæt label for="someID"
   questionLabel.htmlFor = `question${questionCount}`; // Corresponds to the input.id
@@ -74,18 +73,31 @@ function addAnotherQuestion() {
   questionInput.placeholder = `Question ${questionCount}`;
   questionInput.name = `question${questionCount}`;
   appendDomNode(`BR`, questionContainer);
-  createAnswerFields(questionContainer);
-  questionCountDisplay.text = `Number of questions: ${questionCount}`;
+  const breakBeforeAnswerButton = appendDomNode(`BR`, questionContainer);
+  const addAnotherAnswerButton = appendDomNode(`BUTTON`, questionContainer, `Add another answer`);
+  let answerFieldCount = 1;
+  addAnotherAnswerButton.addEventListener(`click`, () => {
+    answerFieldCount = createAnswerFields(1, breakBeforeAnswerButton, answerFieldCount);
+  });
+  answerFieldCount = createAnswerFields(2, breakBeforeAnswerButton, answerFieldCount);
+  questionCountDisplay.innerText = `Number of questions: ${questionCount}`;
+  questionCount++;
 }
 
-function createAnswerFields(questionContainer) {
-  for (let i = 1; i <= 4; i++) {
-    const correctAnswerCheckbox = appendDomNode(`INPUT`, questionContainer, undefined, [{ class: `correctAnswerCheckbox` }]);
-    correctAnswerCheckbox.type = `checkbox`;
-    correctAnswerCheckbox.title = `Click to mark as correct answer`;
-    correctAnswerCheckbox.name = `Question${questionCount}AnswerCheckbox${i}`;
-    const answerInput = appendDomNode(`INPUT`, questionContainer, undefined, [{ class: `answerInput` }]);
-    answerInput.placeholder = `Answer ${i}`;
-    answerInput.name = `Question${questionCount}Answer${i}`;
+function createAnswerFields(amount, createBeforeThisElem, answerFieldCount) {
+  let count = answerFieldCount;
+  for (let i = 0; i < amount; i++) {
+    createAnswerField(createBeforeThisElem, count++);
   }
+  return count;
+}
+
+function createAnswerField(createBeforeThisElem, answerFieldCount) {
+  const correctAnswerCheckbox = insertDomNode(`INPUT`, createBeforeThisElem, undefined, [{ class: `correctAnswerCheckbox` }]);
+  correctAnswerCheckbox.type = `checkbox`;
+  correctAnswerCheckbox.title = `Click to mark as correct answer`;
+  correctAnswerCheckbox.name = `Question${questionCount}AnswerCheckbox${answerFieldCount}`;
+  const answerInput = insertDomNode(`INPUT`, createBeforeThisElem, undefined, [{ class: `answerInput` }]);
+  answerInput.placeholder = `Answer ${answerFieldCount}`;
+  answerInput.name = `Question${questionCount}Answer${answerFieldCount}`;
 }
