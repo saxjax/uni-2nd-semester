@@ -417,10 +417,10 @@ class ViewController {
   async viewEvaluationPage(req, res) {
     const E = new Evaluation(req);
     const dataArray = await Promise.all([
-      E.getThisGroupData(),                    // dataArray[0]
-      E.getThisUserData(),                     // dataArray[1]
-      E.getThis(),                             // dataArray[2]
-      E.getAllElementsOfType(`QuizQuestion`),  // dataArray[3]
+      await E.getThisGroupData(),                    // dataArray[0]
+      await E.getThisUserData(),                     // dataArray[1]
+      await E.getThis(),                             // dataArray[2]
+      await E.getAllQuizQuestions(),  // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], questions: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluation.ejs`);
