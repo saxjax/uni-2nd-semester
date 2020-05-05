@@ -126,6 +126,7 @@ class Model extends Database {
       .catch((error) => {
         console.warn(`\n\nDet givne tabelnavn er højst sandsynligt forkert angivet i parseElementTypesTable!\n\n`);
         this.table = parentTable;
+        console.log(`4`);
         return error;
       });
   }
