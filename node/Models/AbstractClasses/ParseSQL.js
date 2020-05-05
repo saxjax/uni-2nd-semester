@@ -43,8 +43,7 @@ class ParseSql {
     this.SNumberCol = `SECTION_NUMBER`;
     this.SKeywordsCol = `KEYWORDS`;
     /* Evaluation kolonner */
-    this.ETitleCol = `TITLE`;
-    this.EKeywordsCol = `KEYWORDS`;
+    this.ETitleCol = `EVALUATION_TITLE`;
     /* QuizQuestion kolonner */
     this.QQQuestionCol = `QUESTION`;
     this.QQAnswersCol = `ANSWERS`;
@@ -193,7 +192,6 @@ class ParseSql {
       idEvaluation: `${data[this.evaluationCol]}`,
       // data
       title: `${data[this.ETitleCol]}`,
-      keywords: `${data[this.EKeywordsCol]}`,
     };
   }
 
@@ -205,8 +203,8 @@ class ParseSql {
     return {
       elementType: `${data[this.typeCol]}`,
       // IDs
+      idEvaluation: `${data[this.evaluationCol]}`,
       idQuizQuestion: `${data[this.quizQuestionCol]}`,
-      idQuiz: `${data[this.evaluationCol]}`,
       // data
       question: `${data[this.QQQuestion]}`,
       answers: `${data[this.QQAnswersCol]}`,
@@ -219,11 +217,11 @@ class ParseSql {
    * Output: Et parset dataobjekt, som kan forståes på frontend
    * FIXME: Metoden skal udvikles
    */
-  parseQuizResult(data) {
+  parseQuizQuestionResult(data) {
     return {
       elementType: `${data[this.typeCol]}`,
       // IDs
-      idQuizResult: `${data[this.quizQuestionResultCol]}`,
+      idQuizQuestionResult: `${data[this.quizQuestionResultCol]}`,
       // data
     };
   }
@@ -285,6 +283,7 @@ class ParseSql {
       idSection: `${data[this.sectionCol]}`,
       idEvaluation: `${data[this.evaluationCol]}`,
       idQuizQuestion: `${data[this.quizQuestionCol]}`,
+      idFlashcard: `${data[this.flashcardCol]}`,
       idKeyword: `${data[this.keywordCol]}`,
       idKeywordLink: `${data[this.keywordLinkCol]}`,
       // data

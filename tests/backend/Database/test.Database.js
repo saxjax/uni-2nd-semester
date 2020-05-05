@@ -639,35 +639,40 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
       `7.1 Head metoden er implementeret forkert! med fejl: ${error}`);
   }
 
-  expected = `ID_DATABASE`;
+  expected = `ELEMENT_TYPE`;
   actual = actualObject[0].COLUMN_NAME;
   assert.equal(actual, expected,
-    `(7.1.1) {Forventet: ${expected} Reel: ${actual}} .1 Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+    `(7.1.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
 
-  expected = `TEST_OPTION_1`;
+  expected = `ID_DATABASE`;
   actual = actualObject[1].COLUMN_NAME;
   assert.equal(actual, expected,
     `(7.1.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
 
-  expected = `TEST_OPTION_2`;
+  expected = `TEST_OPTION_1`;
   actual = actualObject[2].COLUMN_NAME;
   assert.equal(actual, expected,
     `(7.1.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
 
-  expected = `TEST_OPTION_3`;
+  expected = `TEST_OPTION_2`;
   actual = actualObject[3].COLUMN_NAME;
   assert.equal(actual, expected,
     `(7.1.4) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
 
-  expected = `TEST_OPTION_4`;
+  expected = `TEST_OPTION_3`;
   actual = actualObject[4].COLUMN_NAME;
   assert.equal(actual, expected,
     `(7.1.5) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
 
-  expected = `TEST_OPTION_5_FLOAT`;
+  expected = `TEST_OPTION_4`;
   actual = actualObject[5].COLUMN_NAME;
   assert.equal(actual, expected,
     `(7.1.6) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
+
+  expected = `TEST_OPTION_5_FLOAT`;
+  actual = actualObject[6].COLUMN_NAME;
+  assert.equal(actual, expected,
+    `(7.1.7) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne sende data om hvilke column navne den tilkoblede tabel har.`);
 
   /* 8.1 */
   console.log(`8: Database.js skal kunne give information om hvordan Database.js API fungere`);
