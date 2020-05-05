@@ -5,7 +5,7 @@ const { Model } = require(`./AbstractClasses/Model`);
 class QuizResult extends Model {
   constructor(req) {
     super(req);
-    this.elementType = `quizResult`;
+    this.elementType = `quiz_result`;
     this.table = `quiz_result`;
     this.idDocument = `11111111-aaaa-bbbb-1111-111111111111`; // Hardcoded into every section - can be changed in the future
 

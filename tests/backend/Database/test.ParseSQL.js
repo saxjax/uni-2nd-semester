@@ -11,7 +11,7 @@ const { Document } = require(`../../../node/Models/Document`);
 const { Section } = require(`../../../node/Models/Section`);
 const { Evaluation } = require(`../../../node/Models/Evaluation`);
 const { QuizQuestion } = require(`../../../node/Models/QuizQuestion`);
-const { QuizQuestionResult } = require(`../../../node/Models/QuizQuestionResult`);
+const { QuizResult } = require(`../../../node/Models/QuizResult`);
 const { Flashcard } = require(`../../../node/Models/Flashcard`);
 const { FlashcardResult } = require(`../../../node/Models/FlashcardResult`);
 const { Keyword } = require(`../../../node/Models/Keyword`);
@@ -195,6 +195,32 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   assert.equal(actual, expected,
     `(2.8){ Metoden skal kunne returnere en parset version af et GROUP data`);
 
+  /* 2.9 */
+  resetParsedData();
+  inputData = {
+    ID_QUIZ_QUESTION_RESULT: `TestDataDerSkalParses`,
+  };
+
+  expected = `TestDataDerSkalParses`;
+
+  actual = p.parseQuizResult(inputData).idQuizResult;
+
+  assert.equal(actual, expected,
+    `(2.9){ Metoden skal kunne returnere en parset version af et QUIZ QUESTION RESULT data`);
+
+  /* 2.10 */
+  resetParsedData();
+  inputData = {
+    ID_FLASHCARD_RESULT: `TestDataDerSkalParses`,
+  };
+
+  expected = `TestDataDerSkalParses`;
+
+  actual = p.parseFlashcardResult(inputData).idFlashcardResult;
+
+  assert.equal(actual, expected,
+    `(2.10){ Metoden skal kunne returnere en parset version af et FLASHCARD RESULT data`);
+
   /* 3 */
   console.log(`3 test af at parseren kan vurdere ELEMENT_TYPE korrekt`);
   /* 3.1 */
@@ -220,7 +246,6 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
 
   inputData =  [{
     ID_DOCUMENT_SECTION: `TestDataDerSkalParses`,
-    SECTION_CONTENT: `SomeContent`,
     ELEMENT_TYPE: `section`,
   }];
   expected = `TestDataDerSkalParses`;
@@ -364,6 +389,44 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   }
   catch (error) {
     assert.false(true, `(3.8) Group er ikke oprettet i parseren`);
+  }
+
+  /* 3.9 */
+  resetParsedData();
+
+  inputData = [{
+    ELEMENT_TYPE: `quiz_result`,
+    ID_QUIZ_RESULT: `TestDataDerSkalParses`,
+  }];
+
+  expected = `TestDataDerSkalParses`;
+
+  try {
+    actual = p.parseArrayOfObjects(inputData);
+    assert.deepEqual(actual[0].idQuizResult, expected,
+      `(3.9){ Metoden skal parse QuizResult data, når ELEMENT_TYPE = "quiz_result"`);
+  }
+  catch (error) {
+    assert.false(true, `(3.9) QuizResult er ikke oprettet i parseren`);
+  }
+
+  /* 3.10 */
+  resetParsedData();
+
+  inputData = [{
+    ELEMENT_TYPE: `flashcard_result`,
+    ID_FLASHCARD_RESULT: `TestDataDerSkalParses`,
+  }];
+
+  expected = `TestDataDerSkalParses`;
+
+  try {
+    actual = p.parseArrayOfObjects(inputData);
+    assert.deepEqual(actual[0].idFlashcardResult, expected,
+      `(3.10){ Metoden skal parse FlashcardResult data, når ELEMENT_TYPE = "flaschard_result"`);
+  }
+  catch (error) {
+    assert.false(true, `(3.10) FlaschardResult er ikke oprettet i parseren`);
   }
 
   /* 4 */
@@ -698,31 +761,31 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   /* 4.7 */
   resetParsedData();
 
-  const QQR = new QuizQuestionResult(req);
-  actualObject = await QQR.query(`HEAD`, `COLUMN_NAME`);
+  const QR = new QuizResult(req);
+  actualObject = await QR.query(`HEAD`, `COLUMN_NAME`);
 
-  expected = Object.keys(p.parseQuizQuestionResult({})).length;
+  expected = Object.keys(p.parseQuizResult({})).length;
   actual = Object.keys(actualObject).length;
   assert.equal(actual, expected,
-    `(4.7.1){Forventet: ${expected} Reel: ${actual}} Parserens forventede QuizQuestionResult attributter skal have lige så mange attributter som MySQL Databasens quiz_question_result kolonnenavn`);
+    `(4.7.1){Forventet: ${expected} Reel: ${actual}} Parserens forventede QuizResult attributter skal have lige så mange attributter som MySQL Databasens quiz_question_result kolonnenavn`);
 
   actual = actualObject.find((obj) => obj.COLUMN_NAME === p.typeCol);
   assert.true(actual,
     `(4.7.2) Parserens forventede elementType kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
   count++;
 
-  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.quizQuestionResultCol);
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.quizResultCol);
   assert.true(actual,
-    `(4.7.3) Parserens forventede idQuizQuestionResult kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
+    `(4.7.3) Parserens forventede idQuizResult kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
   count++;
 
   expected = Object.keys(p.parseQuizQuestion({})).length;
   actual = count;
   assert.equal(actual, expected,
-    `(4.7.4){Forventet: ${expected} Reel: ${actual}} Mængden af tests af QuizQuestionResult attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+    `(4.7.4){Forventet: ${expected} Reel: ${actual}} Mængden af tests af QuizResult attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
   count = 0;
 
-  QQR.connect.end();
+  QR.connect.end();
 
   /* 4.8 */
   resetParsedData();

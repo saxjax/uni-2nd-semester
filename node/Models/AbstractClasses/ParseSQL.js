@@ -16,7 +16,7 @@ class ParseSql {
     this.sectionCol = `ID_DOCUMENT_SECTION`;
     this.evaluationCol = `ID_EVALUATION`;
     this.quizQuestionCol = `ID_QUIZ_QUESTION`;
-    this.quizQuestionResultCol = `ID_QUIZ_QUESTION_RESULT`;
+    this.quizResultCol = `ID_QUIZ_QUESTION_RESULT`;
     this.flashcardCol = `ID_FLASHCARD`;
     this.flashcardResultCol = `ID_FLASHCARD_RESULT`;
     this.keywordCol = `ID_KEYWORD`;
@@ -48,11 +48,18 @@ class ParseSql {
     this.QQQuestionCol = `QUESTION`;
     this.QQAnswersCol = `ANSWERS`;
     this.QQCorrectnessCol = `CORRECT_ANSWER`;
+    this.QQKeywordCol = `KEYWORD`;
     /* QuizResult Kolonner */
+    this.QRAttemptCol = `ID_ATTEMPT`;
+    this.QRPointCol = `POINT`;
+    this.QRTotalCol = `TOTAL`;
+    this.QRResultCol = `RESULT`;
+    this.QRCreatedDateCol = `CREATED_DATE`;
     /* Flashcard Kolonner */
     this.FConceptCol = `CONCEPT`;
     this.FDefinitionCol = `DEFINITION`;
     this.FCorrectnessCol = `CORRECT_ANSWER`;
+    /* FlaschardResult kolonner */
     /* Keyword kolonner */
     this.KKeywordCol = `KEYWORD`;
     /* KeywordLink kolonner */
@@ -70,7 +77,6 @@ class ParseSql {
     if (data.length === 0) { // returnere en tom RowDataPacket hvis data er et tomt array (se Output)
       return [{ RowDataPacket: {} }];
     }
-    console.log(`\n\n\n ${data[0]} AND ${data[0][this.typeCol]}\n\n\n`);
     for (let i = 0; i < data.length; i++) { // Looper igennem "data" og parser alle RowDataPacket til camelCase
       switch (data[i][this.typeCol]) {
         case `test`:             this.parsedData.push(this.parseTest(data[i]));             break;
@@ -208,6 +214,7 @@ class ParseSql {
       question: `${data[this.QQQuestion]}`,
       answers: `${data[this.QQAnswersCol]}`,
       correctness: `${data[this.QQCorrectnessCol]}`,
+      keyword: `${data[this.QQKeywordCol]}`,
     };
   }
 
@@ -216,12 +223,19 @@ class ParseSql {
    * Output: Et parset dataobjekt, som kan forståes på frontend
    * FIXME: Metoden skal udvikles
    */
-  parseQuizQuestionResult(data) {
+  parseQuizResult(data) {
     return {
       elementType: `${data[this.typeCol]}`,
       // IDs
-      idQuizQuestionResult: `${data[this.quizQuestionResultCol]}`,
+      idUser: `${data[this.userCol]}`,
+      idEvaluation: `${data[this.evaluationCol]}`,
+      idQuizResult: `${data[this.quizResultCol]}`,
       // data
+      attempt: `${data[this.QRAttemptCol]}`,
+      point: `${data[this.QRPointCol]}`,
+      total: `${data[this.QRTotalCol]}`,
+      result: `${data[this.QRResultCol]}`,
+      createdData: `${data[this.QRCreatedDateCol]}`,
     };
   }
 
