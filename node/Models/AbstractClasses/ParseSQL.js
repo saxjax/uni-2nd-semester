@@ -16,7 +16,7 @@ class ParseSql {
     this.sectionCol = `ID_DOCUMENT_SECTION`;
     this.evaluationCol = `ID_EVALUATION`;
     this.quizQuestionCol = `ID_QUIZ_QUESTION`;
-    this.quizResultCol = `ID_QUIZ_QUESTION_RESULT`;
+    this.quizResultCol = `ID_QUIZ_RESULT`;
     this.flashcardCol = `ID_FLASHCARD`;
     this.flashcardResultCol = `ID_FLASHCARD_RESULT`;
     this.keywordCol = `ID_KEYWORD`;
@@ -56,9 +56,11 @@ class ParseSql {
     this.QRResultCol = `RESULT`;
     this.QRCreatedDateCol = `CREATED_DATE`;
     /* Flashcard Kolonner */
+    /* FLASHCARD IKKE IMPLEMENTERET!
     this.FConceptCol = `CONCEPT`;
     this.FDefinitionCol = `DEFINITION`;
     this.FCorrectnessCol = `CORRECT_ANSWER`;
+    */
     /* FlaschardResult kolonner */
     /* Keyword kolonner */
     this.KKeywordCol = `KEYWORD`;
@@ -87,8 +89,8 @@ class ParseSql {
         case `evaluation`:       this.parsedData.push(this.parseEvaluation(data[i]));       break;
         case `quiz_question`:    this.parsedData.push(this.parseQuizQuestion(data[i]));     break;
         case `quiz_result`:      this.parsedData.push(this.parseQuizResult(data[i]));       break;
-        case `flashcard`:        this.parsedData.push(this.parseFlashcard(data[i]));        break;
-        case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i]));  break;
+        // case `flashcard`:        this.parsedData.push(this.parseFlashcard(data[i]));        break;
+        // case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i]));  break;
         case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));          break;
         case `keyword_link`:     this.parsedData.push(this.parseKeywordLink(data[i]));      break;
         default: throw new Error(`elementType er IKKE oprettet i Parseren!`);
@@ -244,6 +246,7 @@ class ParseSql {
    * Output: Et parset dataobjekt, som kan forståes på frontend
    * FIXME: Metoden skal udvikles
    */
+  /* FLASHCARD IKKE IMPLEMENTERET!
   parseFlashcard(data) {
     return {
       elementType: `${data[this.typeCol]}`,
@@ -255,13 +258,14 @@ class ParseSql {
       definition: `${data[this.FDefinitionCol]}`,
       correctness: `${data[this.FCorrectnessCol]}`,
     };
-  }
+  } */
 
   /* Formål: At parse Flashcard-result data
    * Input:  Et dataobjekt af typen "flashcaard_result" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
    * FIXME: Metoden skal udvikles
    */
+  /* FLASHCARD IKKE IMPLEMENTERET!
   parseFlashcardResult(data) {
     return {
       elementType: `${data[this.typeCol]}`,
@@ -269,7 +273,7 @@ class ParseSql {
       idFlashcardResult: `${data[this.flashcardResultCol]}`,
       // data
     };
-  }
+  } */
 
   /* Formål: At parse Keyword-data
    * Input:  Et dataobjekt af typen "keyword" fra parse metoden.
