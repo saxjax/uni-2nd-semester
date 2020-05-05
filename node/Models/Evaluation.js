@@ -87,6 +87,19 @@ class Evaluation extends Model {
 
     return this.idEvaluation;
   }
+
+  async getAllQuizQuestions() {
+    this.table = `quiz_question`;
+    let queryResult;
+    try {
+      queryResult = await this.query(`SELECT *`, `${this.idColumnName} = "${this.idQuery}"`);
+    }
+    catch (error) {
+      console.log(error);
+    }
+    this.table = `evaluation`;
+    return queryResult;
+  }
 }
 module.exports = {
   Evaluation,

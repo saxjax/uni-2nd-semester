@@ -154,11 +154,9 @@ class ParseSql {
       idQuizQuestion: `${data.ID_QUIZ_QUESTION}`,
       idQuiz: `${data.ID_EVALUATION}`,
       question: `${data.QUESTION}`,
-      answer1: `${data.ANSWER_1}`,
-      answer2: `${data.ANSWER_2}`,
-      answer3: `${data.ANSWER_3}`,
-      answer4: `${data.ANSWER_4}`,
-      correctness: `${data.CORRECT_ANSWER}`,
+      answers: `${data.ANSWERS}`,
+      correctAnswers: `${data.CORRECT_ANSWERS}`,
+      keyword: `${data.KEYWORD}`,
     };
   }
 
