@@ -37,7 +37,7 @@ class RedirectController {
       res.redirect(`/`);
     }
     else {
-      res.redirect(422, `/register`);
+      res.redirect(401, `/register`);
     }
   }
 
@@ -52,7 +52,7 @@ class RedirectController {
         res.redirect(`/`);
       }
       else {
-        res.redirect(400, `/register`);
+        res.redirect(503, `/register`);
       }
     }
     else { // User could not be validated
@@ -105,7 +105,7 @@ class RedirectController {
     }
   }
 
-  // test  må slettes senere
+  // test  mï¿½ slettes senere
   async keyword(req, res) {
     const newKeyword = new Keyword(req);
     // const arrayKeywords = [`Kylling`, `Kebab`, `Abe`, `Bille`, `Cirkus`, `Batman`, `Superman`, `NytKeyword25`];
