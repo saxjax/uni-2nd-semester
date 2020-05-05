@@ -7,6 +7,7 @@ const { User } = require(`../Models/User`);
 const { Document } = require(`../Models/Document`);
 const { Section } = require(`../Models/Section`);
 const { Evaluation } = require(`../Models/Evaluation`);
+const { QuizResult } = require(`../Models/QuizResult`);
 const { Flashcard } = require(`../Models/Flashcard`);
 const { Keyword } = require(`../Models/Keyword`);
 
@@ -424,6 +425,18 @@ class ViewController {
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], questions: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluation.ejs`);
+    res.render(this.ejs, { data });
+  }
+
+  async viewEvaluationResultPage(req, res) {
+    const QR = new QuizResult(req);
+    const dataArray = await Promise.all([
+      await QR.getThisGroupData(),                    // dataArray[0]
+      await QR.getThisUserData(),                     // dataArray[1]
+      await QR.getThis(),                             // dataArray[2]
+    ]);
+    const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2] };
+    this.ejs = path.join(`${this.root}/www/views/viewEvaluationResult.ejs`);
     res.render(this.ejs, { data });
   }
 
