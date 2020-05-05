@@ -12,8 +12,8 @@ const { Section } = require(`../../../node/Models/Section`);
 const { Evaluation } = require(`../../../node/Models/Evaluation`);
 const { QuizQuestion } = require(`../../../node/Models/QuizQuestion`);
 const { QuizResult } = require(`../../../node/Models/QuizResult`);
-const { Flashcard } = require(`../../../node/Models/Flashcard`);
-const { FlashcardResult } = require(`../../../node/Models/FlashcardResult`);
+// const { Flashcard } = require(`../../../node/Models/Flashcard`);
+// const { FlashcardResult } = require(`../../../node/Models/FlashcardResult`);
 const { Keyword } = require(`../../../node/Models/Keyword`);
 const { KeywordLink } = require(`../../../node/Models/KeywordLink`);
 
