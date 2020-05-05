@@ -188,16 +188,17 @@ class Server {
 
   /* Formål: Struktur for de URL Patterns der indsætter data i databasen.
   *          Vil være den controller der håndtere posting af database, og dermed også sikkerhed.
-   * Input : Ingen, denne opsætter blot URLerne
-   * Output: Setup af muligheden for klienten at poste data til databasen.
-   */
+  * Input : Ingen, denne opsætter blot URLerne
+  * Output: Setup af muligheden for klienten at poste data til databasen.
+  */
   createPatterns() {
     const Creator = new CreateController();
-    this.app.post(`/post/group`,   (req, res) => Creator.createGroup(req, res));
-    this.app.post(`/post/user`,    (req, res) => Creator.createUser(req, res));
-    this.app.post(`/post/section`, (req, res) => Creator.createSection(req, res));
-    this.app.post(`/post/evaluation`,    (req, res) => Creator.createEvaluation(req, res));
-    this.app.post(`/post/questions`,    (req, res) => Creator.createQuestions(req, res));
+    this.app.post(`/post/group`,       (req, res) => Creator.createGroup(req, res));
+    this.app.post(`/post/user`,        (req, res) => Creator.createUser(req, res));
+    this.app.post(`/post/section`,     (req, res) => Creator.createSection(req, res));
+    this.app.post(`/post/evaluation`,  (req, res) => Creator.createEvaluation(req, res));
+    this.app.post(`/post/questions`,   (req, res) => Creator.createQuestions(req, res));
+    this.app.post(`/post/answers/:id`, (req, res) => Creator.createAnswers(req, res));
   }
 
   /* Formål: Struktur for de URL Patterns der sletter data i databasen.

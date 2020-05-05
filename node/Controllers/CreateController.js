@@ -5,6 +5,7 @@ const { User } = require(`../Models/User`);
 const { Section } = require(`../Models/Section`);
 const { Evaluation } = require(`../Models/Evaluation`);
 const { QuizQuestion } = require(`../Models/QuizQuestion`);
+const { QuizResult } = require(`../Models/QuizResult`);
 
 /* UNDER CONSTRUCTION */
 
@@ -77,7 +78,14 @@ class CreateController {
       res.redirect(503, `/dbdown`);
     }
   }
+
+  // Not done yet!
+  async createAnswers(req, res) {
+    const QR = new QuizResult(req);
+    QR.insertToDatabase();
+  }
 }
+
 
 module.exports = {
   CreateController,

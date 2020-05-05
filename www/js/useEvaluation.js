@@ -1,11 +1,56 @@
-/* eslint no-undef: 0 */
-/*
-const allQuestionsDiv = document.getElementById(`allQuestions`);
-let questionCount = 0;
+class Question {
+  constructor(questionContainer, index) {
+    this.idQuestion         = questionContainer.getAttribute(`idQuestion`);
+    this.questionText       = questionContainer.getElementsByClassName(`questionText`)[0].innerHTML;
+    this.userAnswers        = this.getUserAnswers(questionContainer);
+    this.correctAnswers     = data.questions[index].correctAnswers;
+    this.correctAnswerGiven = false;
+  }
 
-data.questions.forEach((question) => {
-  const questionDiv = appendDomNode(`DIV`, allQuestionsDiv, ``, [{ id: `question${questionCount}` }]);
-  appendDomNode(`P`, questionDiv, `${question.question}`);
-  questionCount++;
-});
- */
+  getUserAnswers(questionContainer) {
+    let userAnswers = ``;
+    const userAnswerCheckboxes = questionContainer.getElementsByClassName(`correctAnswerCheckbox`);
+    for (let i = 0; i < userAnswerCheckboxes.length; i++) {
+      userAnswers = `${userAnswers + userAnswerCheckboxes[i].checked};`;
+    }
+    return userAnswers.slice(0, -1); // Sletter det sidste semikolon
+  }
+}
+
+
+const submitButton = document.querySelector(`#submitButton`);
+const { idEvaluation } = data.evaluation[0];
+submitButton.addEventListener(`click`, submitAnswers);
+
+
+async function submitAnswers() {
+  const questionContainers = document.getElementsByClassName(`questionDiv`);
+  const questionsArray = [];
+  for (let i = 0; i < questionContainers.length; i++) {
+    questionsArray.push(new Question(questionContainers[i], i));
+    // Checks if the given answer is correct and saves the status to the Question object.
+    questionsArray[i].correctAnswerGiven = questionsArray[i].userAnswers === questionsArray[i].correctAnswers;
+  }
+
+  const score = calculateScore(questionsArray);
+  const body = { questionsArray, score, idEvaluation };
+  await fetch(`/post/answers/${idEvaluation}`, {
+    method: `POST`,
+    body: JSON.stringify(body),
+    headers: { "Content-Type": `application/json` },
+  });
+
+  // window.location.replace(`/view/evaluations/recipient`);
+}
+
+
+function calculateScore(questionsArray) {
+  let points = 0;
+  const total = questionsArray.length;
+  questionsArray.forEach((question) => {
+    if (question.correctAnswerGiven) {
+      points++;
+    }
+  });
+  return { points, total };
+}
