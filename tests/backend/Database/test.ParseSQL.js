@@ -440,7 +440,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   const req = { session: {}, params: {}, body: {} }; // req bruges til at objekter konstrueres ud fra et validRequest (se Model metoden)
   let actualObject = ``; // actualObject bruges til at indeholde kolonne navnene fra MySQL database siden.
   let count = 0; // count bruges til at holde styr på, om der er oprettet lige så mange test som der er kolonnenavne, for at sikre alt bliver testet.
-  /* 4.1 */
+  /* 4.1 Group */
   resetParsedData();
 
   const G = new Group(req);
@@ -474,7 +474,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
 
   G.connect.end();
 
-  /* 4.2 */
+  /* 4.2 User */
   resetParsedData();
 
   const U = new User(req);
@@ -548,7 +548,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
 
   U.connect.end();
 
-  /* 4.3 */
+  /* 4.3 Document */
   resetParsedData();
 
   const D =  new Document(req);
@@ -592,7 +592,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
 
   D.connect.end();
 
-  /* 4.4 */
+  /* 4.4 Section */
   resetParsedData();
 
   const S = new Section(req);
@@ -661,7 +661,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
 
   S.connect.end();
 
-  /* 4.5 */
+  /* 4.5 Evaluation */
   resetParsedData();
 
   const E = new Evaluation(req);
@@ -715,11 +715,11 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
 
   E.connect.end();
 
-  /* 4.6 */
+  /* 4.6 QuizQuestion */
   resetParsedData();
 
   const QQ = new QuizQuestion(req);
-  actualObject = await QQ.query(`HEAD`, `COLUMN_NAME`);
+  actualObject = await QQ.query(`HEAD`, `COLUMN_NAME`);[{COLUMN_NAME: "ELEMENT_TYPE"}, {COLUMN_NAME: `QUESTION`}]
 
   expected = Object.keys(p.parseQuizQuestion({})).length;
   actual = Object.keys(actualObject).length;
@@ -764,7 +764,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
 
   QQ.connect.end();
 
-  /* 4.7 */
+  /* 4.7 QuizResult */
   resetParsedData();
 
   const QR = new QuizResult(req);
@@ -793,7 +793,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
 
   QR.connect.end();
 
-  /* 4.8 */
+  /* 4.8 Flashcard */
   /* FLASHCARD IKKE IMPLEMENTERET!
   resetParsedData();
 
@@ -844,7 +844,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   F.connect.end();
   */
 
-  /* 4.9 */
+  /* 4.9 FlashcardResult */
   /* FLASHCARD IKKE IMPLEMENTERET!
   resetParsedData();
 
@@ -875,7 +875,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   FR.connect.end();
   */
 
-  /* 4.10 */
+  /* 4.10 Keyword */
   resetParsedData();
 
   const K = new Keyword(req);
@@ -909,7 +909,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
 
   K.connect.end();
 
-  /* 4.11 */
+  /* 4.11 KeywordLink */
   resetParsedData();
 
   const KL = new KeywordLink(req);
