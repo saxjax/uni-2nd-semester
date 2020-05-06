@@ -15,8 +15,11 @@ class QuizResult extends Model {
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
-          this.idColumnName   = `ID_QUIZ_RESULT`;
-          this.idQuery        =  req.params.idQuery;
+          // DET HER ER HARDCODED OG GÅR UDEN OM PARSEREN IKKE GODT!!!!!!!
+          this.idColumnName   = `ID_ATTEMPT`;
+          this.idQuery        =  req.params.idAttempt;
+          this.idEvaluationCol = `ID_EVALUATION`;
+          this.idEvaluation = req.params.idQuery;
           break;
         case `POST`:
           this.idEvaluation  = req.body.idEvaluation;
@@ -57,6 +60,20 @@ class QuizResult extends Model {
   async getUuid() {
     const result = await this.query(`CUSTOM`, `SELECT UUID() AS UUID`);
     return result;
+  }
+
+  async getAllQuizQuestions() {
+    const trueTable = this.table;
+    let queryResult;
+    this.table = `quiz_question`;
+    try {
+      queryResult = await this.query(`SELECT *`, `${this.idEvaluationCol} = "${this.idEvaluation}"`);
+    }
+    catch (error) {
+      console.log(error);
+    }
+    this.table = trueTable;
+    return queryResult;
   }
 }
 

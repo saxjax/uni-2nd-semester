@@ -5,12 +5,28 @@
     <link href="/css/design.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/evaluation.css">
     <script src="/js/insertHTMLElements.js" ></script>
+    <script defer src="/js/viewQuizResult.js"></script>
     <title>GroupHub | Evaluering resultat</title>
   </head>
   <body>
     <%- include('meta/navbar') %> 
-    
+    <script> const data = <%- JSON.stringify(data) %> </script>
+    <% console.log(data) %>
+
     <h1>Result for QUIZ!</h1>
+    <% let questionCount = 1; %>
+    <% data.quizQuestions.forEach((question) => { %>
+      <div class="questionDiv" id="question<%=questionCount%>">
+        <h3><%=question.question%></h3>
+        <label for="">Answers: </label>
+          <% let answerCount = 1 %>
+          <% question.answers.split(`;`).forEach(answer => { %>
+            <p> <%= answer %> </p>
+            <% answerCount++ %>
+      <% }); %>
+      </div>
+      <% questionCount++%>
+    <%});%>
             
     <%- include('meta/footer') %> 
   </body>

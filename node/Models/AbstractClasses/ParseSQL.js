@@ -47,7 +47,7 @@ class ParseSql {
     /* QuizQuestion kolonner */
     this.QQQuestionCol = `QUESTION`;
     this.QQAnswersCol = `ANSWERS`;
-    this.QQCorrectnessCol = `CORRECT_ANSWER`;
+    this.QQCorrectnessCol = `CORRECT_ANSWERS`;
     this.QQKeywordCol = `KEYWORD`;
     /* QuizResult Kolonner */
     this.QRAttemptCol = `ID_ATTEMPT`;
@@ -213,7 +213,7 @@ class ParseSql {
       idEvaluation: `${data[this.evaluationCol]}`,
       idQuizQuestion: `${data[this.quizQuestionCol]}`,
       // data
-      question: `${data[this.QQQuestion]}`,
+      question: `${data[this.QQQuestionCol]}`,
       answers: `${data[this.QQAnswersCol]}`,
       correctness: `${data[this.QQCorrectnessCol]}`,
       keyword: `${data[this.QQKeywordCol]}`,
@@ -232,6 +232,7 @@ class ParseSql {
       idUser: `${data[this.userCol]}`,
       idEvaluation: `${data[this.evaluationCol]}`,
       idQuizResult: `${data[this.quizResultCol]}`,
+      idQuizQuestion: `${data[this.quizQuestionCol]}`,
       // data
       attempt: `${data[this.QRAttemptCol]}`,
       point: `${data[this.QRPointCol]}`,
