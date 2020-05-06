@@ -8,8 +8,23 @@
   </head>
   <body>
     <%- include('meta/navbar') %> 
-    
+    <script> const data = <%- JSON.stringify(data) %> </script>
+    <% console.log(data) %>
     <h1>Result for QUIZ!</h1>
+
+    <% data.quizQuestions.forEach(question => { %>
+      <div class="questionDiv">
+        <% let questionCount = 1; %>
+        <h3><%=question.question%></h3>
+        <label for="">Answers: </label>
+          <% let answerCount = 1 %>
+          <% question.answers.split(`;`).forEach(answer => { %>
+            <input id = <%= `question${questionCount}answer${answerCount}` %> class ="correctAnswerCheckbox" type="checkbox">
+            <p class = "answer" >  <%= answer %> </p>
+            <% answerCount++ %>
+            <% }); %>
+      </div>
+    <%});%>
             
     <%- include('meta/footer') %> 
   </body>
