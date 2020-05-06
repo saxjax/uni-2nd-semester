@@ -4,7 +4,8 @@
 
 class SpacedRepetition {
   constructor() {
-    const nextRepetitionTask = [];
+    this.nextRepetitionTask = [];
+    this.minTimestamp = 24;// 24 timer
   }
 
 
@@ -41,8 +42,16 @@ class SpacedRepetition {
     }
   }
 
-  calculateTimestamp() {
+  calculateTimestamp({ setMinTimestamp = true, currentTimestamp } = {}) {
+    let newTimestamp;
+    if (setMinTimestamp === true) {
+      newTimestamp = Date.now() + this.minTimestamp;
+    }
+    else {
+      newTimestamp = 2 * currentTimestamp;
+    }
 
+    return newTimestamp;
   }
 
 
