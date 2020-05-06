@@ -1,5 +1,6 @@
 /* eslint-disable guard-for-in */
 /* eslint no-console: off */
+const path = require(`path`);
 const { Group } = require(`../Models/Group`);
 const { User } = require(`../Models/User`);
 const { Section } = require(`../Models/Section`);
@@ -82,7 +83,15 @@ class CreateController {
   // Not done yet!
   async createAnswers(req, res) {
     const QR = new QuizResult(req);
-    QR.insertToDatabase();
+    let idAttempt;
+    try {
+      idAttempt = await QR.insertToDatabase();
+      res.send({ newURL: `/view/evaluationResult/${QR.idEvaluation}/${idAttempt}` });
+    }
+    catch (error) {
+      console.log(error);
+      res.redirect(503, `/dbdown`);
+    }
   }
 }
 

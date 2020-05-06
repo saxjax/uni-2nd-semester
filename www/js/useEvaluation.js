@@ -34,13 +34,13 @@ async function submitAnswers() {
 
   const score = calculateScore(questionsArray);
   const body = { questionsArray, score, idEvaluation };
-  await fetch(`/post/answers/${idEvaluation}`, {
+  const response = await fetch(`/post/answers/${idEvaluation}`, {
     method: `POST`,
     body: JSON.stringify(body),
     headers: { "Content-Type": `application/json` },
   });
-
-  // window.location.replace(`/view/evaluations/recipient`);
+  const responseJSON = await response.json();
+  window.location.replace(responseJSON.newURL);
 }
 
 
