@@ -40,13 +40,14 @@ class QuizResult extends Model {
    * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
-    const string = await this.makeInsertString();
+    const uuid = await this.getUuid();
+    const string = await this.makeInsertString(uuid);
     this.query(`CUSTOM`, `INSERT INTO quiz_result (ID_USER, ID_EVALUATION, ID_QUIZ_QUESTION, ID_ATTEMPT, POINT, TOTAL, RESULT) VALUES ${string}`);
+    return uuid[0].UUID;
   }
 
-  async makeInsertString() {
+  async makeInsertString(uuid) {
     let string = ``;
-    const uuid = await this.getUuid();
     this.questionArray.forEach((question) => {
       string += `("${this.idUser}", "${this.idEvaluation}", "${question.idQuestion}", "${uuid[0].UUID}", "${this.points}", "${this.total}", "${question.correctAnswerGiven}"),`;
     });
