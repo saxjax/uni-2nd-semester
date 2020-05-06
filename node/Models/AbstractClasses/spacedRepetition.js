@@ -9,6 +9,12 @@ class SpacedRepetition {
     this.comprehentionRatio = 3; // hvert forkert svar kræver mindst 3 rigtige svar for at blive registreret som forstået
   }
 
+  // const spacedRep = new SpacedRepetition();
+  // evaluationTask = spacedRep.calculateNextRepetitionTimeStampForEvaluation(evaluationTask);
+  // evaluationLog.push(evaluationTask);
+
+  // spacedRep.populateNextRepetitionTask(evaluationLog);
+  // spacedRep.NextRepetitiontask[];
 
   RunRepetition() {
 
@@ -17,9 +23,10 @@ class SpacedRepetition {
   // Input: evaluationTask med følgende properties: correctness, antal tidligere repetitions, wrong answers count, right answers count //
   // Output: //
 
-  calculateNextRepetitionForEvaluation(evaluationTask) {
+  calculateNextRepetitionTimeStampForEvaluation(evaluationTask) {
     let rightWrongRatio = 0;
     let setMinTimestamp = true;
+    const tempEvalTask = evaluationTask;
 
     if (evaluationTask.correctness === true) { // er svaret på spørgsmålet korrekt?
       if (evaluationTask.rep > 0) { // er evalueringsopgaven taget før?
@@ -44,22 +51,22 @@ class SpacedRepetition {
       setMinTimestamp = true;
     }
 
-    evaluationTask.rep++;
-    evaluationTask.timestamp = this.calculateTimestamp(setMinTimestamp, evaluationTask.timestamp); // beregn tidsstempel
+    tempEvalTask.rep++;
+    tempEvalTask.nextRepTimeStamp = this.calculateTimestamp(setMinTimestamp, evaluationTask.rightAnswersCount); // beregn tidsstempel
 
-    return evaluationTask;
+    return tempEvalTask;
   }
 
-  calculateTimestamp(setMinTimestamp = true, currentTimestamp) {
-    let newTimestamp;
+  calculateTimeStamp(setMinTimestamp = true, rightAnswersCount) {
+    let newRepTimeStamp;
     if (setMinTimestamp === true) {
-      newTimestamp = Date.now() + this.minTimestamp;
+      newRepTimeStamp = Date.now() + this.minTimestamp;
     }
     else {
-      newTimestamp = 2 * currentTimestamp;
+      newRepTimeStamp = (rightAnswersCount * rightAnswersCount) * this.minTimestamp;
     }
 
-    return newTimestamp;
+    return newRepTimeStamp;
   }
 
 
@@ -67,9 +74,9 @@ class SpacedRepetition {
   * NextRepetitiontask
   */
   populateNextRepetitionTask(evaluationLog) {
-    forEach((evaluation) => {
-      if (EvaluationIsDue()) {
-        nextRepetitionTask.push(evaluation);
+    evaluationLog.forEach((evaluationTask) => {
+      if (evaluationTask.nextRepTimeStamp <= Date.now()) {
+        this.nextRepetitionTask.push(evaluationTask);
       }
     });
   }
