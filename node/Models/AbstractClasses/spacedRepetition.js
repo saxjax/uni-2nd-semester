@@ -5,7 +5,8 @@
 class SpacedRepetition {
   constructor() {
     this.nextRepetitionTask = [];
-    this.minTimestamp = 24;// 24 timer
+    this.minTimestamp = 24; // 24 timer
+    this.comprehentionRatio = 3; // hvert forkert svar kræver mindst 3 rigtige svar for at blive registreret som forstået
   }
 
 
@@ -13,36 +14,43 @@ class SpacedRepetition {
 
   }
 
+  // Input: evaluationTask med følgende properties: correctness, antal tidligere repetitions, wrong answers count, right answers count //
+  // Output: //
+
   calculateNextRepetitionForEvaluation(evaluationTask) {
     let rightWrongRatio = 0;
-    
-    if (evaluationTask.correctness === true) { // er svaret korrekt?
+    let setMinTimestamp = true;
+
+    if (evaluationTask.correctness === true) { // er svaret på spørgsmålet korrekt?
       if (evaluationTask.rep > 0) { // er evalueringsopgaven taget før?
-        if (evaluationTask.history.wrong > 0) { // er evalueringsopgaven svaret forkert før?
-          const rightWrongRatio = calcRightWrongRatio(evaluationTask.history); // udregn rigtig-forkert ratio
-          if (rightWrongRatio >= 3) { // er ratioen større end lig med tre?
-            this.calculateTimestamp(evaluationTask); // beregn tidsstempel
+        if (evaluationTask.wrongAnswersCount > 0) { // er evalueringsopgaven svaret forkert før?
+          rightWrongRatio = (evaluationTask.wrongAnswersCount / evaluationTask.rightAnswersCount); // udregn rigtig-forkert ratio
+          if (rightWrongRatio >= this.comprehentionRatio) { // er comprehention ratioen større end lig med tre?
+            setMinTimestamp = true;
           }
           else { 
-            this.calculateTimestamp(evaluationTask);
+            setMinTimestamp = false;
           }
         }
         else { // hvis den IKKE er blevet svaret forkert før, beregn da korrekt tidsstempel
-          evaluationTask.history.correctness === true;
-          this.calculateTimestamp(evaluationTask);
+          setMinTimestamp = false;
         }
-      } // er evalueringen IKKE blevet taget før, tæl da evalueringen op som være repeteret og beregn tidsstempel
+      } // er evalueringen IKKE blevet taget før beregn tidsstempel
       else {
-        evaluationTask.rep++;
-        this.calculateTimestamp(evaluationTask);
+        setMinTimestamp = false;
       }
     } // hvis der svares forkert på evalueringen beregnes det korrekte tidsstempel 
     else {
-      this.calculateTimestamp(evaluationTask);
+      setMinTimestamp = true;
     }
+
+    evaluationTask.rep++;
+    evaluationTask.timestamp = this.calculateTimestamp(setMinTimestamp, evaluationTask.timestamp); // beregn tidsstempel
+
+    return evaluationTask;
   }
 
-  calculateTimestamp({ setMinTimestamp = true, currentTimestamp } = {}) {
+  calculateTimestamp(setMinTimestamp = true, currentTimestamp) {
     let newTimestamp;
     if (setMinTimestamp === true) {
       newTimestamp = Date.now() + this.minTimestamp;
