@@ -7,3 +7,11 @@
     display: inline;
     margin-right: 40px;
 }
+
+.true {
+    background-color: green;
+}
+
+.false {
+    background-color: red;
+}
