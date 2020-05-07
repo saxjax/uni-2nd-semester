@@ -1,4 +1,5 @@
 .questionDiv{
+    padding: 2px;
     border: 2px solid grey;
     margin: 2px;
 }
@@ -9,11 +10,11 @@
 }
 
 .true {
-    background-color: green;
+    background-color: rgb(28, 97, 28);
 }
 
 .false {
-    background-color: red;
+    background-color: rgba(255, 0, 0, 0.541);
 }
 
 .userAnswer {
@@ -22,4 +23,4 @@
 
 .correctAnswer {
     color: greenyellow;
-}
+}   
