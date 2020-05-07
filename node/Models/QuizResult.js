@@ -45,14 +45,14 @@ class QuizResult extends Model {
   async insertToDatabase() {
     const uuid = await this.getUuid();
     const string = await this.makeInsertString(uuid);
-    this.query(`CUSTOM`, `INSERT INTO quiz_result (ID_USER, ID_EVALUATION, ID_QUIZ_QUESTION, ID_ATTEMPT, POINT, TOTAL, RESULT) VALUES ${string}`);
+    this.query(`CUSTOM`, `INSERT INTO quiz_result (ID_USER, ID_EVALUATION, ID_QUIZ_QUESTION, ID_ATTEMPT, POINT, TOTAL, RESULT, USER_ANSWER) VALUES ${string}`);
     return uuid[0].UUID;
   }
 
   async makeInsertString(uuid) {
     let string = ``;
     this.questionArray.forEach((question) => {
-      string += `("${this.idUser}", "${this.idEvaluation}", "${question.idQuestion}", "${uuid[0].UUID}", "${this.points}", "${this.total}", "${question.correctAnswerGiven}"),`;
+      string += `("${this.idUser}", "${this.idEvaluation}", "${question.idQuestion}", "${uuid[0].UUID}", "${this.points}", "${this.total}", "${question.correctAnswerGiven}", "${question.userAnswers}"),`;
     });
     return string.slice(0, -1);
   }

@@ -11,7 +11,6 @@
   <body>
     <%- include('meta/navbar') %> 
     <script> const data = <%- JSON.stringify(data) %> </script>
-    <% console.log(data) %>
 
     <h1>Result for QUIZ!</h1>
     <% let questionCount = 1; %>
@@ -29,5 +28,10 @@
     <%});%>
             
     <%- include('meta/footer') %> 
+
+    <button>
+      <a href="/">Go to evaluations page</a>
+    </button>
+
   </body>
 </html>

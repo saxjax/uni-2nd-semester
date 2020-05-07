@@ -55,6 +55,7 @@ class ParseSql {
     this.QRTotalCol = `TOTAL`;
     this.QRResultCol = `RESULT`;
     this.QRCreatedDateCol = `CREATED_DATE`;
+    this.QRUserAnswerCol  = `USER_ANSWER`;
     /* Flashcard Kolonner */
     /* FLASHCARD IKKE IMPLEMENTERET!
     this.FConceptCol = `CONCEPT`;
@@ -239,6 +240,7 @@ class ParseSql {
       total: `${data[this.QRTotalCol]}`,
       result: `${data[this.QRResultCol]}`,
       createdData: `${data[this.QRCreatedDateCol]}`,
+      userAnswers: `${data[this.QRUserAnswerCol]}`,
     };
   }
 
