@@ -84,8 +84,10 @@ class CreateController {
   async createAnswers(req, res) {
     const QR = new QuizResult(req);
     let idAttempt;
+    let quizResultData;
     try {
       idAttempt = await QR.insertToDatabase();
+      quizResultData = await QR.getHistoricQuizResultData(idAttempt, req.body.questionsArray);
       res.send({ newURL: `/view/evaluationResult/${QR.idEvaluation}/${idAttempt}` });
     }
     catch (error) {

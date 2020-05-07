@@ -75,6 +75,55 @@ class QuizResult extends Model {
     this.table = trueTable;
     return queryResult;
   }
+
+  /* Formål: At kunne hente historisk quiz data ud fra et forsøgsID.
+   * Input : forsøgsID og QuestionData
+   * Output: Object med historisk quiz data for de omhandlede input quizzer.
+   */
+  async getHistoricQuizResultData(idAttempt, reqBodyQuestionArray) {
+    let resultData;
+    let recentAttempt;
+    let stringforSQL = ``;
+
+    // Lav en string til SQL så vi kan sortere udelukkende på de pågældende quizzer
+    const questionsArray = reqBodyQuestionArray.map((question) => question.idQuestion);
+    questionsArray.forEach((id) => {
+      stringforSQL += `"${id}",`;
+    });
+
+    stringforSQL = stringforSQL.slice(0, -1);
+
+    // Hent historisk data omkring quizzerne for den pågældende bruger
+    try {
+      resultData = await this.query(`CUSTOM`, `SELECT quiz_result.ID_EVALUATION,
+                                        quiz_result.ID_QUIZ_QUESTION,
+                                        quiz_result.ID_USER,
+                                        quiz_result.RESULT as RECENT_RESULT,
+                                        max(CREATED_DATE)  as RECENT_ATTEMPT_DATE,
+                                        "-----"  as NEXT_REPITITION,
+                                        COUNT(quiz_result.RESULT) as TOTAL,
+                                        sum(case when quiz_result.RESULT = 'false' then 1 else 0 end) AS FAILED_ATTEMPTS,
+                                        sum(case when quiz_result.RESULT = 'true' then 1 else 0 end) AS SUCESS_ATTEMPTS
+                                        FROM p2.quiz_result
+                                        WHERE ID_QUIZ_QUESTION in (${stringforSQL})
+                                        GROUP BY ID_USER,ID_QUIZ_QUESTION;`);
+    }
+    catch (error) {
+      console.log(error);
+    }
+
+    // Hent data omkring de sidste quiz forsøg for den pågældende bruger.
+    try {
+      recentAttempt = await this.query(`CUSTOM`, `SELECT ID_QUIZ_QUESTION,RESULT,CREATED_DATE 
+                                         FROM quiz_result WHERE ID_ATTEMPT = "${idAttempt}"
+                                         ORDER BY CREATED_DATE DESC`);
+    }
+    catch (error) {
+      console.log(error);
+    }
+    const result = { resultData, recentAttempt };
+    return result;
+  }
 }
 
 module.exports = {
