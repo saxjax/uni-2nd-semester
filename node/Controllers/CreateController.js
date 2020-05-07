@@ -86,6 +86,9 @@ class CreateController {
     let idAttempt;
     try {
       idAttempt = await QR.insertToDatabase();
+
+      QR.nextRepetition = QR.setNextRepTimestamp(QR);
+
       res.send({ newURL: `/view/evaluationResult/${QR.idEvaluation}/${idAttempt}` });
     }
     catch (error) {

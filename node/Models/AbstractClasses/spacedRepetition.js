@@ -35,7 +35,7 @@ class SpacedRepetition {
           if (rightWrongRatio >= this.comprehentionRatio) { // er comprehention ratioen større end lig med tre?
             setMinTimestamp = true;
           }
-          else { 
+          else {
             setMinTimestamp = false;
           }
         }
@@ -46,7 +46,7 @@ class SpacedRepetition {
       else {
         setMinTimestamp = false;
       }
-    } // hvis der svares forkert på evalueringen beregnes det korrekte tidsstempel 
+    } // hvis der svares forkert på evalueringen beregnes det korrekte tidsstempel
     else {
       setMinTimestamp = true;
     }
