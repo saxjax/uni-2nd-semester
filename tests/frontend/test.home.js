@@ -27,18 +27,18 @@ let actual = true;
 test(`Test af home.ejs i www/views`, (assert) => {
   assert.equal(actual, expected, `Skulle gerne være oprettet.`);
 
-  expected = `Angiv Navn`;
-  actual = document.querySelectorAll(`title`)[0].innerHTML;
-
-  assert.notEqual(actual, expected,
-    `{Forventet: ${expected} Reel: ${actual}} Dokumentet skal have en titel`);
-
   /* 1.1 */
-  expected = `forventet klasse`;
-  actual = document.querySelectorAll(`a`)[0].href;
+  expected = ` GroupHub `;
+  actual = document.getElementsByTagName(`title`)[0].innerHTML;
 
   assert.equal(actual, expected,
-    `{Forventet: ${expected} Reel: ${actual}} Dokumentet skal X`);
+    `(1.1) {Forventet: ${expected} Reel: ${actual}} Dokumentet skal have titlen ' GroupHub '`);
+
+  /* 1.2 */
+  actual = document.getElementsByClassName(`footer`)[0].innerHTML;
+  expected = `\n      &lt;%- include(\'meta/footer\') %&gt;\n    `; // Footeren bliver ikke renderet
+  assert.equal(actual, expected,
+    `(1.2) Dokumentet skal have en footer.`);
 
   assert.end();
 });
