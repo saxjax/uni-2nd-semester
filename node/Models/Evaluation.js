@@ -88,6 +88,7 @@ class Evaluation extends Model {
     return this.idEvaluation;
   }
 
+  // FIXME:denne funktion findes allerede getAllElementsOftype(`quiz_question`)
   async getAllQuizQuestions() {
     this.table = `quiz_question`;
     let queryResult;

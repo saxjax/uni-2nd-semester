@@ -1,8 +1,8 @@
 /* eslint no-console: off */
 
-const { Model } = require(`./AbstractClasses/Model`);
+const { SpacedRepetition } = require(`./spacedRepetition`);
 
-class QuizResult extends Model {
+class QuizResult extends SpacedRepetition {
   constructor(req) {
     super(req);
     this.elementType = `quiz_result`;
