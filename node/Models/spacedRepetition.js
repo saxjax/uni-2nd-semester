@@ -6,9 +6,9 @@ const { Model } = require(`./AbstractClasses/Model`);
 
 
 //extend Model
-class SpacedRepetition  {
+class SpacedRepetition extends Model {
   constructor() {
-    // super(req)
+    super()
     this.minTimestamp = 20; // 24 timer
     this.comprehentionRatio = 3; // hvert forkert svar kræver mindst 3 rigtige svar for at blive registreret som forstået
   }
