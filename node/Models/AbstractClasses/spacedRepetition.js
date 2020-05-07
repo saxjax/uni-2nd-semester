@@ -26,7 +26,7 @@ class SpacedRepetition {
   calculateNextRepetitionTimeStampForEvaluation(evaluationTask) {
     let rightWrongRatio = 0;
     let setMinTimestamp = true;
-    const tempEvalTask = evaluationTask;
+    const tempEvalTask = evaluationTask; // tempEvalTask bruges så vi kan skrive til objektet evaluationTask, men vi behøver ikke bruge tempEvalTask når vi blot læser på evaluationTask i funktionen
 
     if (evaluationTask.correctness === true) { // er svaret på spørgsmålet korrekt?
       if (evaluationTask.rep > 0) { // er evalueringsopgaven taget før?
