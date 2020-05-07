@@ -719,7 +719,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   resetParsedData();
 
   const QQ = new QuizQuestion(req);
-  actualObject = await QQ.query(`HEAD`, `COLUMN_NAME`);[{COLUMN_NAME: "ELEMENT_TYPE"}, {COLUMN_NAME: `QUESTION`}]
+  actualObject = await QQ.query(`HEAD`, `COLUMN_NAME`);
 
   expected = Object.keys(p.parseQuizQuestion({})).length;
   actual = Object.keys(actualObject).length;

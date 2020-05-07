@@ -48,7 +48,6 @@ class ParseSql {
     this.QQQuestionCol = `QUESTION`;
     this.QQAnswersCol = `ANSWERS`;
     this.QQCorrectnessCol = `CORRECT_ANSWERS`;
-    this.QQKeywordCol = `KEYWORD`;
     /* QuizResult Kolonner */
     this.QRAttemptCol = `ID_ATTEMPT`;
     this.QRPointCol = `POINT`;
@@ -217,7 +216,6 @@ class ParseSql {
       question: `${data[this.QQQuestionCol]}`,
       answers: `${data[this.QQAnswersCol]}`,
       correctness: `${data[this.QQCorrectnessCol]}`,
-      keyword: `${data[this.QQKeywordCol]}`,
     };
   }
 
