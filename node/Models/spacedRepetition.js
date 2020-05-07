@@ -2,6 +2,10 @@
 
 /* Spaced repetition er en funktion som stiller funktioner til rådighed for at udføre spaced repetition og active recall */
 
+
+
+
+
 class SpacedRepetition {
   constructor() {
     this.nextRepetitionTask = [];
@@ -20,13 +24,22 @@ class SpacedRepetition {
 
   }
 
+  setNextRepTimestampForEvaluations(evaluationLog){
+    let tempLog = evaluationLog
+    tempLog.forEach((eval)=>{
+      eval.nextRepTimeStamp = this.calculateNextRepetitionTimeStampForEvaluation(eval).nextRepTimeStamp;
+    })
+    return tempLog
+  }
+
   // Input: evaluationTask med følgende properties: correctness, antal tidligere repetitions, wrong answers count, right answers count //
   // Output: //
 
   calculateNextRepetitionTimeStampForEvaluation(evaluationTask) {
+    const tempEvalTask = evaluationTask;//kopierer input parameteren fordi vi vil returnere en muteret version.
     let rightWrongRatio = 0;
     let setMinTimestamp = true;
-    const tempEvalTask = evaluationTask;
+   
 
     if (evaluationTask.correctness === true) { // er svaret på spørgsmålet korrekt?
       if (evaluationTask.rep > 0) { // er evalueringsopgaven taget før?
@@ -51,19 +64,21 @@ class SpacedRepetition {
       setMinTimestamp = true;
     }
 
-    tempEvalTask.rep++;
-    tempEvalTask.nextRepTimeStamp = this.calculateTimestamp(setMinTimestamp, evaluationTask.rightAnswersCount); // beregn tidsstempel
+    // tempEvalTask.rep++;
+    tempEvalTask.nextRepTimeStamp = this.calculateTimeStamp(setMinTimestamp, evaluationTask.rightAnswersCount); // beregn tidsstempel
 
     return tempEvalTask;
   }
 
+
   calculateTimeStamp(setMinTimestamp = true, rightAnswersCount) {
-    let newRepTimeStamp=Date();
+    let newRepTimeStamp= new Date();
+    
     if (setMinTimestamp === true) {
-      newRepTimeStamp = Date.now() + this.minTimestamp;
+      newRepTimeStamp.setHours(newRepTimeStamp.getHours()+ this.minTimestamp);
     }
     else {
-      newRepTimeStamp = (rightAnswersCount * rightAnswersCount) * this.minTimestamp;
+      newRepTimeStamp.setHours(newRepTimeStamp.getHours()+ ((rightAnswersCount * rightAnswersCount) * this.minTimestamp)  ) ;
     }
 
     return newRepTimeStamp;
@@ -86,3 +101,36 @@ class SpacedRepetition {
     Date.now();
   }
 }
+
+module.exports = {
+  SpacedRepetition,
+};
+
+
+const spacedR = new SpacedRepetition();
+let evalLog = []
+let evalTask = {
+  wrongAnswersCount: 2, rightAnswersCount: 2, correctness: true, rep: 4, nextRepTimeStamp: 0,
+};
+
+evalTask = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
+evalLog.push(evalTask)
+console.log(evalTask);
+
+evalTask.rightAnswersCount ++
+evalTask = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
+evalLog.push(evalTask)
+console.log(evalTask);
+
+evalTask.correctness = false
+evalTask.wrongAnswersCount++
+evalTask = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
+evalLog.push(evalTask)
+console.log(evalTask);
+
+evalTask.rightAnswersCount ++
+evalTask.correctness = true
+evalTask = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
+console.log(evalTask);
+
+
