@@ -125,6 +125,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   resetParsedData();
   inputData = {
     ID_QUIZ_QUESTION: `TestDataDerSkalParses`,
+    ANSWERS: `ans1;ans2`,
   };
 
   expected = `TestDataDerSkalParses`;
@@ -285,6 +286,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   inputData = [{
     ID_QUIZ_QUESTION: `TestDataDerSkalParses`,
     ELEMENT_TYPE: `quiz_question`,
+    ANSWERS: `ans1;ans2`,
   }];
   expected = `TestDataDerSkalParses`;
 
@@ -721,7 +723,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   const QQ = new QuizQuestion(req);
   actualObject = await QQ.query(`HEAD`, `COLUMN_NAME`);
 
-  expected = Object.keys(p.parseQuizQuestion({})).length;
+  expected = Object.keys(p.parseQuizQuestion({ ANSWERS: `ans1;ans2` })).length;
   actual = Object.keys(actualObject).length;
   assert.equal(actual, expected,
     `(4.6.1){ParseSQL: ${expected} SQL-databasen: ${actual}} Parserens forventede QuizQuestion attributter skal have lige så mange attributter som MySQL Databasens section kolonnenavn`);
@@ -761,7 +763,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
     `(4.6.8) Parserens forventede keywords kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question kolonnenavn`);
   count++;
 
-  expected = Object.keys(p.parseQuizQuestion({})).length;
+  expected = Object.keys(p.parseQuizQuestion({ ANSWERS: `ans1;ans2` })).length;
   actual = count;
   assert.equal(actual, expected,
     `(4.6.9){Keys i ParseSQL: ${expected} Antal keys testet: ${actual}} Mængden af tests af Quiz Question attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
