@@ -4,12 +4,11 @@
 const { Model } = require(`./AbstractClasses/Model`);
 
 
-
-//extend Model
+// extend Model
 class SpacedRepetition extends Model {
   constructor() {
-    super()
-    this.minTimestamp = 20; // 24 timer
+    super();
+    this.minTimestamp = 24; // 24 timer
     this.comprehentionRatio = 3; // hvert forkert svar kræver mindst 3 rigtige svar for at blive registreret som forstået
   }
 
@@ -24,36 +23,37 @@ class SpacedRepetition extends Model {
 
   }
 
-//spacedrepetition algoritmen udgøres af funktionerne : calculateNextRepetitionTimeStampForEvaluation() og calculateTimeStamp() 
-  /* Formål: Afgør Hvilket timestamp der skal knyttes til et evaluation result  
-  // Input: et evaluationResult med følgende properties: recentResult (true/false), antal tidligere repetitions, failedAttempts, successAttempts //
-  // Output: //
-*/
-  calculateNextRepetitionTimeStampForEvaluation(evaluationResult) {
-    let newRepTimestamp 
-    let rightWrongRatio = 0;
-    let setMinTimestamp = true;
-   
+  // spacedrepetition algoritmen udgøres af funktionerne : calculateNextRepetitionTimeStampForEvaluation() og calculateTimeStamp() //
 
-    if (evaluationResult.recentResult === true) { // er svaret på spørgsmålet korrekt?
-      if (evaluationResult.repetitions > 0) { // er evalueringsopgaven taget før?
+  /*
+   * Formål: Afgør Hvilket timestamp der skal knyttes til et evaluation result
+   * Input: et evaluationResult med følgende properties: recentResult (true/false), antal tidligere repetitions, failedAttempts, successAttempts
+   * Output:
+  */
+  calculateNextRepetitionTimeStampForEvaluation(evaluationResult) {
+    let newRepTimestamp = 0;
+    let rightWrongRatio = 0;
+    let setMinTimestamp = true; // hvis setMinTimestamp er sat til TRUE, betyder det, at brugeren skal have evalueringsopgaven indenfor de næste 24 timer, hvis FALSE skal evalueringsopgaven repeteres senere.
+
+    if (evaluationResult.recentResult === true) { // er der blevet svaret korrekt på spørgsmålet?
+      if (evaluationResult.repetitions > 0) { // er evalueringsopgaven blevet taget før?
         if (evaluationResult.failedAttempts > 0) { // er evalueringsopgaven svaret forkert før?
           rightWrongRatio = (evaluationResult.successAttempts / evaluationResult.failedAttempts); // udregn rigtig-forkert ratio
-          if (rightWrongRatio < this.comprehentionRatio) { // er comprehention ratioen større end lig med tre?
-            setMinTimestamp = true;
+          if (rightWrongRatio < this.comprehentionRatio) { // er rigtig-forkert ratioen MINDRE end den nødvendige forståelses-ratio?
+            setMinTimestamp = true; // sæt da minimum timestamp til true
           }
-          else { 
+          else {
             setMinTimestamp = false;
           }
         }
-        else { // hvis den IKKE er blevet svaret forkert før, beregn da korrekt tidsstempel
+        else { // hvis den IKKE er blevet svaret forkert på før OG du svarer rigtigt, sæt minimum timestamp til false
           setMinTimestamp = false;
         }
-      } // er evalueringen IKKE blevet taget før beregn tidsstempel
+      } // er evalueringen IKKE blevet taget før OG du svarer rigtigt, sæt minimum timestamp til false
       else {
         setMinTimestamp = false;
       }
-    } // hvis der svares forkert på evalueringen beregnes det korrekte tidsstempel 
+    } // hvis der svares forkert på evalueringen sættes setMinTimestamp til true
     else {
       setMinTimestamp = true;
     }
@@ -64,24 +64,23 @@ class SpacedRepetition extends Model {
     return newRepTimestamp;
   }
 
-/*
-  * Formål: Beregn timestamp for næste spaced-repetition 
+  /*
+  * Formål: Beregn timestamp for næste spaced-repetition
   * Input : setMinimumTimestamp = true/false, successAttempts=(antal gange spørgsmålet er besvaret korrekt)
   * Output: Dato
   */
   calculateTimeStamp(setMinTimestamp = true, successAttempts) {
-    let newRepTimeStamp= new Date();
-    
-    if (setMinTimestamp === true) {//hvis der er svaret forkert eller comprehentionRatio ikke er opfyldt
-      newRepTimeStamp.setHours(newRepTimeStamp.getHours()+ 0);
+    const newRepTimeStamp = new Date();
+
+    if (setMinTimestamp === true) { // hvis der er svaret forkert eller comprehentionRatio ikke er opfyldt
+      newRepTimeStamp.setHours(newRepTimeStamp.getHours() + 0);
     }
     else {
-      newRepTimeStamp.setHours(newRepTimeStamp.getHours()+ ((successAttempts * successAttempts) * this.minTimestamp)  ) ;
+      newRepTimeStamp.setHours(newRepTimeStamp.getHours() + ((successAttempts * successAttempts) * this.minTimestamp));
     }
 
     return newRepTimeStamp;
   }
-
 
   /*
   * Formål: opret et array med alle de evaluerings objekter som skal afvikles NU
@@ -89,7 +88,7 @@ class SpacedRepetition extends Model {
   * Output: array med der reults som skal afvikles nu.
   */
   selectEvaluationsForRepetition(evaluationLog) {
-    let nextRepetitionTask =[]
+    const nextRepetitionTask = [];
     evaluationLog.forEach((evaluationResult) => {
       if (evaluationResult.nextRepTimeStamp <= Date.now()) {
         nextRepetitionTask.push(evaluationResult);
@@ -97,7 +96,6 @@ class SpacedRepetition extends Model {
     });
     return nextRepetitionTask;
   }
-
 }
 
 module.exports = {
@@ -105,52 +103,37 @@ module.exports = {
 };
 
 
-
-
-
-
-
-
-// TEST
-
+// TEST AF FUNKTIONALITETER
 const req = {};
 const spacedR = new SpacedRepetition(req);
-let evalLog = []
-let evalTask = {
-  failedAttempts: 1, successAttempts:1, recentResult: true, repetitions: 3, 
+const evalLog = [];
+const evalTask = {
+  failedAttempts: 1, successAttempts: 1, recentResult: true, repetitions: 3,
 };
 
-
-
-evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
+evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask);
 // evalLog.push(evalTask)
-console.log(`#1:`+evalTask.nextRepTimeStamp);
-
-
-
+console.log(`#1:${evalTask.nextRepTimeStamp}`);
 
 for (let index = 0; index < 3; index++) {
-
-evalTask.successAttempts ++
-// evalTask.repetitions++
-evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
-// console.log(`#2:`+evalTask.nextRepTimeStamp);
-const copy = Object.assign({}, evalTask);
-evalLog.push(copy) 
+  evalTask.successAttempts++;
+  // evalTask.repetitions++
+  evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask);
+  // console.log(`#2:`+evalTask.nextRepTimeStamp);
+  const copy = { ...evalTask };
+  evalLog.push(copy);
 // console.log(copy)
 }
 for (let index = 0; index < 3; index++) {
-
-  evalTask.failedAttempts ++
-  evalTask.recentResult = false
+  evalTask.failedAttempts++;
+  evalTask.recentResult = false;
   // evalTask.repetitions++
-  evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
+  evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask);
   // console.log(`#2:`+evalTask.nextRepTimeStamp);
-  const copy = Object.assign({}, evalTask);
-  evalLog.push(copy) 
+  const copy = { ...evalTask };
+  evalLog.push(copy);
   // console.log(copy)
-  }
-
+}
 
 // evalTask.successAttempts ++
 // evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
@@ -159,7 +142,6 @@ for (let index = 0; index < 3; index++) {
 // evalTask.successAttempts ++
 // evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
 // console.log(`#4:`+ evalTask.nextRepTimeStamp);
-
 
 
 // evalTask.recentResult = false
@@ -171,7 +153,6 @@ for (let index = 0; index < 3; index++) {
 // evalTask.recentResult = true
 // evalTask = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
 // console.log(evalTask);
-console.log(spacedR.selectEvaluationsForRepetition(evalLog))
-console.log("disse ligger alle i evalLog")
+console.log(spacedR.selectEvaluationsForRepetition(evalLog));
+console.log(`disse ligger alle i evalLog`);
 console.log(evalLog);
-
