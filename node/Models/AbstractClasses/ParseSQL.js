@@ -215,7 +215,7 @@ class ParseSql {
       idEvaluation: data[this.evaluationCol],
       // data
       question: data[this.QQQuestionCol],
-      answers: data[this.QQAnswersCol],
+      answers: data[this.QQAnswersCol].split(`;`),
       correctness: data[this.QQCorrectnessCol],
       keywords: data[this.QQKeywordsCol],
     };
