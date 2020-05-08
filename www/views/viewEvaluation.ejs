@@ -11,29 +11,24 @@
   <body>
     <%- include('meta/navbar') %> 
     <script> const data = <%- JSON.stringify(data) %> </script>
-
     <div id="allQuestions">
       <% let questionCount = 1; %>
       <% data.questions.forEach((question, i) => { %>
         <div class="questionDiv" idQuestion="<%= data.questions[i].idQuizQuestion %>">
           <h3 class="questionText"> <%= question.question %> </h3>
-          <label for="">Answers: </label>
-          <% let answerCount = 1 %>
-          <% question.answers.split(`;`).forEach(answer => { %>
-            <input id = <%= `question${questionCount}answer${answerCount}` %> class ="correctAnswerCheckbox" type="checkbox">
-            <p class = "answer" >  <%= answer %> </p>
-            <% answerCount++ %>
+          <div>
+            <% let answerCount = 1 %>
+            <% question.answers.forEach(answer => { %>
+              <input id = <%= `question${questionCount}answer${answerCount}` %> class ="correctAnswerCheckbox" type="checkbox">
+              <p class = "answer" >  <%= answer %> </p>
+              <% answerCount++ %>
             <% }); %>
-            
+          </div>
         </div>
-            <% questionCount++ %>
-            
-            <% }); %>
-            
+        <% questionCount++ %>
+      <% }); %>
     </div>
     <button id="submitButton">Submit!</button>
-
-            
-            <%- include('meta/footer') %> 
+    <%- include('meta/footer') %> 
   </body>
 </html>

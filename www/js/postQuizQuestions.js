@@ -21,12 +21,12 @@ class Question {
    * Output: Brugerens svar, som vil være semikolonseparerede i en tekststreng
    */
   getAnswers(questionContainer) {
-    let answers = ``;
+    const answers = [];
     const answerInputs = questionContainer.getElementsByClassName(`answerInput`);
     for (let i = 0; i < answerInputs.length; i++) {
-      answers = `${answers + answerInputs[i].value};`;
+      answers.push(answerInputs[i].value);
     }
-    return answers.slice(0, -1); // Sletter det sidste semikolon
+    return answers;
   }
 
   /* Formål: Få fat i de boolske værdier, som er i svarinputfelterne korresponderende checkbox, semikolonseparerede dem og returnere dem som en streng
@@ -34,12 +34,12 @@ class Question {
    * Output: En semikolonsepareret tekststreng, som indeholder boolske værdier, som angiver, hvorvidt det korresponderende svar er rigtigt eller forkert
    */
   getCorrectAnswers(questionContainer) {
-    let correctAnswers = ``;
+    const correctAnswers = [];
     const correctAnswerCheckboxes = questionContainer.getElementsByClassName(`correctAnswerCheckbox`);
     for (let i = 0; i < correctAnswerCheckboxes.length; i++) {
-      correctAnswers = `${correctAnswers + correctAnswerCheckboxes[i].checked};`;
+      correctAnswers.push(correctAnswerCheckboxes[i].checked);
     }
-    return correctAnswers.slice(0, -1); // Sletter det sidste semikolon
+    return correctAnswers;
   }
 }
 

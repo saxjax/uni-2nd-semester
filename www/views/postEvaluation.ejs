@@ -4,6 +4,7 @@
     <%- include('meta/header') %> 
     <title>GroupHub | New evaluation</title>
     <link rel="stylesheet" href="/css/design.css">
+    <script src="/js/insertHTMLElements.js"></script>
     <script defer src="/js/postEvaluation.js"></script>
   </head>
   <body>
@@ -11,7 +12,7 @@
     <div class="container" id="content">
       <h1>Make a new evaluation</h1>
       <!-- Posts via function when submitbutton is clicked -->
-      <div id="evaluationForm" onsubmit="return false">
+      <form id="evaluationForm" onsubmit="postEvaluation()">
         <label for="evaluationTitle">Evaluation title:</label>
         <input type="text" id="evaluationTitle" name="evaluationTitle" placeholder="Title of evaluation" required><br>
         <!-- Her skal der vælges en section ud fra en "drop down menu" eller lign.
@@ -22,9 +23,9 @@
             <option value="<%= section.idSection %>"><%= section.title %></option>
           <% }); %>
         </select><br>
-        <button id="addKeywordButton">Add a keyword</button>
+        <button id="addKeywordButton">Add another keyword</button>
         <input id="submitButton" type="submit">
-      </div>
+      </form>
     </div>
     <%- include('meta/footer') %> 
   </body>
