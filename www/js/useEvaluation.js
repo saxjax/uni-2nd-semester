@@ -3,7 +3,7 @@ class Question {
     this.idQuestion         = questionContainer.getAttribute(`idQuestion`);
     this.questionText       = questionContainer.getElementsByClassName(`questionText`)[0].innerHTML;
     this.userAnswers        = this.getUserAnswers(questionContainer);
-    this.correctAnswers     = data.questions[index].correctAnswers;
+    this.correctAnswers     = data.questions[index].correctness;
     this.correctAnswerGiven = false;
   }
 
@@ -17,6 +17,7 @@ class Question {
   }
 }
 
+console.log(data);
 
 const submitButton = document.querySelector(`#submitButton`);
 const { idEvaluation } = data.evaluation[0];

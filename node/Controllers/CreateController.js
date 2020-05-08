@@ -80,13 +80,18 @@ class CreateController {
     }
   }
 
-  // Not done yet!
+  /* Formål: At gemme en brugers svar, når brugeren har afsluttet en evaluering
+   * Input : req med svar fra klienten. res som bruges til at sende en respons til klienten
+   * Output: Intet - men brugeren viderediriges med res til en ny URL
+   */
   async createAnswers(req, res) {
     const QR = new QuizResult(req);
     let idAttempt;
+    let quizResultData;
     try {
       idAttempt = await QR.insertToDatabase();
-      console.log(QR);
+      quizResultData = await QR.getHistoricQuizResultData(idAttempt, req.body.questionsArray);
+      console.log(quizResultData);
       for (let index = 0; index < QR.questionArray.length; index++) {
         QR.questionArray[index].nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(QR);
       }

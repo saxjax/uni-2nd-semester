@@ -719,12 +719,12 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   resetParsedData();
 
   const QQ = new QuizQuestion(req);
-  actualObject = await QQ.query(`HEAD`, `COLUMN_NAME`);[{COLUMN_NAME: "ELEMENT_TYPE"}, {COLUMN_NAME: `QUESTION`}]
+  actualObject = await QQ.query(`HEAD`, `COLUMN_NAME`);
 
   expected = Object.keys(p.parseQuizQuestion({})).length;
   actual = Object.keys(actualObject).length;
   assert.equal(actual, expected,
-    `(4.6.1){Forventet: ${expected} Reel: ${actual}} Parserens forventede QuizQuestion attributter skal have lige så mange attributter som MySQL Databasens section kolonnenavn`);
+    `(4.6.1){ParseSQL: ${expected} SQL-databasen: ${actual}} Parserens forventede QuizQuestion attributter skal have lige så mange attributter som MySQL Databasens section kolonnenavn`);
 
   actual = actualObject.find((obj) => obj.COLUMN_NAME === p.typeCol);
   assert.true(actual,
@@ -756,10 +756,15 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
     `(4.6.7) Parserens forventede correctness kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question kolonnenavn`);
   count++;
 
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.QQKeywordsCol);
+  assert.true(actual,
+    `(4.6.8) Parserens forventede keywords kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question kolonnenavn`);
+  count++;
+
   expected = Object.keys(p.parseQuizQuestion({})).length;
   actual = count;
   assert.equal(actual, expected,
-    `(4.6.8){Forventet: ${expected} Reel: ${actual}} Mængden af tests af Quiz Question attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+    `(4.6.9){Keys i ParseSQL: ${expected} Antal keys testet: ${actual}} Mængden af tests af Quiz Question attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
   count = 0;
 
   QQ.connect.end();
@@ -773,22 +778,67 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   expected = Object.keys(p.parseQuizResult({})).length;
   actual = Object.keys(actualObject).length;
   assert.equal(actual, expected,
-    `(4.7.1){Forventet: ${expected} Reel: ${actual}} Parserens forventede QuizResult attributter skal have lige så mange attributter som MySQL Databasens quiz_question_result kolonnenavn`);
+    `(4.7.1){Antal keys i ParseSQL: ${expected} Antal keys i SQL-databasen: ${actual}} Parserens forventede QuizResult attributter skal have lige så mange attributter som MySQL Databasens quiz_question_result kolonnenavn`);
 
   actual = actualObject.find((obj) => obj.COLUMN_NAME === p.typeCol);
   assert.true(actual,
     `(4.7.2) Parserens forventede elementType kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
   count++;
 
-  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.quizResultCol);
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.userCol);
   assert.true(actual,
-    `(4.7.3) Parserens forventede idQuizResult kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
+    `(4.7.3) Parserens forventede idUser kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
   count++;
 
-  expected = Object.keys(p.parseQuizQuestion({})).length;
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.evaluationCol);
+  assert.true(actual,
+    `(4.7.4) Parserens forventede idEvaluation kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.quizResultCol);
+  assert.true(actual,
+    `(4.7.5) Parserens forventede idQuizResult kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.quizQuestionCol);
+  assert.true(actual,
+    `(4.7.6) Parserens forventede idQuizQuestion kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.QRAttemptCol);
+  assert.true(actual,
+    `(4.7.7) Parserens forventede attempt kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.QRPointCol);
+  assert.true(actual,
+    `(4.7.8) Parserens forventede point kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.QRTotalCol);
+  assert.true(actual,
+    `(4.7.9) Parserens forventede total kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.QRResultCol);
+  assert.true(actual,
+    `(4.7.10) Parserens forventede result kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.QRCreatedDateCol);
+  assert.true(actual,
+    `(4.7.11) Parserens forventede createdData kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
+  count++;
+
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.QRUserAnswerCol);
+  assert.true(actual,
+    `(4.7.12) Parserens forventede userAnswers kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question_result kolonnenavn`);
+  count++;
+
+  expected = Object.keys(p.parseQuizResult({})).length;
   actual = count;
   assert.equal(actual, expected,
-    `(4.7.4){Forventet: ${expected} Reel: ${actual}} Mængden af tests af QuizResult attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+    `(4.7.13){Antal keys i ParseSQL: ${expected} Antal keys i SQL-databasen: ${actual}} Mængden af tests af QuizResult attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
   count = 0;
 
   QR.connect.end();
@@ -904,7 +954,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
   expected = Object.keys(p.parseKeyword({})).length;
   actual = count;
   assert.equal(actual, expected,
-    `(4.10.5){Forventet: ${expected} Reel: ${actual}} Mængden af tests af Keyword attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+    `(4.10.5){Antal keys i ParseSQL: ${expected} Antal keys i SQL-databasen: ${actual}} Mængden af tests af Keyword attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
   count = 0;
 
   K.connect.end();
@@ -960,10 +1010,10 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
     `(4.11.11) Parserens forventede idKeywordLink kolonne skal stemme overens med MySQL Databasens keyword_link kolonnenavn`);
   count++;
 
-  expected = Object.keys(p.parseSection({})).length;
+  expected = Object.keys(p.parseKeywordLink({})).length;
   actual = count;
   assert.equal(actual, expected,
-    `(4.11.12){Forventet: ${expected} Reel: ${actual}} Mængden af tests af KeywordLink attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+    `(4.11.12){Antal keys i ParseSQL: ${expected} Antal keys i SQL-databasen: ${actual}} Mængden af tests af KeywordLink attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
   count = 0;
 
   KL.connect.end();

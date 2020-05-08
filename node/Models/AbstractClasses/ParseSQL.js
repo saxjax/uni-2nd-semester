@@ -47,14 +47,15 @@ class ParseSql {
     /* QuizQuestion kolonner */
     this.QQQuestionCol = `QUESTION`;
     this.QQAnswersCol = `ANSWERS`;
-    this.QQCorrectnessCol = `CORRECT_ANSWER`;
-    this.QQKeywordCol = `KEYWORD`;
+    this.QQCorrectnessCol = `CORRECT_ANSWERS`;
+    this.QQKeywordsCol = `KEYWORD`;
     /* QuizResult Kolonner */
     this.QRAttemptCol = `ID_ATTEMPT`;
     this.QRPointCol = `POINT`;
     this.QRTotalCol = `TOTAL`;
     this.QRResultCol = `RESULT`;
     this.QRCreatedDateCol = `CREATED_DATE`;
+    this.QRUserAnswerCol  = `USER_ANSWER`;
     /* Flashcard Kolonner */
     /* FLASHCARD IKKE IMPLEMENTERET!
     this.FConceptCol = `CONCEPT`;
@@ -114,11 +115,11 @@ class ParseSql {
    */
   parseGroup(data) {
     return {
-      elementType: `${data[this.typeCol]}`,
+      elementType: data[this.typeCol],
       // IDs
-      idGroup: `${data[this.groupCol]}`,
+      idGroup: data[this.groupCol],
       // data
-      name: `${data[this.GNameCol]}`,
+      name: data[this.GNameCol],
     };
   }
 
@@ -129,19 +130,19 @@ class ParseSql {
    */
   parseUser(data) {
     return {
-      elementType: `${data[this.typeCol]}`,
+      elementType: data[this.typeCol],
       // IDs
-      idUser: `${data[this.userCol]}`,
-      idGroup: `${data[this.groupCol]}`,
+      idUser: data[this.userCol],
+      idGroup: data[this.groupCol],
       // data
-      username: `${data[this.UUsernameCol]}`,
-      password: `${data[this.UPasswordCol]}`,
-      firstName: `${data[this.UFirstNameCol]}`,
-      lastName: `${data[this.ULastNameCol]}`,
-      email: `${data[this.UEmailCol]}`,
-      studySubject: `${data[this.UStudySubjectCol]}`,
-      semester: `${data[this.USemesterCol]}`,
-      university: `${data[this.UUniversityCol]}`,
+      username: data[this.UUsernameCol],
+      password: data[this.UPasswordCol],
+      firstName: data[this.UFirstNameCol],
+      lastName: data[this.ULastNameCol],
+      email: data[this.UEmailCol],
+      studySubject: data[this.UStudySubjectCol],
+      semester: data[this.USemesterCol],
+      university: data[this.UUniversityCol],
     };
   }
 
@@ -152,13 +153,13 @@ class ParseSql {
    */
   parseDocument(data) {
     return {
-      elementType: `${data[this.typeCol]}`,
+      elementType: data[this.typeCol],
       // IDs
-      idGroup: `${data[this.groupCol]}`,
-      idUser: `${data[this.userCol]}`,
-      idDocument: `${data[this.documentCol]}`,
+      idGroup: data[this.groupCol],
+      idUser: data[this.userCol],
+      idDocument: data[this.documentCol],
       // data
-      title: `${data[this.DTitleCol]}`,
+      title: data[this.DTitleCol],
     };
   }
 
@@ -168,18 +169,18 @@ class ParseSql {
    */
   parseSection(data) {
     return {
-      elementType: `${data[this.typeCol]}`,
+      elementType: data[this.typeCol],
       // IDs
-      idGroup: `${data[this.groupCol]}`,
-      idUser: `${data[this.userCol]}`,
-      idDocument: `${data[this.documentCol]}`,
-      idSection: `${data[this.sectionCol]}`,
+      idGroup: data[this.groupCol],
+      idUser: data[this.userCol],
+      idDocument: data[this.documentCol],
+      idSection: data[this.sectionCol],
       // data
-      number: `${data[this.SnumberCol]}`,
-      title: `${data[this.STitleCol]}`,
-      content: `${data[this.SContentCol]}`,
+      number: data[this.SnumberCol],
+      title: data[this.STitleCol],
+      content: data[this.SContentCol],
       teaser: data[this.STeaserCol] || (data[this.SContentCol] ? data[this.SContentCol].slice(0, 200) : undefined), // dette gøres for at undgå at der throwes en Error, i tilfælde af at data[this.SContentCol] giver undefined (eg. man kan ikke "slice" undefined)
-      keywords: `${data[this.SKeywordsCol]}`,
+      keywords: data[this.SKeywordsCol],
     };
   }
 
@@ -190,15 +191,15 @@ class ParseSql {
    */
   parseEvaluation(data) {
     return {
-      elementType: `${data[this.typeCol]}`,
+      elementType: data[this.typeCol],
       // IDs
-      idGroup: `${data[this.groupCol]}`,
-      idUser: `${data[this.userCol]}`,
-      idDocument: `${data[this.documentCol]}}`,
-      idSection: `${data[this.sectionCol]}`,
-      idEvaluation: `${data[this.evaluationCol]}`,
+      idGroup: data[this.groupCol],
+      idUser: data[this.userCol],
+      idDocument: data[this.documentCol],
+      idSection: data[this.sectionCol],
+      idEvaluation: data[this.evaluationCol],
       // data
-      title: `${data[this.ETitleCol]}`,
+      title: data[this.ETitleCol],
     };
   }
 
@@ -208,15 +209,15 @@ class ParseSql {
    */
   parseQuizQuestion(data) {
     return {
-      elementType: `${data[this.typeCol]}`,
+      elementType: data[this.typeCol],
       // IDs
-      idEvaluation: `${data[this.evaluationCol]}`,
-      idQuizQuestion: `${data[this.quizQuestionCol]}`,
+      idQuizQuestion: data[this.quizQuestionCol],
+      idEvaluation: data[this.evaluationCol],
       // data
-      question: `${data[this.QQQuestion]}`,
-      answers: `${data[this.QQAnswersCol]}`,
-      correctness: `${data[this.QQCorrectnessCol]}`,
-      keyword: `${data[this.QQKeywordCol]}`,
+      question: data[this.QQQuestionCol],
+      answers: data[this.QQAnswersCol],
+      correctness: data[this.QQCorrectnessCol],
+      keywords: data[this.QQKeywordsCol],
     };
   }
 
@@ -227,17 +228,19 @@ class ParseSql {
    */
   parseQuizResult(data) {
     return {
-      elementType: `${data[this.typeCol]}`,
+      elementType: data[this.typeCol],
       // IDs
-      idUser: `${data[this.userCol]}`,
-      idEvaluation: `${data[this.evaluationCol]}`,
-      idQuizResult: `${data[this.quizResultCol]}`,
+      idUser: data[this.userCol],
+      idEvaluation: data[this.evaluationCol],
+      idQuizResult: data[this.quizResultCol],
+      idQuizQuestion: data[this.quizQuestionCol],
       // data
-      attempt: `${data[this.QRAttemptCol]}`,
-      point: `${data[this.QRPointCol]}`,
-      total: `${data[this.QRTotalCol]}`,
-      result: `${data[this.QRResultCol]}`,
-      createdData: `${data[this.QRCreatedDateCol]}`,
+      attempt: data[this.QRAttemptCol],
+      point: data[this.QRPointCol],
+      total: data[this.QRTotalCol],
+      result: data[this.QRResultCol],
+      createdData: data[this.QRCreatedDateCol],
+      userAnswers: data[this.QRUserAnswerCol],
     };
   }
 
@@ -249,14 +252,14 @@ class ParseSql {
   /* FLASHCARD IKKE IMPLEMENTERET!
   parseFlashcard(data) {
     return {
-      elementType: `${data[this.typeCol]}`,
+      elementType: data[this.typeCol],
       // IDs
-      idEvaluation: `${data[this.evaluationCol]}`,
-      idFlashcard: `${data[this.flashcardCol]}`,
+      idEvaluation: data[this.evaluationCol],
+      idFlashcard: data[this.flashcardCol],
       // data
-      concept: `${data[this.FConceptCol]}`,
-      definition: `${data[this.FDefinitionCol]}`,
-      correctness: `${data[this.FCorrectnessCol]}`,
+      concept: data[this.FConceptCol],
+      definition: data[this.FDefinitionCol],
+      correctness: data[this.FCorrectnessCol],
     };
   } */
 
@@ -268,9 +271,9 @@ class ParseSql {
   /* FLASHCARD IKKE IMPLEMENTERET!
   parseFlashcardResult(data) {
     return {
-      elementType: `${data[this.typeCol]}`,
+      elementType: data[this.typeCol],
       // IDs
-      idFlashcardResult: `${data[this.flashcardResultCol]}`,
+      idFlashcardResult: data[this.flashcardResultCol],
       // data
     };
   } */
@@ -282,25 +285,25 @@ class ParseSql {
    */
   parseKeyword(data) {
     return {
-      elementType: `${data[this.typeCol]}`,
+      elementType: data[this.typeCol],
       // IDs
-      idKeyword: `${data[this.keywordCol]}`,
+      idKeyword: data[this.keywordCol],
       // data
-      keyword: `${data[this.KKeywordCol]}`,
+      keyword: data[this.KKeywordCol],
     };
   }
 
   parseKeywordLink(data) {
     return {
-      elementType: `${data[this.typeCol]}`,
+      elementType: data[this.typeCol],
       // IDs
-      idDocument: `${data[this.documentCol]}`,
-      idSection: `${data[this.sectionCol]}`,
-      idEvaluation: `${data[this.evaluationCol]}`,
-      idQuizQuestion: `${data[this.quizQuestionCol]}`,
-      idFlashcard: `${data[this.flashcardCol]}`,
-      idKeyword: `${data[this.keywordCol]}`,
-      idKeywordLink: `${data[this.keywordLinkCol]}`,
+      idDocument: data[this.documentCol],
+      idSection: data[this.sectionCol],
+      idEvaluation: data[this.evaluationCol],
+      idQuizQuestion: data[this.quizQuestionCol],
+      idFlashcard: data[this.flashcardCol],
+      idKeyword: data[this.keywordCol],
+      idKeywordLink: data[this.keywordLinkCol],
       // data
     };
   }
