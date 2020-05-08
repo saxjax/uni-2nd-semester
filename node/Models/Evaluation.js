@@ -88,6 +88,9 @@ class Evaluation extends Model {
     return this.idEvaluation;
   }
 
+  /* Bliver brugt i viewControlleren i funktionen viewEvaluationPage
+  Bruges til at hente alle spørgsmålene til den pågældende evaluering
+  */
   async getAllQuizQuestions() {
     this.table = `quiz_question`;
     let queryResult;
