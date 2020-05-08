@@ -24,13 +24,15 @@ addKeywordButton.addEventListener(`click`, addKeywordField);
 addKeywordField();
 function addKeywordField() {
   const keywordInputField = insertDomNode(`INPUT`, addKeywordButton, `Keyword ${keywordNum}`, [{ class: `keywordInputField` }, { id: `keywordField${keywordNum}` }]);
-  keywordInputField.required = true;
   insertDomNode(`LABEL`, keywordInputField, `Keyword ${keywordNum}:`).htmlFor = `keywordField${keywordNum}`;
   insertDomNode(`BR`, addKeywordButton);
   keywordNum++;
 }
 
-async function postEvaluation() { // eslint-disable-line no-unused-vars
+const submitButton = document.getElementById(`submitButton`);
+submitButton.addEventListener(`click`, postEvaluation);
+
+async function postEvaluation() {
   const evaluationForm = document.getElementById(`evaluationForm`);
   const evaluation = new Evaluation(evaluationForm);
   const response = await fetch(`/post/evaluation`, {
@@ -38,5 +40,6 @@ async function postEvaluation() { // eslint-disable-line no-unused-vars
     body: JSON.stringify(evaluation),
     headers: { "Content-Type": `application/json` },
   });
-  window.location.replace(response.url);
+  const responseJSON = await response.json();
+  window.location.replace(responseJSON.url);
 }

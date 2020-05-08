@@ -12,20 +12,20 @@
     <div class="container" id="content">
       <h1>Make a new evaluation</h1>
       <!-- Posts via function when submitbutton is clicked -->
-      <form id="evaluationForm" onsubmit="postEvaluation()">
+      <div id="evaluationForm" onsubmit="return false">
         <label for="evaluationTitle">Evaluation title:</label>
-        <input type="text" id="evaluationTitle" name="evaluationTitle" placeholder="Title of evaluation" required><br>
+        <input type="text" id="evaluationTitle" name="evaluationTitle" placeholder="Title of evaluation"><br>
         <!-- Her skal der vælges en section ud fra en "drop down menu" eller lign.
           Alle section data er medsendt i data.section-->
         <label for="selectSection">Section:</label>
-        <select id="selectSection" name="selectSection" form="evaluationForm" required>
+        <select id="selectSection" name="selectSection" form="evaluationForm">
           <% data.sections.forEach(section => { %>
             <option value="<%= section.idSection %>"><%= section.title %></option>
           <% }); %>
         </select><br>
-        <button id="addKeywordButton">Add another keyword</button>
+        <button id="addKeywordButton">Add a keyword</button>
         <input id="submitButton" type="submit">
-      </form>
+      </div>
     </div>
     <%- include('meta/footer') %> 
   </body>

@@ -58,7 +58,7 @@ class CreateController {
     const E = new Evaluation(req);
     try {
       const idEvaluation = await E.insertToDatabase();
-      res.redirect(`/post/questions?idEvaluation=${idEvaluation}&titleEvaluation=${E.title}`);
+      res.send({ url: `/post/questions?idEvaluation=${idEvaluation}&titleEvaluation=${E.title}` });
     }
     catch (error) {
       res.redirect(503, `/dbdown`);
