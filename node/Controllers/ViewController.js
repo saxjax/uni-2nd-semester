@@ -410,8 +410,8 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // TODO: Mangler EJS
-  /* Formål: BESKRIV EJS FORMÅL HER
+
+  /* Formål: Viser siden til en evaluering som en bruger kan tage
    * Input : Et request med et queryId samt en session med userId og groupId
    * Output: En fremvisning af en evaluering og dens tilhørende opgaver så en bruger kan tage den
    */
@@ -421,7 +421,7 @@ class ViewController {
       await E.getThisGroupData(),                    // dataArray[0]
       await E.getThisUserData(),                     // dataArray[1]
       await E.getThis(),                             // dataArray[2]
-      await E.getAllQuizQuestions(),  // dataArray[3]
+      await E.getAllQuizQuestions(),                 // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], questions: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluation.ejs`);
