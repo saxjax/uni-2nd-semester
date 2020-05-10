@@ -1,7 +1,6 @@
 /* eslint no-console: off */
 
 const { Model }   = require(`./AbstractClasses/Model`);
-const convertArrayToSemicolonSeparatedString = require(`../HelperFunctions/convertArrayToSemicolonSeparatedString`);
 
 
 /* MANGLER DESIGN!!!!
@@ -75,13 +74,11 @@ class QuizQuestion extends Model {
    */
   async insertQuestionToDatabase(question) {
     try {
-      const answers = convertArrayToSemicolonSeparatedString(question.answers);
-      const correctAnswers = convertArrayToSemicolonSeparatedString(question.correctAnswers);
       return await this.query(`INSERT`, `ID_EVALUATION = "${question.idEvaluation}" `
         + `AND QUESTION = "${question.question}" `
-        + `AND CORRECT_ANSWERS = "${correctAnswers}" `
+        + `AND CORRECT_ANSWERS = "${question.correctAnswers.join(`;`)}" `
         + `AND KEYWORD = "${question.keyword}" `
-        + `AND ANSWERS = "${answers}"`);
+        + `AND ANSWERS = "${question.answers.join(`;`)}"`);
     }
     catch (error) {
       return error;
