@@ -1,6 +1,5 @@
 /* eslint-disable guard-for-in */
 /* eslint no-console: off */
-const path = require(`path`);
 const { Group } = require(`../Models/Group`);
 const { User } = require(`../Models/User`);
 const { Section } = require(`../Models/Section`);
@@ -12,9 +11,9 @@ const { QuizResult } = require(`../Models/QuizResult`);
 
 class CreateController {
   /* UNDER CONSTRUCTION */
-  constructor() {
+  constructor(root) {
     this.name = `CreateController`;
-    this.root = __dirname.slice(0, -(`node/Controllers`.length));
+    this.root = root;
   }
 
   /* UNDER CONSTRUCTION */

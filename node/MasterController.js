@@ -62,7 +62,7 @@ class MasterController {
    * Output: Opsætning af url'er som kan tilgås via serverens port.
    */
   accessPatterns() {
-    const Access = new AccessController();
+    const Access = new AccessController(this.root);
     // No Session URLs
     this.app.get(`/about`,    (req, res) => Access.aboutPage(req, res));
     this.app.get(`/register`, (req, res) => Access.registerPage(req, res));
@@ -81,7 +81,7 @@ class MasterController {
    * Output: Opsætning af url'er som kan tilgås via serverens port.
    */
   sessionPatterns() {
-    const Session = new SessionController();
+    const Session = new SessionController(this.root);
     this.app.post(`/auth/user`, (req, res) => Session.userSession(req, res));
     this.app.get(`/session/group/:idQuery`, (req, res) => Session.groupSession(req, res));
   }
@@ -112,7 +112,7 @@ class MasterController {
    * TODO: de kommenterede (//) har ikke en tilsvarende EJS fil endnu.
    */
   viewPatterns() {
-    const Show = new ViewController();
+    const Show = new ViewController(this.root);
     this.app.get(`/`,                             (req, res) => Show.homePage(req, res));
 
     // Documents
@@ -178,7 +178,7 @@ class MasterController {
    * Output: Opsætning af url'er som kan tilgås via serverens port.
    */
   redirectPatterns() {
-    const Redirect = new RedirectController();
+    const Redirect = new RedirectController(this.root);
     this.app.get(`/dbdown`,                    (req, res) => Redirect.dbDown(req, res));
     this.app.post(`/upload/rapport`,           (req, res) => Redirect.UploadRapport(req, res));
     this.app.post(`/upload/evalueringer`,      (req, res) => Redirect.UploadEvalueringer(req, res));
@@ -193,7 +193,7 @@ class MasterController {
   * Output: Setup af muligheden for klienten at poste data til databasen.
   */
   createPatterns() {
-    const Creator = new CreateController();
+    const Creator = new CreateController(this.root);
     this.app.post(`/post/group`,       (req, res) => Creator.createGroup(req, res));
     this.app.post(`/post/user`,        (req, res) => Creator.createUser(req, res));
     this.app.post(`/post/section`,     (req, res) => Creator.createSection(req, res));
@@ -209,7 +209,7 @@ class MasterController {
    * TODO: De udkommenterede (//) er ikke implementeret endnu
    */
   deletePatterns() {
-    // const Deletter = new DeletController();
+    // const Deletter = new DeletController(this.root);
   }
 
   /* Formål: En "catch all" for alle de tests der ønskes at blive lavet, så de ikke "clutter" de andre URL'er til.
@@ -219,7 +219,7 @@ class MasterController {
    * Output: Setup af muligheden for udviklere at teste ting før de implementeres.
    */
   testPatterns() {
-    const Tester = new TestController();
+    const Tester = new TestController(this.root);
     this.app.get(`/test`, (req, res) => Tester.test(req, res));
     this.app.get(`/test2`, (req, res) => Tester.test2(req, res));
     this.app.get(`/test3`, (req, res) => Tester.test3(req, res));

@@ -8,9 +8,9 @@ const { Keyword } = require(`../Models/Keyword.js`);
 
 class RedirectController {
   /* UNDER CONSTRUCTION */
-  constructor() {
+  constructor(root) {
     this.name = `RedirectController`;
-    this.root = __dirname.slice(0, -(`node/Controllers`.length));
+    this.root = root;
     this.ejs = ``;
   }
 

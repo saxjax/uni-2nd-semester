@@ -8,9 +8,9 @@ const { Group } = require(`../Models/Group`);
  */
 
 class SessionController {
-  constructor() {
+  constructor(root) {
     this.name = `ViewController`;
-    this.root = __dirname.slice(0, -(`node/Controllers`.length));
+    this.root = root;
   }
 
   /* Formål: At validere et login og oprette brugerens session som den bruger der er logget ind med
