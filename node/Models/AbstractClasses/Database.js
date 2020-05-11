@@ -151,7 +151,7 @@ class Database {
           break;
         case `CUSTOM`:
           if (texton) {
-            console.log(`Custom metode brugt. Se om den kan inkorperes i de andre metoder.\n`);
+            // console.log(`Custom metode brugt. Se om den kan inkorperes i de andre metoder.\n`);
           }
           sql = data;
           break;

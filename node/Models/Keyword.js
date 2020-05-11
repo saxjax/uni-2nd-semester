@@ -43,7 +43,7 @@ class Keyword extends Model {
         break;
 
       case `section`:
-        idCollumn = `ID_SECTION`;
+        idCollumn = `ID_DOCUMENT_SECTION`;
         break;
 
 
@@ -143,7 +143,7 @@ class Keyword extends Model {
     try {
       keywordLinkExist = await this.query(`CUSTOM`, `SELECT * FROM ${keywordLink.table} WHERE`
                                       + ` ID_DOCUMENT = "${keywordLink.idDocument}"`
-                                      + ` AND ID_SECTION = "${keywordLink.idSection}"`
+                                      + ` AND ID_DOCUMENT_SECTION = "${keywordLink.idSection}"`
                                       + ` AND ID_EVALUATION = "${keywordLink.idEvaluation}"`
                                       + ` AND ID_QUIZ_QUESTION = "${keywordLink.idQuizQuestion}"`
                                       + ` AND ID_FLASHCARD = "${keywordLink.idFlashcard}"`
@@ -163,7 +163,7 @@ class Keyword extends Model {
   async insertKeywordLink(keywordLink, idKeyword) {
     const keywordIdInsertString = `("${keywordLink.idDocument}","${keywordLink.idSection}","${keywordLink.idEvaluation}","${keywordLink.idQuizQuestion}","${idKeyword}","${keywordLink.idFlashcard}")`;
     try {
-      await this.query(`CUSTOM`, `INSERT INTO ${keywordLink.table} (ID_DOCUMENT,ID_SECTION,ID_EVALUATION,ID_QUIZ_QUESTION,ID_KEYWORD,ID_FLASHCARD) VALUES ${keywordIdInsertString}`);
+      await this.query(`CUSTOM`, `INSERT INTO ${keywordLink.table} (ID_DOCUMENT,ID_DOCUMENT_SECTION,ID_EVALUATION,ID_QUIZ_QUESTION,ID_KEYWORD,ID_FLASHCARD) VALUES ${keywordIdInsertString}`);
     }
     catch (error) {
       console.log(`Could not insert keyword links to database ERROR: ${error}`);

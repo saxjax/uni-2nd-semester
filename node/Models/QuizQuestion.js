@@ -76,35 +76,13 @@ class QuizQuestion extends Model {
     try {
       return await this.query(`INSERT`, `ID_EVALUATION = "${question.idEvaluation}" `
         + `AND QUESTION = "${question.question}" `
-        + `AND CORRECT_ANSWERS = "${question.correctAnswers}" `
+        + `AND CORRECT_ANSWERS = "${question.correctAnswers.join(`;`)}" `
         + `AND KEYWORD = "${question.keyword}" `
-        + `AND ANSWERS = "${question.answers}"`);
+        + `AND ANSWERS = "${question.answers.join(`;`)}"`);
     }
     catch (error) {
       return error;
     }
-  }
-
-  // FIXME: DEPRECATED? MVH LASSE
-  // TODO:
-  // input: req
-  // output: for digit string ex. 1100
-  // translates true/false of all answers into a binary string
-  // /correctness/.test(element[0] checks every [0] of elements, to see if it contains the string /correctness/, if it does, it returns true. thereby skipping all other elements than correctness_#
-  translateCorrectness() {
-    let currentCorrectness = ``;
-    const entries = Object.entries(this.req.body);
-    entries.forEach((element) => {
-      if (/correctness/.test(element[0])) {
-        if (element[1] === `true`) {
-          currentCorrectness += `1`;
-        }
-        else {
-          currentCorrectness += `0`;
-        }
-      }
-    });
-    return currentCorrectness;
   }
 }
 module.exports = {

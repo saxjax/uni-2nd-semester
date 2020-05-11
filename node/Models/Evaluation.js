@@ -24,6 +24,7 @@ class Evaluation extends Model {
           this.title = req.body.evaluationTitle;
           this.idSection = req.body.selectSection;
           this.keywords = req.body.keywords;
+          this.idDocument = undefined;
           break;
         case `TEST`:
           this.elementType = `evaluation`;
@@ -44,7 +45,6 @@ class Evaluation extends Model {
    * Output: Evalueringens ID hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
-    console.log(this.req.body);
     try {
       const queryResult = await this.query(`CUSTOM`, `SELECT ID_DOCUMENT FROM document_section WHERE ID_DOCUMENT_SECTION = "${this.idSection}"`);
       this.idDocument = queryResult[0].ID_DOCUMENT;
@@ -89,6 +89,9 @@ class Evaluation extends Model {
   }
 
   // FIXME:denne funktion findes allerede getAllElementsOftype(`quiz_question`)
+  /* Bliver brugt i viewControlleren i funktionen viewEvaluationPage
+  Bruges til at hente alle spørgsmålene til den pågældende evaluering
+  */
   async getAllQuizQuestions() {
     this.table = `quiz_question`;
     let queryResult;

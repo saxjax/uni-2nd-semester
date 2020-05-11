@@ -19,7 +19,7 @@
         <h3><%=question.question%></h3>
         <label for="">Answers: </label>
           <% let answerCount = 1 %>
-          <% question.answers.split(`;`).forEach(answer => { %>
+          <% question.answers.forEach(answer => { %>
             <p> <%= answer %> </p>
             <% answerCount++ %>
       <% }); %>

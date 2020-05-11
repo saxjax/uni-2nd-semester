@@ -4,6 +4,7 @@
     <%- include('meta/header') %> 
     <title>GroupHub | New evaluation</title>
     <link rel="stylesheet" href="/css/design.css">
+    <script src="/js/insertHTMLElements.js"></script>
     <script defer src="/js/postEvaluation.js"></script>
   </head>
   <body>
@@ -13,11 +14,11 @@
       <!-- Posts via function when submitbutton is clicked -->
       <div id="evaluationForm" onsubmit="return false">
         <label for="evaluationTitle">Evaluation title:</label>
-        <input type="text" id="evaluationTitle" name="evaluationTitle" placeholder="Title of evaluation" required><br>
+        <input type="text" id="evaluationTitle" name="evaluationTitle" placeholder="Title of evaluation"><br>
         <!-- Her skal der vælges en section ud fra en "drop down menu" eller lign.
           Alle section data er medsendt i data.section-->
         <label for="selectSection">Section:</label>
-        <select id="selectSection" name="selectSection" form="evaluationForm" required>
+        <select id="selectSection" name="selectSection" form="evaluationForm">
           <% data.sections.forEach(section => { %>
             <option value="<%= section.idSection %>"><%= section.title %></option>
           <% }); %>
