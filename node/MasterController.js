@@ -266,7 +266,7 @@ class MasterController {
       idGroup: `N/A`,
       groupName: `N/A`,
       loggedIn: false,
-      secret: `SECRET_SALT_CODE_BY_MIKE123456789`,
+      secret: `SECRET_SALT_CODE`,
       store: sessionStore,
       resave: false,
       saveUninitialized: false,
