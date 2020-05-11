@@ -9,7 +9,7 @@ const { Model } = require(`./AbstractClasses/Model`);
 class SpacedRepetition extends Model {
   constructor() {
     super()
-    this.minTimestamp = 20; // 24 timer
+    this.minTimestamp = 24; // 24 timer
     this.comprehentionRatio = 3; // hvert forkert svar kræver mindst 3 rigtige svar for at blive registreret som forstået
   }
 
@@ -73,7 +73,7 @@ class SpacedRepetition extends Model {
     let newRepTimeStamp= new Date();
     
     if (setMinTimestamp === true) {//hvis der er svaret forkert eller comprehentionRatio ikke er opfyldt
-      newRepTimeStamp.setHours(newRepTimeStamp.getHours()+ 0);
+      newRepTimeStamp.setHours(newRepTimeStamp.getHours()+ this.minTimestamp);
     }
     else {
       newRepTimeStamp.setHours(newRepTimeStamp.getHours()+ ((successAttempts * successAttempts) * this.minTimestamp)  ) ;

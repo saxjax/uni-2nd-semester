@@ -92,11 +92,15 @@ class CreateController {
       idAttempt = await QR.insertToDatabase();
       quizResultData = await QR.getHistoricQuizResultData(idAttempt, req.body.questionsArray);
       console.log(quizResultData);
-      for (let index = 0; index < QR.questionArray.length; index++) {
-        QR.questionArray[index].nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(QR);
-      }
+      // for (let index = 0; index < QR.questionArray.length; index++) {
+      //   QR.questionArray[index].successAttempts = 3;
+      //   QR.questionArray[index].failedAttempts = 1;
+      //   QR.questionArray[index].recentResult = true;
+      //   QR.questionArray[index].repetitions = 2;
+      //   QR.questionArray[index].nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(QR.questionArray[index]);
+      // }
       // QR.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(QR);
-      console.log(QR);
+      // console.log(QR);
 
       res.send({ newURL: `/view/evaluationResult/${QR.idEvaluation}/${idAttempt}` });
     }
