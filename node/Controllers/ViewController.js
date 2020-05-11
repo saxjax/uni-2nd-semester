@@ -18,9 +18,9 @@ const { Keyword } = require(`../Models/Keyword`);
  */
 
 class ViewController {
-  constructor() {
+  constructor(root) {
     this.name = `ViewController`;
-    this.root = __dirname.slice(0, -(`node/Controllers`.length));
+    this.root = root;
     this.ejs = ``;
   }
 
