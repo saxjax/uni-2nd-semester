@@ -84,6 +84,29 @@ class CreateController {
    * Input : req med svar fra klienten. res som bruges til at sende en respons til klienten
    * Output: Intet - men brugeren viderediriges med res til en ny URL
    */
+  /*
+    resultData: [
+    RowDataPacket {
+      ID_EVALUATION: '3d91313e-8e00-11ea-a6c9-2c4d54532c7a',
+      ID_QUIZ_QUESTION: '6b0f6da9-8e00-11ea-a6c9-2c4d54532c7a',
+      ID_USER: '553e422d-7c29-11ea-86e2-2c4d54532c7a',
+      RECENT_RESULT: 'true',
+      RECENT_ATTEMPT_DATE: 2020-05-11T12:19:50.000Z,
+      NEXT_REPITITION: '-----',
+      TOTAL: 18,
+      FAILED_ATTEMPTS: 10,
+      SUCESS_ATTEMPTS: 8
+    },
+    quizResult.idEvaluation = ID_EVALUATION;
+        quizResult.idQuizQuestion = ID_QUIZ_QUESTION;
+        quizResult.idUser = ID_USER;
+        quizResult.recentResult = RECENT_RESULT;
+        quizResult.recentResult = RECENT_ATTEMPT_DATE;
+        quizResult.nextRepetition = NEXT_REPITITION;
+        quizResult.repetitions = TOTAL;
+        quizResult.failedAttempts = FAILED_ATTEMPTS;
+        quizResult.successAttempts = SUCESS_ATTEMPTS;
+  */
   async createAnswers(req, res) {
     const QR = new QuizResult(req);
     let idAttempt;
@@ -92,6 +115,18 @@ class CreateController {
       idAttempt = await QR.insertToDatabase();
       quizResultData = await QR.getHistoricQuizResultData(idAttempt, req.body.questionsArray);
       console.log(quizResultData);
+
+      quizResultData.resultData.forEach((quizResult) => {
+        quizResult.idQuizQuestion = quizResult.ID_QUIZ_QUESTION;
+        quizResult.idUser = quizResult.ID_USER;
+        quizResult.recentResult = quizResult.RECENT_RESULT;
+        quizResult.recentAttemptDate = quizResult.RECENT_ATTEMPT_DATE;
+        quizResult.nextRepetition = quizResult.NEXT_REPITITION;
+        quizResult.repetitions = quizResult.TOTAL;
+        quizResult.failedAttempts = quizResult.FAILED_ATTEMPTS;
+        quizResult.successAttempts = quizResult.SUCESS_ATTEMPTS;
+        quizResult.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
+      });
       // for (let index = 0; index < QR.questionArray.length; index++) {
       //   QR.questionArray[index].successAttempts = 3;
       //   QR.questionArray[index].failedAttempts = 1;
@@ -100,7 +135,7 @@ class CreateController {
       //   QR.questionArray[index].nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(QR.questionArray[index]);
       // }
       // QR.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(QR);
-      // console.log(QR);
+      console.log(quizResultData);
 
       res.send({ newURL: `/view/evaluationResult/${QR.idEvaluation}/${idAttempt}` });
     }

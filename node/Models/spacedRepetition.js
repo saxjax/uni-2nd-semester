@@ -10,6 +10,7 @@ class SpacedRepetition extends Model {
     super();
     this.minTimestamp = 24; // 24 timer
     this.comprehentionRatio = 3; // hvert forkert svar kræver mindst 3 rigtige svar for at blive registreret som forstået
+    this.repetitionRatio = 1;
   }
 
   // const spacedRep = new SpacedRepetition();
@@ -34,32 +35,31 @@ class SpacedRepetition extends Model {
     let newRepTimestamp = 0;
     let rightWrongRatio = 0;
     let setMinTimestamp = true; // hvis setMinTimestamp er sat til TRUE, betyder det, at brugeren skal have evalueringsopgaven indenfor de næste 24 timer, hvis FALSE skal evalueringsopgaven repeteres senere.
+    console.log(`spacedrepetition l 37`);
+    console.log(evaluationResult);
 
-    if (evaluationResult.recentResult === true) { // er der blevet svaret korrekt på spørgsmålet?
-      if (evaluationResult.repetitions > 0) { // er evalueringsopgaven blevet taget før?
+
+    if (evaluationResult.recentResult === `true`) { // er der blevet svaret korrekt på spørgsmålet?
+      if (evaluationResult.repetitions > 1) { // er evalueringsopgaven blevet taget før?
         if (evaluationResult.failedAttempts > 0) { // er evalueringsopgaven svaret forkert før?
           rightWrongRatio = (evaluationResult.successAttempts / evaluationResult.failedAttempts); // udregn rigtig-forkert ratio
-          if (rightWrongRatio < this.comprehentionRatio) { // er rigtig-forkert ratioen MINDRE end den nødvendige forståelses-ratio?
-            setMinTimestamp = true; // sæt da minimum timestamp til true
-          }
-          else {
-            setMinTimestamp = false;
-          }
+          this.repetitionRatio =  rightWrongRatio > 1 ? rightWrongRatio : 1;
         }
         else { // hvis den IKKE er blevet svaret forkert på før OG du svarer rigtigt, sæt minimum timestamp til false
-          setMinTimestamp = false;
+          this.repetitionRatio = evaluationResult.successAttempts;
         }
-      } // er evalueringen IKKE blevet taget før OG du svarer rigtigt, sæt minimum timestamp til false
-      else {
-        setMinTimestamp = false;
       }
+      else {
+        this.repetitionRatio = 1;
+      } // er evalueringen IKKE blevet taget før OG du svarer rigtigt, sæt minimum timestamp til false
+
+      setMinTimestamp = false;
     } // hvis der svares forkert på evalueringen sættes setMinTimestamp til true
     else {
       setMinTimestamp = true;
     }
 
-    // tempEvalTask.rep++;
-    newRepTimestamp = this.calculateTimeStamp(setMinTimestamp, evaluationResult.successAttempts); // beregn tidsstempel
+    newRepTimestamp = this.calculateTimeStamp(setMinTimestamp); // beregn tidsstempel
 
     return newRepTimestamp;
   }
@@ -69,14 +69,14 @@ class SpacedRepetition extends Model {
   * Input : setMinimumTimestamp = true/false, successAttempts=(antal gange spørgsmålet er besvaret korrekt)
   * Output: Dato
   */
-  calculateTimeStamp(setMinTimestamp = true, successAttempts) {
-    let newRepTimeStamp= new Date();
-    
-    if (setMinTimestamp === true) {//hvis der er svaret forkert eller comprehentionRatio ikke er opfyldt
+  calculateTimeStamp(setMinTimestamp = true) {
+    const newRepTimeStamp = new Date();
+
+    if (setMinTimestamp === true) { // hvis der er svaret forkert eller comprehentionRatio ikke er opfyldt
       newRepTimeStamp.setHours(newRepTimeStamp.getHours() + this.minTimestamp);
     }
     else {
-      newRepTimeStamp.setHours(newRepTimeStamp.getHours() + ((successAttempts * successAttempts) * this.minTimestamp));
+      newRepTimeStamp.setHours(newRepTimeStamp.getHours() + ((this.repetitionRatio * this.repetitionRatio) * this.minTimestamp));
     }
 
     return newRepTimeStamp;
@@ -153,6 +153,6 @@ for (let index = 0; index < 3; index++) {
 // evalTask.recentResult = true
 // evalTask = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
 // console.log(evalTask);
-console.log(spacedR.selectEvaluationsForRepetition(evalLog));
-console.log(`disse ligger alle i evalLog`);
-console.log(evalLog);
+// console.log(spacedR.selectEvaluationsForRepetition(evalLog));
+// console.log(`disse ligger alle i evalLog`);
+// console.log(evalLog);
