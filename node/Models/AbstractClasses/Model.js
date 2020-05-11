@@ -85,7 +85,7 @@ class Model extends Database {
   async getThisGroupData() {
     const trueObjectTable = this.table;
     this.table = `USER_GROUP`;
-    const data = await this.query(`SELECT *`, `${this.idColumnGroup} = "${this.idGroup}"`)
+    const data =  this.query(`SELECT *`, `${this.idColumnGroup} = "${this.idGroup}"`)
       .then((result) => result)
       .catch((error) => error);
     this.table = trueObjectTable;

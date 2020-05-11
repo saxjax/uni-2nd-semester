@@ -86,7 +86,7 @@ class Database {
       this.connect.query(this.sql, (error, result) => {
         if (error) {
           if (texton) {
-            console.log(`Here at node/Database/Database.js-data the error \n${error.code}\n
+            console.log(`Here at node/Database/Database.js-data the error: \n${error.code}\n
             and ${error.stack}`);
           }
           reject(error);

@@ -207,6 +207,7 @@ class ViewController {
       Sec.getThisGroupData(),               // dataArray[0]
       Sec.getThisUserData(),                // dataArray[1]
       Sec.getThis(),                        // dataArray[2]
+
     ]);
     const data = { group: dataArray[0], user: dataArray[1], section: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewSection.ejs`);
@@ -424,6 +425,7 @@ class ViewController {
       await E.getAllQuizQuestions(),                 // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], questions: dataArray[3] };
+    console.log(`Evalueation:`, data);
     this.ejs = path.join(`${this.root}/www/views/viewEvaluation.ejs`);
     res.render(this.ejs, { data });
   }

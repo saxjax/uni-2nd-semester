@@ -144,8 +144,8 @@ class Server {
     // this.app.get(`/view/evaluation/expert`,            (req, res) => Show.viewEvaluationExpertPage(req, res));
     // this.app.get(`/view/evaluation/document/:idQuery`, (req, res) => Show.viewEvaluationDocumentPage(req, res));
     // this.app.get(`/view/evaluation/section/:idQuery`,  (req, res) => Show.viewEvaluationSectionPage(req, res));
-    this.app.get(`/post/evaluation`,                 (req, res) => Show.postEvaluationPage(req, res));
-    this.app.get(`/post/questions`,                 (req, res) => Show.postQuestionsPage(req, res));
+    this.app.get(`/post/evaluation`,                    (req, res) => Show.postEvaluationPage(req, res));
+    this.app.get(`/post/questions`,                     (req, res) => Show.postQuestionsPage(req, res));
     this.app.get(`/view/evaluations/:idQuery`,          (req, res) => Show.viewEvaluationPage(req, res));
     this.app.get(`/view/evaluationResult/:idQuery/:idAttempt`,          (req, res) => Show.viewEvaluationResultPage(req, res));
     // this.app.get(`/put/evaluation/:idQuery`,        (req, res) => Show.putEvaluationPage(req, res));
