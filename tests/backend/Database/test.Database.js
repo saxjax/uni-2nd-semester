@@ -274,60 +274,6 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
 
   /* 3.6 */
   try {
-    actualObject = await object.query(`SELECT *`);
-
-    expected = `test1`;
-    actual = actualObject[0].TEST_OPTION_1;
-    assert.equal(actual, expected,
-      `(3.6.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en hel tabel fra databasen`);
-
-    expected = `test2`;
-    actual = actualObject[0].TEST_OPTION_2;
-    assert.equal(actual, expected,
-      `(3.6.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en hel tabel fra databasen`);
-
-    expected = `test3`;
-    actual = actualObject[0].TEST_OPTION_3;
-    assert.equal(actual, expected,
-      `(3.6.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en hel tabel fra databasen`);
-
-    expected = `test4`;
-    actual = actualObject[1].TEST_OPTION_1;
-    assert.equal(actual, expected,
-      `(3.6.4) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en hel tabel fra databasen`);
-
-    expected = `test5`;
-    actual = actualObject[1].TEST_OPTION_2;
-    assert.equal(actual, expected,
-      `(3.6.5) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en hel tabel fra databasen`);
-
-    expected = `test6`;
-    actual = actualObject[1].TEST_OPTION_3;
-    assert.equal(actual, expected,
-      `(3.6.6) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en hel tabel fra databasen`);
-
-    expected = `test7`;
-    actual = actualObject[2].TEST_OPTION_1;
-    assert.equal(actual, expected,
-      `(3.6.7) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en hel tabel fra databasen`);
-
-    expected = `test8`;
-    actual = actualObject[2].TEST_OPTION_2;
-    assert.equal(actual, expected,
-      `(3.6.8) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en hel tabel fra databasen`);
-
-    expected = `test9`;
-    actual = actualObject[2].TEST_OPTION_3;
-    assert.equal(actual, expected,
-      `(3.6.9) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente en hel tabel fra databasen`);
-  }
-  catch (err) {
-    assert.false(true,
-      `(3.6) Fejlede med den givne fejl: ${err}`);
-  }
-
-  /* 3.7 */
-  try {
     actualObject = await object.query(`SELECT TEST_OPTION_5_FLOAT`);
   }
   catch (error) {
@@ -337,19 +283,19 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   expected = 1;
   actual = actualObject[0].TEST_OPTION_5_FLOAT;
   assert.equal(actual, expected,
-    `(3.7.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente ints og floats fra databasen.`);
+    `(3.6.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente ints og floats fra databasen.`);
 
   expected = 1.2;
   actual = actualObject[1].TEST_OPTION_5_FLOAT;
   assert.equal(actual, expected,
-    `(3.7.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente ints og floats fra databasen.`);
+    `(3.6.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente ints og floats fra databasen.`);
 
   expected = -123;
   actual = actualObject[2].TEST_OPTION_5_FLOAT;
   assert.equal(actual, expected,
-    `(3.7.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente ints og floats fra databasen.`);
+    `(3.6.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne hente ints og floats fra databasen.`);
 
-  /* 3.8 */
+  /* 3.7 */
   try {
     actualObject = await object.query(`SELECT *`);
     actual = false;
@@ -361,9 +307,9 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   expected = `test`;
   actual = actualObject[0].ELEMENT_TYPE;
   assert.true(actual,
-    `(3.8.1) Databasen skal ikke kunne hente alt data fra en tabel i et opslag.`);
+    `(3.7.1) Databasen skal ikke kunne hente alt data fra en tabel i et opslag.`);
 
-  /* 3.9 */
+  /* 3.8 */
   try {
     actualObject = await object.query(`SELECT TEST_OPTION_1`);
   }
@@ -374,19 +320,19 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   expected = `test`;
   actual = actualObject[0].ELEMENT_TYPE;
   assert.equal(expected, actual,
-    `(3.9.1) Det skal fremgå af de data som Databasen henter, hvilken type data der er tale om.`);
+    `(3.8.1) Det skal fremgå af de data som Databasen henter, hvilken type data der er tale om.`);
 
   expected = `test`;
   actual = actualObject[0].ELEMENT_TYPE;
   assert.equal(expected, actual,
-    `(3.9.2) Det skal fremgå af de data som Databasen henter, hvilken type data der er tale om.`);
+    `(3.8.2) Det skal fremgå af de data som Databasen henter, hvilken type data der er tale om.`);
 
   expected = `test`;
   actual = actualObject[0].ELEMENT_TYPE;
   assert.equal(expected, actual,
-    `(3.9.3) Det skal fremgå af de data som Databasen henter, hvilken type data der er tale om.`);
+    `(3.8.3) Det skal fremgå af de data som Databasen henter, hvilken type data der er tale om.`);
 
-  /* 3.10 */
+  /* 3.9 */
   try {
     actualObject = await object.query(`SELECT *`, `TEST_OPTION_1 = "This doesnt exist"`);
   }
@@ -397,7 +343,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   expected = `[{"RowDataPacket":{}}]`;
   actual = JSON.stringify(actualObject);
   assert.equal(expected, actual,
-    `(3.10) {Forventet: ${expected} Reel: ${actual}} Databasen skal returnere et tomt objekt indkapslet i en RowDataPacket hvis objektet ikke findes`);
+    `(3.9) {Forventet: ${expected} Reel: ${actual}} Databasen skal returnere et tomt objekt indkapslet i en RowDataPacket hvis objektet ikke findes`);
 
   /* 4.1  */
   console.log(`4: Database.js skal kunne oprette data til MySQL databasen`);

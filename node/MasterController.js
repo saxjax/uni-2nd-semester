@@ -15,14 +15,14 @@ const { TestController } = require(`./Controllers/TestController`);
 const { Database } = require(`./Models/AbstractClasses/Database`);
 const pad = require(`./HelperFunctions/Pad`);
 
-/* Server er et objekt der opretter webapplikationen.
- * Server fungere dermed som den primære indgangsvinkel til programmet, og alle dele af programmet kan udledes herfra.
- * Server konstrueres ud fra nogle definerede settings, så det er muligt at opstarte en server i forskellige tilstande.
+/* MasterController er et objekt der opretter webapplikationen.
+ * MasterController fungere dermed som den primære indgangsvinkel til programmet, og alle dele af programmet kan udledes herfra.
+ * MasterController konstrueres ud fra nogle definerede settings, så det er muligt at opstarte en server i forskellige tilstande.
  */
-class Server {
+class MasterController {
   constructor(settings) {
     this.app = express();
-    this.root = __dirname.slice(0, -(`node`.length));
+    this.root = settings.root;
 
     this.name = settings.name;
     this.port = settings.port;
@@ -350,5 +350,5 @@ function isAccessURL(req) {
 }
 
 module.exports = {
-  Server,
+  MasterController,
 };
