@@ -176,16 +176,20 @@ class CreateController {
         quizResult.successAttempts = quizResult.SUCESS_ATTEMPTS;
         quizResult.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
       });
-      // for (let index = 0; index < QR.questionArray.length; index++) {
-      //   QR.questionArray[index].successAttempts = 3;
-      //   QR.questionArray[index].failedAttempts = 1;
-      //   QR.questionArray[index].recentResult = true;
-      //   QR.questionArray[index].repetitions = 2;
-      //   QR.questionArray[index].nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(QR.questionArray[index]);
-      // }
-      // QR.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(QR);
-      console.log(quizResultData);
 
+      quizResultData.resultData.forEach((quizResult) => {
+        quizResult.NEXT_REPITITION = quizResult.nextRepetition;
+      });
+
+      console.log(quizResultData);
+    }
+    catch (error) {
+      console.log(error);
+      res.redirect(503, `/dbdown`);
+    }
+
+    try {
+      await QR.insertToDatabaseSpacedRepetition(quizResultData.resultData);
       res.send({ newURL: `/view/evaluationResult/${QR.idEvaluation}/${idAttempt}` });
     }
     catch (error) {
