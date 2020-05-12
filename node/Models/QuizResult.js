@@ -95,24 +95,25 @@ class QuizResult extends Model {
 
     // Hent historisk data omkring quizzerne for den pågældende bruger
     try {
-      resultData = await this.query(`CUSTOM`, `SELECT quiz_result.ID_EVALUATION,
-                                        quiz_result.ID_QUIZ_QUESTION,
-                                        quiz_result.ID_USER,
-                                        quiz_result.RESULT as RECENT_RESULT,
-                                        max(CREATED_DATE)  as RECENT_ATTEMPT_DATE,
-                                        "-----"  as NEXT_REPITITION,
-                                        COUNT(quiz_result.RESULT) as TOTAL,
-                                        sum(case when quiz_result.RESULT = 'false' then 1 else 0 end) AS FAILED_ATTEMPTS,
-                                        sum(case when quiz_result.RESULT = 'true' then 1 else 0 end) AS SUCESS_ATTEMPTS
-                                        FROM p2.quiz_result
-                                        WHERE ID_QUIZ_QUESTION in (${stringforSQL})
-                                        GROUP BY ID_USER,ID_QUIZ_QUESTION;`);
+      resultData = await this.query(`CUSTOM`, `SELECT QR1.ID_EVALUATION,
+                                               QR1.ID_QUIZ_QUESTION,
+                                               QR1.ID_USER,
+                                               (SELECT QR2.RESULT FROM quiz_result QR2 WHERE QR1.ID_QUIZ_QUESTION = QR2.ID_QUIZ_QUESTION AND QR1.ID_USER = QR2.ID_USER ORDER BY QR2.CREATED_DATE DESC limit 1 ) as RECENT_RESULT,
+                                               max(QR1.CREATED_DATE)  as RECENT_ATTEMPT_DATE,
+                                               "-----"  as NEXT_REPITITION,
+                                               COUNT(QR1.RESULT) as TOTAL,
+                                               sum(case when QR1.RESULT = 'false' then 1 else 0 end) AS FAILED_ATTEMPTS,
+                                               sum(case when QR1.RESULT = 'true' then 1 else 0 end) AS SUCESS_ATTEMPTS
+                                               FROM p2.quiz_result QR1
+                                               WHERE QR1.ID_USER = "${this.idUser}" AND QR1.ID_QUIZ_QUESTION in (${stringforSQL})
+                                               GROUP BY QR1.ID_USER,QR1.ID_QUIZ_QUESTION;`);
     }
     catch (error) {
       console.log(error);
     }
 
     // Hent data omkring de sidste quiz forsøg for den pågældende bruger.
+    // KAN FORMENTLIG SLETTES, DA OVENSTÅENDE QUERY HAR DENNE INFORMATION ALLEREDE.
     try {
       recentAttempt = await this.query(`CUSTOM`, `SELECT ID_QUIZ_QUESTION,RESULT,CREATED_DATE 
                                          FROM quiz_result WHERE ID_ATTEMPT = "${idAttempt}"
@@ -121,6 +122,7 @@ class QuizResult extends Model {
     catch (error) {
       console.log(error);
     }
+
     const result = { resultData, recentAttempt };
     return result;
   }
