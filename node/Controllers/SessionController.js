@@ -9,7 +9,7 @@ const { Group } = require(`../Models/Group`);
 
 class SessionController {
   constructor(root) {
-    this.name = `ViewController`;
+    this.name = `SessionController`;
     this.root = root;
   }
 
@@ -34,7 +34,7 @@ class SessionController {
       res.redirect(`/register`); // FIXME: Statuskode indsættes
     }
   }
-
+  
   /* Formål: At oprette den session som bestemmer hvilken gruppe brugeren er tilkoblet.
    * Input : et groupId
    * Output: redirect til `/`
