@@ -10,7 +10,7 @@ class SpacedRepetition extends Model {
     super();
     this.minTimestamp = 24; // 24 timer
     this.comprehentionRatio = 3; // hvert forkert svar kræver mindst 3 rigtige svar for at blive registreret som forstået
-    this.repetitionRatio = 1;
+    this.repetitionInterval = 1;
   }
 
   // const spacedRep = new SpacedRepetition();
@@ -43,19 +43,20 @@ class SpacedRepetition extends Model {
       if (evaluationResult.repetitions > 1) { // er evalueringsopgaven blevet taget før?
         if (evaluationResult.failedAttempts > 0) { // er evalueringsopgaven svaret forkert før?
           rightWrongRatio = (evaluationResult.successAttempts / evaluationResult.failedAttempts); // udregn rigtig-forkert ratio
-          this.repetitionRatio =  rightWrongRatio > 1 ? rightWrongRatio : 1;
+          this.repetitionInterval =  rightWrongRatio > 1 ? rightWrongRatio : 1;// sæt repetitionsinterval til mindst 1, ellers = rightWrongRatio
         }
-        else { // hvis den IKKE er blevet svaret forkert på før OG du svarer rigtigt, sæt minimum timestamp til false
-          this.repetitionRatio = evaluationResult.successAttempts;
+        else { // hvis den IKKE er blevet svaret forkert på før OG du svarer rigtigt, sæt repetitionsintervallet = antal rigtige svar
+          this.repetitionInterval = evaluationResult.successAttempts;
         }
       }
-      else {
-        this.repetitionRatio = 1;
-      } // er evalueringen IKKE blevet taget før OG du svarer rigtigt, sæt minimum timestamp til false
+      else { // der er svaret rigtet OG det er første gang evalueringesopgaven er besvaret.
+        this.repetitionInterval = 1;
+      }
 
-      setMinTimestamp = false;
-    } // hvis der svares forkert på evalueringen sættes setMinTimestamp til true
-    else {
+      setMinTimestamp = false; // hvis der svares rigtigt så skal timestampet ALTID beregnes til false
+    }
+
+    else { // hvis der svares forkert på evalueringen sættes setMinTimestamp til true
       setMinTimestamp = true;
     }
 
@@ -76,11 +77,12 @@ class SpacedRepetition extends Model {
       newRepTimeStamp.setHours(newRepTimeStamp.getHours() + this.minTimestamp);
     }
     else {
-      newRepTimeStamp.setHours(newRepTimeStamp.getHours() + ((this.repetitionRatio * this.repetitionRatio) * this.minTimestamp));
+      newRepTimeStamp.setHours(newRepTimeStamp.getHours() + ((this.repetitionInterval * this.repetitionInterval) * this.minTimestamp));
     }
 
     return newRepTimeStamp;
   }
+
 
   /*
   * Formål: opret et array med alle de evaluerings objekter som skal afvikles NU
