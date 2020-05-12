@@ -122,7 +122,7 @@ for (let index = 0; index < 3; index++) {
   // evalTask.repetitions++
   evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask);
   // console.log(`#2:`+evalTask.nextRepTimeStamp);
-  const copy = { ...evalTask };
+  const copy = { evalTask };
   evalLog.push(copy);
 // console.log(copy)
 }
