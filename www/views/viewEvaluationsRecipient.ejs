@@ -38,7 +38,7 @@
                   <% if (data.evaluations) { data.evaluations.forEach((element) =>{ %>
                     <a href="<%= element.idEvaluation %>"> 
                       <div class="card">
-                        <div class="elementType<%= element.elementType %>">title: <%= element.title %></div>
+                        <div class="elementType<%= element.elementType %>"> <%= element.title %></div>
                         <div class="question"><%= element.question %></div>
                       </div>
                     </a>
