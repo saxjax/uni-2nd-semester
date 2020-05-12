@@ -166,36 +166,36 @@ module.exports = {
 
 
 // TEST AF FUNKTIONALITETER
-// const req = {};
-// const spacedR = new SpacedRepetition(req);
-// const evalLog = [];
-// const evalTask = {
-//   failedAttempts: 1, successAttempts: 1, recentResult: true, repetitions: 3,
-// };
+const req = {};
+const spacedR = new SpacedRepetition(req);
+const evalLog = [];
+const evalTask = {
+  failedAttempts: 1, successAttempts: 1, recentResult: true, repetitions: 3,
+};
 
-// evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask);
-// // evalLog.push(evalTask)
-// console.log(`#1:${evalTask.nextRepTimeStamp}`);
+evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask);
+// evalLog.push(evalTask)
+console.log(`#1:${evalTask.nextRepTimeStamp}`);
 
-// for (let index = 0; index < 3; index++) {
-//   evalTask.successAttempts++;
-//   // evalTask.repetitions++
-//   evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask);
-//   // console.log(`#2:`+evalTask.nextRepTimeStamp);
-//   const copy = { ...evalTask };
-//   evalLog.push(copy);
-// // console.log(copy)
-// }
-// for (let index = 0; index < 3; index++) {
-//   evalTask.failedAttempts++;
-//   evalTask.recentResult = false;
-//   // evalTask.repetitions++
-//   evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask);
-//   // console.log(`#2:`+evalTask.nextRepTimeStamp);
-//   const copy = { ...evalTask };
-//   evalLog.push(copy);
-//  console.log(copy)
-// }
+for (let index = 0; index < 3; index++) {
+  evalTask.successAttempts++;
+  // evalTask.repetitions++
+  evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask);
+  // console.log(`#2:`+evalTask.nextRepTimeStamp);
+  const copy = { evalTask };
+  evalLog.push(copy);
+// console.log(copy)
+}
+for (let index = 0; index < 3; index++) {
+  evalTask.failedAttempts++;
+  evalTask.recentResult = false;
+  // evalTask.repetitions++
+  evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask);
+  // console.log(`#2:`+evalTask.nextRepTimeStamp);
+  const copy = { ...evalTask };
+  evalLog.push(copy);
+  // console.log(copy)
+}
 
 // evalTask.successAttempts ++
 // evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
