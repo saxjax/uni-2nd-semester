@@ -11,14 +11,50 @@ class SpacedRepetition extends Model {
     this.minTimestamp = 24; // 24 timer
     this.comprehentionRatio = 3; // hvert forkert svar kræver mindst 3 rigtige svar for at blive registreret som forstået
     this.repetitionInterval = 1;
+    this.elementType = `repetition_task`;
+    this.table = `repetition_task`;
   }
 
-  // const spacedRep = new SpacedRepetition();
-  // evaluationTask = spacedRep.calculateNextRepetitionTimeStampForEvaluation(evaluationTask);
-  // evaluationLog.push(evaluationTask);
+  async insertToDatabaseSpacedRepetition(resultData) {
+    const trueObjectTable = this.table; // refererer til QuizResults table i dette tilfælde
+    this.table = `repetition_task`;
+    console.log(this.idGroup);
+    console.log(this.table);
 
-  // spacedRep.populateNextRepetitionTask(evaluationLog);
-  // spacedRep.NextRepetitiontask[];
+    resultData.forEach((result) => {
+      result.nextRepetition = result.nextRepetition.toISOString().slice(0, 19).replace(`T`, ` `);
+      try {
+        this.query(`CUSTOM`, `INSERT INTO ${this.table} (ID_QUIZ_QUESTION, ID_USER, ID_GROUP, REPETITION_DATE) 
+                    VALUES ("${result.idQuizQuestion}", "${result.idUser}", "${this.idGroup}", "${result.nextRepetition}") ON DUPLICATE KEY UPDATE REPETITION_DATE = "${result.nextRepetition}" `);
+      }
+      catch (error) {
+        console.log(error);
+        return false;
+      }
+      return true;
+    });
+
+    this.table = trueObjectTable;
+    return true;
+  }
+
+  async getTasksforRepetition() {
+    const repetitionTasks = [];
+    let queryResult;
+    let now = new Date();
+    now = now.toISOString().slice(0, 19).replace(`T`, ` `);
+    console.log(now);
+
+    try {
+      queryResult = await this.query(`CUSTOM`, `SELECT * FROM p2.repetition_task where Repetition_date <= "${now}" 
+                                      AND ID_USER = "${this.idUser}" 
+                                      AND ID_GROUP = "${this.idGroup}" ;`);
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
 
   RunRepetition() {
 
