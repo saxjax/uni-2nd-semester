@@ -3,22 +3,22 @@ const tape = require(`tape`);
 const testDecorater = require(`tape-promise`).default;
 
 const test = testDecorater(tape);
-const { SpacedRepetition } = require(`../../../node/Models/ `);
+const { QuizResult } = require(`../../../node/Models/QuizResult`);
 
-let request = { body: {} };
+const request = { body: {} };
 let actual = true;
 let expected = true;
-let object = new Navn(request);
+
 
 /* Test af Funktioner */
 
 
 test(`Kopier det nedenunder ind i Start Templaten`, async (assert) => {
-  const SP = new SpacedRepetition();
-  actual = SP.getTasksForRepetition();
-  console.log(actual);
+  const QR = new QuizResult(request);
+  QR.idUser = `553e422d-7c29-11ea-86e2-2c4d54532c7a`;
+  QR.idGroup = `34701dd1-7c29-11ea-86e2-2c4d54532c7a`;
   expected = `forventet output`;
-  actual = Navn(`vars`);
+  actual = await QR.getTasksforRepetition();
 
   assert.equal(actual, expected,
     `{Forventet: ${expected} Reel: ${actual}} Metoden skal kunne X`);

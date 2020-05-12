@@ -428,6 +428,21 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
+  async viewSpacedRepetitionPage(req, res) {
+    const QR = new QuizResult(req);
+    const dataArray = await Promise.all([
+      await QR.getThisGroupData(),                    // dataArray[0]
+      await QR.getThisUserData(),                     // dataArray[1]
+      await QR.getTasksforRepetition(),               // dataArray[2]
+    ]);
+
+    const data = { group: dataArray[0], user: dataArray[1], questions: dataArray[2] };
+    console.log(data);
+    this.ejs = path.join(`${this.root}/www/views/viewEvaluation.ejs`);
+    res.render(this.ejs, { data });
+  }
+
+
   async viewEvaluationResultPage(req, res) {
     const QR = new QuizResult(req);
     const dataArray = await Promise.all([

@@ -42,19 +42,43 @@ class SpacedRepetition extends Model {
     const repetitionTasks = [];
     let queryResult;
     let now = new Date();
+    let quizContent = [];
     now = now.toISOString().slice(0, 19).replace(`T`, ` `);
-    console.log(now);
 
     try {
-      queryResult = await this.query(`CUSTOM`, `SELECT * FROM p2.repetition_task where Repetition_date <= "${now}" 
+      queryResult = await this.query(`CUSTOM`, `SELECT ID_QUIZ_QUESTION FROM p2.repetition_task where Repetition_date <= "${now}" 
                                       AND ID_USER = "${this.idUser}" 
                                       AND ID_GROUP = "${this.idGroup}" ;`);
+
+      queryResult.forEach((element) => {
+        repetitionTasks.push(element.ID_QUIZ_QUESTION);
+      });
     }
     catch (error) {
       console.log(error);
     }
+    quizContent = await this.getQuizQuestionContent(repetitionTasks);
+    return quizContent;
   }
 
+  async getQuizQuestionContent(idQuizQuestions) {
+    let quizQuestionContent = [];
+    const string = this.createQueryString(idQuizQuestions);
+    quizQuestionContent = await this.query(`CUSTOM`, `SELECT * FROM p2.quiz_question where ${string}`);
+    console.log(quizQuestionContent);
+    return quizQuestionContent;
+  }
+
+  createQueryString(idQuizQuestions) {
+    let string;
+    idQuizQuestions.forEach((element, index) => {
+      if (index > 0) {
+        string += `OR `;
+      }
+      string = `ID_QUIZ_QUESTION = "${element}"`;
+    });
+    return string;
+  }
 
   RunRepetition() {
 
