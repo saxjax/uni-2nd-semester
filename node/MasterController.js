@@ -270,7 +270,7 @@ class MasterController {
       store: sessionStore,
       resave: false,
       saveUninitialized: false,
-      cookie: { maxAge: 3600 },
+      cookie: { maxAge: 3600, sameSite: `lax`, secure: false },
     }));
     if (this.skipAccess) {
       this.app.use(this.createTestUserAndidGroup);
