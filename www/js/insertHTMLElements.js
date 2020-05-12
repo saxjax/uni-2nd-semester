@@ -31,7 +31,9 @@ function createDomNode(tagNameParam, text, selectors) {
         elem.innerHTML = text;                           break;
       case `INPUT`:
         elem.placeholder = text;                         break;
-      default:                                           break; // "default" sker når tagName ikke skal have et text
+      default:
+        console.warn(`tagName Warning: ${tagName} is not defined in switch. Text was not applied.`);
+        break;
     }
   }
   // Apply css
@@ -41,7 +43,7 @@ function createDomNode(tagNameParam, text, selectors) {
       switch (selectorType) {
         case    `id`: elem.id = selectors[i].id;              break;
         case `class`: elem.classList.add(selectors[i].class); break;
-        default: throw new Error(`That's not a valid selector type. Only "class" and "id" are available.`);
+        default: throw new Error(`selectorType Error: ${selectorType} is not a valid selector type. Only "class" and "id" are available.`);
       }
     }
   }
