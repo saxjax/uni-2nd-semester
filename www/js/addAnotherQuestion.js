@@ -10,7 +10,7 @@ let questionCount = 1;
 const urlParams = new URLSearchParams(window.location.search);
 const titleEvaluation = urlParams.get(`titleEvaluation`);
 const evaluationTitleHeader = document.getElementById(`quizTitleHeader`);
-evaluationTitleHeader.innerHTML = `Create new questions for ${titleEvaluation}`;
+evaluationTitleHeader.innerHTML = `Tilføj nye spørgsmål til ${titleEvaluation}`;
 
 addAnotherQuestion(); // Tilføjer automatisk et spørgsmål, når htmlen er loadet.
 // /ON LOAD //
@@ -23,41 +23,41 @@ function addAnotherQuestion() {
   const questionContainer = insertDomNode(`DIV`, addAnotherQuestionButtons[1], undefined, [{ class: `questionContainer` }]);
 
   const questionInputContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `questionInputContainer` }]);
-  const questionLabel = appendDomNode(`LABEL`, questionInputContainer, `Question ${questionCount}:`); // Indsæt label for="someID"
+  const questionLabel = appendDomNode(`LABEL`, questionInputContainer, `Spørgsmål ${questionCount}:`); // Indsæt label for="someID"
   questionLabel.htmlFor = `question${questionCount}`; // Corresponds to the input.id
-  const questionInput = appendDomNode(`INPUT`, questionInputContainer, `Question ${questionCount}`, [{ id: `question${questionCount}` }, { class: `questionInput` }]);
+  const questionInput = appendDomNode(`INPUT`, questionInputContainer, `Spørgsmål ${questionCount}`, [{ id: `question${questionCount}` }, { class: `questionInput` }]);
   questionInput.name = `question${questionCount}`;
 
   addAnswerElements(questionContainer);
   addKeywordElements(questionContainer);
 
-  questionCountDisplay.innerText = `Number of questions: ${questionCount}`;
+  questionCountDisplay.innerText = `Antal spørgsmål: ${questionCount}`;
   questionCount += 1;
 }
 
 function addAnswerElements(questionContainer) {
   const answersContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `answersContainer` }]);
-  const addAnotherAnswerButton = appendDomNode(`BUTTON`, answersContainer, `Add`);
+  const addAnotherAnswerButton = appendDomNode(`BUTTON`, answersContainer, `Tilføj`);
   let answerCount = 0;
   createAnswerField(addAnotherAnswerButton, ++answerCount);
   createAnswerField(addAnotherAnswerButton, ++answerCount);
   addAnotherAnswerButton.addEventListener(`click`, () => {
     createAnswerField(addAnotherAnswerButton, ++answerCount);
   });
-  const removeAnswerButton = appendDomNode(`BUTTON`, answersContainer, `Remove`);
+  const removeAnswerButton = appendDomNode(`BUTTON`, answersContainer, `Slet`);
   removeAnswerButton.addEventListener(`click`, () => {
     if (answerCount > 2) {
       removeLast(answersContainer, `createAnswerFieldContainer`);
       answerCount--;
     }
     else {
-      displayErrorMessage(answersContainer, `You need two or more answers.`);
+      displayErrorMessage(answersContainer, `Du skal indtaste mindst to svar.`);
     }
   });
 }
 
 function displayErrorMessage(container, message) {
-  const messageNode = appendDomNode(`P`, container, `Error: ${message}`);
+  const messageNode = appendDomNode(`P`, container, `Fejl! ${message}`);
   messageNode.style.color = `red`;
   setTimeout(() => {
     messageNode.remove();
@@ -66,20 +66,20 @@ function displayErrorMessage(container, message) {
 
 function addKeywordElements(questionContainer) {
   const keywordContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `keywordContainer` }]);
-  const addKeywordButton = appendDomNode(`BUTTON`, keywordContainer, `Add`);
+  const addKeywordButton = appendDomNode(`BUTTON`, keywordContainer, `Tilføj`);
   let keywordCount = 0;
   createKeywordField(addKeywordButton, ++keywordCount);
   addKeywordButton.addEventListener(`click`, () => {
     createKeywordField(addKeywordButton, ++keywordCount);
   });
-  const removeKeywordButton = appendDomNode(`BUTTON`, keywordContainer, `Remove`);
+  const removeKeywordButton = appendDomNode(`BUTTON`, keywordContainer, `Slet`);
   removeKeywordButton.addEventListener(`click`, () => {
     if (keywordCount > 1) {
       removeLast(keywordContainer, `createKeywordFieldContainer`);
       keywordCount--;
     }
     else {
-      displayErrorMessage(keywordContainer, `You need one or more keywords.`);
+      displayErrorMessage(keywordContainer, `Du skal indtaste mindst to keywords.`);
     }
   });
 }
@@ -87,15 +87,15 @@ function addKeywordElements(questionContainer) {
 function createAnswerField(createBeforeThis, answerCount) {
   const createAnswerFieldContainer = insertDomNode(`DIV`, createBeforeThis, undefined, [{ class: `createAnswerFieldContainer` }]);
 
-  const answerLabel = appendDomNode(`LABEL`, createAnswerFieldContainer, `Answer ${answerCount}:`);
+  const answerLabel = appendDomNode(`LABEL`, createAnswerFieldContainer, `Svar ${answerCount}:`);
   answerLabel.htmlFor = `question${questionCount}answer${answerCount}`;
 
-  const answerInput = appendDomNode(`INPUT`, createAnswerFieldContainer, `Answer ${answerCount}`, [{ class: `answerInput` }, { id: `question${questionCount}answer${answerCount}` }]);
+  const answerInput = appendDomNode(`INPUT`, createAnswerFieldContainer, `Svar ${answerCount}`, [{ class: `answerInput` }, { id: `question${questionCount}answer${answerCount}` }]);
   answerInput.name = `Question${questionCount}Answer${answerCount}`;
 
   const correctAnswerCheckbox = appendDomNode(`INPUT`, createAnswerFieldContainer, undefined, [{ class: `correctAnswerCheckbox` }]);
   correctAnswerCheckbox.type = `checkbox`;
-  correctAnswerCheckbox.title = `Click to mark as correct answer`;
+  correctAnswerCheckbox.title = `Klik for at markere dette svar som korrekt`;
   correctAnswerCheckbox.name = `Question${questionCount}AnswerCheckbox${answerCount}`;
 
   return createAnswerFieldContainer;
