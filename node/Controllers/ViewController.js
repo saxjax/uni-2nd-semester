@@ -29,14 +29,14 @@ class ViewController {
    * Output: Startsiden af hjemmesiden, som skal give et overblik for User.
    */
   async homePage(req, res) {
-    const Recipient = new User(req);
+    const Recipient = new Group(req);
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),               // dataArray[0]
       Recipient.getThisUserData(),                // dataArray[1]
       Recipient.getAllElementsOfType(`Document`), // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2] };
-    console.log(data);
+    console.log(dataArray);
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs, { data });
   }
