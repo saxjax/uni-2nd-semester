@@ -44,41 +44,50 @@ class SpacedRepetition extends Model {
   }
 
 
-  /* Formål: Hente quizquestions som er due til at blive afviklet
-   * Input:  intet
-   * Output: et array af  id'er  idQuizQuestions
+  /* Formål: Hente alle quizquestions hvor datoen er due til at blive afviklet, de hentes fra tabellen repetition_task
+   * Input:  NONE
+   * Output: et array af quizQuestions
    */
   async getTasksforRepetition() {
-    const repetitionTasks = [];
-    let queryResult;
-    let now = new Date();
-    let quizContent = [];
-    now = now.toISOString().slice(0, 19).replace(`T`, ` `);
+    let repetitionTasks = []; // idQuizQuestion array
+    let quizContent = [];// array af quizquestions
 
-    try {
-      this.table = `repetition_task`;
-      queryResult = await this.query(`SELECT ID_QUIZ_QUESTION`, `REPETITION_DATE <= "${now}" 
-                                      AND ID_USER = "${this.idUser}" 
-                                      AND ID_GROUP = "${this.idGroup}" ;`);
-      // if (Object.keys(queryResult[0]).length) {
-      queryResult.forEach((element) => {
-        if (element.idQuizQuestion !== undefined) {
-          repetitionTasks.push(element.idQuizQuestion);
-        }
-      });
-      // }
-    }
-    catch (error) {
-      console.log(error);
-    }
+    repetitionTasks = await this.getIdQuizquestions();
 
     if (repetitionTasks.length > 0) {
       quizContent = await this.getQuizQuestionContent(repetitionTasks);
       return quizContent;
     }
-    return [];
+    return [];// returnerer et tomt array hvis der ikke er nogen quizquestions som er due til afvikling
   }
 
+  /* Formål: At returnere et array af idQuizQuestions fra repetition_task hvor RepetitionDate er nu eller tidligere
+   * Input: NONE
+   * Output: et array af idQuizQuestions
+   */
+  async getIdQuizquestions() {
+    const repetitionTasks = [];
+    let queryResult;
+    let now = new Date();
+    now = now.toISOString().slice(0, 19).replace(`T`, ` `);
+
+    try {
+      this.table = `repetition_task`;
+      queryResult = await this.query(`SELECT ID_QUIZ_QUESTION`, `REPETITION_DATE <= "${now}" 
+                                    AND ID_USER = "${this.idUser}" 
+                                    AND ID_GROUP = "${this.idGroup}" ;`);
+
+      queryResult.forEach((element) => {
+        if (element.idQuizQuestion !== undefined) {
+          repetitionTasks.push(element.idQuizQuestion);
+        }
+      });
+    }
+    catch (error) {
+      console.log(error);
+    }
+    return repetitionTasks;
+  }
 
   async getQuizQuestionContent(idQuizQuestions) {
     const trueTable = this.table;
@@ -90,7 +99,7 @@ class SpacedRepetition extends Model {
       const string = this.createQueryStringFromQuestionIDs(idQuizQuestions);
       quizQuestionContent = await this.query(`SELECT *`, `${string}`);
     }
-
+    console.log(quizQuestionContent);
     return quizQuestionContent;
   }
 
