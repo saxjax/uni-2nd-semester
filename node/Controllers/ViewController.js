@@ -436,7 +436,7 @@ class ViewController {
       await QR.getThisUserData(),                     // dataArray[1]
       await QR.getTasksforRepetition(),               // dataArray[2]
     ]);
-
+    
     const data = { group: dataArray[0], user: dataArray[1], questions: dataArray[2] };
     console.log(data);
     this.ejs = path.join(`${this.root}/www/views/viewEvaluation.ejs`);
