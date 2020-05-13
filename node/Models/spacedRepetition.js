@@ -52,7 +52,7 @@ class SpacedRepetition extends Model {
     let repetitionTasks = []; // idQuizQuestion array
     let quizContent = [];// array af quizquestions
 
-    repetitionTasks = await this.getIdQuizquestions();
+    repetitionTasks = await this.getIdQuizquestionsDueForRepetition();
 
     if (repetitionTasks.length > 0) {
       quizContent = await this.getQuizQuestionContent(repetitionTasks);
@@ -66,7 +66,7 @@ class SpacedRepetition extends Model {
    * Input: NONE
    * Output: et array af idQuizQuestions
    */
-  async getIdQuizquestions() {
+  async getIdQuizquestionsDueForRepetition() {
     const repetitionTasks = [];
     let queryResult;
     let now = new Date();
@@ -134,20 +134,6 @@ class SpacedRepetition extends Model {
 
     return string;
   }
-
-
-
-  // Endnu ikke implementeret
-  RunRepetition() {
-
-  }
-
-
-
-
-
-
-
 
 
   // spacedrepetition algoritmen udgøres af funktionerne : calculateNextRepetitionTimeStampForEvaluation() og calculateTimeStamp() //
