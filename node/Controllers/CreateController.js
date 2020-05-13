@@ -45,10 +45,11 @@ class CreateController {
   async createDocument(req, res) {
     const D = new Document(req);
     try {
-      const documentID = await D.insertToDatabase();
-      res.redirect(`/view/sections/document/${documentID}`);
+      const document = await D.insertToDatabase();
+      res.redirect(`/view/sections/document/${document[0].idDocument}`);
     }
     catch (error) {
+      console.log(error);
       res.redirect(503, `/dbdown`);
     }
   }

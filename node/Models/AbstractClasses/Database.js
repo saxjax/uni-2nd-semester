@@ -95,10 +95,6 @@ class Database {
           const outputParser = new ParseSql(this.elementType);
           resolve(outputParser.parseArrayOfObjects(result));
         }
-        else if (/INSERT/.test(choice)) { // Når der insertes skal der returneres det oprettede ID.
-          console.log(result);
-          resolve(result);
-        }
         else {
           resolve(result);
         }
