@@ -1,15 +1,19 @@
-const progressBar = document.querySelector(`.progress-bar`);
-const progress = calculateCurrentProgress();
-
-progressBar.innerHTML = `${progress}%`;
-
-progressBar.style.width = `${progress}%`;
-
 function calculateCurrentProgress() {
-  // This function should calculate the progress for the user
-  // It returns a number between 0 and 100%
+  const takenBar = document.getElementById(`taken`);
+  const correctBar = document.getElementById(`correct`);
+  let takenVal = 0;
+  let correctVal = 0;
 
-  // Logic and grabbing from the database!
+  for (let i = 0; i < 1; i++) {
+    // calculate amount of taken and amount of correct
+    takenVal = 50;
+    correctVal = 50;
+  }
 
-  return 50;
+  takenBar.innerHTML = `${takenVal}%`;
+  takenBar.style.width = `${takenVal}%`;
+  correctBar.innerHTML = `${correctVal}%`;
+  correctBar.style.width = `${correctVal}%`;
 }
+
+calculateCurrentProgress()

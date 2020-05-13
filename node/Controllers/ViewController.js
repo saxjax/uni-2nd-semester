@@ -34,10 +34,11 @@ class ViewController {
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),               // dataArray[0]
       Recipient.getThisUserData(),                // dataArray[1]
-      SpacedRep.getIdQuizquestionsDueForRepetition(), // dataArray[2]
+      Recipient.getAllElementsOfType(`Document`), // dataArray[2]
+      SpacedRep.getIdQuizquestionsDueForRepetition(), // dataArray[3]
 
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], repetitionTask: dataArray[2] };
+    const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2], repetitionTask: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs, { data });
   }
@@ -78,8 +79,7 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // TODO: Mangler EJS fil
-  /* Formål: BESKRIV EJS FORMÅL HER
+  /* Formål: At gøre det muligt at oprette et nyt Document
    * Input : En session med userId og groupId
    * Output: En visning af en form som brugeren kan bruge til at oprette et dokument.
    */
@@ -94,17 +94,16 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // TODO: Mangler EJS fil
-  /* Formål: BESKRIV EJS FORMÅL HER
+  /* Formål: At give et overblik over det individuelle dokument, med de sections og evalueringer der er tilknyttet.
    * Input : Et request med et queryId samt en session med userId og groupId
    * Output: Visning af et dokument
    */
   async viewDocumentPage(req, res) {
     const Doc = new Document(req);
     const dataArray = await Promise.all([
-      Doc.getThisGroupData(),               // dataArray[0]
-      Doc.getThisUserData(),                // dataArray[1]
-      Doc.getThis(),                        // dataArray[2]
+      Doc.getThisGroupData(),                 // dataArray[0]
+      Doc.getThisUserData(),                  // dataArray[1]
+      Doc.getThis(),                          // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewDocument.ejs`);
@@ -189,12 +188,13 @@ class ViewController {
    *        Det er vigtigt, at strukturen for hvordan det løses på, er den samme for alle de andre URL'er.
    */
   async postSectionPage(req, res) {
-    const Expert = new User(req);
+    const Doc = new Document(req);
     const dataArray = await Promise.all([
-      Expert.getThisGroupData(),               // dataArray[0]
-      Expert.getThisUserData(),                // dataArray[1]
+      Doc.getThisGroupData(),               // dataArray[0]
+      Doc.getThisUserData(),                // dataArray[1]
+      Doc.getThis(),                        // dataArray[2]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1] };
+    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/postSection.ejs`);
     res.render(this.ejs, { data });
   }
@@ -248,6 +248,7 @@ class ViewController {
       Recipient.getAllElementsOfType(`Flashcard`), // dataArray[3]   ->   FIXME: Ikke oprettet endnu
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2], flashcards: dataArray[3] };
+    // console.log(data);
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsRecipient.ejs`);
     res.render(this.ejs, { data });
   }

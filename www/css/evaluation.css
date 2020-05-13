@@ -24,3 +24,7 @@
 .correctAnswer {
     color: greenyellow;
 }   
+
+#returnButton{
+    color: white;
+}

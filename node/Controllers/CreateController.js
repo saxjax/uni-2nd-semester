@@ -2,6 +2,7 @@
 /* eslint no-console: off */
 const { Group } = require(`../Models/Group`);
 const { User } = require(`../Models/User`);
+const { Document } = require(`../Models/Document`);
 const { Section } = require(`../Models/Section`);
 const { Evaluation } = require(`../Models/Evaluation`);
 const { QuizQuestion } = require(`../Models/QuizQuestion`);
@@ -41,11 +42,24 @@ class CreateController {
   }
 
   /* UNDER CONSTRUCTION */
+  async createDocument(req, res) {
+    const D = new Document(req);
+    try {
+      const document = await D.insertToDatabase();
+      res.redirect(`/view/sections/document/${document[0].idDocument}`);
+    }
+    catch (error) {
+      console.log(error);
+      res.redirect(503, `/dbdown`);
+    }
+  }
+
+  /* UNDER CONSTRUCTION */
   async createSection(req, res) {
     const S = new Section(req);
     try {
-      await S.insertToDatabase();
-      res.redirect(`/view/sections/recipient`);
+      const section = await S.insertToDatabase();
+      res.redirect(`/view/section/${section[0].idSection}`);
     }
     catch (error) {
       res.redirect(204, `/dbdown`);

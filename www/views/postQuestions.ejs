@@ -2,7 +2,7 @@
 <html>
   <head>
     <%- include('meta/header') %> 
-    <title>GroupHub | Create Questions</title>
+    <title>GroupHub | Tilføj Spørgsmål</title>
     <link rel="stylesheet" href="/css/design.css">
     <link rel="stylesheet" href="/css/postQuestions.css">
     <script src="/js/insertHTMLElements.js"></script>
@@ -13,11 +13,19 @@
     <%- include('meta/navbar') %> 
     <div class="container" id="content">
       <h1 id="quizTitleHeader"><!-- Create new questions for ${titleQuiz} (inserted from JS) --></h1>
-      <button type="button" class="addAnotherQuestionButton">Add another question</button>
+      <p>Følg disse instruktioner for at tilføje spørgsmål til din evaluering:</p>
+      <ol>
+        <li>Skriv dit spørgsmål i input-feltet</li>
+        <li>Tilføj så mange svar du har lyst til til dit spørgsmål</li>
+        <li>Marker de(t) korrekte svar ved at afmærke den checkbox, som er til højre for de(t) korrekte svar</li>
+        <li>Tilføj relevant(e) keyword(s) til dit spørgsmål</li>
+        <li>Tilføj flere spørgsmål ved at klikke på knappen</li>
+      </ol>
+      <button type="button" class="addAnotherQuestionButton">Tilføj endnu et spørgsmål</button>
       <!--Det her bliver fyldt ind fra den tilhørende JS-fil, når brugeren trykker på knappen addAnotherQuestionButton-->
-      <button type="button" class="addAnotherQuestionButton">Add another question</button><br>
-      <button id="submit">Submit</button>
-      <p id="questionCountDisplay">Number of questions: 0</p>
+      <button type="button" class="addAnotherQuestionButton">Tilføj endnu et spørgsmål</button><br>
+      <button id="submit">Indsend</button>
+      <p id="questionCountDisplay">Antal spørgsmål: 0</p>
     </div>
     <%- include('meta/footer') %> 
   </body>

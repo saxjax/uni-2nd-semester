@@ -76,10 +76,13 @@ class Database {
   // FIXME:skriv et eksempel på brug af funktionen.
   /* Formål: Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overridet.
    *         Dette oger kode genbrug, samt sikre fornuftig testning paa tvaers af hele programmet i forhold til databasen.
-   * Input:  Metoden modtager de valg som brugeren har lavet, og gennem parser metoden, faar noget brugbar SQL,
-   *         Der kan vaere et get, post, put eller delete.
-   *         Metoden indtager ogsaa texton parameter, som frakobles info() kald under test af catching af errors, men ellers altid er true.
-   * Output: Metoden outputter den parsede data hentet fra SQL databasen, ud fra den givne SQL streng
+   * Input:  @choice bestemmer hvilken slags SQL der søges. Kan være "SELECT *", "SELECT kolonnenavn"
+   *            "INSERT", "UPDATE", "DELETE" eller "HEAD".
+   *         @data er de data der queries for, og har en struktur på "kolonnenavn = "værdi" ", hvor "" omkring værdi er væsentlige
+   *            Et eksempel kunne være "ID_USER = "Hans" ". For nærmere information, se info() metoden.
+   *         @texton er en boolsk parameter der default til true, der aktivere fejlmeddelser
+   *             i kommando prompten. Under testning slås den fra ved at gives med som "false".
+   * Output: Metoden outputter et array af objekter, hvor hvert objekt er en række fra MySQL databasen.
    */
   async query(choice, data, texton = true) {
     this.sql = this.inputParser(choice, data, texton);
@@ -92,12 +95,12 @@ class Database {
           }
           reject(error);
         }
-        else if (!/SELECT/.test(choice)) { // Parseren er kun relevant når der hentes data fra databasen (eg. et select)
-          resolve(result);
-        }
-        else {
+        else if (/SELECT/.test(choice)) { // Parseren er kun relevant når der hentes data fra databasen (eg. et select)
           const outputParser = new ParseSql(this.elementType);
           resolve(outputParser.parseArrayOfObjects(result));
+        }
+        else {
+          resolve(result);
         }
       });
     });

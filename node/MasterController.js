@@ -40,6 +40,7 @@ class MasterController {
     this.bodyParserMiddleware();
     this.sessionMiddleware();
     this.viewEngineMiddleware();
+    this.checkLogin();
     if (this.debug) {
       this.testMiddleware();
     }
@@ -118,15 +119,15 @@ class MasterController {
     // Documents
     // this.app.get(`/view/document/recipient`,  (req, res) => Show.viewDocumentRecipientPage(req, res));
     // this.app.get(`/view/document/expert`,     (req, res) => Show.viewDocumentExpertPage(req, res));
-    // this.app.get(`/post/document/`,         (req, res) => Show.postDocumentSelectPage(req, res));
-    // this.app.get(`/view/document/:idQuery`,   (req, res) => Show.viewDocumentPage(req, res));
+    this.app.get(`/post/document/`,         (req, res) => Show.postDocumentPage(req, res));
+    this.app.get(`/view/document/:idQuery`,   (req, res) => Show.viewDocumentPage(req, res));
     // this.app.get(`/put/document/:idQuery`, (req, res) => Show.putDocumentPage(req, res));
 
     // Sections
     this.app.get(`/view/sections/recipient`,         (req, res) => Show.viewSectionsRecipientPage(req, res));
     // this.app.get(`/view/section/expert`,            (req, res) => Show.viewSectionExpertPage(req, res));
-    this.app.get(`/view/section/document/:idQuery`, (req, res) => Show.viewSectionDocumentPage(req, res));
-    this.app.get(`/post/section`,                 (req, res) => Show.postSectionPage(req, res));
+    this.app.get(`/view/sections/document/:idQuery`, (req, res) => Show.viewSectionDocumentPage(req, res));
+    this.app.get(`/post/section/:idQuery`,                 (req, res) => Show.postSectionPage(req, res));
     this.app.get(`/view/section/:idQuery`,          (req, res) => Show.viewSectionPage(req, res));
     // this.app.get(`/put/section/:idQuery`,        (req, res) => Show.putSectionPage(req, res));
 
@@ -186,6 +187,7 @@ class MasterController {
     this.app.post(`/register`,                 (req, res) => Redirect.RegisterNewUser(req, res));
     this.app.post(`/create/section`,           (req, res) => Redirect.createSection(req, res));
     this.app.get(`/keyword`,                   (req, res) => Redirect.keyword(req, res));
+    this.app.get(`/logout`,                    (req, res) => Redirect.logout(req, res));
   }
 
   /* Formål: Struktur for de URL Patterns der indsætter data i databasen.
@@ -197,6 +199,7 @@ class MasterController {
     const Creator = new CreateController(this.root);
     this.app.post(`/post/group`,       (req, res) => Creator.createGroup(req, res));
     this.app.post(`/post/user`,        (req, res) => Creator.createUser(req, res));
+    this.app.post(`/post/document`,    (req, res) => Creator.createDocument(req, res));
     this.app.post(`/post/section`,     (req, res) => Creator.createSection(req, res));
     this.app.post(`/post/evaluation`,  (req, res) => Creator.createEvaluation(req, res));
     this.app.post(`/post/questions`,   (req, res) => Creator.createQuestions(req, res));
@@ -236,6 +239,18 @@ class MasterController {
     this.app.set(`view engine`, `ejs`);
   }
 
+  /* Formål: Checker om brugeren er logged ind eller ej, og sender det med som en local variabel i response.
+             Dette gøres på alle views inden render / redirect.
+   * Input : et request
+   * Output: local variabel med loggedin information.
+   */
+  checkLogin() {
+    this.app.use((req, res, next) => {
+      res.locals.isloggedin = req.session.loggedIn;
+      next();
+    });
+  }
+
   /* Formål: At gøre alle vores statiske filer tilgængelige for et request fra en client
    * Input : Et request der forespørger en statisk fil
    * Output: En static file der skal bruges i en ejs fil.
@@ -271,7 +286,7 @@ class MasterController {
       store: sessionStore,
       resave: false,
       saveUninitialized: false,
-      cookie: { maxAge: 3600, sameSite: `lax`, secure: false },
+      cookie: { maxAge: 3600000, sameSite: `lax`, secure: false },
     }));
     if (this.skipAccess) {
       this.app.use(this.createTestUserAndidGroup);

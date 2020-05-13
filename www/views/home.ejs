@@ -8,8 +8,6 @@
     <body>
     <%- include('meta/navbar') %> 
     <div class="container" id="content">
-      <div class="wrapper">
-      </div>   
       <div class="row">
         <div class="col">
           <div class="leftside">
@@ -20,7 +18,18 @@
              <% data.repetitionTask.forEach((repetitionTask, i) => { %>
               <a href="/view/spacedrepetition"><%= i %></a>
               <% });} %>
-            <img id="newsfeed" src="img/Design/newsfeed.png">
+            <!-- <img id="newsfeed" src="img/Design/newsfeed.png"> -->
+            <h2> Oprettede Dokumenter </h2>
+            <% data.documents.forEach((document) => { %>
+              <p>
+                <a href="view/sections/document/<%= document.idDocument %>">
+                  <strong><%= document.title %></strong>
+                </a>
+              </p>
+            <% }); %>
+            <button class="btn btn-info">
+              <a href="/post/document"> Opret Dokument </a>
+            </button>
           </div>
         </div>
         <div class="col">
