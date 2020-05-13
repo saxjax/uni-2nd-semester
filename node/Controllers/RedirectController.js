@@ -52,11 +52,12 @@ class RedirectController {
         res.redirect(`/`);
       }
       else {
-        res.redirect(503, `/register`);
+        res.redirect(204, `/register`);
       }
     }
     else { // User could not be validated
-      res.redirect(400, `/register`);
+      const error = `Username or Email already in use, user can't be created.`;
+      res.send(error);
     }
   }
 
