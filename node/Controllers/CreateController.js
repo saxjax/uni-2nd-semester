@@ -163,7 +163,6 @@ class CreateController {
     try {
       idAttempt = await QR.insertToDatabase();
       quizResultData = await QR.getHistoricQuizResultData(idAttempt, req.body.questionsArray);
-      console.log(quizResultData);
 
       quizResultData.resultData.forEach((quizResult) => {
         quizResult.idQuizQuestion = quizResult.ID_QUIZ_QUESTION;
@@ -180,8 +179,6 @@ class CreateController {
       quizResultData.resultData.forEach((quizResult) => {
         quizResult.NEXT_REPITITION = quizResult.nextRepetition;
       });
-
-      console.log(quizResultData);
     }
     catch (error) {
       console.log(error);
