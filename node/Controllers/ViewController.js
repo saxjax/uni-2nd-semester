@@ -26,15 +26,18 @@ class ViewController {
 
   /* Formål: Et overblik til brugeren om den gruppe vedkommende er en del af, samt hvilke muligheder brugeren har.
    * Input : Et request der har oprettet en userId og groupId.
-   * Output: Startsiden af hjemmesiden, som skal give et overblik for User.
+   * Output: Startsiden af hjemmesiden, som skal give et overblik for User, her listes bla. om der er spaced repetition tasks klar til afvikling
    */
   async homePage(req, res) {
     const Recipient = new User(req);
+    const SpacedRep = new QuizResult(req);
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),               // dataArray[0]
       Recipient.getThisUserData(),                // dataArray[1]
+      SpacedRep.getIdQuizquestionsDueForRepetition(), // dataArray[2]
+
     ]);
-    const data = { group: dataArray[0], user: dataArray[1] };
+    const data = { group: dataArray[0], user: dataArray[1], repetitionTask: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs, { data });
   }

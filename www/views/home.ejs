@@ -14,6 +14,12 @@
         <div class="col">
           <div class="leftside">
             <h2> News Feed</h2>
+            <!-- <a href="/view/spacedrepetition">der er opgaver til repetition</a> -->
+            <% if (data.repetitionTask.length > 0 ) { %>
+              <div>Der er opgaver til repetition</div>
+             <% data.repetitionTask.forEach((repetitionTask, i) => { %>
+              <a href="/view/spacedrepetition"><%= i %></a>
+              <% });} %>
             <img id="newsfeed" src="img/Design/newsfeed.png">
           </div>
         </div>

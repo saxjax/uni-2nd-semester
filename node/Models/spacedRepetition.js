@@ -40,10 +40,6 @@ class SpacedRepetition extends Model {
     let successfullInsert = false;
     const trueObjectTable = this.table; // refererer til QuizResults table i dette tilfælde
     this.table = `repetition_task`;
-    // console.log(this.idGroup);
-    // console.log(`Insert To Database ______________________________`);
-
-    // console.log(resultData);
 
     resultData.forEach((result) => {
       result.nextRepetition = result.nextRepetition.toISOString().slice(0, 19).replace(`T`, ` `);
@@ -129,7 +125,7 @@ class SpacedRepetition extends Model {
       const string = this.createQueryStringFromQuestionIDs(idQuizQuestions);
       quizQuestionContent = await this.query(`SELECT *`, `${string}`);
     }
-    console.log(quizQuestionContent);
+    // console.log(quizQuestionContent);
     return quizQuestionContent;
   }
 
@@ -142,7 +138,7 @@ class SpacedRepetition extends Model {
   createQueryStringFromQuestionIDs(idQuizQuestions) {
     let string = ``;
     idQuizQuestions.forEach((element, index) => {
-      console.log(index, element);
+      // console.log(index, element);
       if (index > 0) {
         string += ` OR `;
       }
