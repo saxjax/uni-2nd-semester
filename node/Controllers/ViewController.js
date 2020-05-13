@@ -245,6 +245,7 @@ class ViewController {
       Recipient.getAllElementsOfType(`Flashcard`), // dataArray[3]   ->   FIXME: Ikke oprettet endnu
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2], flashcards: dataArray[3] };
+    console.log(data);
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsRecipient.ejs`);
     res.render(this.ejs, { data });
   }
