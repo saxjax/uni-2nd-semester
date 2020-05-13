@@ -77,7 +77,7 @@ class QuizQuestion extends Model {
       return await this.query(`INSERT`, `ID_EVALUATION = "${question.idEvaluation}" `
         + `AND QUESTION = "${question.question}" `
         + `AND CORRECT_ANSWERS = "${question.correctAnswers.join(`;`)}" `
-        + `AND KEYWORD = "${question.keyword}" `
+        + `AND KEYWORD = "${question.keyword.join(`;`)}" `
         + `AND ANSWERS = "${question.answers.join(`;`)}"`);
     }
     catch (error) {

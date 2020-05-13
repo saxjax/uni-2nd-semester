@@ -3,66 +3,49 @@
   <head>
     <%- include('meta/header') %> 
     <link href="/css/design.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/elementlist.css">
     <title>GroupHub | Evalueringer</title>
   </head>
   <body>
     <%- include('meta/navbar') %> 
     <div class="container" id="content">
       <div class="row">
-          <nav>
-              <a href="/post/evaluation">Opret Evaluation</a>
-              <a href="/post/flashcard">Opret Flashcard</a>
-          </nav> 
+        <nav>
+            <a href="/post/evaluation">Opret Evaluation</a>
+            <a href="/post/flashcard">Opret Flashcard</a>
+        </nav> 
       </div>
+      <div class="row">
+        <div class="col-12">
+          <h1> EVALUERINGER </h1>
+          <div class = "search_eval">
+            <form action="/evalueringer" method="POST">
+              <label> Vælg det afsnit du ønsker at finde evalueringer til</label><br>
+              <input type="text" id="section" name="section"><br>
+              <input type="submit">
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-10"></div>
+      <section>
         <div class="row">
-          <div class="col-12">
-            <h1> EVALUERINGER </h1>
-              <div class = "search_eval">
-                <form action="/evalueringer" method="POST">
-                    <label> Vælg det afsnit du ønsker at finde evalueringer til</label><br>
-                    <input type="text" id="section" name="section"><br>
-                    <input type="submit">
-                </form>
-              </div>
-          </div>
-        </div>
-        <div class="col-10">
-        </div>
-        <section>
-          <div class="row">
-            <div class="col">
-              <div class="leftside">
-                <div class="evaluations">
-                  <h2> EVALUATIONS </h2>
-                  <% if (data.evaluations) { data.evaluations.forEach((element) =>{ %>
-                    <a href="<%= element.idEvaluation %>"> 
-                      <div class="card">
-                        <div class="elementType<%= element.elementType %>"> <%= element.title %></div>
-                        <div class="question"><%= element.question %></div>
-                      </div>
-                    </a>
-                  <% });} %>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="rightside">
-                <div class="flashcards">
-                  <h2> FLASHCARDS </h2>
-                  <% if (data.flashcards) { data.flashcards.forEach(element => { %>
-                    <a href="/evalueringer/<%= element.elementtype %>/<%= element.idflashcard %>"> 
-                      <div class="card">
-                      <div class="elementType<%= element.elementtype %>">Title: <%= element.title %></div>
-                      <div class="notion">Begreb: <%= element.concept %></div>
-                      </div>    
-                    </a>
-                    <% });} %>
-                </div>
+          <div class="col">
+            <div class="leftside">
+              <div class="evaluations">
+                <h2> EVALUATIONS </h2>
+                <% if (data.evaluations) { data.evaluations.forEach((element) =>{ %>
+                  <a href="<%= element.idEvaluation %>"> 
+                    <div class="card">
+                      <div class="elementType<%= element.elementType %>"> <%= element.title %></div>
+                      <div class="question"><%= element.question %></div>
+                    </div>
+                  </a>
+                <% });} %>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
     </div>
     <%- include('meta/footer') %> 
   </body>

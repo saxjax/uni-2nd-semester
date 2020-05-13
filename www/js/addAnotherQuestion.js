@@ -25,22 +25,36 @@ function addAnotherQuestion() {
   const questionLabel = appendDomNode(`LABEL`, questionContainer, `Question ${questionCount}`); // Indsæt label for="someID"
   questionLabel.htmlFor = `question${questionCount}`; // Corresponds to the input.id
   appendDomNode(`BR`, questionContainer);
-  const questionInput = appendDomNode(`INPUT`, questionContainer, undefined, [{ id: `question${questionCount}` }, { class: `questionInput` }]);
-  const keywordInput = appendDomNode(`INPUT`, questionContainer, undefined, [{ id: `keyword${questionCount}` }, { class: `keywordInput` }]);
-  keywordInput.placeholder = `Keyword ${questionCount}`;
-  keywordInput.name = `keyword${questionCount}`;
-  questionInput.placeholder = `Question ${questionCount}`;
+  const questionInput = appendDomNode(`INPUT`, questionContainer, `Question ${questionCount}`, [{ id: `question${questionCount}` }, { class: `questionInput` }]);
   questionInput.name = `question${questionCount}`;
   appendDomNode(`BR`, questionContainer);
+
   const breakBeforeAnswerButton = appendDomNode(`BR`, questionContainer);
   const addAnotherAnswerButton = appendDomNode(`BUTTON`, questionContainer, `Add another answer`);
+  appendDomNode(`BR`, questionContainer);
   let answerFieldCount = 1;
   addAnotherAnswerButton.addEventListener(`click`, () => {
     answerFieldCount = createAnswerFields(1, breakBeforeAnswerButton, answerFieldCount);
   });
   answerFieldCount = createAnswerFields(2, breakBeforeAnswerButton, answerFieldCount);
-  questionCountDisplay.innerText = `Number of questions: ${questionCount}`;
-  questionCount++;
+
+  const breakBeforeKeywordButton = appendDomNode(`BR`, questionContainer);
+  const addKeywordButton = appendDomNode(`BUTTON`, questionContainer, `Add another keyword`, [{ id: `addKeywordButton${questionCount}` }]);
+  let keywordCount = 0;
+  keywordCount += addKeywordField(breakBeforeKeywordButton, ++keywordCount);
+  addKeywordButton.addEventListener(`click`, () => {
+    keywordCount += addKeywordField(breakBeforeKeywordButton, ++keywordCount);
+  });
+
+  appendDomNode(`BR`, questionContainer);
+  appendDomNode(`BR`, questionContainer);
+  questionCountDisplay.innerText = `Number of questions: ${questionCount++}`;
+}
+
+function addKeywordField(addBeforeThis, keywordCount) {
+  const keywordInputField = insertDomNode(`INPUT`, addBeforeThis, `Keyword ${keywordCount}`, [{ class: `keywordInput` }, { id: `keywordField${keywordCount}` }]);
+  insertDomNode(`LABEL`, keywordInputField, `Keyword ${keywordCount}:`).htmlFor = `keywordField${keywordCount}`;
+  return 1;
 }
 
 function createAnswerFields(amount, createBeforeThisElem, answerFieldCount) {
