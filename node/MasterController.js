@@ -40,6 +40,7 @@ class MasterController {
     this.bodyParserMiddleware();
     this.sessionMiddleware();
     this.viewEngineMiddleware();
+    this.checkLogin();
     if (this.debug) {
       this.testMiddleware();
     }
@@ -185,6 +186,7 @@ class MasterController {
     this.app.post(`/register`,                 (req, res) => Redirect.RegisterNewUser(req, res));
     this.app.post(`/create/section`,           (req, res) => Redirect.createSection(req, res));
     this.app.get(`/keyword`,                   (req, res) => Redirect.keyword(req, res));
+    this.app.get(`/logout`,                    (req, res) => Redirect.logout(req, res));
   }
 
   /* Formål: Struktur for de URL Patterns der indsætter data i databasen.
@@ -235,6 +237,18 @@ class MasterController {
     this.app.set(`view engine`, `ejs`);
   }
 
+  /* Formål: Checker om brugeren er logged ind eller ej, og sender det med som en local variabel i response.
+             Dette gøres på alle views inden render / redirect.
+   * Input : et request
+   * Output: local variabel med loggedin information.
+   */
+  checkLogin() {
+    this.app.use((req, res, next) => {
+      res.locals.isloggedin = req.session.loggedIn;
+      next();
+    });
+  }
+
   /* Formål: At gøre alle vores statiske filer tilgængelige for et request fra en client
    * Input : Et request der forespørger en statisk fil
    * Output: En static file der skal bruges i en ejs fil.
@@ -270,7 +284,7 @@ class MasterController {
       store: sessionStore,
       resave: false,
       saveUninitialized: false,
-      cookie: { maxAge: 3600, sameSite: `lax`, secure: false },
+      cookie: { maxAge: 3600000, sameSite: `lax`, secure: false },
     }));
     if (this.skipAccess) {
       this.app.use(this.createTestUserAndidGroup);
