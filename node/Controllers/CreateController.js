@@ -24,7 +24,7 @@ class CreateController {
       res.redirect(`/groups`);
     }
     catch (error) {
-      res.redirect(503, `/dbdown`);
+      res.redirect(204, `/dbdown`);
     }
   }
 
@@ -36,7 +36,7 @@ class CreateController {
       res.redirect(`/login`);
     }
     catch (error) {
-      res.redirect(503, `/dbdown`);
+      res.redirect(204, `/dbdown`);
     }
   }
 
@@ -48,7 +48,7 @@ class CreateController {
       res.redirect(`/view/sections/recipient`);
     }
     catch (error) {
-      res.redirect(503, `/dbdown`);
+      res.redirect(204, `/dbdown`);
     }
   }
 
@@ -60,7 +60,7 @@ class CreateController {
       res.send({ url: `/post/questions?idEvaluation=${idEvaluation}&titleEvaluation=${E.title}` });
     }
     catch (error) {
-      res.redirect(503, `/dbdown`);
+      res.redirect(204, `/dbdown`);
     }
   }
 
@@ -75,7 +75,7 @@ class CreateController {
       res.redirect(`/view/evaluations/recipient`); // TODO: Kan eventuelt senere videredirigere til siden, hvor man kan tage evalueringen
     }
     catch (error) {
-      res.redirect(503, `/dbdown`);
+      res.redirect(204, `/dbdown`);
     }
   }
 
@@ -94,7 +94,7 @@ class CreateController {
     }
     catch (error) {
       console.log(error);
-      res.redirect(503, `/dbdown`);
+      res.redirect(204, `/dbdown`);
     }
   }
 }
