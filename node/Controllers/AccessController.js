@@ -8,9 +8,15 @@ const { Group } = require(`../Models/Group`);
 
 class AccessController {
   /* UNDER CONSTRUCTION */
+<<<<<<< HEAD
   constructor(root) {
     this.name = `ViewController`;
     this.root = root;
+=======
+  constructor() {
+    this.name = `AccessController`;
+    this.root = __dirname.slice(0, -(`node/Controllers`.length));
+>>>>>>> 5ad064aaf08ab83534ed8fea02e6a6b18c8651b7
     this.ejs = ``;
   }
 

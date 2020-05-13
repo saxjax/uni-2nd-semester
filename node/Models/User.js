@@ -39,7 +39,7 @@ class User extends Model {
    */
   async insertToDatabase() {
     try {
-      await this.query(`INSERT`, `ID_USER_GROUP = ${this.idGroup} `
+      await this.query(`INSERT`, `ID_USER_GROUP = "${this.idGroup}" `
                      + `AND USER_NAME = "${this.username}" `
                      + `AND PASSWORD = "${this.password}" `
                      + `AND FIRST_NAME = "${this.firstName}" `
@@ -81,7 +81,7 @@ class User extends Model {
   async validateRegister() {
     let validationCheck = false;
     if (!isEmpty(this.username) && !isEmpty(this.firstName) && !isEmpty(this.lastName) && !isEmpty(this.email)) { // FIXME: Logisk udtryk bliver lavet om til metodekald
-      this.data = await this.query(`SELECT *`, `USER_NAME = "${this.username}" OR EMAIL = "${this.email}"`);
+      this.data = await this.query(`CUSTOM`, `SELECT * FROM  ${this.table} WHERE USER_NAME = "${this.username}" OR EMAIL = "${this.email}"`); // FIXME: Returnerer et tomt Rowpackage hvsi den ikke er custom
       if (this.data.length > 0) {
         console.log(`User already registered`);
       }
