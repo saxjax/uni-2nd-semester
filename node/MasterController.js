@@ -118,7 +118,7 @@ class MasterController {
     // Documents
     // this.app.get(`/view/document/recipient`,  (req, res) => Show.viewDocumentRecipientPage(req, res));
     // this.app.get(`/view/document/expert`,     (req, res) => Show.viewDocumentExpertPage(req, res));
-    // this.app.get(`/post/document/`,         (req, res) => Show.postDocumentSelectPage(req, res));
+    this.app.get(`/post/document/`,         (req, res) => Show.postDocumentPage(req, res));
     this.app.get(`/view/document/:idQuery`,   (req, res) => Show.viewDocumentPage(req, res));
     // this.app.get(`/put/document/:idQuery`, (req, res) => Show.putDocumentPage(req, res));
 
@@ -270,7 +270,7 @@ class MasterController {
       store: sessionStore,
       resave: false,
       saveUninitialized: false,
-      cookie: { maxAge: 3600, sameSite: `lax`, secure: false },
+      cookie: { maxAge: 3600000, sameSite: `lax`, secure: false },
     }));
     if (this.skipAccess) {
       this.app.use(this.createTestUserAndidGroup);

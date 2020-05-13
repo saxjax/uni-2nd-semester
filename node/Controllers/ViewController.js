@@ -36,7 +36,6 @@ class ViewController {
       Recipient.getAllElementsOfType(`Document`), // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2] };
-    console.log(dataArray);
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs, { data });
   }
@@ -77,8 +76,7 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // TODO: Mangler EJS fil
-  /* Formål: BESKRIV EJS FORMÅL HER
+  /* Formål: At gøre det muligt at oprette et nyt Document
    * Input : En session med userId og groupId
    * Output: En visning af en form som brugeren kan bruge til at oprette et dokument.
    */

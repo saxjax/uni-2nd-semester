@@ -75,6 +75,17 @@ class Section extends Model {
     }
     return true;
   }
+
+  generateKeywords() {
+    const potentialKeywords = this.content.split(` `);
+    const keywords = [];
+    for (let i = 0; i < potentialKeywords.length; i++) {
+      if (potentialKeywords[i].length > 10) {
+        keywords.push(potentialKeywords[i]);
+      }
+    }
+    return keywords.split(`;`);
+  }
 }
 
 module.exports = {
