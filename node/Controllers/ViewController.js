@@ -185,12 +185,13 @@ class ViewController {
    *        Det er vigtigt, at strukturen for hvordan det løses på, er den samme for alle de andre URL'er.
    */
   async postSectionPage(req, res) {
-    const Expert = new User(req);
+    const Doc = new Document(req);
     const dataArray = await Promise.all([
-      Expert.getThisGroupData(),               // dataArray[0]
-      Expert.getThisUserData(),                // dataArray[1]
+      Doc.getThisGroupData(),               // dataArray[0]
+      Doc.getThisUserData(),                // dataArray[1]
+      Doc.getThis(),                        // dataArray[2]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1] };
+    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/postSection.ejs`);
     res.render(this.ejs, { data });
   }

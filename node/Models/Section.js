@@ -18,7 +18,6 @@ class Section extends Model {
     super(req);
     this.elementType = `section`;
     this.table = `document_section`;
-    this.idDocument = `11111111-aaaa-bbbb-1111-111111111111`; // Hardcoded into every section - can be changed in the future
 
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
@@ -30,6 +29,7 @@ class Section extends Model {
           this.idQuery        =  req.params.idQuery;
           break;
         case `POST`:
+          this.idDocument = req.body.idDocument;
           this.title    = req.body.title;
           this.content  = req.body.content;
           this.keywords = req.body.keywords;
@@ -76,6 +76,10 @@ class Section extends Model {
     return true;
   }
 
+  /* Formål: At generere keywords automatisk ud fra det content der bliver posted
+   * Input : Intet, men bruger this.content
+   * Output: Et array af Keywords der skal oprettes tilknyttet denne section.
+   */
   generateKeywords() {
     const potentialKeywords = this.content.split(` `);
     const keywords = [];
@@ -84,7 +88,7 @@ class Section extends Model {
         keywords.push(potentialKeywords[i]);
       }
     }
-    return keywords.split(`;`);
+    return keywords;
   }
 }
 
