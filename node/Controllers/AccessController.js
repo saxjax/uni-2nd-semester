@@ -9,7 +9,7 @@ const { Group } = require(`../Models/Group`);
 class AccessController {
   /* UNDER CONSTRUCTION */
   constructor() {
-    this.name = `ViewController`;
+    this.name = `AccessController`;
     this.root = __dirname.slice(0, -(`node/Controllers`.length));
     this.ejs = ``;
   }

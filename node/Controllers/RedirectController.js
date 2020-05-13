@@ -28,7 +28,7 @@ class RedirectController {
     const currentUser = new User(req);
     this.data = await currentUser.loginValid();
     if (this.data.fatal) {
-      res.redirect(503, `/dbdown`);
+      res.redirect(204, `/dbdown`);
     }
     else if (this.data.length > 0) {
       req.session.userId = currentUser.getThis(``);
@@ -52,11 +52,12 @@ class RedirectController {
         res.redirect(`/`);
       }
       else {
-        res.redirect(503, `/register`);
+        res.redirect(204, `/register`);
       }
     }
     else { // User could not be validated
-      res.redirect(400, `/register`);
+      const error = `Username or Email already in use, user can't be created.`;
+      res.send(error);
     }
   }
 
@@ -101,7 +102,7 @@ class RedirectController {
       res.redirect(`/rapport`);
     }
     catch (error) {
-      res.redirect(503, `/dbdown`);
+      res.redirect(204, `/dbdown`);
     }
   }
 

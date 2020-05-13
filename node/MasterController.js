@@ -271,7 +271,7 @@ class MasterController {
       store: sessionStore,
       resave: false,
       saveUninitialized: false,
-      cookie: { maxAge: 3600 },
+      cookie: { maxAge: 3600, sameSite: `lax`, secure: false },
     }));
     if (this.skipAccess) {
       this.app.use(this.createTestUserAndidGroup);
@@ -331,9 +331,11 @@ class MasterController {
    */
   logger(req, res, next) {
     const reqMethod = pad(req.method, -6, ` `);
-    const reqUrl = pad(`${req.protocol}://${req.get(`host`)}${req.originalUrl}`, 76, ` `);
-    const date = (new Date()).toUTCString();
-    console.log(`GOT ${reqMethod}: ${reqUrl} -- ${date}`);
+    const reqUrl = `${req.protocol}://${req.get(`host`)}${req.originalUrl}`;
+    const now = new Date();
+    const date = `${pad(now.getDate(), -2, `0`)}/${pad(now.getMonth(), -2, `0`)}/${now.getFullYear()}`;
+    const time = `${pad(now.getHours(), -2, `0`)}:${pad(now.getMinutes(), -2, `0`)}:${pad(now.getSeconds(), -2, `0`)}`;
+    console.log(`${date} ${time} - GOT ${reqMethod}: ${reqUrl}`);
     next();
   }
 }

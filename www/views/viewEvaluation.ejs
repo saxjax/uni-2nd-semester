@@ -19,9 +19,8 @@
           <div>
             <% let answerCount = 1 %>
             <% question.answers.forEach(answer => { %>
-              <input id = <%= `question${questionCount}answer${answerCount}` %> class ="correctAnswerCheckbox" type="checkbox">
+              <input id = <%= `question${questionCount}answer${answerCount++}` %> class ="correctAnswerCheckbox" type="checkbox">
               <p class = "answer" >  <%= answer %> </p>
-              <% answerCount++ %>
             <% }); %>
           </div>
         </div>

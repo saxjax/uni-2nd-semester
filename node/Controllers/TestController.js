@@ -12,7 +12,7 @@
 
 class TestController {
   constructor(root) {
-    this.name = `ViewController`;
+    this.name = `TestController`;
     this.root = root;
     this.ejs = ``;
   }
@@ -38,7 +38,7 @@ class TestController {
   }
 
   async whatever(req, res) {
-    res.redirect(503, `/dbdown`);
+    res.redirect(204, `/dbdown`);
   }
 }
 

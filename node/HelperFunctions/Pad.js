@@ -4,7 +4,8 @@
  *        Er længden derimod negativ, justere den til højre.
  * Output: Returnere den "paddede" streng
  */
-function pad(str, newStrLen, padChar) {
+function pad(strIn, newStrLen, padChar) {
+  const str = `${strIn}`;
   let newStr = ``;
   const paddingLength = Math.abs(newStrLen) - str.length;
   // Error checking
