@@ -61,19 +61,26 @@ class Section extends Model {
    */
   async insertToDatabase() {
     try {
-      await this.query(`INSERT`, `SECTION_TITLE = "${this.title}" `
-                       + `AND SECTION_CONTENT = "${this.content}" `
-                       + `AND ID_DOCUMENT = "${this.idDocument}" `
-                       + `AND KEYWORDS = "${this.keywords}" `
-                       + `AND SECTION_NUMBER = "${this.number}" `
-                       + `AND ID_USER_GROUP = "${this.idGroup}" `
-                       + `AND ID_USER = "${this.idUser}"`);
+      const data = `SECTION_TITLE = "${this.title}" `
+                 + `AND SECTION_CONTENT = "${this.content}" `
+                 + `AND ID_DOCUMENT = "${this.idDocument}" `
+                 + `AND KEYWORDS = "${this.keywords}" `
+                 + `AND SECTION_NUMBER = "${this.number}" `
+                 + `AND ID_USER_GROUP = "${this.idGroup}" `
+                 + `AND ID_USER = "${this.idUser}"`;
+      const validation = await this.query(`INSERT`, data);
+      if (validation.fatal) {
+        throw new Error(`InsertToDatabase didnt work!`);
+      }
+      else {
+        const newObject = await this.query(`SELECT *`, data);
+        return newObject;
+      }
     }
     catch (error) {
       console.log(error);
-      return false;
+      throw new Error(error);
     }
-    return true;
   }
 
   /* Formål: At generere keywords automatisk ud fra det content der bliver posted

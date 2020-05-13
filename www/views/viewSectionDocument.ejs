@@ -11,19 +11,19 @@
         <div class="container" id="content">
           <div class="row">
             <div class="col">
-              <h2> Sections </h2>
+              <h2> Afsnit </h2>
               <div class="col-6-sm">  
                 <% data.sections.forEach((section) => { %>
                     <a href="/view/section/<%= section.idSection %>">
                       <%= section.number %> <strong><%= section.title %></strong>
                     </a>
                     <p><%= section.teaser %></p>
-                      <p><strong>Keywords: </strong><%= section.keywords %> </p>
+                      <p><strong>Nøgleord: </strong><%= section.keywords %> </p>
                 <% }); %>
                 </div>
                 <div class="col-6-sm">  
                   <button class="btn btn-info">
-                    <a href="/post/section/<%= data.document[0].idDocument %>"> Opret Section </a>
+                    <a href="/post/section/<%= data.document[0].idDocument %>"> Opret Afsnit </a>
                   </button>
                 </div>
               </div>

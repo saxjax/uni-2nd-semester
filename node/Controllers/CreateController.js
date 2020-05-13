@@ -58,8 +58,8 @@ class CreateController {
   async createSection(req, res) {
     const S = new Section(req);
     try {
-      await S.insertToDatabase();
-      res.redirect(`/view/sections/recipient`);
+      const section = await S.insertToDatabase();
+      res.redirect(`/view/section/${section[0].idSection}`);
     }
     catch (error) {
       res.redirect(204, `/dbdown`);
