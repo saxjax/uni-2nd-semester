@@ -1,3 +1,7 @@
 input{
     margin: 5px;
 }
+
+.questionContainer {
+    border-style: groove;
+}
