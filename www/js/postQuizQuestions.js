@@ -70,6 +70,5 @@ async function postQuizQuestions() {
     body: JSON.stringify(questionsArray),
     headers: { "Content-Type": `application/json` },
   });
-
   window.location.replace(response.url);
 }

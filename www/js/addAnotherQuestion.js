@@ -1,4 +1,5 @@
 /* eslint no-undef: 0 */
+// Test her: http://localhost:3000/post/questions?titleEvaluation=Test (Der kan ikke submittes)
 
 const addAnotherQuestionButtons = document.querySelectorAll(`.addAnotherQuestionButton`);
 const questionCountDisplay = document.getElementById(`questionCountDisplay`);
@@ -20,51 +21,95 @@ addAnotherQuestionButtons.forEach((button) => {
 
 function addAnotherQuestion() {
   const questionContainer = insertDomNode(`DIV`, addAnotherQuestionButtons[1], undefined, [{ class: `questionContainer` }]);
-  const questionLabel = appendDomNode(`LABEL`, questionContainer, `Question ${questionCount}`); // Indsæt label for="someID"
+
+  const questionInputContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `questionInputContainer` }]);
+  const questionLabel = appendDomNode(`LABEL`, questionInputContainer, `Question ${questionCount}:`); // Indsæt label for="someID"
   questionLabel.htmlFor = `question${questionCount}`; // Corresponds to the input.id
-  appendDomNode(`BR`, questionContainer);
-  const questionInput = appendDomNode(`INPUT`, questionContainer, `Question ${questionCount}`, [{ id: `question${questionCount}` }, { class: `questionInput` }]);
+  const questionInput = appendDomNode(`INPUT`, questionInputContainer, `Question ${questionCount}`, [{ id: `question${questionCount}` }, { class: `questionInput` }]);
   questionInput.name = `question${questionCount}`;
-  appendDomNode(`BR`, questionContainer);
 
-  const addAnotherAnswerButton = appendDomNode(`BUTTON`, questionContainer, `+`);
-  appendDomNode(`BR`, questionContainer);
-  let answerFieldCount = 1;
+  addAnswerElements(questionContainer);
+  addKeywordElements(questionContainer);
+
+  questionCountDisplay.innerText = `Number of questions: ${questionCount}`;
+  questionCount += 1;
+}
+
+function addAnswerElements(questionContainer) {
+  const answersContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `answersContainer` }]);
+  const addAnotherAnswerButton = appendDomNode(`BUTTON`, answersContainer, `Add`);
+  let answerCount = 0;
+  createAnswerField(addAnotherAnswerButton, ++answerCount);
+  createAnswerField(addAnotherAnswerButton, ++answerCount);
   addAnotherAnswerButton.addEventListener(`click`, () => {
-    answerFieldCount = createAnswerFields(1, addAnotherAnswerButton, answerFieldCount);
+    createAnswerField(addAnotherAnswerButton, ++answerCount);
   });
-  answerFieldCount = createAnswerFields(2, addAnotherAnswerButton, answerFieldCount);
+  const removeAnswerButton = appendDomNode(`BUTTON`, answersContainer, `Remove`);
+  removeAnswerButton.addEventListener(`click`, () => {
+    if (answerCount > 2) {
+      removeLast(answersContainer, `createAnswerFieldContainer`);
+      answerCount--;
+    }
+    else {
+      displayErrorMessage(answersContainer, `You need two or more answers.`);
+    }
+  });
+}
 
-  const addKeywordButton = appendDomNode(`BUTTON`, questionContainer, `+`, [{ id: `addKeywordButton${questionCount}` }]);
+function displayErrorMessage(container, message) {
+  const messageNode = appendDomNode(`P`, container, `Error: ${message}`);
+  messageNode.style.color = `red`;
+  setTimeout(() => {
+    messageNode.remove();
+  }, 5000);
+}
+
+function addKeywordElements(questionContainer) {
+  const keywordContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `keywordContainer` }]);
+  const addKeywordButton = appendDomNode(`BUTTON`, keywordContainer, `Add`);
   let keywordCount = 0;
-  keywordCount += addKeywordField(addKeywordButton, ++keywordCount);
+  createKeywordField(addKeywordButton, ++keywordCount);
   addKeywordButton.addEventListener(`click`, () => {
-    keywordCount += addKeywordField(addKeywordButton, ++keywordCount);
+    createKeywordField(addKeywordButton, ++keywordCount);
   });
-
-  questionCountDisplay.innerText = `Number of questions: ${questionCount++}`;
+  const removeKeywordButton = appendDomNode(`BUTTON`, keywordContainer, `Remove`);
+  removeKeywordButton.addEventListener(`click`, () => {
+    if (keywordCount > 1) {
+      removeLast(keywordContainer, `createKeywordFieldContainer`);
+      keywordCount--;
+    }
+    else {
+      displayErrorMessage(keywordContainer, `You need one or more keywords.`);
+    }
+  });
 }
 
-function addKeywordField(addBeforeThis, keywordCount) {
-  const keywordInputField = insertDomNode(`INPUT`, addBeforeThis, `Keyword ${keywordCount}`, [{ class: `keywordInput` }, { id: `keywordField${keywordCount}` }]);
-  insertDomNode(`LABEL`, keywordInputField, `Keyword ${keywordCount}:`).htmlFor = `keywordField${keywordCount}`;
-  return 1;
-}
+function createAnswerField(createBeforeThis, answerCount) {
+  const createAnswerFieldContainer = insertDomNode(`DIV`, createBeforeThis, undefined, [{ class: `createAnswerFieldContainer` }]);
 
-function createAnswerFields(amount, createBeforeThisElem, answerFieldCount) {
-  let count = answerFieldCount;
-  for (let i = 0; i < amount; i++) {
-    createAnswerField(createBeforeThisElem, count++);
-  }
-  return count;
-}
+  const answerLabel = appendDomNode(`LABEL`, createAnswerFieldContainer, `Answer ${answerCount}:`);
+  answerLabel.htmlFor = `question${questionCount}answer${answerCount}`;
 
-function createAnswerField(createBeforeThisElem, answerFieldCount) {
-  const correctAnswerCheckbox = insertDomNode(`INPUT`, createBeforeThisElem, undefined, [{ class: `correctAnswerCheckbox` }]);
+  const answerInput = appendDomNode(`INPUT`, createAnswerFieldContainer, `Answer ${answerCount}`, [{ class: `answerInput` }, { id: `question${questionCount}answer${answerCount}` }]);
+  answerInput.name = `Question${questionCount}Answer${answerCount}`;
+
+  const correctAnswerCheckbox = appendDomNode(`INPUT`, createAnswerFieldContainer, undefined, [{ class: `correctAnswerCheckbox` }]);
   correctAnswerCheckbox.type = `checkbox`;
   correctAnswerCheckbox.title = `Click to mark as correct answer`;
-  correctAnswerCheckbox.name = `Question${questionCount}AnswerCheckbox${answerFieldCount}`;
-  const answerInput = insertDomNode(`INPUT`, createBeforeThisElem, undefined, [{ class: `answerInput` }]);
-  answerInput.placeholder = `Answer ${answerFieldCount}`;
-  answerInput.name = `Question${questionCount}Answer${answerFieldCount}`;
+  correctAnswerCheckbox.name = `Question${questionCount}AnswerCheckbox${answerCount}`;
+
+  return createAnswerFieldContainer;
+}
+
+function removeLast(container, className) {
+  const elements = container.getElementsByClassName(className);
+  container.removeChild(elements[elements.length - 1]);
+}
+
+function createKeywordField(createBeforeThis, keywordCount) {
+  const createKeywordFieldContainer = insertDomNode(`DIV`, createBeforeThis, undefined, [{ class: `createKeywordFieldContainer` }]);
+  const keywordLabel = appendDomNode(`LABEL`, createKeywordFieldContainer, `Keyword ${keywordCount}:`);
+  keywordLabel.htmlFor = `question${questionCount}keyword${keywordCount}`;
+  appendDomNode(`INPUT`, createKeywordFieldContainer, `Keyword ${keywordCount}`, [{ class: `keywordInput` }, { id: `question${questionCount}keyword${keywordCount}` }]);
+  return createKeywordFieldContainer;
 }
