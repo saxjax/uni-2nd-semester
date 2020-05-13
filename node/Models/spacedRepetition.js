@@ -16,21 +16,41 @@ class SpacedRepetition extends Model {
   }
 
 
-  /* Formål:
-   * Input:
-   * Output:
+  /* Formål:Indsætte/opdatere  idQuizquestions i repetition_task tabellen
+   * Input: resultData: på formen
+                        [
+                        RowDataPacket {
+                          idQuizQuestion: '6b0f6da9-8e00-11ea-a6c9-2c4d54532c7a',
+                          idUser: '553e422d-7c29-11ea-86e2-2c4d54532c7a',
+                          recentResult: 'true',
+                          recentAttemptDate: 2020-05-13T13:16:40.000Z,
+                          nextRepetition: 2020-05-26T23:16:40.974Z,
+                          repetitions: 14,
+                          failedAttempts: 3,
+                          successAttempts: 11
+                        },
+                        RowDataPacket {
+                        },
+                        RowDataPacket {
+                        }
+                      ]
+   * Output: Bool som angiver om dataene er blevet indsat i databasen
    */
   async insertToDatabaseSpacedRepetition(resultData) {
+    let successfullInsert = false;
     const trueObjectTable = this.table; // refererer til QuizResults table i dette tilfælde
     this.table = `repetition_task`;
-    console.log(this.idGroup);
-    console.log(this.table);
+    // console.log(this.idGroup);
+    // console.log(`Insert To Database ______________________________`);
+
+    // console.log(resultData);
 
     resultData.forEach((result) => {
       result.nextRepetition = result.nextRepetition.toISOString().slice(0, 19).replace(`T`, ` `);
       try {
         this.query(`CUSTOM`, `INSERT INTO ${this.table} (ID_QUIZ_QUESTION, ID_USER, ID_GROUP, REPETITION_DATE) 
                     VALUES ("${result.idQuizQuestion}", "${result.idUser}", "${this.idGroup}", "${result.nextRepetition}") ON DUPLICATE KEY UPDATE REPETITION_DATE = "${result.nextRepetition}" `);
+        successfullInsert = true;
       }
       catch (error) {
         console.log(error);
@@ -40,7 +60,7 @@ class SpacedRepetition extends Model {
     });
 
     this.table = trueObjectTable;
-    return true;
+    return successfullInsert;
   }
 
 
@@ -52,10 +72,10 @@ class SpacedRepetition extends Model {
     let repetitionTasks = []; // idQuizQuestion array
     let quizContent = [];// array af quizquestions
 
-    repetitionTasks = await this.getIdQuizquestionsDueForRepetition();
+    repetitionTasks = await this.getIdQuizquestionsDueForRepetition();// henter array af idQuizQuestions.
 
     if (repetitionTasks.length > 0) {
-      quizContent = await this.getQuizQuestionContent(repetitionTasks);
+      quizContent = await this.getQuizQuestionContent(repetitionTasks);// henter array af quizQuestions.
       return quizContent;
     }
     return [];// returnerer et tomt array hvis der ikke er nogen quizquestions som er due til afvikling
