@@ -2,14 +2,16 @@
 <html>
   <head>
   	<%- include(`meta/header.ejs`)  %> 
-  	<title>GroupHub | New Section</title>
-  	<link rel="stylesheet" href="/css/login_register_form.css">
+      <title>GroupHub | New Section</title>
+      <link rel="stylesheet" href="/css/design.css">
   </head>
   <body>
     <%- include('meta/navbar') %>
     <div class="container" id="content" style="text-align: center; font-weight: bold;">
-  		<h1>Make a new section!</h1>
+  		<h3>Nyt afsnit til: <%= data.document[0].title %></h3>
       <form action="/post/section" method="POST">
+        <input name="idDocument" id="idDocument" type="hidden" value="<%= data.document[0].idDocument %>">
+
         <label for="title">Section Title:</label><br>
         <input name="title" id="title" type="text" size="60%" placeholder="Section Title" required><br>
 

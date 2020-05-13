@@ -18,7 +18,6 @@ class Section extends Model {
     super(req);
     this.elementType = `section`;
     this.table = `document_section`;
-    this.idDocument = `11111111-aaaa-bbbb-1111-111111111111`; // Hardcoded into every section - can be changed in the future
 
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
@@ -30,6 +29,7 @@ class Section extends Model {
           this.idQuery        =  req.params.idQuery;
           break;
         case `POST`:
+          this.idDocument = req.body.idDocument;
           this.title    = req.body.title;
           this.content  = req.body.content;
           this.keywords = req.body.keywords;
@@ -61,19 +61,41 @@ class Section extends Model {
    */
   async insertToDatabase() {
     try {
-      await this.query(`INSERT`, `SECTION_TITLE = "${this.title}" `
-                       + `AND SECTION_CONTENT = "${this.content}" `
-                       + `AND ID_DOCUMENT = "${this.idDocument}" `
-                       + `AND KEYWORDS = "${this.keywords}" `
-                       + `AND SECTION_NUMBER = "${this.number}" `
-                       + `AND ID_USER_GROUP = "${this.idGroup}" `
-                       + `AND ID_USER = "${this.idUser}"`);
+      const data = `SECTION_TITLE = "${this.title}" `
+                 + `AND SECTION_CONTENT = "${this.content}" `
+                 + `AND ID_DOCUMENT = "${this.idDocument}" `
+                 + `AND KEYWORDS = "${this.keywords}" `
+                 + `AND SECTION_NUMBER = "${this.number}" `
+                 + `AND ID_USER_GROUP = "${this.idGroup}" `
+                 + `AND ID_USER = "${this.idUser}"`;
+      const validation = await this.query(`INSERT`, data);
+      if (validation.fatal) {
+        throw new Error(`InsertToDatabase didnt work!`);
+      }
+      else {
+        const newObject = await this.query(`SELECT *`, data);
+        return newObject;
+      }
     }
     catch (error) {
       console.log(error);
-      return false;
+      throw new Error(error);
     }
-    return true;
+  }
+
+  /* Formål: At generere keywords automatisk ud fra det content der bliver posted
+   * Input : Intet, men bruger this.content
+   * Output: Et array af Keywords der skal oprettes tilknyttet denne section.
+   */
+  generateKeywords() {
+    const potentialKeywords = this.content.split(` `);
+    const keywords = [];
+    for (let i = 0; i < potentialKeywords.length; i++) {
+      if (potentialKeywords[i].length > 10) {
+        keywords.push(potentialKeywords[i]);
+      }
+    }
+    return keywords;
   }
 }
 
