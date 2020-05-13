@@ -38,7 +38,7 @@ class TestController {
   }
 
   async whatever(req, res) {
-    res.redirect(503, `/dbdown`);
+    res.redirect(204, `/dbdown`);
   }
 }
 

@@ -22,7 +22,7 @@ class SessionController {
     const data = await currentUser.loginValid();
     console.log(`data ${data[0]}`);
     if (data.fatal) {
-      res.redirect(503, `/dbdown`);
+      res.redirect(204, `/dbdown`);
     }
     else if (data.length > 0) {
       req.session.idUser = data[0].idUser;
@@ -34,7 +34,7 @@ class SessionController {
       res.redirect(`/register`); // FIXME: Statuskode indsættes
     }
   }
-  
+
   /* Formål: At oprette den session som bestemmer hvilken gruppe brugeren er tilkoblet.
    * Input : et groupId
    * Output: redirect til `/`

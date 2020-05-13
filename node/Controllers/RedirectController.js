@@ -28,7 +28,7 @@ class RedirectController {
     const currentUser = new User(req);
     this.data = await currentUser.loginValid();
     if (this.data.fatal) {
-      res.redirect(503, `/dbdown`);
+      res.redirect(204, `/dbdown`);
     }
     else if (this.data.length > 0) {
       req.session.userId = currentUser.getThis(``);
@@ -102,7 +102,7 @@ class RedirectController {
       res.redirect(`/rapport`);
     }
     catch (error) {
-      res.redirect(503, `/dbdown`);
+      res.redirect(204, `/dbdown`);
     }
   }
 
