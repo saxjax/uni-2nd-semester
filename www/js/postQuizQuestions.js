@@ -4,7 +4,7 @@ class Question {
     this.question       = questionContainer.getElementsByClassName(`questionInput`)[0].value;
     this.answers        = this.getAnswers(questionContainer);
     this.correctAnswers = this.getCorrectAnswers(questionContainer);
-    this.keyword        = questionContainer.getElementsByClassName(`keywordInput`)[0].value;
+    this.keyword        = this.getKeywords(questionContainer);
   }
 
   /* Formål: Få fat i evaluering ID'et fra query-strengen
@@ -40,6 +40,15 @@ class Question {
       correctAnswers.push(correctAnswerCheckboxes[i].checked);
     }
     return correctAnswers;
+  }
+
+  getKeywords(questionContainer) {
+    const keywords = [];
+    const keywordInputs = questionContainer.getElementsByClassName(`keywordInput`);
+    for (let i = 0; i < keywordInputs.length; i++) {
+      keywords.push(keywordInputs[i].value);
+    }
+    return keywords;
   }
 }
 
