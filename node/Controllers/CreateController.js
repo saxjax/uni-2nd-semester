@@ -2,6 +2,7 @@
 /* eslint no-console: off */
 const { Group } = require(`../Models/Group`);
 const { User } = require(`../Models/User`);
+const { Document } = require(`../Models/Document`);
 const { Section } = require(`../Models/Section`);
 const { Evaluation } = require(`../Models/Evaluation`);
 const { QuizQuestion } = require(`../Models/QuizQuestion`);
@@ -34,6 +35,18 @@ class CreateController {
     try {
       await U.insertToDatabase();
       res.redirect(`/login`);
+    }
+    catch (error) {
+      res.redirect(503, `/dbdown`);
+    }
+  }
+
+  /* UNDER CONSTRUCTION */
+  async createDocument(req, res) {
+    const D = new Document(req);
+    try {
+      const documentID = await D.insertToDatabase();
+      res.redirect(`/view/sections/document/${documentID}`);
     }
     catch (error) {
       res.redirect(503, `/dbdown`);

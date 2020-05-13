@@ -196,6 +196,7 @@ class MasterController {
     const Creator = new CreateController(this.root);
     this.app.post(`/post/group`,       (req, res) => Creator.createGroup(req, res));
     this.app.post(`/post/user`,        (req, res) => Creator.createUser(req, res));
+    this.app.post(`/post/document`,    (req, res) => Creator.createSection(req, res));
     this.app.post(`/post/section`,     (req, res) => Creator.createSection(req, res));
     this.app.post(`/post/evaluation`,  (req, res) => Creator.createEvaluation(req, res));
     this.app.post(`/post/questions`,   (req, res) => Creator.createQuestions(req, res));

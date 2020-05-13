@@ -33,15 +33,15 @@ class Document extends Model {
    */
   async insertToDatabase() {
     try {
-      await this.query(`ID_USER_GROUP = "${this.idGroup}" `
-                 + `AND ID_USER = ${this.idUser} `
-                 + `AND TITLE = "${this.title}"`);
+      const docID = await this.query(`INSERT`, `ID_USER_GROUP = "${this.idGroup}" `
+                                   + `AND ID_USER = ${this.idUser} `
+                                   + `AND TITLE = "${this.title}"`);
+      return docID;
     }
     catch (error) {
       console.log(error);
-      return false;
+      throw new Error(error);
     }
-    return true;
   }
 }
 

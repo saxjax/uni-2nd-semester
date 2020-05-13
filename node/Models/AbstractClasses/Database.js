@@ -91,12 +91,16 @@ class Database {
           }
           reject(error);
         }
-        else if (!/SELECT/.test(choice)) { // Parseren er kun relevant når der hentes data fra databasen (eg. et select)
+        else if (/SELECT/.test(choice)) { // Parseren er kun relevant når der hentes data fra databasen (eg. et select)
+          const outputParser = new ParseSql(this.elementType);
+          resolve(outputParser.parseArrayOfObjects(result));
+        }
+        else if (/INSERT/.test(choice)) { // Når der insertes skal der returneres det oprettede ID.
+          console.log(result);
           resolve(result);
         }
         else {
-          const outputParser = new ParseSql(this.elementType);
-          resolve(outputParser.parseArrayOfObjects(result));
+          resolve(result);
         }
       });
     });

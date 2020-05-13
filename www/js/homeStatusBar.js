@@ -1,5 +1,5 @@
 function calculateCurrentProgress() {
-  return Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     // fetch from a "FrontendController" the data for the user
     resolve([`Some Element`]);
   });

@@ -55,9 +55,11 @@ class Evaluation extends Model {
     }
 
     try {
-      await this.query(`CUSTOM`, `INSERT INTO ${this.table} (ID_DOCUMENT_SECTION, ID_USER, ID_USER_GROUP, EVALUATION_TITLE, ID_DOCUMENT) `
-                     + `VALUES ("${this.idSection}","${this.idUser}","${this.idGroup}","${this.title}", `
-                     + `"${this.idDocument[0].ID_DOCUMENT}")`);
+      await this.query(`INSERT`, `ID_DOCUMENT_SECTION = "${this.idSection}" AND `
+                               + `ID_USER = "${this.idUser}" AND `
+                               + `ID_USER_GROUP = "${this.idGroup}" AND `
+                               + `EVALUATION_TITLE = "${this.title}" AND `
+                               + `ID_DOCUMENT = "${this.idDocument[0].ID_DOCUMENT}"`);
     }
     catch (error) {
       console.log(error);
