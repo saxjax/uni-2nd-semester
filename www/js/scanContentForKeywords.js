@@ -21,27 +21,33 @@ input.addEventListener(`keyup`, () => {
  */
 function scanContentForKeywords(content) {
   const keywords = document.getElementById(`keywords`);
-  const wordsInContent = content.value.split(` `);
+  let wordsInContent = content.value;
+
+  wordsInContent = wordsInContent.replace(/,/g, ``);  // fjerner alle kommaer
+  wordsInContent = wordsInContent.replace(/\./g, ``); // fjerner alle punktummer
+  wordsInContent = wordsInContent.split(` `);         // omdanner strengen til et array
 
   keywords.value = longWordAlgorithm(wordsInContent);
 }
 
+/* ALLE ALGORITMER! */
+/* Formål: Alle funktioner herunder er algoritmer der kan "plugges" ind i scanContentForKeywords.
+ * Input : @arrayOfWords. alle algoritmer tager et arrayOfWords ind som parameter der scannes på.
+ * Output: @keywords. Alle algoritmer outputter en streng af kommaseparerede keywords.
+ */
+
 /* Formål: En simpel algoritme der returnere alle ord over en hvis længde, som antages som nøgleord
  *         Er primært en algoritme til at vise funktionaliteten.
- * Input : @arrayOfWords er et array af alle de ord som brugeren har sat ind med mellemrum
- *         Dette betyder der pt. IKKE er fjernet specialtegn såsom "." "," etc.
- * Output: En liste kommaseparerede keywords, som direkte assignes til keywords.value.
  */
 function longWordAlgorithm(arrayOfWords) {
   const DEF_OF_LONG_WORD = 8; // Angiver definition af hvad "et langt ord" betyder
 
-  let keywords = ``;
+  const keywords = [];
   for (let i = 0; i < arrayOfWords.length; i++) {
     if (arrayOfWords[i].length >= DEF_OF_LONG_WORD) {
-      keywords += arrayOfWords[i];
-      keywords += `, `;
+      keywords.push(arrayOfWords[i]);
     }
   }
 
-  return keywords;
+  return keywords.join(`, `);
 }
