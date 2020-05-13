@@ -61,6 +61,7 @@ class SpacedRepetition extends Model {
     return [];// returnerer et tomt array hvis der ikke er nogen quizquestions som er due til afvikling
   }
 
+
   /* Formål: At returnere et array af idQuizQuestions fra repetition_task hvor RepetitionDate er nu eller tidligere
    * Input: NONE
    * Output: et array af idQuizQuestions
@@ -69,16 +70,16 @@ class SpacedRepetition extends Model {
     const repetitionTasks = [];
     let queryResult;
     let now = new Date();
-    now = now.toISOString().slice(0, 19).replace(`T`, ` `);
+    now = now.toISOString().slice(0, 19).replace(`T`, ` `);// konverterer en JS Date til SQL format
 
     try {
-      this.table = `repetition_task`;
+      this.table = `repetition_task`;// sætter table til repetition_task for en sikkerhedsskyld, da denne funktion kan kaldes fra andre klasser
       queryResult = await this.query(`SELECT ID_QUIZ_QUESTION`, `REPETITION_DATE <= "${now}" 
                                     AND ID_USER = "${this.idUser}" 
                                     AND ID_GROUP = "${this.idGroup}" ;`);
 
       queryResult.forEach((element) => {
-        if (element.idQuizQuestion !== undefined) {
+        if (element.idQuizQuestion !== undefined) { // populerer repetitiontasks med idQuizQuestions hvis der er nogen til repetition
           repetitionTasks.push(element.idQuizQuestion);
         }
       });
