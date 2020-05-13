@@ -90,6 +90,15 @@ class SpacedRepetition extends Model {
     return repetitionTasks;
   }
 
+  /* Formål: At få fat i indholdet for quiz spørgsmål baseret på en række quizQuiestion id'er
+   * Input: Et array af quizQuestion id'er
+   * Output: Et array med objekter af quizQuestion indhold: idQuizQuestion: '5e5ccfd5-944e-11ea-af8f-2c4d54532c7a',
+                                                            idEvaluation: '52e17040-944e-11ea-af8f-2c4d54532c7a',
+                                                            question: 'Mike',
+                                                            answers: [Array],
+                                                            correctness: 'false;true',
+                                                            keywords: '123KeywordQuestion'
+   */
   async getQuizQuestionContent(idQuizQuestions) {
     const trueTable = this.table;
     this.table = `quiz_Question`;
@@ -104,6 +113,12 @@ class SpacedRepetition extends Model {
     return quizQuestionContent;
   }
 
+  /* Formål: Vi ønsker at lave en string på følgende form: `ID_QUIZ_QUESTION = "blablabla" OR "dumbludbudlibum"`.
+   * Alt efter hvor mange id'er der ligger i array'et vil der efterfølgende blive lavet et nyt OR og det efterfølgende quizQuestion ID, indtil der ikke er flere ID'er.
+   * Denne string returneres i funktionen getQuizQuestionContent(), hvor den bruges til at få fat i det indhold der matcher de forskellige quizQuestion ID'er vi har i array'et idQuizQuestions.
+   * Input: Et array af quizQuestion ID'er
+   * Output: En string på den korrekte form (illustreret i Formål)
+   */
   createQueryStringFromQuestionIDs(idQuizQuestions) {
     let string = ``;
     idQuizQuestions.forEach((element, index) => {
@@ -120,9 +135,20 @@ class SpacedRepetition extends Model {
     return string;
   }
 
+
+
+  // Endnu ikke implementeret
   RunRepetition() {
 
   }
+
+
+
+
+
+
+
+
 
   // spacedrepetition algoritmen udgøres af funktionerne : calculateNextRepetitionTimeStampForEvaluation() og calculateTimeStamp() //
 
