@@ -73,6 +73,7 @@ class Database {
     return true;
   }
 
+  // FIXME:skriv et eksempel på brug af funktionen.
   /* Formål: Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overridet.
    *         Dette oger kode genbrug, samt sikre fornuftig testning paa tvaers af hele programmet i forhold til databasen.
    * Input:  Metoden modtager de valg som brugeren har lavet, og gennem parser metoden, faar noget brugbar SQL,
@@ -185,7 +186,7 @@ class Database {
 
     let dataValid = false;
     const dataEmpty = (data === undefined || data === ``);
-    const dataRe = /^\w+ = /;
+    const dataRe = /^\w+ /;
     if (/^CUSTOM$/.test(choice)) {
       dataValid = true;
     }

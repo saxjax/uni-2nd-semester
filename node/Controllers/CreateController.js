@@ -190,7 +190,7 @@ class CreateController {
 
     try {
       await QR.insertToDatabaseSpacedRepetition(quizResultData.resultData);
-      res.send({ newURL: `/view/evaluationResult/${QR.idEvaluation}/${idAttempt}` });
+      res.send({ newURL: `/view/evaluationResult/${idAttempt}`, quizResultData });
     }
     catch (error) {
       console.log(error);

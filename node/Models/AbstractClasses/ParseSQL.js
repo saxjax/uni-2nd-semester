@@ -21,6 +21,7 @@ class ParseSql {
     this.flashcardResultCol = `ID_FLASHCARD_RESULT`;
     this.keywordCol = `ID_KEYWORD`;
     this.keywordLinkCol = `ID_KEYWORD_LINK`;
+    this.attemptCol = `ID_ATTEMPT`;
     /* kolonner i alle klasser */
     this.typeCol = `ELEMENT_TYPE`;
     /* Group kolonner */
@@ -90,6 +91,7 @@ class ParseSql {
         case `evaluation`:       this.parsedData.push(this.parseEvaluation(data[i]));       break;
         case `quiz_question`:    this.parsedData.push(this.parseQuizQuestion(data[i]));     break;
         case `quiz_result`:      this.parsedData.push(this.parseQuizResult(data[i]));       break;
+        case `repetition_task`:  this.parsedData.push(this.parseQuizResult(data[i]));       break;//! !!! FIXME:der skal oprettes en parser til repetitiontask
         // case `flashcard`:        this.parsedData.push(this.parseFlashcard(data[i]));        break;
         // case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i]));  break;
         case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));          break;

@@ -15,6 +15,11 @@ class SpacedRepetition extends Model {
     this.table = `repetition_task`;
   }
 
+
+  /* Formål:
+   * Input:
+   * Output:
+   */
   async insertToDatabaseSpacedRepetition(resultData) {
     const trueObjectTable = this.table; // refererer til QuizResults table i dette tilfælde
     this.table = `repetition_task`;
@@ -38,6 +43,11 @@ class SpacedRepetition extends Model {
     return true;
   }
 
+
+  /* Formål: Hente quizquestions som er due til at blive afviklet
+   * Input:  intet
+   * Output: et array af  id'er  idQuizQuestions
+   */
   async getTasksforRepetition() {
     const repetitionTasks = [];
     let queryResult;
@@ -46,34 +56,45 @@ class SpacedRepetition extends Model {
     now = now.toISOString().slice(0, 19).replace(`T`, ` `);
 
     try {
-      queryResult = await this.query(`CUSTOM`, `SELECT ID_QUIZ_QUESTION FROM p2.repetition_task where 
-                                      Repetition_date <= "${now}" 
+      this.table = `repetition_task`;
+      queryResult = await this.query(`SELECT ID_QUIZ_QUESTION`, `REPETITION_DATE <= "${now}" 
                                       AND ID_USER = "${this.idUser}" 
                                       AND ID_GROUP = "${this.idGroup}" ;`);
-
+      // if (Object.keys(queryResult[0]).length) {
       queryResult.forEach((element) => {
-        repetitionTasks.push(element.ID_QUIZ_QUESTION);
+        if (element.idQuizQuestion !== undefined) {
+          repetitionTasks.push(element.idQuizQuestion);
+        }
       });
+      // }
     }
     catch (error) {
       console.log(error);
     }
-    quizContent = await this.getQuizQuestionContent(repetitionTasks);
-    return quizContent;
+
+    if (repetitionTasks.length > 0) {
+      quizContent = await this.getQuizQuestionContent(repetitionTasks);
+      return quizContent;
+    }
+    return [];
   }
+
 
   async getQuizQuestionContent(idQuizQuestions) {
     const trueTable = this.table;
     this.table = `quiz_Question`;
     let quizQuestionContent = [];
-    const string = this.createQueryString(idQuizQuestions);
-    quizQuestionContent = await this.query(`SELECT *`, `${string}`);
-    console.log(quizQuestionContent);
+
+
+    if (idQuizQuestions.length > 0) {
+      const string = this.createQueryStringFromQuestionIDs(idQuizQuestions);
+      quizQuestionContent = await this.query(`SELECT *`, `${string}`);
+    }
 
     return quizQuestionContent;
   }
 
-  createQueryString(idQuizQuestions) {
+  createQueryStringFromQuestionIDs(idQuizQuestions) {
     let string = ``;
     idQuizQuestions.forEach((element, index) => {
       console.log(index, element);
@@ -83,8 +104,8 @@ class SpacedRepetition extends Model {
       string += `ID_QUIZ_QUESTION = "${element}"`;
     });
     string += ` ;`;
-    console.log(idQuizQuestions);
-    console.log(string);
+    // console.log(idQuizQuestions);
+    // console.log(string);
 
     return string;
   }
@@ -104,8 +125,8 @@ class SpacedRepetition extends Model {
     let newRepTimestamp = 0;
     let rightWrongRatio = 0;
     let setMinTimestamp = true; // hvis setMinTimestamp er sat til TRUE, betyder det, at brugeren skal have evalueringsopgaven indenfor de næste 24 timer, hvis FALSE skal evalueringsopgaven repeteres senere.
-    console.log(`spacedrepetition l 37`);
-    console.log(evaluationResult);
+    // console.log(`spacedrepetition l 37`);
+    // console.log(evaluationResult);
 
 
     if (evaluationResult.recentResult === `true`) { // er der blevet svaret korrekt på spørgsmålet?
@@ -184,7 +205,7 @@ const evalTask = {
 
 evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask);
 // evalLog.push(evalTask)
-console.log(`#1:${evalTask.nextRepTimeStamp}`);
+// console.log(`#1:${evalTask.nextRepTimeStamp}`);
 
 for (let index = 0; index < 3; index++) {
   evalTask.successAttempts++;
