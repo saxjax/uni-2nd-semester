@@ -12,7 +12,7 @@
 
 class TestController {
   constructor(root) {
-    this.name = `ViewController`;
+    this.name = `TestController`;
     this.root = root;
     this.ejs = ``;
   }
