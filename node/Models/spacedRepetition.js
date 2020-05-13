@@ -135,9 +135,6 @@ class SpacedRepetition extends Model {
     let newRepTimestamp = 0;
     let rightWrongRatio = 0;
     let setMinTimestamp = true; // hvis setMinTimestamp er sat til TRUE, betyder det, at brugeren skal have evalueringsopgaven indenfor de næste 24 timer, hvis FALSE skal evalueringsopgaven repeteres senere.
-    // console.log(`spacedrepetition l 37`);
-    // console.log(evaluationResult);
-
 
     if (evaluationResult.recentResult === `true`) { // er der blevet svaret korrekt på spørgsmålet?
       if (evaluationResult.repetitions > 1) { // er evalueringsopgaven blevet taget før?
@@ -182,79 +179,8 @@ class SpacedRepetition extends Model {
 
     return newRepTimeStamp;
   }
-
-
-  /*
-  * Formål: opret et array med alle de evaluerings objekter som skal afvikles NU
-  * Input : array af Results
-  * Output: array med der reults som skal afvikles nu.
-  */
-  selectEvaluationsForRepetition(evaluationLog) {
-    const nextRepetitionTask = [];
-    evaluationLog.forEach((evaluationResult) => {
-      if (evaluationResult.nextRepTimeStamp <= Date.now()) {
-        nextRepetitionTask.push(evaluationResult);
-      }
-    });
-    return nextRepetitionTask;
-  }
 }
 
 module.exports = {
   SpacedRepetition,
 };
-
-
-// TEST AF FUNKTIONALITETER
-const req = {};
-const spacedR = new SpacedRepetition(req);
-const evalLog = [];
-const evalTask = {
-  failedAttempts: 1, successAttempts: 1, recentResult: true, repetitions: 3,
-};
-
-evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask);
-// evalLog.push(evalTask)
-// console.log(`#1:${evalTask.nextRepTimeStamp}`);
-
-for (let index = 0; index < 3; index++) {
-  evalTask.successAttempts++;
-  // evalTask.repetitions++
-  evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask);
-  // console.log(`#2:`+evalTask.nextRepTimeStamp);
-  const copy = { evalTask };
-  evalLog.push(copy);
-// console.log(copy)
-}
-for (let index = 0; index < 3; index++) {
-  evalTask.failedAttempts++;
-  evalTask.recentResult = false;
-  // evalTask.repetitions++
-  evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask);
-  // console.log(`#2:`+evalTask.nextRepTimeStamp);
-  const copy = { ...evalTask };
-  evalLog.push(copy);
-  // console.log(copy)
-}
-
-// evalTask.successAttempts ++
-// evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
-// console.log(`#3:`+evalTask.nextRepTimeStamp);
-
-// evalTask.successAttempts ++
-// evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
-// console.log(`#4:`+ evalTask.nextRepTimeStamp);
-
-
-// evalTask.recentResult = false
-// evalTask.failedAttempts++
-// evalTask.nextRepTimeStamp = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
-// console.log("#5 false "+evalTask.nextRepTimeStamp);
-
-// evalTask.successAttempts ++
-// evalTask.recentResult = true
-// evalTask = spacedR.calculateNextRepetitionTimeStampForEvaluation(evalTask)
-// console.log(evalTask);
-// console.log(spacedR.selectEvaluationsForRepetition(evalLog));
-// console.log(`disse ligger alle i evalLog`);
-// console.log(evalLog);
