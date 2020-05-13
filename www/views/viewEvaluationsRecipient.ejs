@@ -2,51 +2,40 @@
 <html>
   <head>
     <%- include('meta/header') %> 
-    <link href="/css/design.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/design.css">
+    <link rel="stylesheet" href="/css/viewEvaluationsRecipient.css">
     <title>GroupHub | Evalueringer</title>
   </head>
   <body>
     <%- include('meta/navbar') %> 
-    <div class="container" id="content">
-      <div class="row">
-        <nav>
-            <a href="/post/evaluation">Opret Evaluation</a>
-            <a href="/post/flashcard">Opret Flashcard</a>
-        </nav> 
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <h1> EVALUERINGER </h1>
-          <div class = "search_eval">
-            <form action="/evalueringer" method="POST">
-              <label> Vælg det afsnit du ønsker at finde evalueringer til</label><br>
-              <input type="text" id="section" name="section"><br>
-              <input type="submit">
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class="col-10"></div>
-      <section>
+
+    <h1>Dette er de tilgængelige evalueringer</h1>
+    <a class="btn btn-success" id="createNewEvaluationButton" href="/post/evaluation">Opret en ny evaluering</a>
+
+    <% data.evaluations.forEach(evaluation => { %>
+      <div class="evaluationDiv container">
         <div class="row">
           <div class="col">
-            <div class="leftside">
-              <div class="evaluations">
-                <h2> EVALUATIONS </h2>
-                <% if (data.evaluations) { data.evaluations.forEach((element) =>{ %>
-                  <a href="<%= element.idEvaluation %>"> 
-                    <div class="card">
-                      <div class="elementType<%= element.elementType %>"> <%= element.title %></div>
-                      <div class="question"><%= element.question %></div>
-                    </div>
-                  </a>
-                <% });} %>
-              </div>
-            </div>
+            <p class="evaluationTitle">
+              <%= evaluation.title %>
+            </p>
+          </div>
+          <div class="col">
+            <p class="evaluationSection"><strong>Sektion:</strong> <%= evaluation.idEvaluation %></p>
+          </div>
+          <div class="col">
+            <p class="evaluationSection"><strong>Dokument:</strong> <%= evaluation.idDocument %></p>
+          </div>
+          <div class="col">
+            <p class="evaluationSection"><strong>Oprettet af:</strong> <%= evaluation.idUser %></p>
+          </div>
+          <div class="col">
+            <a class="btn btn-primary" href="<%=evaluation.idEvaluation%>">Gå til denne evaluering</a>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    <% }); %>
+
     <%- include('meta/footer') %> 
   </body>
 </html>
