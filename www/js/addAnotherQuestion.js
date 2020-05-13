@@ -1,8 +1,6 @@
 /* eslint no-undef: 0 */
 
-// const form = document.getElementById(`quizQuestionsForm`); FIXME: Slettes hvis ikke den skal bruges
 const addAnotherQuestionButtons = document.querySelectorAll(`.addAnotherQuestionButton`);
-const submitButton = document.getElementById(`submit`);
 const questionCountDisplay = document.getElementById(`questionCountDisplay`);
 let questionCount = 1;
 
@@ -21,7 +19,7 @@ addAnotherQuestionButtons.forEach((button) => {
 });
 
 function addAnotherQuestion() {
-  const questionContainer = insertDomNode(`DIV`, submitButton, undefined, [{ class: `questionContainer` }]);
+  const questionContainer = insertDomNode(`DIV`, addAnotherQuestionButtons[1], undefined, [{ class: `questionContainer` }]);
   const questionLabel = appendDomNode(`LABEL`, questionContainer, `Question ${questionCount}`); // Indsæt label for="someID"
   questionLabel.htmlFor = `question${questionCount}`; // Corresponds to the input.id
   appendDomNode(`BR`, questionContainer);
@@ -29,25 +27,21 @@ function addAnotherQuestion() {
   questionInput.name = `question${questionCount}`;
   appendDomNode(`BR`, questionContainer);
 
-  const breakBeforeAnswerButton = appendDomNode(`BR`, questionContainer);
-  const addAnotherAnswerButton = appendDomNode(`BUTTON`, questionContainer, `Add another answer`);
+  const addAnotherAnswerButton = appendDomNode(`BUTTON`, questionContainer, `+`);
   appendDomNode(`BR`, questionContainer);
   let answerFieldCount = 1;
   addAnotherAnswerButton.addEventListener(`click`, () => {
-    answerFieldCount = createAnswerFields(1, breakBeforeAnswerButton, answerFieldCount);
+    answerFieldCount = createAnswerFields(1, addAnotherAnswerButton, answerFieldCount);
   });
-  answerFieldCount = createAnswerFields(2, breakBeforeAnswerButton, answerFieldCount);
+  answerFieldCount = createAnswerFields(2, addAnotherAnswerButton, answerFieldCount);
 
-  const breakBeforeKeywordButton = appendDomNode(`BR`, questionContainer);
-  const addKeywordButton = appendDomNode(`BUTTON`, questionContainer, `Add another keyword`, [{ id: `addKeywordButton${questionCount}` }]);
+  const addKeywordButton = appendDomNode(`BUTTON`, questionContainer, `+`, [{ id: `addKeywordButton${questionCount}` }]);
   let keywordCount = 0;
-  keywordCount += addKeywordField(breakBeforeKeywordButton, ++keywordCount);
+  keywordCount += addKeywordField(addKeywordButton, ++keywordCount);
   addKeywordButton.addEventListener(`click`, () => {
-    keywordCount += addKeywordField(breakBeforeKeywordButton, ++keywordCount);
+    keywordCount += addKeywordField(addKeywordButton, ++keywordCount);
   });
 
-  appendDomNode(`BR`, questionContainer);
-  appendDomNode(`BR`, questionContainer);
   questionCountDisplay.innerText = `Number of questions: ${questionCount++}`;
 }
 
