@@ -33,8 +33,10 @@ class ViewController {
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),               // dataArray[0]
       Recipient.getThisUserData(),                // dataArray[1]
+      Recipient.getAllElementsOfType(`Document`), // dataArray[2]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1] };
+    const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2] };
+    console.log(data);
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs, { data });
   }
@@ -91,17 +93,16 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // TODO: Mangler EJS fil
-  /* Formål: BESKRIV EJS FORMÅL HER
+  /* Formål: At give et overblik over det individuelle dokument, med de sections og evalueringer der er tilknyttet.
    * Input : Et request med et queryId samt en session med userId og groupId
    * Output: Visning af et dokument
    */
   async viewDocumentPage(req, res) {
     const Doc = new Document(req);
     const dataArray = await Promise.all([
-      Doc.getThisGroupData(),               // dataArray[0]
-      Doc.getThisUserData(),                // dataArray[1]
-      Doc.getThis(),                        // dataArray[2]
+      Doc.getThisGroupData(),                 // dataArray[0]
+      Doc.getThisUserData(),                  // dataArray[1]
+      Doc.getThis(),                          // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewDocument.ejs`);

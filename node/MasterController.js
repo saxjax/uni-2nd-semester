@@ -119,7 +119,7 @@ class MasterController {
     // this.app.get(`/view/document/recipient`,  (req, res) => Show.viewDocumentRecipientPage(req, res));
     // this.app.get(`/view/document/expert`,     (req, res) => Show.viewDocumentExpertPage(req, res));
     // this.app.get(`/post/document/`,         (req, res) => Show.postDocumentSelectPage(req, res));
-    // this.app.get(`/view/document/:idQuery`,   (req, res) => Show.viewDocumentPage(req, res));
+    this.app.get(`/view/document/:idQuery`,   (req, res) => Show.viewDocumentPage(req, res));
     // this.app.get(`/put/document/:idQuery`, (req, res) => Show.putDocumentPage(req, res));
 
     // Sections
