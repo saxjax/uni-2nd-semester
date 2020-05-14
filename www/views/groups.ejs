@@ -2,23 +2,28 @@
 <html>
   <head>
     <%- include('meta/header') %> 
+    <link href="/css/design.css" rel="stylesheet">
     <title>GroupHub | Groups</title>
   </head>
   <body>
     <div class="container" id="content">
       <div class="row">
           <div class="col-sm-12">
-            <h1>Choose one of the groups</h1>
+            <h1>Vælg dit grupperum</h1>
           </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
-            <a href="session/group/<%= data.group[0].idGroup %>">
+            <% if(data.group[0].name) { %>
+            <a href="/session/group/<%= data.group[0].idGroup %>">
               <h2><%= data.group[0].name %></h2>
             </a> 
-        </div>
-        <div class="col-sm-12">
             <p>Vi beklager at man indtil videre kun kan være en del af en gruppe ad gangen</p>
+            <% } else { %>
+              <button>
+                  <a href="/access/post/group">Opret Grupperum</a>
+              </button>
+            <% } %>
         </div>
       </div>
     </div>

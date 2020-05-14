@@ -2,14 +2,15 @@
 <html>
   <head>
   	<%- include(`meta/header.ejs`)  %> 
-  	<title>GroupHub | Register</title>
+      <title>GroupHub | Register</title>
+      <link href="/css/design.css" rel="stylesheet">
   	<link rel="stylesheet" href="/css/login_register_form.css">
   </head>
   <body>
     <div class="container">
   	  <div class="login-form">
   		  <h1>Register</h1>
-  		  <form action="/register" method="POST">
+  		  <form action="/access/register" method="POST">
 			    <input type="text" name="username" placeholder="username" required>
 			    <input type="password" name="password" placeholder="Password" required>	
 			    <input type="text" name="firstName" placeholder="First name" required>
@@ -22,7 +23,7 @@
 		    </form>
 		    <p>
 			    Already registered? <br>
-			    <a href="/login">Log in here.</a>
+			    <a href="/access/login">Log in here.</a>
 		    </p>
       </div>
     </div>

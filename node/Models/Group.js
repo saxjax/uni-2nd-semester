@@ -21,21 +21,32 @@ class Group extends Model {
           break;
         case `POST`:
           this.name = req.body.name;
+          this.members = req.body.members;
           break;
         default: break;
       }
     }
   }
 
-  /* Formål: At kunne oprette den givne model i databasen ud fra posted data fra en form.
-             Der bliver desuden automatisk oprettet de forskellige dependencies/foreign keys som objektet tilhører.
+  /* Formål: At oprette en gruppe hvor der bliver tilføjet de medlemmer af gruppen som bliver sendt med.
    * Input : Et objekt oprettet med et request med postdata i body samt user/group data i session
    * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
     try {
-      await this.query(`ID_USER_GROUP = "${this.idGroup}" `
-                 + `AND NAME = "${this.name}"`);
+      await this.query(`INSERT`, `NAME = "${this.name}"`);
+      const newGroup = await this.query(`SELECT *`, `NAME = "${this.name}"`);
+
+      this.table = `user`;
+      for (let i = 0; i < this.members.length; i++) {
+        const newUser = await this.query(`SELECT *`, `USER_NAME = "${this.members[i]}"`);
+        if (newUser[0].idGroup === `undefined`) {
+          await this.query(`UPDATE`, `ID_USER_GROUP = "${newGroup[0].idGroup}" WHERE USER_NAME = "${this.members[i]}"`);
+        }
+        else if (newUser[0].elementType === `user`) {
+          // FIXME: En respons til brugeren om at brugernavnet er tastet forkert. Dette skal dog nok valideres inden på Frontend siden på en eller anden måde.
+        }
+      }
     }
     catch (error) {
       console.log(error);

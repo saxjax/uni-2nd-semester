@@ -41,27 +41,18 @@ class Keyword extends Model {
       case `document`:
         idCollumn = `ID_DOCUMENT`;
         break;
-
       case `section`:
         idCollumn = `ID_DOCUMENT_SECTION`;
         break;
-
-
       case `evaluation`:
         idCollumn = `ID_EVALUATION`;
         break;
-
-
       case `quiz_question`:
         idCollumn = `ID_QUIZ_QUESTION`;
         break;
-
-
       case `flashcard`:
         idCollumn = `ID_FLASHCARD`;
         break;
-
-
       default:
         break;
     }
@@ -108,10 +99,11 @@ class Keyword extends Model {
   */
   // FIXME: lav check om createkeywords og createKeywordLinks har oprettet det de skal i databasen og return true
   async insertToDatabase(idLinks, keywordArray) {
+    keywordArray = this.makeArrayUppercase(keywordArray);
     await this.createKeywords(keywordArray);
     await this.createKeywordLinks(idLinks, keywordArray);
 
-    // return true;
+    return true;
   }
 
   /* Formål: At oprette reference ID'er mellem input keywords og input ID'er i ${keywordLink.table} tabellen.
@@ -130,6 +122,7 @@ class Keyword extends Model {
         await this.insertKeywordLink(keywordLink, idKeyword);
       }
     });
+    return true;
   }
 
 
@@ -176,7 +169,7 @@ class Keyword extends Model {
    * Output: N/A
    */
   async createKeywords(keywordArray) {
-    let queryString = keywordArray.sort();
+    let queryString = ``;
     queryString = this.makeKeywordQueryString(keywordArray);
     const existingKeywords = await this.getExistingKeywords(queryString);
 
@@ -191,6 +184,7 @@ class Keyword extends Model {
         return false;
       }
     }
+    return true;
   }
 
   /* Formål: Opretter et array af idKeyword som matcher ordene i et array af keywords.
@@ -266,6 +260,14 @@ class Keyword extends Model {
       }
     }
     return queryString;
+  }
+
+  makeArrayUppercase(keywordArray) {
+    const uppercaseKeywordArray = [];
+    keywordArray.forEach((word) => {
+      uppercaseKeywordArray.push(word.toUpperCase());
+    });
+    return uppercaseKeywordArray;
   }
 }
 module.exports = {

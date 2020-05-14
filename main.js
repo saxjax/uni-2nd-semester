@@ -1,33 +1,12 @@
 const { MasterController } = require(`./node/MasterController.js`);
 
-const devSettings = {
-  name: `Developmentserver`, // Angiver funktionaliteten af disse settings. Har ingen funktionsmæssig betydning.
-  root: __dirname,           // Medsender root directoriet så MasterController altid henviser til main.js root
-  port: 3000,                // Angiver porten som programmet skal kører på.
-  debug: true,               // Angiver om programmet skal køre i udviklingsmode eller i productionmode (FIXME: ikke endnu fuldt implementeret)
-  skipAccess: true,          // Angiver om programmet automatisk skal logges ind som Test User i Tester Group
+const settings = {
+  name: `Server`,   // Angiver funktionaliteten af disse settings. Har ingen funktionsmæssig betydning.
+  root: __dirname,  // Medsender root directoriet så MasterController altid henviser til main.js root
+  port: 3000,       // Angiver porten som programmet skal kører på.
+  debug: true,      // Angiver om programmet skal køre i udviklingsmode eller i productionmode.
+  skipAccess: false, // Angiver om programmet automatisk skal logges ind som Test User i Tester Group
 };
-const Start = new MasterController(devSettings);
-
-/*
-const stageSettings = {
-  name: `Staginserver`,
-  root: __dirname,
-  port: 80,
-  debug: false,
-  skipAccess: false,
-};
-const Start = new Server(stageSettings);
-*/
-/*
-const prodSettings = {
-  name: `Productionserver`,
-  root: __dirname,
-  port: 443,
-  debug: false,
-  skipAccess: false,
-};
-const Start = new Server(prodSettings);
-*/
+const Start = new MasterController(settings);
 
 Start.startServer();
