@@ -64,7 +64,7 @@ class Section extends Model {
       const data = `SECTION_TITLE = "${this.title}" `
                  + `AND SECTION_CONTENT = "${this.content}" `
                  + `AND ID_DOCUMENT = "${this.idDocument}" `
-                 + `AND KEYWORDS = "${this.keywords}" `
+                 + `AND KEYWORDS = "${this.keywords.join(`;`)}" ` // FIXME: Indsættes i keywordLink i stedet
                  + `AND SECTION_NUMBER = "${this.number}" `
                  + `AND ID_USER_GROUP = "${this.idGroup}" `
                  + `AND ID_USER = "${this.idUser}"`;
@@ -73,8 +73,7 @@ class Section extends Model {
         throw new Error(`InsertToDatabase didnt work!`);
       }
       else {
-        const newObject = await this.query(`SELECT *`, data);
-        return newObject;
+        return this.query(`SELECT *`, data);
       }
     }
     catch (error) {
