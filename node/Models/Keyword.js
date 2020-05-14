@@ -99,6 +99,7 @@ class Keyword extends Model {
   */
   // FIXME: lav check om createkeywords og createKeywordLinks har oprettet det de skal i databasen og return true
   async insertToDatabase(idLinks, keywordArray) {
+    keywordArray = this.makeArrayUppercase(keywordArray);
     await this.createKeywords(keywordArray);
     await this.createKeywordLinks(idLinks, keywordArray);
 
@@ -168,7 +169,7 @@ class Keyword extends Model {
    * Output: N/A
    */
   async createKeywords(keywordArray) {
-    let queryString = keywordArray.sort();
+    let queryString = ``;
     queryString = this.makeKeywordQueryString(keywordArray);
     const existingKeywords = await this.getExistingKeywords(queryString);
 
@@ -259,6 +260,14 @@ class Keyword extends Model {
       }
     }
     return queryString;
+  }
+
+  makeArrayUppercase(keywordArray) {
+    const uppercaseKeywordArray = [];
+    keywordArray.forEach((word) => {
+      uppercaseKeywordArray.push(word.toUpperCase());
+    });
+    return uppercaseKeywordArray;
   }
 }
 module.exports = {

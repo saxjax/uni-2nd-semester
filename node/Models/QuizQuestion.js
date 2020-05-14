@@ -57,10 +57,10 @@ class QuizQuestion extends Model {
   async insertToDatabase() {
     const docAndSecID = await this.getDocumentAndSectionID();
     const questionsPromiseArray = [];
+    const AllQuizQuestionUUIDs = await this.getQuizQuestionUUID(this.questions.length); // får alle UUIDs fra databasen som skal benyttes, i ét database kald.
     for (let i = 0; i < this.questions.length; i++) {
-      const UUID = await this.getQuizQuestionUUID();
-      const insertQuestionQuery = this.insertQuestionToDatabase(this.questions[i], UUID);
-      this.insertKeywordQuizQuestion(this.questions[i], UUID, docAndSecID);
+      const insertQuestionQuery = this.insertQuestionToDatabase(this.questions[i], AllQuizQuestionUUIDs[i].UUID);
+      this.insertKeywordQuizQuestion(this.questions[i], AllQuizQuestionUUIDs[i].UUID, docAndSecID);
       questionsPromiseArray.push(insertQuestionQuery);
     }
     try {
@@ -91,15 +91,16 @@ class QuizQuestion extends Model {
     }
   }
 
-  async getQuizQuestionUUID() {
+  async getQuizQuestionUUID(uuidAmount) {
     let select;
+    const selectString = this.generateSelectString(uuidAmount);
     try {
-      select = await this.query(`CUSTOM`, `SELECT UUID() as UUID FROM DUAL`);
+      select = await this.query(`CUSTOM`, `${selectString}`);
     }
     catch (error) {
       console.log(`Could not fetch UUID from database`);
     }
-    return select[0].UUID;
+    return select;
   }
 
   async getDocumentAndSectionID() {
@@ -124,6 +125,15 @@ class QuizQuestion extends Model {
       };
       insertKeyword.insertToDatabase(idObject, question.keyword);
     }
+  }
+
+  generateSelectString(uuidAmount) {
+    let string = ``;
+    for (let i = uuidAmount; i > 0; i--) {
+      string += `SELECT UUID() as UUID UNION `;
+    }
+    string = string.slice(0, -6);
+    return string;
   }
 }
 module.exports = {
