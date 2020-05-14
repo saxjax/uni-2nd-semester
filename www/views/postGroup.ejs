@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('meta/header') %> 
+    <link rel="stylesheet" href="/css/design.css">
+    <title>GroupHub | New Group</title>
+  </head>
+  <body>
+    <%- include('meta/navbar') %> 
+    <div class="container" id="content" style="text-align: center; font-weight: bold;">
+        <h1>Opret en ny gruppe</h1>
+    <form action="/post/group" method="POST">
+      <label for="name">Gruppenavn</label><br>
+      <input name="name" id="name" type="text" size="60%" placeholder="Gruppe navn" required><br>
+
+      <label for="members">Tilføj andre medlemmer end <%= data.user[0].username %>, max 7</label>
+      <input name="members" id="members" type="hidden" value="<%= data.user[0].username %>">
+      <br>
+      <input name="members" class="members" type="text" size="60%" placeholder="Medlemmets Username"><br>
+      <input name="members" class="members" type="text" size="60%" placeholder="Medlemmets Username"><br>
+      <input name="members" class="members" type="text" size="60%" placeholder="Medlemmets Username"><br>
+      <input name="members" class="members" type="text" size="60%" placeholder="Medlemmets Username"><br>
+      <input name="members" class="members" type="text" size="60%" placeholder="Medlemmets Username"><br>
+      <input name="members" class="members" type="text" size="60%" placeholder="Medlemmets Username"><br>
+      <input name="members" class="members" type="text" size="60%" placeholder="Medlemmets Username"><br>
+      
+      <input type="submit" value="Create!">
+    </form>
+  </div>
+    <%- include('meta/footer') %> 
+  </body>
+</html>

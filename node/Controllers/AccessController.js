@@ -18,10 +18,8 @@ class AccessController {
 
   /* UNDER CONSTRUCTION
    *
-   * FIXME: Grundet vi ikke kan lave en "rigtig" many-to-many operation mellem user og group, så bliver denne
-   *        funktion en smule bøvlet. Ligeledes er groupIdFromUser ikke
    */
-  async groupsPage(req, res) {
+  async viewGroupsPage(req, res) {
     const U = new User(req);
     const groupIdFromUser = await U.query(`SELECT ${U.idColumnGroup}`, `${U.idColumnUser} = "${U.idUser}"`);
     const G = new Group(req);
@@ -31,8 +29,24 @@ class AccessController {
       user: await U.getThisUserData(),
       group: await G.getThisGroupData(),
     };
-    // console.log(data);
     this.ejs = path.join(`${this.root}/www/views/groups.ejs`);
+    res.render(this.ejs, { data });
+  }
+
+  /* UNDER CONSTRUCTION
+   *
+   */
+  async postGroupPage(req, res) {
+    const U = new User(req);
+    const groupIdFromUser = await U.query(`SELECT ${U.idColumnGroup}`, `${U.idColumnUser} = "${U.idUser}"`);
+    const G = new Group(req);
+    G.idGroup = groupIdFromUser[0].idGroup;
+
+    const data = {
+      user: await U.getThisUserData(),
+      group: await G.getThisGroupData(),
+    };
+    this.ejs = path.join(`${this.root}/www/views/postGroup.ejs`);
     res.render(this.ejs, { data });
   }
 

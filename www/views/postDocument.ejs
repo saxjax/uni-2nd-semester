@@ -3,14 +3,14 @@
   <head>
     <%- include('meta/header') %> 
     <link rel="stylesheet" href="/css/design.css">
-    <title>Angiv Navn</title>
+    <title>Create Document</title>
   </head>
   <body>
     <%- include('meta/navbar') %> 
     <div class="container" id="content" style="text-align: center; font-weight: bold;">
-        <h1>Make a new document!</h1>
+        <h1>Opret et nyt dokument</h1>
     <form action="/post/document" method="POST">
-      <label for="title">Section Title:</label><br>
+      <label for="title">Overskrift:</label><br>
       <input name="title" id="title" type="text" size="60%" placeholder="Document Title" required><br>
 
       <input type="submit" value="Create!">

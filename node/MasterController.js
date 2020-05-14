@@ -65,12 +65,13 @@ class MasterController {
   accessPatterns() {
     const Access = new AccessController(this.root);
     // No Session URLs
-    this.app.get(`/about`,    (req, res) => Access.aboutPage(req, res));
-    this.app.get(`/register`, (req, res) => Access.registerPage(req, res));
+    this.app.get(`/access/about`,    (req, res) => Access.aboutPage(req, res));
+    this.app.get(`/access/register`, (req, res) => Access.registerPage(req, res));
     // idUser Session URLs
-    this.app.get(`/login`,    (req, res) => Access.loginPage(req, res));
+    this.app.get(`/access/login`,    (req, res) => Access.loginPage(req, res));
     // idGroup Session URLs
-    this.app.get(`/groups`,   (req, res) => Access.groupsPage(req, res));
+    this.app.get(`/access/view/groups`,   (req, res) => Access.viewGroupsPage(req, res));
+    this.app.get(`/access/post/group`,   (req, res) => Access.postGroupPage(req, res));
   }
 
   /* Formål: At opstille alle de funktioner som opsætter, ændrer og stopper sessions
@@ -83,7 +84,7 @@ class MasterController {
    */
   sessionPatterns() {
     const Session = new SessionController(this.root);
-    this.app.post(`/auth/user`, (req, res) => Session.userSession(req, res));
+    this.app.post(`/session/auth/user`, (req, res) => Session.userSession(req, res));
     this.app.get(`/session/group/:idQuery`, (req, res) => Session.groupSession(req, res));
   }
 
@@ -322,10 +323,10 @@ class MasterController {
       next();
     }
     else if (!req.session.idUser) { // Du har ikke et validt idUser og er dermed blevet omdirigeret til login siden!
-      res.redirect(`/login`);
+      res.redirect(`/access/login`);
     }
     else if (!req.session.idGroup) { // Du har ikke et validt idUser og er dermed blevet omdirigeret til login siden!
-      res.redirect(`/groups`);
+      res.redirect(`/access/view/groups`);
     }
     else {
       next();
@@ -356,15 +357,10 @@ class MasterController {
 }
 
 function isAccessURL(req) {
-  if (/session/.test(req.url)) {
+  if (/access/.test(req.url) || /session/.test(req.url) || req.url === `/post/group`) {
     return true;
   }
-  switch (req.url) {
-    case `/login`: case `/auth/user`: case `/groups`: case `/register`:
-      return true;
-    default:
-      return false;
-  }
+  return false;
 }
 
 module.exports = {
