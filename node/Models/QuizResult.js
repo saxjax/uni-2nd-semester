@@ -1,8 +1,8 @@
 /* eslint no-console: off */
 
-const { Model } = require(`./AbstractClasses/Model`);
+const { SpacedRepetition } = require(`./spacedRepetition`);
 
-class QuizResult extends Model {
+class QuizResult extends SpacedRepetition {
   constructor(req) {
     super(req);
     this.elementType = `quiz_result`;
@@ -65,15 +65,32 @@ class QuizResult extends Model {
   async getAllQuizQuestions() {
     const trueTable = this.table;
     let queryResult;
+
+    let string = ``;
+    const idQuestions = await this.query(`SELECT ID_QUIZ_QUESTION`, `ID_ATTEMPT = "${this.idQuery}"`);
+    string = this.createQueryString(idQuestions);
     this.table = `quiz_question`;
     try {
-      queryResult = await this.query(`SELECT *`, `${this.idEvaluationCol} = "${this.idEvaluation}"`);
+      queryResult = await this.query(`SELECT *`, `${string}`);
     }
     catch (error) {
       console.log(error);
     }
     this.table = trueTable;
     return queryResult;
+  }
+
+  createQueryString(idQuizQuestions) {
+    let string = ``;
+    idQuizQuestions.forEach((element, index) => {
+      // console.log(index, element);
+      if (index > 0) {
+        string += ` OR `;
+      }
+      string += `ID_QUIZ_QUESTION = "${element.idQuizQuestion}"`;
+    });
+    string += ` ;`;
+    return string;
   }
 
   /* Formål: At kunne hente historisk quiz data ud fra et forsøgsID.

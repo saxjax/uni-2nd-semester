@@ -148,7 +148,8 @@ class MasterController {
     this.app.get(`/post/evaluation`,                 (req, res) => Show.postEvaluationPage(req, res));
     this.app.get(`/post/questions`,                 (req, res) => Show.postQuestionsPage(req, res));
     this.app.get(`/view/evaluations/:idQuery`,          (req, res) => Show.viewEvaluationPage(req, res));
-    this.app.get(`/view/evaluationResult/:idQuery/:idAttempt`,          (req, res) => Show.viewEvaluationResultPage(req, res));
+    this.app.get(`/view/SpacedRepetition`,          (req, res) => Show.viewSpacedRepetitionPage(req, res));
+    this.app.get(`/view/evaluationResult/:idAttempt`,          (req, res) => Show.viewEvaluationResultPage(req, res));
     // this.app.get(`/put/evaluation/:idQuery`,        (req, res) => Show.putEvaluationPage(req, res));
 
     // Flashcard
@@ -202,7 +203,7 @@ class MasterController {
     this.app.post(`/post/section`,     (req, res) => Creator.createSection(req, res));
     this.app.post(`/post/evaluation`,  (req, res) => Creator.createEvaluation(req, res));
     this.app.post(`/post/questions`,   (req, res) => Creator.createQuestions(req, res));
-    this.app.post(`/post/answers/:id`, (req, res) => Creator.createAnswers(req, res));
+    this.app.post(`/post/answers`, (req, res) => Creator.createAnswers(req, res));
   }
 
   /* Formål: Struktur for de URL Patterns der sletter data i databasen.

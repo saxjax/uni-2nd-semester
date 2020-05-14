@@ -90,6 +90,7 @@ class Evaluation extends Model {
     return this.idEvaluation;
   }
 
+  // FIXME:denne funktion findes allerede getAllElementsOftype(`quiz_question`)
   /* Bliver brugt i viewControlleren i funktionen viewEvaluationPage
   Bruges til at hente alle spørgsmålene til den pågældende evaluering
   */

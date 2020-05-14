@@ -26,16 +26,19 @@ class ViewController {
 
   /* Formål: Et overblik til brugeren om den gruppe vedkommende er en del af, samt hvilke muligheder brugeren har.
    * Input : Et request der har oprettet en userId og groupId.
-   * Output: Startsiden af hjemmesiden, som skal give et overblik for User.
+   * Output: Startsiden af hjemmesiden, som skal give et overblik for User, her listes bla. om der er spaced repetition tasks klar til afvikling
    */
   async homePage(req, res) {
-    const Recipient = new Group(req);
+    const Recipient = new User(req);
+    const SpacedRep = new QuizResult(req);
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),               // dataArray[0]
       Recipient.getThisUserData(),                // dataArray[1]
       Recipient.getAllElementsOfType(`Document`), // dataArray[2]
+      SpacedRep.getIdQuizquestionsDueForRepetition(), // dataArray[3]
+
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2] };
+    const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2], repetitionTask: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs, { data });
   }
@@ -245,7 +248,7 @@ class ViewController {
       Recipient.getAllElementsOfType(`Flashcard`), // dataArray[3]   ->   FIXME: Ikke oprettet endnu
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2], flashcards: dataArray[3] };
-    console.log(data);
+    // console.log(data);
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsRecipient.ejs`);
     res.render(this.ejs, { data });
   }
@@ -429,15 +432,33 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
+
+  async viewSpacedRepetitionPage(req, res) {
+    const QR = new QuizResult(req);
+    const dataArray = await Promise.all([
+      await QR.getThisGroupData(),                    // dataArray[0]
+      await QR.getThisUserData(),                     // dataArray[1]
+      await QR.getThis(),                             // dataArray[2]
+      await QR.getTasksforRepetition(),               // dataArray[3]
+    ]);
+    const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], questions: dataArray[3] };
+    this.ejs = path.join(`${this.root}/www/views/viewEvaluation.ejs`);
+    res.render(this.ejs, { data });
+  }
+
+
   async viewEvaluationResultPage(req, res) {
     const QR = new QuizResult(req);
+
+
     const dataArray = await Promise.all([
       await QR.getThisGroupData(),                    // dataArray[0]
       await QR.getThisUserData(),                     // dataArray[1]
       await QR.getThis(),                             // dataArray[2]
       await QR.getAllQuizQuestions(),                 // dataArray[3]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], quizQuestions: dataArray[3] };
+    const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2],   quizQuestions: dataArray[3] };
+
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationResult.ejs`);
     res.render(this.ejs, { data });
   }

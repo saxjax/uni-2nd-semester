@@ -1,6 +1,7 @@
 class Question {
   constructor(questionContainer, index) {
     this.idQuestion         = questionContainer.getAttribute(`idQuestion`);
+    this.idEvaluation       = data.evaluation[index];
     this.questionText       = questionContainer.getElementsByClassName(`questionText`)[0].innerHTML;
     this.userAnswers        = this.getUserAnswers(questionContainer);
     this.correctAnswers     = data.questions[index].correctness;
@@ -17,8 +18,9 @@ class Question {
   }
 }
 
+// console.log(data);
 const submitButton = document.querySelector(`#submitButton`);
-const { idEvaluation } = data.evaluation[0];
+// const { idEvaluation } = data.evaluation[0];
 submitButton.addEventListener(`click`, submitAnswers);
 
 
@@ -32,8 +34,8 @@ async function submitAnswers() {
   }
 
   const score = calculateScore(questionsArray);
-  const body = { questionsArray, score, idEvaluation };
-  const response = await fetch(`/post/answers/${idEvaluation}`, {
+  const body = { questionsArray, score };
+  const response = await fetch(`/post/answers/`, {
     method: `POST`,
     body: JSON.stringify(body),
     headers: { "Content-Type": `application/json` },

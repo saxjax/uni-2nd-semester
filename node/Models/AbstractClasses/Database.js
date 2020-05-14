@@ -29,7 +29,7 @@ class Database {
       host: `213.32.247.201`,
       user: `ADMIN`,
       port: `3306`,
-      password: fs.readFileSync(`./node/Models/AbstractClasses/password.txt`, `utf8`),
+      password: `DGzU+w9tkW9Ms&j_7-Ec+u@26Wz?P*5L`, // fs.readFileSync(` ./node/Models/AbstractClasses/password.txt`, `utf8`), // `./node/Models/AbstractClasses/password.txt `, `utf8`),
       database: this.database,
     };
     this.connect = mysql.createConnection(this.dbConfig);
@@ -73,6 +73,7 @@ class Database {
     return true;
   }
 
+  // FIXME:skriv et eksempel på brug af funktionen.
   /* Formål: Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overridet.
    *         Dette oger kode genbrug, samt sikre fornuftig testning paa tvaers af hele programmet i forhold til databasen.
    * Input:  @choice bestemmer hvilken slags SQL der søges. Kan være "SELECT *", "SELECT kolonnenavn"
@@ -188,7 +189,7 @@ class Database {
 
     let dataValid = false;
     const dataEmpty = (data === undefined || data === ``);
-    const dataRe = /^\w+ = /;
+    const dataRe = /^\w+ /;
     if (/^CUSTOM$/.test(choice)) {
       dataValid = true;
     }
