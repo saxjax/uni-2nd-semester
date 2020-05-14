@@ -9,7 +9,6 @@ class SpacedRepetition extends Model {
   constructor() {
     super();
     this.minTimestamp = 24; // 24 timer
-    this.comprehentionRatio = 3; // hvert forkert svar kræver mindst 3 rigtige svar for at blive registreret som forstået
     this.repetitionInterval = 1;
     this.elementType = `repetition_task`;
     this.table = `repetition_task`;
