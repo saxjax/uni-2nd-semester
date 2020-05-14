@@ -5,6 +5,7 @@
     <title>GroupHub | New evaluation</title>
     <link rel="stylesheet" href="/css/design.css">
     <script src="/js/insertHTMLElements.js"></script>
+    <script defer src="/js/addAnotherKeyword.js"></script>
     <script defer src="/js/postEvaluation.js"></script>
   </head>
   <body>
@@ -23,7 +24,8 @@
             <option value="<%= section.idSection %>"><%= section.title %></option>
           <% }); %>
         </select><br>
-        <button id="addKeywordButton">Add a keyword</button>
+        <div id="allKeywordsContainer"></div>
+        <button id="addKeywordBtn">Tilføj nyt keyword</button>
         <input id="submitButton" type="submit">
       </div>
     </div>

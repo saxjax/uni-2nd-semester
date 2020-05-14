@@ -59,7 +59,7 @@ class CreateController {
     const S = new Section(req);
     try {
       const section = await S.insertToDatabase();
-      res.redirect(`/view/section/${section[0].idSection}`);
+      res.send({ url: `/view/section/${section[0].idSection}` });
     }
     catch (error) {
       res.redirect(204, `/dbdown`);
@@ -86,7 +86,7 @@ class CreateController {
     const QQ = new QuizQuestion(req);
     try {
       await QQ.insertToDatabase();
-      res.redirect(`/view/evaluations/recipient`); // TODO: Kan eventuelt senere videredirigere til siden, hvor man kan tage evalueringen
+      res.send({ url: `/view/evaluations/recipient` }); // TODO: Kan eventuelt senere videredirigere til siden, hvor man kan tage evalueringen
     }
     catch (error) {
       res.redirect(204, `/dbdown`);

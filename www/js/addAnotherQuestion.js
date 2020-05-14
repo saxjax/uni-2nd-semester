@@ -79,7 +79,7 @@ function addKeywordElements(questionContainer) {
       keywordCount--;
     }
     else {
-      displayErrorMessage(keywordContainer, `Du skal indtaste mindst to keywords.`);
+      displayErrorMessage(keywordContainer, `Du skal indtaste mindst et keyword.`);
     }
   });
 }
