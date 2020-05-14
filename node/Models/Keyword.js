@@ -41,27 +41,18 @@ class Keyword extends Model {
       case `document`:
         idCollumn = `ID_DOCUMENT`;
         break;
-
       case `section`:
         idCollumn = `ID_DOCUMENT_SECTION`;
         break;
-
-
       case `evaluation`:
         idCollumn = `ID_EVALUATION`;
         break;
-
-
       case `quiz_question`:
         idCollumn = `ID_QUIZ_QUESTION`;
         break;
-
-
       case `flashcard`:
         idCollumn = `ID_FLASHCARD`;
         break;
-
-
       default:
         break;
     }
@@ -111,7 +102,7 @@ class Keyword extends Model {
     await this.createKeywords(keywordArray);
     await this.createKeywordLinks(idLinks, keywordArray);
 
-    // return true;
+    return true;
   }
 
   /* Formål: At oprette reference ID'er mellem input keywords og input ID'er i ${keywordLink.table} tabellen.
@@ -130,6 +121,7 @@ class Keyword extends Model {
         await this.insertKeywordLink(keywordLink, idKeyword);
       }
     });
+    return true;
   }
 
 
@@ -191,6 +183,7 @@ class Keyword extends Model {
         return false;
       }
     }
+    return true;
   }
 
   /* Formål: Opretter et array af idKeyword som matcher ordene i et array af keywords.
