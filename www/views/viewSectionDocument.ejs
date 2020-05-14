@@ -11,7 +11,7 @@
         <div class="container" id="content">
           <div class="row">
             <div class="col">
-              <h2> Afsnit </h2>
+              <h2> <%= data.document[0].title %> </h2>
               <div class="col-6-sm">  
                 <% data.sections.forEach((section) => { %>
                     <a href="/view/section/<%= section.idSection %>">
@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-6-sm">  
                   <button class="btn btn-info">
-                    <a href="/post/section/<%= data.document[0].idDocument %>"> Opret Afsnit </a>
+                    <a href="/post/section/<%= data.document[0].idDocument %>"> Opret Afsnit til <%= data.document[0].title %> </a>
                   </button>
                 </div>
               </div>

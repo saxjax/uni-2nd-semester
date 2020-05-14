@@ -17,11 +17,14 @@ class CreateController {
     this.root = root;
   }
 
-  /* UNDER CONSTRUCTION */
+  /* Formål: Gør det muligt for en bruger at oprette et grupperum.
+   * Input : @req.body har alle post data
+   * Output: En redirect til /groups siden
+   */
   async createGroup(req, res) {
     const G = new Group(req);
     try {
-      await G.insertToDatabase();
+      G.insertToDatabase();
       res.redirect(`/groups`);
     }
     catch (error) {
