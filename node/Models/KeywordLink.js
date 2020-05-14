@@ -11,7 +11,7 @@ class KeywordLink extends Model {
     this.idKeyword = req.idKeyword === undefined ? `` : req.idKeyword;
     this.idDocument = req.idDocument === undefined ? `` : req.idDocument;
     this.idSection = req.idSection === undefined ? `` : req.idSection;
-    this.idQuiz = req.idQuiz === undefined ? `` : req.idQuiz;
+    this.idEvaluation = req.idEvaluation === undefined ? `` : req.idEvaluation;
     this.idQuizQuestion = req.idQuizQuestion === undefined ? `` : req.idQuizQuestion;
     this.idFlashcard = req.idFlashcard === undefined ? `` : req.idFlashcard;
   }
