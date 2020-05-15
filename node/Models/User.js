@@ -38,8 +38,7 @@ class User extends Model {
    * Output: True/False
    */
   async insertToDatabase() {
-    try {
-      await this.query(`INSERT`, `ID_USER_GROUP = "${this.idGroup}" `
+    await this.query(`INSERT`, `ID_USER_GROUP = "${this.idGroup}" `
                      + `AND USER_NAME = "${this.username}" `
                      + `AND PASSWORD = "${this.password}" `
                      + `AND FIRST_NAME = "${this.firstName}" `
@@ -48,13 +47,6 @@ class User extends Model {
                      + `AND STUDY_SUBJECT = "${this.studySubject}" `
                      + `AND EMAIL = "${this.email}" `
                      + `AND SEMESTER = "${this.semester}"`);
-    }
-    catch (error) {
-      console.log(`User with username: ${this.username} FAILED to be created`);
-      console.log(`${error}`);
-      return false;
-    }
-    return true;
   }
 
   /* Formål: At validere om et brugernavn og password matcher og så returnere brugerens data
@@ -79,17 +71,12 @@ class User extends Model {
    * input: Request sendt fra register form
    * Output: True/false */
   async validateRegister() {
-    let validationCheck = false;
     if (!isEmpty(this.username) && !isEmpty(this.firstName) && !isEmpty(this.lastName) && !isEmpty(this.email)) { // FIXME: Logisk udtryk bliver lavet om til metodekald
       this.data = await this.query(`CUSTOM`, `SELECT * FROM  ${this.table} WHERE USER_NAME = "${this.username}" OR EMAIL = "${this.email}"`); // FIXME: Returnerer et tomt Rowpackage hvsi den ikke er custom
-      if (this.data.length > 0) {
-        console.log(`User already registered`);
-      }
-      else {
-        validationCheck = true;
+      if (this.data.length !== 0) { // Means that user hasn't registered before
+        throw new Error(`User is already registered`);
       }
     }
-    return validationCheck;
   }
 }
 

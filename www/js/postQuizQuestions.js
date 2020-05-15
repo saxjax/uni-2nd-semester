@@ -71,5 +71,11 @@ async function postQuizQuestions() {
     headers: { "Content-Type": `application/json` },
   });
   const responseJSON = await response.json();
-  window.location.replace(responseJSON.url);
+
+  if (responseJSON.error) {
+    alert(responseJSON.error);
+  }
+  else {
+    window.location.replace(responseJSON.url);
+  }
 }
