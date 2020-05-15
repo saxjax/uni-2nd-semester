@@ -36,10 +36,8 @@ class ViewController {
       Recipient.getThisUserData(),                // dataArray[1]
       Recipient.getAllElementsOfType(`Document`), // dataArray[2]
       SpacedRep.getIdQuizquestionsDueForRepetition(), // dataArray[3]
-
     ]);
     const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2], repetitionTask: dataArray[3] };
-    console.log(data);
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs, { data });
   }
@@ -130,6 +128,7 @@ class ViewController {
 
   /* Section Views TODO: */
 
+  // TODO: Mangler EJS fil
   /* Formål: At vise alle de sektioner som er tilgængelige for en bruger i en gruppe.
    * Input : En session med userId og groupId
    * Output: En liste af de sections som er lagt op i gruppen.
@@ -146,7 +145,6 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // TODO: Mangler EJS fil
   /* Formål: BESKRIV EJS FORMÅL HER
    * Input : En session med userId og groupId
    * Output: En liste af de sections som brugeren har oprettet
@@ -159,7 +157,7 @@ class ViewController {
       Expert.getAllElementsOfType(`Section`),  // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], sections: dataArray[2] };
-    this.ejs = path.join(`${this.root}/www/views/viewSectionExpert.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/viewSectionsExpert.ejs`);
     res.render(this.ejs, { data });
   }
 
@@ -192,9 +190,18 @@ class ViewController {
       Doc.getThis(),                          // dataArray[2]
       Doc.getAllElementsOfType(`Section`),    // dataArray[3]
       Doc.getAllElementsOfType(`Evaluation`), // dataArray[4]
+      Doc.getAllElementsOfType(`Keyword`),    // dataArray[5]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], sections: dataArray[3], evaluations: dataArray[4] };
+    const data = { 
+      group: dataArray[0],
+      user: dataArray[1],
+      document: dataArray[2],
+      sections: dataArray[3],
+      evaluations: dataArray[4],
+      keywords: dataArray[5],
+    };
     this.ejs = path.join(`${this.root}/www/views/viewSectionsAndEvaluationsDocument.ejs`);
+    console.log(data);
     res.render(this.ejs, { data });
   }
 
@@ -267,7 +274,6 @@ class ViewController {
       Recipient.getAllElementsOfType(`Flashcard`), // dataArray[3]   ->   FIXME: Ikke oprettet endnu
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2], flashcards: dataArray[3] };
-    // console.log(data);
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsRecipient.ejs`);
     res.render(this.ejs, { data });
   }
@@ -346,7 +352,6 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // TODO: Mangler EJS
   /* Formål: BESKRIV EJS FORMÅL HER
    * Input : En session med userId og groupId
    * Output: En liste af alle de evalueringer som en User har oprettet
@@ -407,15 +412,28 @@ class ViewController {
    *        som denne post skal knyttes til.
    *        Det er vigtigt, at strukturen for hvordan det løses på, er den samme for alle de andre URL'er.
    */
-  async postEvaluationPage(req, res) {
-    const ExpertGroup = new Group(req);
+  async postEvaluationDocumentPage(req, res) {
+    const Doc = new Document(req);
     const dataArray = await Promise.all([
-      ExpertGroup.getThisGroupData(),               // dataArray[0]
-      ExpertGroup.getThisUserData(),                // dataArray[1]
-      ExpertGroup.getAllElementsOfType(`Section`),  // dataArray[2]
+      Doc.getThisGroupData(),               // dataArray[0]
+      Doc.getThisUserData(),                // dataArray[1]
+      Doc.getThis(),                        // dataArray[2]
+      Doc.getAllElementsOfType(`Section`),  // dataArray[3]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], sections: dataArray[2] };
-    this.ejs = path.join(`${this.root}/www/views/postEvaluation.ejs`);
+    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], sections: dataArray[3] };
+    this.ejs = path.join(`${this.root}/www/views/postEvaluationDocument.ejs`);
+    res.render(this.ejs, { data });
+  }
+
+  async postEvaluationSectionPage(req, res) {
+    const Sec = new Section(req);
+    const dataArray = await Promise.all([
+      Sec.getThisGroupData(),               // dataArray[0]
+      Sec.getThisUserData(),                // dataArray[1]
+      Sec.getThis(),                        // dataArray[2]
+    ]);
+    const data = { group: dataArray[0], user: dataArray[1], section: dataArray[2] };
+    this.ejs = path.join(`${this.root}/www/views/postEvaluationSection.ejs`);
     res.render(this.ejs, { data });
   }
 

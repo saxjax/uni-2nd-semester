@@ -9,21 +9,34 @@
     <%- include('meta/navbar') %> 
     <div class="container" id="content">
       <div class="row">
-        <div class="col">
-          <h2> <%= data.document[0].title %> </h2>
-          <div class="col-6-sm">  
+        <div class="col-6">
+          <h2> <%= data.document[0].title %>s Afsnit </h2>
+          <div class="leftside">  
+            <br>
             <% data.sections.forEach((section) => { %>
+              <br>
               <a href="/view/section/<%= section.idSection %>">
                 <%= section.number %> <strong><%= section.title %></strong>
               </a>
               <p><%= section.teaser %></p>
-              <p><strong>Nøgleord: </strong><%= section.keywords %> </p>
+              <p><strong>Evalueringer: </strong></p>
+              <!-- HER SKAL DER OPSTILLES EVALUERINGER!!!-->
+              <button class="btn btn-info">
+                <a href="/post/evaluation/section/<%= section.idSection %>"> 
+                  Opret Evaluering til <%= section.title %> 
+                </a>
+              </button>
+              <br>
             <% }); %>
-          </div>
-          <div class="col-6-sm">  
+            <br>
             <button class="btn btn-info">
               <a href="/post/section/<%= data.document[0].idDocument %>"> Opret Afsnit til <%= data.document[0].title %> </a>
             </button>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="rightside">
+            <h2> <%= data.document[0].title %>s Keywords </h2>
           </div>
         </div>
       </div>
