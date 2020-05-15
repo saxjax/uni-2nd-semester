@@ -9,7 +9,6 @@ const bodyParser = require(`body-parser`);
 const { ViewController } = require(`./Controllers/ViewController`);
 const { AccessController } = require(`./Controllers/AccessController`);
 const { SessionController } = require(`./Controllers/SessionController`);
-const { RedirectController } = require(`./Controllers/RedirectController`);
 const { CreateController } = require(`./Controllers/CreateController`);
 const { TestController } = require(`./Controllers/TestController`);
 const { Database } = require(`./Models/AbstractClasses/Database`);
@@ -48,7 +47,6 @@ class MasterController {
     this.sessionPatterns();
     this.accessPatterns();
     this.viewPatterns();
-    this.redirectPatterns();
     this.createPatterns();
     if (this.debug) {
       this.testPatterns();
@@ -64,6 +62,7 @@ class MasterController {
    */
   accessPatterns() {
     const Access = new AccessController(this.root);
+    this.app.get(`/dbdown`,         (req, res) => Access.dbDown(req, res));
     // No Session URLs
     this.app.get(`/access/about`,    (req, res) => Access.aboutPage(req, res));
     this.app.get(`/access/register`, (req, res) => Access.registerPage(req, res));
@@ -86,6 +85,7 @@ class MasterController {
     const Session = new SessionController(this.root);
     this.app.post(`/session/auth/user`, (req, res) => Session.userSession(req, res));
     this.app.get(`/session/group/:idQuery`, (req, res) => Session.groupSession(req, res));
+    this.app.get(`/session/logout`,                    (req, res) => Session.logout(req, res));
   }
 
   /* Formål: At opstille alle de funktioner som loader en ejs fil og viser en side i et grupperum
@@ -174,23 +174,6 @@ class MasterController {
     // this.app.get(`/put/keyword/:idQuery`, (req, res) => Show.putKeywordPage(req, res));
   }
 
-  /* Formål: At redirecte brugeren hen til det korrekte sted, eller vise den korrekte fejlmeddelse.
-   *         Denne controller vil IKKE håndtere nogle ejs filer overhovedet!
-   *
-   * Input : Non. Her laves blot opsætningen.
-   * Output: Opsætning af url'er som kan tilgås via serverens port.
-   */
-  redirectPatterns() {
-    const Redirect = new RedirectController(this.root);
-    this.app.get(`/dbdown`,                    (req, res) => Redirect.dbDown(req, res));
-    this.app.post(`/upload/rapport`,           (req, res) => Redirect.UploadRapport(req, res));
-    this.app.post(`/upload/evalueringer`,      (req, res) => Redirect.UploadEvalueringer(req, res));
-    this.app.post(`/register`,                 (req, res) => Redirect.RegisterNewUser(req, res));
-    this.app.post(`/create/section`,           (req, res) => Redirect.createSection(req, res));
-    this.app.get(`/keyword`,                   (req, res) => Redirect.keyword(req, res));
-    this.app.get(`/logout`,                    (req, res) => Redirect.logout(req, res));
-  }
-
   /* Formål: Struktur for de URL Patterns der indsætter data i databasen.
   *          Vil være den controller der håndtere posting af database, og dermed også sikkerhed.
   * Input : Ingen, denne opsætter blot URLerne
@@ -199,12 +182,12 @@ class MasterController {
   createPatterns() {
     const Creator = new CreateController(this.root);
     this.app.post(`/post/group`,       (req, res) => Creator.createGroup(req, res));
-    this.app.post(`/post/user`,        (req, res) => Creator.createUser(req, res));
+    this.app.post(`/access/register`,  (req, res) => Creator.RegisterNewUser(req, res));
     this.app.post(`/post/document`,    (req, res) => Creator.createDocument(req, res));
     this.app.post(`/post/section`,     (req, res) => Creator.createSection(req, res));
     this.app.post(`/post/evaluation`,  (req, res) => Creator.createEvaluation(req, res));
     this.app.post(`/post/questions`,   (req, res) => Creator.createQuestions(req, res));
-    this.app.post(`/post/answers`, (req, res) => Creator.createAnswers(req, res));
+    this.app.post(`/post/answers`,     (req, res) => Creator.createAnswers(req, res));
   }
 
   /* Formål: Struktur for de URL Patterns der sletter data i databasen.

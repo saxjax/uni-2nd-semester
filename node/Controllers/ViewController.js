@@ -29,6 +29,7 @@ class ViewController {
    * Output: Startsiden af hjemmesiden, som skal give et overblik for User, her listes bla. om der er spaced repetition tasks klar til afvikling
    */
   async homePage(req, res) {
+    console.log(req.session);
     const Recipient = new User(req);
     const SpacedRep = new QuizResult(req);
     const dataArray = await Promise.all([

@@ -7,14 +7,14 @@
   </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-item nav-link" href="/">Forsiden</a>
         <% if (isloggedin) { %>
-        <a class="nav-item nav-link" href="/Logout">Logout</a>
-        <% } else { %>
-        <a class="nav-item nav-link" href="/Login">Logout</a>
-        <% } %>
+        <a class="nav-item nav-link" href="/">Forsiden</a>
+        <a class="nav-item nav-link" href="/session/logout">Logout</a>
         <a class="nav-item nav-link" href="/view/evaluations/recipient">Evalueringer</a>
         <a class="nav-item nav-link" href="/view/sections/recipient">Sektioner</a>
+        <% } else { %>
+        <a class="nav-item nav-link" href="/access/login">Login</a>
+        <% } %>
       </div>
     </div>
 </nav>

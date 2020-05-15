@@ -16,4 +16,4 @@ function calculateCurrentProgress() {
   correctBar.style.width = `${correctVal}%`;
 }
 
-calculateCurrentProgress()
+calculateCurrentProgress();
