@@ -125,16 +125,16 @@ class MasterController {
     // this.app.get(`/put/document/:idQuery`, (req, res) => Show.putDocumentPage(req, res));
 
     // Sections
-    this.app.get(`/view/sections/recipient`,         (req, res) => Show.viewSectionsRecipientPage(req, res));
-    // this.app.get(`/view/section/expert`,            (req, res) => Show.viewSectionExpertPage(req, res));
+    // this.app.get(`/view/sections/recipient`,         (req, res) => Show.viewSectionsRecipientPage(req, res));
+    this.app.get(`/view/sections/expert`,            (req, res) => Show.viewSectionExpertPage(req, res));
     this.app.get(`/view/sectionsAndEvaluations/document/:idQuery`, (req, res) => Show.viewSectionsAndEvaluationsDocumentPage(req, res));
     this.app.get(`/post/section/:idQuery`,                 (req, res) => Show.postSectionPage(req, res));
     this.app.get(`/view/section/:idQuery`,          (req, res) => Show.viewSectionPage(req, res));
     // this.app.get(`/put/section/:idQuery`,        (req, res) => Show.putSectionPage(req, res));
 
     // Evaluations
-    this.app.get(`/view/evaluations/recipient`,         (req, res) => Show.viewEvaluationsRecipientPage(req, res));
-    // this.app.get(`/view/evaluations/expert`,            (req, res) => Show.viewEvaluationsExpertPage(req, res));
+    // this.app.get(`/view/evaluations/recipient`,         (req, res) => Show.viewEvaluationsRecipientPage(req, res));
+    this.app.get(`/view/evaluations/expert`,            (req, res) => Show.viewEvaluationsExpertPage(req, res));
     // this.app.get(`/view/evaluations/document/:idQuery`, (req, res) => Show.viewEvaluationsDocumentPage(req, res));
     this.app.get(`/view/evaluations/section/:idQuery`,  (req, res) => Show.viewEvaluationsSectionPage(req, res));
     /* EVALUATIONS HAR IKKE post, view/:idQuery og put, da evaluations IKKE er et objekt som sådan
@@ -146,7 +146,8 @@ class MasterController {
     // this.app.get(`/view/evaluation/expert`,            (req, res) => Show.viewEvaluationExpertPage(req, res));
     // this.app.get(`/view/evaluation/document/:idQuery`, (req, res) => Show.viewEvaluationDocumentPage(req, res));
     // this.app.get(`/view/evaluation/section/:idQuery`,  (req, res) => Show.viewEvaluationSectionPage(req, res));
-    this.app.get(`/post/evaluation`,                 (req, res) => Show.postEvaluationPage(req, res));
+    this.app.get(`/post/evaluation/document/:idQuery`,                 (req, res) => Show.postEvaluationDocumentPage(req, res));
+    this.app.get(`/post/evaluation/section/:idQuery`,                 (req, res) => Show.postEvaluationSectionPage(req, res));
     this.app.get(`/post/questions`,                 (req, res) => Show.postQuestionsPage(req, res));
     this.app.get(`/view/evaluations/:idQuery`,          (req, res) => Show.viewEvaluationPage(req, res));
     this.app.get(`/view/SpacedRepetition`,          (req, res) => Show.viewSpacedRepetitionPage(req, res));

@@ -155,7 +155,7 @@ class Model extends Database {
       case `Document`: return `document`;
       case `Flashcard`: return `flashcard`;
       case `Group`: return `user_group`;
-      case `Keyword`: return `keyword`;
+      case `Keyword`: return `keyword_link`;
       case `Evaluation`: return `evaluation`;
       case `QuizQuestion`: return `quiz_question`;
       case `Section`: return `document_section`;
