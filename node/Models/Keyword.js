@@ -30,6 +30,47 @@ class Keyword extends Model {
     }
   }
 
+  /* Formål: At kunne oprette den givne model i databasen ud fra posted data fra en form.
+             Der bliver desuden automatisk oprettet de forskellige dependencies/foreign keys som objektet tilhører.
+   * Input : Object som indeholder reference ID'er og array af Keywords.
+   * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
+   */
+
+  /* INPUT OBJECT:
+     idLinks{
+       idDocument: `123-abc-fff`,
+       idSection: `345-efg-fff`,
+       idEvaluation: `542-gds-fff`,
+       idQuizQuestion: `653-asd-fff`,
+     }
+
+     INPUT ARRAY:
+     keywordArray  ["Kylling","Abe","Bille"]
+  */
+  // FIXME: lav check om createkeywords og createKeywordLinks har oprettet det de skal i databasen og return true
+  async insertToDatabase(idLinks, keywordArray) {
+    const keywordArrayUpper = this.makeArrayUppercase(keywordArray);
+    await this.createKeywords(keywordArrayUpper);
+    await this.createKeywordLinks(idLinks, keywordArrayUpper);
+  }
+
+  /* Formål: At oprette reference ID'er mellem input keywords og input ID'er i ${keywordLink.table} tabellen.
+   * Input : Object af ID'er og array af Keywords
+   * Output: N/A
+   */
+  async createKeywordLinks(idLinks, keywordArray) {
+    const keywordLink = new KeywordLink(idLinks);
+    const keywordIdArray = await this.makeKeywordIdArray(keywordArray);
+    let keywordLinkExist;
+
+    keywordIdArray.forEach(async (idKeyword) =>  {
+      keywordLinkExist = await this.checkIfKeywordLinkExist(keywordLink, idKeyword);
+
+      if (keywordLinkExist.length === 0) {
+        await this.insertKeywordLink(keywordLink, idKeyword);
+      }
+    });
+  }
 
   /* Formål: Hent Array af id'er som linker til keyword knyttet til en bestemt elementtype
    * Input : Et keyword og en elementType
@@ -79,72 +120,18 @@ class Keyword extends Model {
     return DocumentsIdArrray;
   }
 
-
-  /* Formål: At kunne oprette den givne model i databasen ud fra posted data fra en form.
-             Der bliver desuden automatisk oprettet de forskellige dependencies/foreign keys som objektet tilhører.
-   * Input : Object som indeholder reference ID'er og array af Keywords.
-   * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
-   */
-
-  /* INPUT OBJECT:
-     idLinks{
-       idDocument: `123-abc-fff`,
-       idSection: `345-efg-fff`,
-       idEvaluation: `542-gds-fff`,
-       idQuizQuestion: `653-asd-fff`,
-     }
-
-     INPUT ARRAY:
-     keywordArray  ["Kylling","Abe","Bille"]
-  */
-  // FIXME: lav check om createkeywords og createKeywordLinks har oprettet det de skal i databasen og return true
-  async insertToDatabase(idLinks, keywordArray) {
-    keywordArray = this.makeArrayUppercase(keywordArray);
-    await this.createKeywords(keywordArray);
-    await this.createKeywordLinks(idLinks, keywordArray);
-
-    return true;
-  }
-
-  /* Formål: At oprette reference ID'er mellem input keywords og input ID'er i ${keywordLink.table} tabellen.
-   * Input : Object af ID'er og array af Keywords
-   * Output: N/A
-   */
-  async createKeywordLinks(idLinks, keywordArray) {
-    const keywordLink = new KeywordLink(idLinks);
-    const keywordIdArray = await this.makeKeywordIdArray(keywordArray);
-    let keywordLinkExist;
-
-    keywordIdArray.forEach(async (idKeyword) =>  {
-      keywordLinkExist = await this.checkIfKeywordLinkExist(keywordLink, idKeyword);
-
-      if (keywordLinkExist.length === 0) {
-        await this.insertKeywordLink(keywordLink, idKeyword);
-      }
-    });
-    return true;
-  }
-
-
   /* Formål: Checker om der eksistere en tupel i databasen med præcis samme data som vi ønsker at oprette
    * Input : KeywordLink Object med et keyword
    * Output: De tupler fra SQLdatabasen som indeholder præcis samme data som input parametrene giver.
    */
   async checkIfKeywordLinkExist(keywordLink, idKeyword) {
-    let keywordLinkExist;
-
-    try {
-      keywordLinkExist = await this.query(`CUSTOM`, `SELECT * FROM ${keywordLink.table} WHERE`
+    const keywordLinkExist = await this.query(`CUSTOM`, `SELECT * FROM ${keywordLink.table} WHERE`
                                       + ` ID_DOCUMENT = "${keywordLink.idDocument}"`
                                       + ` AND ID_DOCUMENT_SECTION = "${keywordLink.idSection}"`
                                       + ` AND ID_EVALUATION = "${keywordLink.idEvaluation}"`
                                       + ` AND ID_QUIZ_QUESTION = "${keywordLink.idQuizQuestion}"`
                                       + ` AND ID_FLASHCARD = "${keywordLink.idFlashcard}"`
                                       + ` AND ID_KEYWORD = "${idKeyword}"`);
-    }
-    catch (error) {
-      console.log(`Could not select rows from keyword links table ERROR: ${error}`);
-    }
     return keywordLinkExist;
   }
 
@@ -155,12 +142,7 @@ class Keyword extends Model {
    */
   async insertKeywordLink(keywordLink, idKeyword) {
     const keywordIdInsertString = `("${keywordLink.idDocument}","${keywordLink.idSection}","${keywordLink.idEvaluation}","${keywordLink.idQuizQuestion}","${idKeyword}","${keywordLink.idFlashcard}")`;
-    try {
-      await this.query(`CUSTOM`, `INSERT INTO ${keywordLink.table} (ID_DOCUMENT,ID_DOCUMENT_SECTION,ID_EVALUATION,ID_QUIZ_QUESTION,ID_KEYWORD,ID_FLASHCARD) VALUES ${keywordIdInsertString}`);
-    }
-    catch (error) {
-      console.log(`Could not insert keyword links to database ERROR: ${error}`);
-    }
+    await this.query(`CUSTOM`, `INSERT INTO ${keywordLink.table} (ID_DOCUMENT,ID_DOCUMENT_SECTION,ID_EVALUATION,ID_QUIZ_QUESTION,ID_KEYWORD,ID_FLASHCARD) VALUES ${keywordIdInsertString}`);
   }
 
 
@@ -176,15 +158,8 @@ class Keyword extends Model {
     const insertArray = keywordArray.filter((n) => !existingKeywords.includes(n)); // Subtract existing keywords from input to determine if it needs to be inserted.
     if (insertArray.length > 0) {
       const insertString = this.makeKeywordInsertString(insertArray);
-      try {
-        await this.query(`CUSTOM`, `INSERT INTO ${this.table} (KEYWORD) VALUES ${insertString}`);
-      }
-      catch (error) {
-        console.log(`Could not insert keywords into table ERROR: ${error}`);
-        return false;
-      }
+      await this.query(`CUSTOM`, `INSERT INTO ${this.table} (KEYWORD) VALUES ${insertString}`);
     }
-    return true;
   }
 
   /* Formål: Opretter et array af idKeyword som matcher ordene i et array af keywords.
@@ -193,13 +168,7 @@ class Keyword extends Model {
    */
   async makeKeywordIdArray(keywordArray) {
     const queryString = this.makeKeywordQueryString(keywordArray);
-    let queryResult;
-    try {
-      queryResult = await this.query(`CUSTOM`, `SELECT * FROM ${this.table} WHERE KEYWORD in (${queryString}) ORDER BY KEYWORD`);
-    }
-    catch (error) {
-      console.log(`Could not select keywords from database ERROR: ${error}`);
-    }
+    const queryResult = await this.query(`CUSTOM`, `SELECT * FROM ${this.table} WHERE KEYWORD in (${queryString}) ORDER BY KEYWORD`);
 
     const keywordIdArray = [];
     for (let i = 0; i < queryResult.length; i++) {
@@ -213,13 +182,7 @@ class Keyword extends Model {
    * Output: Array af eksisterende Keywords
    */
   async getExistingKeywords(queryString) {
-    let queryResult;
-    try {
-      queryResult = await this.query(`CUSTOM`, `SELECT * FROM ${this.table} WHERE KEYWORD in (${queryString}) ORDER BY KEYWORD`);
-    }
-    catch (error) {
-      console.log(`Could not select keywords from database ERROR: ${error}`);
-    }
+    const queryResult =  await this.query(`CUSTOM`, `SELECT * FROM ${this.table} WHERE KEYWORD in (${queryString}) ORDER BY KEYWORD`);
 
     const existingKeywords = [];
     for (let i = 0; i < queryResult.length; i++) {

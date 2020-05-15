@@ -2,34 +2,37 @@
 <html>
   <head>
   	<%- include(`meta/header.ejs`)  %> 
-      <title>GroupHub | New Section</title>
-      <link rel="stylesheet" href="/css/design.css">
-      <script defer src="/js/scanContentForKeywords.js"></script>
+    <title>GroupHub | New Section</title>
+    <link rel="stylesheet" href="/css/design.css">
+    <script src="/js/insertHTMLElements.js"></script>
+    <script defer src="/js/addAnotherKeyword.js"></script>
+    <script defer src="/js/scanContentForKeywords.js"></script>
+    <script defer src="/js/postSection.js"></script>
   </head>
   <body>
     <%- include('meta/navbar') %>
     <div class="container" id="container-content" style="text-align: center; font-weight: bold;">
   		<h3>Nyt afsnit til: <%= data.document[0].title %></h3>
-      <form action="/post/section" method="POST">
+      <div id="formContainer">
         <input name="idDocument" id="idDocument" type="hidden" value="<%= data.document[0].idDocument %>">
-    
         <label for="title">Afsnitets overskrift:</label><br>
-        <input name="title" id="title" type="text" size="60%" placeholder="Section Title" required>
+        <input name="title" id="title" type="text" size="60%" placeholder="Section Title">
         <br>
         <label for="number">Afsnitets nummer:</label><br>
-        <input name="number" id="number" type="text" size="60%" placeholder="1.1" required>
+        <input name="number" id="number" type="text" size="60%" placeholder="1.1">
         <br>
         <label for="content">Afsnitets indhold:</label><br>
-        <textarea name="content" id="content" placeholder="Please put in the content here!" cols="80" rows="15" required></textarea>
+        <textarea name="content" id="content" placeholder="Please put in the content here!" cols="80" rows="15"></textarea>
         <br>
         <p>Nøgleord scannes løbende når du skriver indholdet.</p>
         <p>ADVARSEL!: Overskriver når nyt indhold skrives!</p>
-        <label for="keywords">Nøgleord:</label><br>
-        <input name="keywords" id="keywords" type="text" size="80%" placeholder="Keyword1,Keyword2, etc.." required>
+        <div id="allKeywordsContainer"></div>
+        <button id="addKeywordBtn">Tilføj nyt keyword</button>
         <br>
         <br>
-  		<input type="submit" value="Create!">
-	  </form>
+        <button id="submitBtn">Indsend</button>
+        <p id="errorMessage"></p>
+      </div>
     </div>
   	<%- include(`meta/footer.ejs`) %> 
   </body>

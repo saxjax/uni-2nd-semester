@@ -1,6 +1,7 @@
 /* eslint no-console: off */
 
 const { Model } = require(`./AbstractClasses/Model`);
+const { Keyword } = require(`./Keyword`);
 
 /* Section er det objekt som indeholder data vedr�rende de afsnit der findes i et dokument.
 * en section oprettes ved at.....
@@ -18,6 +19,7 @@ class Section extends Model {
     super(req);
     this.elementType = `section`;
     this.table = `document_section`;
+    this.req = req;
 
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
@@ -30,6 +32,7 @@ class Section extends Model {
           break;
         case `POST`:
           this.idDocument = req.body.idDocument;
+          this.idSection = undefined;
           this.title    = req.body.title;
           this.content  = req.body.content;
           this.keywords = req.body.keywords;
@@ -60,27 +63,24 @@ class Section extends Model {
    * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
-    try {
-      const data = `SECTION_TITLE = "${this.title}" `
+    // Insert section to database
+    const data = `SECTION_TITLE = "${this.title}" `
                  + `AND SECTION_CONTENT = "${this.content}" `
                  + `AND ID_DOCUMENT = "${this.idDocument}" `
-                 + `AND KEYWORDS = "${this.keywords}" `
                  + `AND SECTION_NUMBER = "${this.number}" `
                  + `AND ID_USER_GROUP = "${this.idGroup}" `
                  + `AND ID_USER = "${this.idUser}"`;
-      const validation = await this.query(`INSERT`, data);
-      if (validation.fatal) {
-        throw new Error(`InsertToDatabase didnt work!`);
-      }
-      else {
-        const newObject = await this.query(`SELECT *`, data);
-        return newObject;
-      }
-    }
-    catch (error) {
-      console.log(error);
-      throw new Error(error);
-    }
+    await this.query(`INSERT`, data);
+    const section = await this.query(`SELECT *`, data);
+    this.idSection = section[0].idSection;
+    // Insert keywords to database
+    const ids = {
+      idDocument: this.idDocument,
+      idSection: this.idSection,
+    };
+    const keyw = new Keyword(this.req);
+    await keyw.insertToDatabase(ids, this.keywords);
+    return this.idSection;
   }
 
   /* Formål: At generere keywords automatisk ud fra det content der bliver posted
