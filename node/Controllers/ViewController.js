@@ -187,13 +187,14 @@ class ViewController {
   async viewSectionsAndEvaluationsDocumentPage(req, res) {
     const Doc = new Document(req);
     const dataArray = await Promise.all([
-      Doc.getThisGroupData(),               // dataArray[0]
-      Doc.getThisUserData(),                // dataArray[1]
-      Doc.getThis(),                        // dataArray[2]
-      Doc.getAllElementsOfType(`Section`),  // dataArray[3]
+      Doc.getThisGroupData(),                 // dataArray[0]
+      Doc.getThisUserData(),                  // dataArray[1]
+      Doc.getThis(),                          // dataArray[2]
+      Doc.getAllElementsOfType(`Section`),    // dataArray[3]
+      Doc.getAllElementsOfType(`Evaluation`), // dataArray[4]
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], sections: dataArray[3] };
-    this.ejs = path.join(`${this.root}/www/views/viewSectionDocument.ejs`);
+    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], sections: dataArray[3], evaluations: dataArray[4] };
+    this.ejs = path.join(`${this.root}/www/views/viewSectionsAndEvaluationsDocument.ejs`);
     res.render(this.ejs, { data });
   }
 
