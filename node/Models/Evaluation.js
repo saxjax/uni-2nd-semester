@@ -45,48 +45,27 @@ class Evaluation extends Model {
    * Output: Evalueringens ID hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
-    try {
-      const queryResult = await this.query(`CUSTOM`, `SELECT ID_DOCUMENT FROM document_section WHERE ID_DOCUMENT_SECTION = "${this.idSection}"`);
-      this.idDocument = queryResult[0].ID_DOCUMENT;
-    }
-    catch (error) {
-      console.log(error);
-      return false;
-    }
-
-    try {
-      await this.query(`INSERT`, `ID_DOCUMENT_SECTION = "${this.idSection}" AND `
+    const idDocQuery = await this.query(`CUSTOM`, `SELECT ID_DOCUMENT FROM document_section WHERE ID_DOCUMENT_SECTION = "${this.idSection}"`);
+    this.idDocument = idDocQuery[0].ID_DOCUMENT;
+    await this.query(`INSERT`, `ID_DOCUMENT_SECTION = "${this.idSection}" AND `
                                + `ID_USER = "${this.idUser}" AND `
                                + `ID_USER_GROUP = "${this.idGroup}" AND `
                                + `EVALUATION_TITLE = "${this.title}" AND `
                                + `ID_DOCUMENT = "${this.idDocument[0].ID_DOCUMENT}"`);
-    }
-    catch (error) {
-      console.log(error);
-      return false;
-    }
 
-    try {
-      const queryResult = await this.query(`SELECT ID_EVALUATION`, `EVALUATION_TITLE = "${this.title}" `
+    const idEvalQuery = await this.query(`SELECT ID_EVALUATION`, `EVALUATION_TITLE = "${this.title}" `
                        + `AND ID_DOCUMENT_SECTION = "${this.idSection}" `
                        + `AND ID_USER_GROUP = "${this.idGroup}"`);
-      this.idEvaluation = queryResult[0].idEvaluation;
-    }
-    catch (error) {
-      console.log(error);
-      return false;
-    }
-    if (this.req.body.keywords !== []) { // If the user put any keywords they get inserted
-      const insertKeyword = new Keyword(this.req);
-      const idObject = {
-        idDocument: `${this.idDocument}`,
-        idSection: `${this.idSection}`,
-        idEvaluation: `${this.idEvaluation}`,
-        idEvaluationQuestion: ``,
-      };
-      insertKeyword.insertToDatabase(idObject, this.keywords);
-    }
+    this.idEvaluation = idEvalQuery[0].idEvaluation;
 
+    const keyw = new Keyword(this.req);
+    const idObject = {
+      idDocument: `${this.idDocument}`,
+      idSection: `${this.idSection}`,
+      idEvaluation: `${this.idEvaluation}`,
+      idEvaluationQuestion: ``,
+    };
+    await keyw.insertToDatabase(idObject, this.keywords);
     return this.idEvaluation;
   }
 

@@ -56,21 +56,15 @@ class QuizQuestion extends Model {
    */
   async insertToDatabase() {
     const docAndSecID = await this.getDocumentAndSectionID();
-    const questionsPromiseArray = [];
+    const promiseArray = [];
     const AllQuizQuestionUUIDs = await this.getQuizQuestionUUID(this.questions.length); // får alle UUIDs fra databasen som skal benyttes, i ét database kald.
     for (let i = 0; i < this.questions.length; i++) {
       const insertQuestionQuery = this.insertQuestionToDatabase(this.questions[i], AllQuizQuestionUUIDs[i].UUID);
-      this.insertKeywordQuizQuestion(this.questions[i], AllQuizQuestionUUIDs[i].UUID, docAndSecID);
-      questionsPromiseArray.push(insertQuestionQuery);
+      promiseArray.push(insertQuestionQuery);
+      const insertKeywordsQuery = this.insertKeywordQuizQuestion(this.questions[i], AllQuizQuestionUUIDs[i].UUID, docAndSecID);
+      promiseArray.push(insertKeywordsQuery);
     }
-    try {
-      await Promise.all(questionsPromiseArray);
-      return true;
-    }
-    catch (error) {
-      console.log(error);
-      return false;
-    }
+    await Promise.all(promiseArray);
   }
 
   /* Formål: At indsætte et nyt quiz question i databasen
@@ -78,43 +72,25 @@ class QuizQuestion extends Model {
    * Output: Et promise, som kommer fra query()
    */
   async insertQuestionToDatabase(question, UUID) {
-    try {
-      return await this.query(`INSERT`, `ID_EVALUATION = "${question.idEvaluation}" `
+    return this.query(`INSERT`, `ID_EVALUATION = "${question.idEvaluation}" `
         + `AND ID_QUIZ_QUESTION = "${UUID}" `
         + `AND QUESTION = "${question.question}" `
         + `AND CORRECT_ANSWERS = "${question.correctAnswers.join(`;`)}" `
         + `AND KEYWORD = "${question.keyword.join(`;`)}" `
         + `AND ANSWERS = "${question.answers.join(`;`)}"`);
-    }
-    catch (error) {
-      return error;
-    }
   }
 
   async getQuizQuestionUUID(uuidAmount) {
-    let select;
     const selectString = this.generateSelectString(uuidAmount);
-    try {
-      select = await this.query(`CUSTOM`, `${selectString}`);
-    }
-    catch (error) {
-      console.log(`Could not fetch UUID from database`);
-    }
-    return select;
+    return this.query(`CUSTOM`, `${selectString}`);
   }
 
   async getDocumentAndSectionID() {
-    let select;
-    try {
-      select = await this.query(`CUSTOM`, `SELECT ID_DOCUMENT as idDocument ,ID_DOCUMENT_SECTION as idSection FROM evaluation WHERE ID_EVALUATION = "${this.idEvaluation}"`);
-    }
-    catch (error) {
-      console.log(`Could not fetch UUID from database`);
-    }
+    const select = await this.query(`CUSTOM`, `SELECT ID_DOCUMENT as idDocument ,ID_DOCUMENT_SECTION as idSection FROM evaluation WHERE ID_EVALUATION = "${this.idEvaluation}"`);
     return select[0];
   }
 
-  insertKeywordQuizQuestion(question, questionUUID, docAndSecID) {
+  async insertKeywordQuizQuestion(question, questionUUID, docAndSecID) {
     if (question.keyword !== []) { // If the user put any keywords they get inserted
       const insertKeyword = new Keyword(this.req);
       const idObject = {
@@ -123,7 +99,7 @@ class QuizQuestion extends Model {
         idEvaluation: `${question.idEvaluation}`,
         idQuizQuestion: `${questionUUID}`,
       };
-      insertKeyword.insertToDatabase(idObject, question.keyword);
+      await insertKeyword.insertToDatabase(idObject, question.keyword);
     }
   }
 

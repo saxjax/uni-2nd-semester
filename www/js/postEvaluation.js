@@ -27,5 +27,10 @@ document.getElementById(`submitButton`).addEventListener(`click`, async () => {
     headers: { "Content-Type": `application/json` },
   });
   const responseJSON = await response.json();
-  window.location.replace(responseJSON.url);
+  if (responseJSON.error) {
+    alert(responseJSON.error);
+  }
+  else {
+    window.location.replace(responseJSON.url);
+  }
 });
