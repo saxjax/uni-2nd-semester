@@ -7,7 +7,7 @@ const { Section } = require(`../Models/Section`);
 const { Evaluation } = require(`../Models/Evaluation`);
 const { QuizQuestion } = require(`../Models/QuizQuestion`);
 const { QuizResult } = require(`../Models/QuizResult`);
-const { ErrorController } = require(`./ErrorController`);
+const { ErrorController } = require(`./AbstractControllers/ErrorController`);
 
 /* UNDER CONSTRUCTION */
 
@@ -26,11 +26,12 @@ class CreateController extends ErrorController {
   async createGroup(req, res) {
     const G = new Group(req);
     try {
-      G.insertToDatabase();
+      await G.insertToDatabase();
       res.redirect(`/groups`);
     }
     catch (error) {
-      res.redirect(204, `/dbdown`);
+      const errorMsg = this.produceErrorMessageToUser(error);
+      res.send(errorMsg);
     }
   }
 
@@ -40,17 +41,14 @@ class CreateController extends ErrorController {
    */
   async RegisterNewUser(req, res) {
     const newUser = new User(req);
-    if (await newUser.validateRegister()) {
-      if (await newUser.insertToDatabase()) {
-        res.redirect(`/`);
-      }
-      else {
-        res.redirect(204, `/register`);
-      }
+    try {
+      await newUser.validateRegister();
+      await newUser.insertToDatabase();
+      res.redirect(`/`);
     }
-    else { // User could not be validated
-      const error = `Username or Email already in use, user can't be created.`;
-      res.send(error);
+    catch (error) { // User could not be validated
+      const errorMsg = this.produceErrorMessageToUser(error);
+      res.send(errorMsg);
     }
   }
 
@@ -62,15 +60,15 @@ class CreateController extends ErrorController {
       res.redirect(`/view/sectionsAndEvaluations/document/${document[0].idDocument}`);
     }
     catch (error) {
-      console.log(error);
-      res.redirect(503, `/dbdown`);
+      const errorMsg = this.produceErrorMessageToUser(error);
+      res.send(errorMsg);
     }
   }
 
   /* UNDER CONSTRUCTION */
   async createSection(req, res) {
+    const S = new Section(req);
     try {
-      const S = new Section(req);
       const idSection = await S.insertToDatabase();
       res.send({ url: `/view/section/${idSection}` });
     }
@@ -88,7 +86,8 @@ class CreateController extends ErrorController {
       res.send({ url: `/post/questions?idEvaluation=${idEvaluation}&titleEvaluation=${E.title}` });
     }
     catch (error) {
-      res.redirect(204, `/dbdown`);
+      const errorMsg = this.produceErrorMessageToUser(error);
+      res.send({ error: errorMsg });
     }
   }
 
@@ -103,7 +102,8 @@ class CreateController extends ErrorController {
       res.send({ url: `/view/evaluations/recipient` }); // TODO: Kan eventuelt senere videredirigere til siden, hvor man kan tage evalueringen
     }
     catch (error) {
-      res.redirect(204, `/dbdown`);
+      const errorMsg = this.produceErrorMessageToUser(error);
+      res.send({ error: errorMsg });
     }
   }
 

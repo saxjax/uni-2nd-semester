@@ -29,26 +29,15 @@ class Document extends Model {
   /* Formål: At kunne oprette den givne model i databasen ud fra posted data fra en form.
              Der bliver desuden automatisk oprettet de forskellige dependencies/foreign keys som objektet tilhører.
    * Input : Et objekt oprettet med et request med postdata i body samt user/group data i session
-   * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
+   * Output: True hvis queren inserter, ellers false hvis der sker en fejl. FIXME: Ikke sandt - hvad indeholder newObject?
    */
   async insertToDatabase() {
-    try {
-      const data = `ID_USER_GROUP = "${this.idGroup}" `
+    const data = `ID_USER_GROUP = "${this.idGroup}" `
                  + `AND ID_USER = "${this.idUser}" `
                  + `AND TITLE = "${this.title}"`;
-      const validation = await this.query(`INSERT`, data);
-      if (validation.fatal) {
-        throw new Error(`InsertToDatabase didnt work!`);
-      }
-      else {
-        const newObject = await this.query(`SELECT *`, data);
-        return newObject;
-      }
-    }
-    catch (error) {
-      console.log(error);
-      throw new Error(error);
-    }
+    await this.query(`INSERT`, data);
+    const newObject = await this.query(`SELECT *`, data);
+    return newObject;
   }
 }
 

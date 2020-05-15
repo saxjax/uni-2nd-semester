@@ -71,6 +71,7 @@ class Section extends Model {
                  + `AND ID_USER_GROUP = "${this.idGroup}" `
                  + `AND ID_USER = "${this.idUser}"`;
     await this.query(`INSERT`, data);
+    // Get idSection of the new section
     const section = await this.query(`SELECT *`, data);
     this.idSection = section[0].idSection;
     // Insert keywords to database
