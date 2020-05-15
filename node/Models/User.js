@@ -74,7 +74,7 @@ class User extends Model {
     if (!isEmpty(this.username) && !isEmpty(this.firstName) && !isEmpty(this.lastName) && !isEmpty(this.email)) { // FIXME: Logisk udtryk bliver lavet om til metodekald
       this.data = await this.query(`CUSTOM`, `SELECT * FROM  ${this.table} WHERE USER_NAME = "${this.username}" OR EMAIL = "${this.email}"`); // FIXME: Returnerer et tomt Rowpackage hvsi den ikke er custom
       if (this.data.length !== 0) { // Means that user hasn't registered before
-        throw new Error(`User is already registered`);
+        throw new Error(`USER_ALREADY_REGISTERED`);
       }
     }
   }

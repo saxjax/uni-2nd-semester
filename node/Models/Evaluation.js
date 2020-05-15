@@ -65,7 +65,7 @@ class Evaluation extends Model {
       idEvaluation: `${this.idEvaluation}`,
       idEvaluationQuestion: ``,
     };
-    keyw.insertToDatabase(idObject, this.keywords);
+    await keyw.insertToDatabase(idObject, this.keywords);
     return this.idEvaluation;
   }
 
