@@ -3,7 +3,6 @@
     <head>
         <%- include('meta/header') %> 
         <link rel="stylesheet" href="/css/design.css">
-        <link rel="stylesheet" href="/css/elementlist.css">
         <title>GroupHub | Sections</title>
     </head>
     <body>
@@ -15,13 +14,12 @@
             <% data.sections.forEach((section) => { %>
                 <li>
                     <div>
-                        <button><a href="/view/section/<%= section.idSection %>">Click here to go to the section</a></button>
+                        <button class="btn btn-primary"><a class="goToSection" href="/view/section/<%= section.idSection %>">Click here to go to the section</a></button>
                         <p>Section ID: <%= section.idSection %> </p>
                         <strong>Title: </strong>     <%= section.title %> 
                         <p> <strong>Content:</strong> <%= section.content %> </p>
                         <p><strong>Keywords:</strong> <%= section.keywords %> </p>
                     </div> 
-
                 </li>
                 <% }); %> 
             </ol>
