@@ -232,6 +232,7 @@ class ParseSql {
     return {
       elementType: data[this.typeCol],
       // IDs
+      idGroup: data[this.groupCol],
       idUser: data[this.userCol],
       idEvaluation: data[this.evaluationCol],
       idQuizResult: data[this.quizResultCol],
