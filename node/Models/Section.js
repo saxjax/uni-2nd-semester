@@ -2,6 +2,7 @@
 
 const { Model } = require(`./AbstractClasses/Model`);
 const { Keyword } = require(`./Keyword`);
+const SqlString = require(`sqlstring`);
 
 /* Section er det objekt som indeholder data vedr�rende de afsnit der findes i et dokument.
 * en section oprettes ved at.....
@@ -63,17 +64,19 @@ class Section extends Model {
    * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
+    // Get UUID for section
+    const selectUUID = await this.query(`CUSTOM`, `SELECT UUID() as UUID`);
+    this.idSection = selectUUID[0].UUID;
     // Insert section to database
-    const data = `SECTION_TITLE = "${this.title}" `
-                 + `AND SECTION_CONTENT = "${this.content}" `
-                 + `AND ID_DOCUMENT = "${this.idDocument}" `
-                 + `AND SECTION_NUMBER = "${this.number}" `
-                 + `AND ID_USER_GROUP = "${this.idGroup}" `
-                 + `AND ID_USER = "${this.idUser}"`;
-    await this.query(`INSERT`, data);
-    // Get idSection of the new section
-    const section = await this.query(`SELECT *`, data);
-    this.idSection = section[0].idSection;
+    const data = `INSERT INTO ${this.table} (ID_DOCUMENT_SECTION,SECTION_TITLE,SECTION_CONTENT,ID_DOCUMENT,SECTION_NUMBER,ID_USER_GROUP,ID_USER)`
+               + `VALUES("${this.idSection}",`
+               + `${SqlString.escape(this.title)},`
+               + `${SqlString.escape(this.content)},`
+               + `"${this.idDocument}",`
+               + `${SqlString.escape(this.number)},`
+               + `"${this.idGroup}",`
+               + `"${this.idUser}")`;
+    await this.query(`CUSTOM`, data);
     // Insert keywords to database
     const ids = {
       idDocument: this.idDocument,

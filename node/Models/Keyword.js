@@ -3,6 +3,7 @@
 const { Model } = require(`./AbstractClasses/Model.js`);
 const { KeywordLink } = require(`./KeywordLink`);
 const { P } = require(`./AbstractClasses/ParseSQL`);
+const SqlString = require(`sqlstring`);
 
 /* FIXME: UNDER CONSTRUCTION */
 
@@ -49,7 +50,7 @@ class Keyword extends Model {
   */
   // FIXME: lav check om createkeywords og createKeywordLinks har oprettet det de skal i databasen og return true
   async insertToDatabase(idLinks, keywordArray) {
-    let keywordArrayUpper = this.makeArrayUppercase(keywordArray);
+    let keywordArrayUpper = this.makeArrayUppercaseAndEscape(keywordArray);
     keywordArrayUpper = this.removeDuplicates(keywordArrayUpper);
     await this.createKeywords(keywordArrayUpper);
     await this.createKeywordLinks(idLinks, keywordArrayUpper);
@@ -107,7 +108,7 @@ class Keyword extends Model {
    * Output: Et array af id'er
    */
   async getIdFromCollumn(keyword, idCollumn) {
-    const idKeyword =  await this.query(`SELECT *`, `KEYWORD = "${keyword}"`);
+    const idKeyword =  await this.query(`SELECT *`, `KEYWORD = ${keyword}`);
     const DocumentsIdData =  await this.query(`CUSTOM`, `SELECT ${idCollumn} `
                                             + `FROM keyword_link `
                                             + `WHERE ID_KEYWORD = "${idKeyword[0].idKeyword}" `
@@ -155,7 +156,6 @@ class Keyword extends Model {
     let queryString = ``;
     queryString = this.makeKeywordQueryString(keywordArray);
     const existingKeywords = await this.getExistingKeywords(queryString);
-
     const insertArray = keywordArray.filter((n) => !existingKeywords.includes(n)); // Subtract existing keywords from input to determine if it needs to be inserted.
     if (insertArray.length > 0) {
       const insertString = this.makeKeywordInsertString(insertArray);
@@ -187,7 +187,7 @@ class Keyword extends Model {
 
     const existingKeywords = [];
     for (let i = 0; i < queryResult.length; i++) {
-      existingKeywords.push(queryResult[i].KEYWORD);
+      existingKeywords.push(SqlString.escape(queryResult[i].KEYWORD));
     }
     return existingKeywords;
   }
@@ -200,10 +200,10 @@ class Keyword extends Model {
     let queryString = ``;
     for (let i = 0; i < keywordArray.length; i++) {
       if (i === keywordArray.length - 1) {
-        queryString += `("${keywordArray[i]}")`;
+        queryString += `(${keywordArray[i]})`;
       }
       else {
-        queryString += `("${keywordArray[i]}"),`;
+        queryString += `(${keywordArray[i]}),`;
       }
     }
     return queryString;
@@ -217,18 +217,19 @@ class Keyword extends Model {
     let queryString = ``;
     for (let i = 0; i < keywordArray.length; i++) {
       if (i === keywordArray.length - 1) {
-        queryString += `"${keywordArray[i]}"`;
+        queryString += `${keywordArray[i]}`;
       }
       else {
-        queryString += `"${keywordArray[i]}",`;
+        queryString += `${keywordArray[i]},`;
       }
     }
     return queryString;
   }
 
-  makeArrayUppercase(keywordArray) {
+  makeArrayUppercaseAndEscape(keywordArray) {
     const uppercaseKeywordArray = [];
     keywordArray.forEach((word) => {
+      word = SqlString.escape(word);
       uppercaseKeywordArray.push(word.toUpperCase());
     });
     return uppercaseKeywordArray;
