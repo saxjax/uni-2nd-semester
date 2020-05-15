@@ -11,18 +11,10 @@
       <div class="row">
         <div class="col">
           <div class="leftside">
-            <h2> News Feed</h2>
-            <!-- <a href="/view/spacedrepetition">der er opgaver til repetition</a> -->
-            <% if (data.repetitionTask.length > 0 ) { %>
-              <div>Der er opgaver til repetition</div>
-             <% data.repetitionTask.forEach((repetitionTask, i) => { %>
-              <a href="/view/spacedrepetition"><%= i %></a>
-              <% });} %>
-            <!-- <img id="newsfeed" src="img/Design/newsfeed.png"> -->
             <h2> Oprettede Dokumenter </h2>
             <% data.documents.forEach((document) => { %>
               <p>
-                <a href="view/sections/document/<%= document.idDocument %>">
+                <a href="view/sectionsAndEvaluations/document/<%= document.idDocument %>">
                   <strong><%= document.title %></strong>
                 </a>
               </p>
@@ -32,8 +24,15 @@
             </button>
           </div>
         </div>
-        <div class="col">
+        <div class="rightside">
           <%- include(`homeStatusBar`) %> 
+          <h2> News Feed</h2>
+            <!-- <a href="/view/spacedrepetition">der er opgaver til repetition</a> -->
+            <% if (data.repetitionTask.length > 0 ) { %>
+                <a href="/view/spacedrepetition">Der er <%= data.repetitionTask.length %> opgaver til repetition</a>
+            <% } else { %>
+              <p>Der er pt. ingen opgaver til repetetion</p>
+            <% } %>
         </div>
       </div>  
     </div>

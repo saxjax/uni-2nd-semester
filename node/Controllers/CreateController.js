@@ -34,15 +34,23 @@ class CreateController extends ErrorController {
     }
   }
 
-  /* UNDER CONSTRUCTION */
-  async createUser(req, res) {
-    const U = new User(req);
-    try {
-      await U.insertToDatabase();
-      res.redirect(`/login`);
+  /* Formål: At oprette en bruger i databasen hvis registrerings informationen er valid.
+   * Input : Username, Password, Firstname, Lastname, Semester, University, Email, Studysubject.
+   * Output: Opretter bruger eller informerer om fejl.
+   */
+  async RegisterNewUser(req, res) {
+    const newUser = new User(req);
+    if (await newUser.validateRegister()) {
+      if (await newUser.insertToDatabase()) {
+        res.redirect(`/`);
+      }
+      else {
+        res.redirect(204, `/register`);
+      }
     }
-    catch (error) {
-      res.redirect(204, `/dbdown`);
+    else { // User could not be validated
+      const error = `Username or Email already in use, user can't be created.`;
+      res.send(error);
     }
   }
 
@@ -51,7 +59,7 @@ class CreateController extends ErrorController {
     const D = new Document(req);
     try {
       const document = await D.insertToDatabase();
-      res.redirect(`/view/sections/document/${document[0].idDocument}`);
+      res.redirect(`/view/sectionsAndEvaluations/document/${document[0].idDocument}`);
     }
     catch (error) {
       console.log(error);
@@ -185,19 +193,21 @@ class CreateController extends ErrorController {
       quizResultData = await QR.getHistoricQuizResultData(idAttempt, req.body.questionsArray);
 
       quizResultData.resultData.forEach((quizResult) => {
-        quizResult.idQuizQuestion = quizResult.ID_QUIZ_QUESTION;
-        quizResult.idUser = quizResult.ID_USER;
-        quizResult.recentResult = quizResult.RECENT_RESULT;
-        quizResult.recentAttemptDate = quizResult.RECENT_ATTEMPT_DATE;
-        quizResult.nextRepetition = quizResult.NEXT_REPITITION;
-        quizResult.repetitions = quizResult.TOTAL;
-        quizResult.failedAttempts = quizResult.FAILED_ATTEMPTS;
-        quizResult.successAttempts = quizResult.SUCESS_ATTEMPTS;
-        quizResult.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
+        const result = quizResult;
+        result.idQuizQuestion = quizResult.ID_QUIZ_QUESTION;
+        result.idUser = quizResult.ID_USER;
+        result.recentResult = quizResult.RECENT_RESULT;
+        result.recentAttemptDate = quizResult.RECENT_ATTEMPT_DATE;
+        result.nextRepetition = quizResult.NEXT_REPITITION;
+        result.repetitions = quizResult.TOTAL;
+        result.failedAttempts = quizResult.FAILED_ATTEMPTS;
+        result.successAttempts = quizResult.SUCESS_ATTEMPTS;
+        result.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
       });
 
       quizResultData.resultData.forEach((quizResult) => {
-        quizResult.NEXT_REPITITION = quizResult.nextRepetition;
+        const result = quizResult;
+        result.NEXT_REPITITION = quizResult.nextRepetition;
       });
     }
     catch (error) {

@@ -28,10 +28,10 @@ class SessionController {
       req.session.idUser = data[0].idUser;
       req.session.loggedIn = true;
       req.session.username = data[0].username;
-      res.redirect(`/`);
+      res.redirect(`/access/view/groups`);
     }
-    else {                       // FIXME: Dokumentation mangler - hvornår rammer man denne else-clause?
-      res.redirect(`/register`); // FIXME: Statuskode indsættes
+    else { // Hvis queriet returnere et tomt array (aka. ingen user fra loginValid())
+      res.redirect(`/access/register`); // FIXME: Statuskode indsættes
     }
   }
 
@@ -49,8 +49,21 @@ class SessionController {
       res.redirect(`/`);
     }
     else {                     // FIXME: Dokumentation mangler - hvornår rammer man denne else-clause?
-      res.redirect(`/groups`); // FIXME: Statuskode indsættes
+      res.redirect(`/access/view/groups`); // FIXME: Statuskode indsættes
     }
+  }
+
+  /* Formål: At gøre det muligt at skifte bruger og grupperum.
+   * Input : @req som indeholder en brugers session data.
+   * Output: Et reset af brugerens session data, og redirect til loginpagen
+   */
+  logout(req, res) { // FIXME: logout fjerner ikke korrekt session (aka. der kan trykkes logout og direkte bagefter tilgås home)
+    req.session.destroy((err) => {
+      if (err) {
+        return console.log(err);
+      }
+      res.redirect(`/access/login`);
+    });
   }
 }
 

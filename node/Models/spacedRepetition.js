@@ -8,55 +8,11 @@ const { Model } = require(`./AbstractClasses/Model`);
 class SpacedRepetition extends Model {
   constructor() {
     super();
-    this.minTimestamp = 24; // 24 timer
+    this.minTimestamp = 2; // 24 timer
     this.comprehentionRatio = 3; // hvert forkert svar kræver mindst 3 rigtige svar for at blive registreret som forstået
     this.repetitionInterval = 1;
     this.elementType = `repetition_task`;
     this.table = `repetition_task`;
-  }
-
-
-  /* Formål:Indsætte/opdatere  idQuizquestions i repetition_task tabellen
-   * Input: resultData: på formen
-                        [
-                        RowDataPacket {
-                          idQuizQuestion: '6b0f6da9-8e00-11ea-a6c9-2c4d54532c7a',
-                          idUser: '553e422d-7c29-11ea-86e2-2c4d54532c7a',
-                          recentResult: 'true',
-                          recentAttemptDate: 2020-05-13T13:16:40.000Z,
-                          nextRepetition: 2020-05-26T23:16:40.974Z,
-                          repetitions: 14,
-                          failedAttempts: 3,
-                          successAttempts: 11
-                        },
-                        RowDataPacket {
-                        },
-                        RowDataPacket {
-                        }
-                      ]
-   * Output: Bool som angiver om dataene er blevet indsat i databasen
-   */
-  async insertToDatabaseSpacedRepetition(resultData) {
-    let successfullInsert = false;
-    const trueObjectTable = this.table; // refererer til QuizResults table i dette tilfælde
-    this.table = `repetition_task`;
-
-    resultData.forEach((result) => {
-      result.nextRepetition = result.nextRepetition.toISOString().slice(0, 19).replace(`T`, ` `);
-      try {
-        this.query(`CUSTOM`, `INSERT INTO ${this.table} (ID_QUIZ_QUESTION, ID_USER, ID_GROUP, REPETITION_DATE) 
-                    VALUES ("${result.idQuizQuestion}", "${result.idUser}", "${this.idGroup}", "${result.nextRepetition}") ON DUPLICATE KEY UPDATE REPETITION_DATE = "${result.nextRepetition}" `);
-        successfullInsert = true;
-      }
-      catch (error) {
-        console.log(error);
-        return false;
-      }
-      return true;
-    });
-
-    this.table = trueObjectTable;
-    return successfullInsert;
   }
 
 
@@ -151,6 +107,49 @@ class SpacedRepetition extends Model {
     return string;
   }
 
+
+  /* Formål:Indsætte/opdatere  idQuizquestions i repetition_task tabellen
+   * Input: resultData: på formen
+                                  [
+                                  RowDataPacket {
+                                    idQuizQuestion: '6b0f6da9-8e00-11ea-a6c9-2c4d54532c7a',
+                                    idUser: '553e422d-7c29-11ea-86e2-2c4d54532c7a',
+                                    recentResult: 'true',
+                                    recentAttemptDate: 2020-05-13T13:16:40.000Z,
+                                    nextRepetition: 2020-05-26T23:16:40.974Z,
+                                    repetitions: 14,
+                                    failedAttempts: 3,
+                                    successAttempts: 11
+                                  },
+                                  RowDataPacket {
+                                  },
+                                  RowDataPacket {
+                                  }
+                                ]
+   * Output: Bool som angiver om dataene er blevet indsat i databasen
+   */
+  async insertToDatabaseSpacedRepetition(resultData) {
+    let successfullInsert = false;
+    const trueObjectTable = this.table; // refererer til QuizResults table i dette tilfælde
+    this.table = `repetition_task`;
+
+    resultData.forEach((result) => {
+      result.nextRepetition = result.nextRepetition.toISOString().slice(0, 19).replace(`T`, ` `);
+      try {
+        this.query(`CUSTOM`, `INSERT INTO ${this.table} (ID_QUIZ_QUESTION, ID_USER, ID_GROUP, REPETITION_DATE) 
+                    VALUES ("${result.idQuizQuestion}", "${result.idUser}", "${this.idGroup}", "${result.nextRepetition}") ON DUPLICATE KEY UPDATE REPETITION_DATE = "${result.nextRepetition}" `);
+        successfullInsert = true;
+      }
+      catch (error) {
+        console.log(error);
+        return false;
+      }
+      return true;
+    });
+
+    this.table = trueObjectTable;
+    return successfullInsert;
+  }
 
   // spacedrepetition algoritmen udgøres af funktionerne : calculateNextRepetitionTimeStampForEvaluation() og calculateTimeStamp() //
 
