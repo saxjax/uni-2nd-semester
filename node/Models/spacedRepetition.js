@@ -154,9 +154,9 @@ class SpacedRepetition extends Model {
   // spacedrepetition algoritmen udgøres af funktionerne : calculateNextRepetitionTimeStampForEvaluation() og calculateTimeStamp() //
 
   /*
-   * Formål: Afgør Hvilket timestamp der skal knyttes til et evaluation result
+   * Formål: Afgør Hvilket timestamp der skal knyttes til et evaluation result , minimum eller et beregnet.
    * Input: et evaluationResult med følgende properties: recentResult (true/false), antal tidligere repetitions, failedAttempts, successAttempts
-   * Output:
+   * Output: en dato for næste repetition .
   */
   calculateNextRepetitionTimeStampForEvaluation(evaluationResult) {
     let newRepTimestamp = 0;
