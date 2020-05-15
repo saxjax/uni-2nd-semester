@@ -27,10 +27,6 @@ module.exports = {
   objectTwo
 };
 
-Alle exports skal unittestes.
-Alle metoder i Classes skal unittestes.
-Avancerede funktioner kan med fordel unittestes.
-
 ## Node moduler
 Kør`npm install` for at installerer alle dependencies.
 
