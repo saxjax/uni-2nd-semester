@@ -26,12 +26,16 @@ class Section {
    */
 document.getElementById(`submitBtn`).addEventListener(`click`, async () => {
   const formContainer = document.getElementById(`formContainer`);
-
   const response = await fetch(`/post/section`, {
     method: `POST`,
     body: JSON.stringify(new Section(formContainer)),
     headers: { "Content-Type": `application/json` },
   });
   const responseJSON = await response.json();
-  window.location.replace(responseJSON.url);
+  if (responseJSON.error) {
+    alert(responseJSON.error);
+  }
+  else {
+    window.location.replace(responseJSON.url);
+  }
 });

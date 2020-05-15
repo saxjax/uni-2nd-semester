@@ -7,12 +7,14 @@ const { Section } = require(`../Models/Section`);
 const { Evaluation } = require(`../Models/Evaluation`);
 const { QuizQuestion } = require(`../Models/QuizQuestion`);
 const { QuizResult } = require(`../Models/QuizResult`);
+const { ErrorController } = require(`./ErrorController`);
 
 /* UNDER CONSTRUCTION */
 
-class CreateController {
+class CreateController extends ErrorController {
   /* UNDER CONSTRUCTION */
   constructor(root) {
+    super();
     this.name = `CreateController`;
     this.root = root;
   }
@@ -59,13 +61,14 @@ class CreateController {
 
   /* UNDER CONSTRUCTION */
   async createSection(req, res) {
-    const S = new Section(req);
     try {
-      const section = await S.insertToDatabase();
-      res.send({ url: `/view/section/${section[0].idSection}` });
+      const S = new Section(req);
+      const idSection = await S.insertToDatabase();
+      res.send({ url: `/view/section/${idSection}` });
     }
     catch (error) {
-      res.redirect(204, `/dbdown`);
+      const errorMsg = this.produceErrorMessageToUser(error);
+      res.send({ error: errorMsg });
     }
   }
 
