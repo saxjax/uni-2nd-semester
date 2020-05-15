@@ -127,7 +127,7 @@ class MasterController {
     // Sections
     this.app.get(`/view/sections/recipient`,         (req, res) => Show.viewSectionsRecipientPage(req, res));
     // this.app.get(`/view/section/expert`,            (req, res) => Show.viewSectionExpertPage(req, res));
-    this.app.get(`/view/sections/document/:idQuery`, (req, res) => Show.viewSectionDocumentPage(req, res));
+    this.app.get(`/view/sectionsAndEvaluations/document/:idQuery`, (req, res) => Show.viewSectionsAndEvaluationsDocumentPage(req, res));
     this.app.get(`/post/section/:idQuery`,                 (req, res) => Show.postSectionPage(req, res));
     this.app.get(`/view/section/:idQuery`,          (req, res) => Show.viewSectionPage(req, res));
     // this.app.get(`/put/section/:idQuery`,        (req, res) => Show.putSectionPage(req, res));

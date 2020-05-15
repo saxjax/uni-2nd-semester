@@ -57,7 +57,7 @@ class CreateController {
     const D = new Document(req);
     try {
       const document = await D.insertToDatabase();
-      res.redirect(`/view/sections/document/${document[0].idDocument}`);
+      res.redirect(`/view/sectionsAndEvaluations/document/${document[0].idDocument}`);
     }
     catch (error) {
       console.log(error);

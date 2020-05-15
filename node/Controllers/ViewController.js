@@ -30,7 +30,7 @@ class ViewController {
    */
   async homePage(req, res) {
     console.log(req.session);
-    const Recipient = new User(req);
+    const Recipient = new Group(req);
     const SpacedRep = new QuizResult(req);
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),               // dataArray[0]
@@ -40,6 +40,7 @@ class ViewController {
 
     ]);
     const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2], repetitionTask: dataArray[3] };
+    console.log(data);
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs, { data });
   }
@@ -168,6 +169,23 @@ class ViewController {
    * Output: En liste af de sections som tilhører et specifikt dokument
    */
   async viewSectionDocumentPage(req, res) {
+    const Doc = new Document(req);
+    const dataArray = await Promise.all([
+      Doc.getThisGroupData(),               // dataArray[0]
+      Doc.getThisUserData(),                // dataArray[1]
+      Doc.getThis(),                        // dataArray[2]
+      Doc.getAllElementsOfType(`Section`),  // dataArray[3]
+    ]);
+    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], sections: dataArray[3] };
+    this.ejs = path.join(`${this.root}/www/views/viewSectionDocument.ejs`);
+    res.render(this.ejs, { data });
+  }
+
+  /* Formål: At vise alle de sektioner som knytter sig til et dokument der er valgt
+   * Input : En session med userId og groupId samt et queryId fra params
+   * Output: En liste af de sections som tilhører et specifikt dokument
+   */
+  async viewSectionsAndEvaluationsDocumentPage(req, res) {
     const Doc = new Document(req);
     const dataArray = await Promise.all([
       Doc.getThisGroupData(),               // dataArray[0]
