@@ -39,6 +39,7 @@ class SpacedRepetition extends Model {
    * Output: et array af idQuizQuestions
    */
   async getIdQuizquestionsDueForRepetition() {
+    const trueObjectTable = this.table;
     const repetitionTasks = [];
     let queryResult;
     let now = new Date();
@@ -59,6 +60,7 @@ class SpacedRepetition extends Model {
     catch (error) {
       console.log(error);
     }
+    this.table = trueObjectTable;
     return repetitionTasks;
   }
 
@@ -72,7 +74,7 @@ class SpacedRepetition extends Model {
                                                             keywords: '123KeywordQuestion'
    */
   async getQuizQuestionContent(idQuizQuestions) {
-    const trueTable = this.table;
+    const trueObjectTable = this.table;
     this.table = `quiz_Question`;
     let quizQuestionContent = [];
 
@@ -82,6 +84,7 @@ class SpacedRepetition extends Model {
       quizQuestionContent = await this.query(`SELECT *`, `${string}`);
     }
     // console.log(quizQuestionContent);
+    this.table = trueObjectTable;
     return quizQuestionContent;
   }
 
@@ -133,10 +136,10 @@ class SpacedRepetition extends Model {
     const trueObjectTable = this.table; // refererer til QuizResults table i dette tilfælde
     this.table = `repetition_task`;
 
-    resultData.forEach((result) => {
+    resultData.forEach(async (result) => {
       result.nextRepetition = result.nextRepetition.toISOString().slice(0, 19).replace(`T`, ` `);
       try {
-        this.query(`CUSTOM`, `INSERT INTO ${this.table} (ID_QUIZ_QUESTION, ID_USER, ID_GROUP, REPETITION_DATE) 
+        await this.query(`CUSTOM`, `INSERT INTO ${this.table} (ID_QUIZ_QUESTION, ID_USER, ID_GROUP, REPETITION_DATE) 
                     VALUES ("${result.idQuizQuestion}", "${result.idUser}", "${this.idGroup}", "${result.nextRepetition}") ON DUPLICATE KEY UPDATE REPETITION_DATE = "${result.nextRepetition}" `);
         successfullInsert = true;
       }
@@ -169,7 +172,7 @@ class SpacedRepetition extends Model {
           rightWrongRatio = (evaluationResult.successAttempts / evaluationResult.failedAttempts); // udregn rigtig-forkert ratio
           this.repetitionInterval =  rightWrongRatio > 1 ? rightWrongRatio : 1;// sæt repetitionsinterval til mindst 1, ellers = rightWrongRatio
         }
-        else { // hvis den IKKE er blevet svaret forkert på før OG du svarer rigtigt, sæt repetitionsintervallet = antal rigtige svar
+        else { // hvis den IKKE er blevet svaret forkert på før OG du svarer rigtigt, sæt repetitionsintervallet = antal rigtige forsøg
           this.repetitionInterval = evaluationResult.successAttempts;
         }
       }
