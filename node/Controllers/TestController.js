@@ -3,7 +3,7 @@
 // const { Section } = require(`../Section/Section`);
 // const { Quiz } = require(`../Evaluation/Quiz`);
 // const { Flashcard } = require(`../Evaluation/Flashcard`);
-// const { Group } = require(`../Models/Group`);
+const { Group } = require(`../Models/Group`);
 // const { User } = require(`../User/User`);
 
 /* Indsæt gerne test URLs her, husk at oprette dem i Server!
@@ -32,9 +32,7 @@ class TestController {
 
   async test3(req, res) {
     const test1 = (typeof req.params.queryId       !== `undefined` ? req.params.queryId      : undefined);
-    console.log(test1);
-    console.log(`test2 = ${test2}`);
-    res.send(`Se i log`);
+    res.send(test1);
   }
 
   async whatever(req, res) {

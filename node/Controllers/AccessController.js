@@ -14,6 +14,12 @@ class AccessController {
     this.ejs = ``;
   }
 
+  /* FIXME: UNDER CONSTRUCTION */
+  dbDown(req, res) {
+    this.ejs = path.join(`${this.root}/www/views/dbDown.ejs`);
+    res.render(this.ejs);
+  }
+
   /* Session Interaction URLs */
 
   /* UNDER CONSTRUCTION
