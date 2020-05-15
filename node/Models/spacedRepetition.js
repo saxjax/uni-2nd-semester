@@ -174,7 +174,7 @@ class SpacedRepetition extends Model {
         }
       }
       else { // der er svaret rigtet OG det er første gang evalueringesopgaven er besvaret.
-        this.repetitionInterval = 1;
+        this.repetitionInterval = 2;
       }
 
       setMinTimestamp = false; // hvis der svares rigtigt så skal timestampet ALTID beregnes til false
