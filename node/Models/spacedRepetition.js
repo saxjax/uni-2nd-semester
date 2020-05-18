@@ -1,4 +1,4 @@
-/* eslint no-console: off */
+Æ/* eslint no-console: off */
 
 /* Spaced repetition er en funktion som stiller funktioner til rådighed for at udføre spaced repetition og active recall */
 const { Model } = require(`./AbstractClasses/Model`);
@@ -45,6 +45,8 @@ class SpacedRepetition extends Model {
     let now = new Date();
     now = now.toISOString().slice(0, 19).replace(`T`, ` `);// konverterer en JS Date til SQL format
 
+
+    //FIXME SKAL VI HAVE DEN HER TRY CATCH BLOK VÆK? 
     try {
       this.table = `repetition_task`;// sætter table til repetition_task for en sikkerhedsskyld, da denne funktion kan kaldes fra andre klasser
       queryResult = await this.query(`SELECT ID_QUIZ_QUESTION`, `REPETITION_DATE <= "${now}" 
@@ -68,7 +70,7 @@ class SpacedRepetition extends Model {
    * Input: Et array af quizQuestion id'er
    * Output: Et array med objekter af quizQuestion indhold: idQuizQuestion: '5e5ccfd5-944e-11ea-af8f-2c4d54532c7a',
                                                             idEvaluation: '52e17040-944e-11ea-af8f-2c4d54532c7a',
-                                                            question: 'Mike',
+                                                            question: 'What is an html div?',
                                                             answers: [Array],
                                                             correctness: 'false;true',
                                                             keywords: '123KeywordQuestion'
