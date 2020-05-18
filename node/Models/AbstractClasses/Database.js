@@ -50,8 +50,7 @@ class Database {
       console.log(`INFORMATION\n`
       + `\nEn query tager et "choice" som sit forste variabel, og "data" som sin anden variabel\n`
       + `\nFoRSTE PARAMETER kan vaere:\n`
-      + `SELECT * (for at get alle data)\n`
-      + `eller SELECT "navn paa column" (for at get kun den column)\n`
+      + `SELECT "navn paa column" (for at get kun den column)\n`
       + `eller SELECT "navn paa column", "navn paa column", etc. (for at faa flere columns komma separeret.)`
       + `INSERT (for at oprette/post ny data til databasen)\n`
       + `UPDATE (for at modificere/opdatere/put data der er i databasen)\n`
@@ -59,7 +58,7 @@ class Database {
       + `CUSTOM (for at skrive den raa SQL streng)\n`
       + `\nDATA PARAMETER skal vaere paa: columnNavn = variabelNavn\n`
       + `Disse data har forskellige seperatorer der kan modificere querien\n`
-      + `Ved et SELECT kan man give fra 0 til tabellens storrelse. Vaelges 0 faar man hele den valgte tabel/column\n`
+      + `Ved et SELECT kan man give fra 1 til tabellens storrelse.\n`
       + `Datapunkterne i et SELECT kan indledels/seperares: AND, OR eller NOT, der burde vaere selvforklarende\n`
       + `Ved et INSERT skal man give mindst 1, omend tabellen kan have nogle data der skal gives ved oprettelse\n`
       + `Datapunkterne i et INSERT skal separeres med AND, og maa ikke have duplikerede column inserts\n`
