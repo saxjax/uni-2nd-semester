@@ -260,7 +260,7 @@ class Database {
       dataArr[i] = SqlString.escape(dataArr[i]); // Alle værdier i values escapes, for at undgå SQL injection
     }
 
-    return dataArr;
+    return data;
   }
 
   /* Metoden insertSplitter bliver her beskrevet mere i detaljen for dem der ikke kender saa meget til regular expressions.
