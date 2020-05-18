@@ -18,7 +18,6 @@ class Question {
   }
 }
 
-// console.log(data);
 const submitButton = document.querySelector(`#submitButton`);
 // const { idEvaluation } = data.evaluation[0];
 submitButton.addEventListener(`click`, submitAnswers);

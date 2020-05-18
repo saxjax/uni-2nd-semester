@@ -68,15 +68,14 @@ class Section extends Model {
     const selectUUID = await this.query(`CUSTOM`, `SELECT UUID() as UUID`);
     this.idSection = selectUUID[0].UUID;
     // Insert section to database
-    const data = `INSERT INTO ${this.table} (ID_DOCUMENT_SECTION,SECTION_TITLE,SECTION_CONTENT,ID_DOCUMENT,SECTION_NUMBER,ID_USER_GROUP,ID_USER)`
-               + `VALUES("${this.idSection}",`
-               + `${SqlString.escape(this.title)},`
-               + `${SqlString.escape(this.content)},`
-               + `"${this.idDocument}",`
-               + `${SqlString.escape(this.number)},`
-               + `"${this.idGroup}",`
-               + `"${this.idUser}")`;
-    await this.query(`CUSTOM`, data);
+    const data = `ID_DOCUMENT_SECTION = "${this.idSection}" AND `
+               + `SECTION_TITLE = "${this.title}" AND `
+               + `SECTION_CONTENT = "${this.content}" AND `
+               + `ID_DOCUMENT = "${this.idDocument}" AND `
+               + `SECTION_NUMBER = "${this.number}" AND `
+               + `ID_USER_GROUP = "${this.idGroup}" AND `
+               + `ID_USER = "${this.idUser}"`;
+    await this.query(`INSERT`, data);
     // Insert keywords to database
     const ids = {
       idDocument: this.idDocument,

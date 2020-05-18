@@ -45,6 +45,8 @@ class SpacedRepetition extends Model {
     let now = new Date();
     now = now.toISOString().slice(0, 19).replace(`T`, ` `);// konverterer en JS Date til SQL format
 
+
+    //FIXME SKAL VI HAVE DEN HER TRY CATCH BLOK VÆK? 
     try {
       this.table = `repetition_task`;// sætter table til repetition_task for en sikkerhedsskyld, da denne funktion kan kaldes fra andre klasser
       queryResult = await this.query(`SELECT ID_QUIZ_QUESTION`, `REPETITION_DATE <= "${now}" 
@@ -68,7 +70,7 @@ class SpacedRepetition extends Model {
    * Input: Et array af quizQuestion id'er
    * Output: Et array med objekter af quizQuestion indhold: idQuizQuestion: '5e5ccfd5-944e-11ea-af8f-2c4d54532c7a',
                                                             idEvaluation: '52e17040-944e-11ea-af8f-2c4d54532c7a',
-                                                            question: 'Mike',
+                                                            question: 'What is an html div?',
                                                             answers: [Array],
                                                             correctness: 'false;true',
                                                             keywords: '123KeywordQuestion'
@@ -83,7 +85,6 @@ class SpacedRepetition extends Model {
       const string = this.createQueryStringFromQuestionIDs(idQuizQuestions);
       quizQuestionContent = await this.query(`SELECT *`, `${string}`);
     }
-    // console.log(quizQuestionContent);
     this.table = trueObjectTable;
     return quizQuestionContent;
   }
@@ -97,15 +98,12 @@ class SpacedRepetition extends Model {
   createQueryStringFromQuestionIDs(idQuizQuestions) {
     let string = ``;
     idQuizQuestions.forEach((element, index) => {
-      // console.log(index, element);
       if (index > 0) {
         string += ` OR `;
       }
       string += `ID_QUIZ_QUESTION = "${element}"`;
     });
     string += ` ;`;
-    // console.log(idQuizQuestions);
-    // console.log(string);
 
     return string;
   }
