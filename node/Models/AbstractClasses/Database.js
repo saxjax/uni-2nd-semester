@@ -220,7 +220,7 @@ class Database {
              @data en streng bestående af 'col = "val" AND col = "val" AND col = "val" AND ... etc.'
    * Output: Returnere et JSON objekt, hvor dataene er udsplittet i columns og deres vaerdier.
    */
-  insertSplitter(data) {
+
     let done = false;
     let dataCopy = data;
     const dataArr = { columns: ``, values: `` };
