@@ -4,12 +4,6 @@ async function calculateCurrentProgress() {
   let takenVal = 0;
   let correctVal = 0;
 
-  for (let i = 0; i < 1; i++) {
-    // calculate amount of taken and amount of correct
-    takenVal = 25;
-    correctVal = 50;
-  }
-
   const progress = await getTakenProgress();
   takenVal = progress.totalProgress;
   correctVal = progress.correctProgress;
@@ -30,7 +24,7 @@ async function getTakenProgress() {
     alert(responseJSON.error);
   }
   else {
-    progress = responseJSON.Progress;
+    progress = responseJSON;
   }
   return progress;
 }
