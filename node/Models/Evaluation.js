@@ -51,7 +51,7 @@ class Evaluation extends Model {
                                + `ID_USER = "${this.idUser}" AND `
                                + `ID_USER_GROUP = "${this.idGroup}" AND `
                                + `EVALUATION_TITLE = "${this.title}" AND `
-                               + `ID_DOCUMENT = "${this.idDocument[0].ID_DOCUMENT}"`);
+                               + `ID_DOCUMENT = "${this.idDocument}"`);
 
     const idEvalQuery = await this.query(`SELECT ID_EVALUATION`, `EVALUATION_TITLE = "${this.title}" `
                        + `AND ID_DOCUMENT_SECTION = "${this.idSection}" `

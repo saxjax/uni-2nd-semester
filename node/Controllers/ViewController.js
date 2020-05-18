@@ -10,6 +10,7 @@ const { Evaluation } = require(`../Models/Evaluation`);
 const { QuizResult } = require(`../Models/QuizResult`);
 const { Flashcard } = require(`../Models/Flashcard`);
 const { Keyword } = require(`../Models/Keyword`);
+const { ProgressBar } = require(`../Models/ProgressBar`);
 
 /* ViewController er den controller som præsentere alle de "views" som brugeren kan se i et grupperum.
  * ViewControllerens metoder vil dermed alle sammen hente og vise et ejs dokument, hvor der medsendes data.
@@ -192,7 +193,7 @@ class ViewController {
       Doc.getAllElementsOfType(`Evaluation`), // dataArray[4]
       Doc.getAllElementsOfType(`Keyword`),    // dataArray[5]
     ]);
-    const data = { 
+    const data = {
       group: dataArray[0],
       user: dataArray[1],
       document: dataArray[2],
@@ -498,6 +499,14 @@ class ViewController {
 
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationResult.ejs`);
     res.render(this.ejs, { data });
+  }
+
+  async viewEvaluationProgress(req, res) {
+    const PB = new ProgressBar(req);
+    const takenEvalProgress = await PB.getProgressFromDB();
+    const totalP = takenEvalProgress.totalProgress;
+    const correctP = takenEvalProgress.totalCorrectProgress;
+    res.send({ totalProgress: totalP, correctProgress: correctP });
   }
 
   // TODO: Mangler EJS
