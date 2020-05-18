@@ -83,7 +83,6 @@ class QuizResult extends SpacedRepetition {
   createQueryString(idQuizQuestions) {
     let string = ``;
     idQuizQuestions.forEach((element, index) => {
-      // console.log(index, element);
       if (index > 0) {
         string += ` OR `;
       }
