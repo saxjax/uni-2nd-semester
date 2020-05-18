@@ -1,7 +1,7 @@
 /* eslint no-console: off */
 
 const mysql = require(`mysql`);
-const fs = require(`fs`);
+const SqlString = require(`sqlstring`);
 
 const { ParseSql } = require(`./ParseSQL`);
 
@@ -50,8 +50,7 @@ class Database {
       console.log(`INFORMATION\n`
       + `\nEn query tager et "choice" som sit forste variabel, og "data" som sin anden variabel\n`
       + `\nFoRSTE PARAMETER kan vaere:\n`
-      + `SELECT * (for at get alle data)\n`
-      + `eller SELECT "navn paa column" (for at get kun den column)\n`
+      + `SELECT "navn paa column" (for at get kun den column)\n`
       + `eller SELECT "navn paa column", "navn paa column", etc. (for at faa flere columns komma separeret.)`
       + `INSERT (for at oprette/post ny data til databasen)\n`
       + `UPDATE (for at modificere/opdatere/put data der er i databasen)\n`
@@ -59,7 +58,7 @@ class Database {
       + `CUSTOM (for at skrive den raa SQL streng)\n`
       + `\nDATA PARAMETER skal vaere paa: columnNavn = variabelNavn\n`
       + `Disse data har forskellige seperatorer der kan modificere querien\n`
-      + `Ved et SELECT kan man give fra 0 til tabellens storrelse. Vaelges 0 faar man hele den valgte tabel/column\n`
+      + `Ved et SELECT kan man give fra 1 til tabellens storrelse.\n`
       + `Datapunkterne i et SELECT kan indledels/seperares: AND, OR eller NOT, der burde vaere selvforklarende\n`
       + `Ved et INSERT skal man give mindst 1, omend tabellen kan have nogle data der skal gives ved oprettelse\n`
       + `Datapunkterne i et INSERT skal separeres med AND, og maa ikke have duplikerede column inserts\n`
@@ -97,7 +96,8 @@ class Database {
         }
         else if (/SELECT/.test(choice)) { // Parseren er kun relevant når der hentes data fra databasen (eg. et select)
           const outputParser = new ParseSql(this.elementType);
-          resolve(outputParser.parseArrayOfObjects(result));
+          const parsedResult = outputParser.parseArrayOfObjects(result);
+          resolve(parsedResult);
         }
         else {
           resolve(result);
@@ -216,40 +216,47 @@ class Database {
   /* Formål: Ved at opsplitte col = val i et objekt, undgaas det at der skal bruges to forskellige syntakser
    *         mellem INSERT kontra de andre SELECT, DELETE og UPDATE.
    * Input : faar data parameteren fra et INSERT query
+             @data en streng bestående af 'col = "val" AND col = "val" AND col = "val" AND ... etc.'
    * Output: Returnere et JSON objekt, hvor dataene er udsplittet i columns og deres vaerdier.
-   * FIXME: At the moment we are not able to upload anything with a space in between words
    */
-
   insertSplitter(data) {
     let done = false;
     let dataCopy = data;
     const dataArr = { columns: ``, values: `` };
+    console.log(`NonEscaped: `, data, ` Data Arr `, dataCopy);
 
+    // Loopet går igennem et antal 'kolonne = "value"' forbundet med et antal " AND "
+    // HUSK at dataCopy er en laaaang streng med mange col = "val" AND col = "val" AND col = "val" AND ... etc.
     while (!done) {
+      // Først assignes det første ord (^\w+) i columns ud fra dataCopy med exec regex funktionen.
       dataArr.columns += /^\w+/.exec(dataCopy);
+      // Dernæst slices den oprindelige streng ned med det første ord plus midterstrengen ' = '
       dataCopy = dataCopy.slice(`${/^\w+/.exec(dataCopy)} = `.length, dataCopy.length);
-      // Dette er stadig udkommenteret, for at sikre det kan klare testene
-      // if (/^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.test(dataCopy)) { // Test for om det er en mail
-      //   dataArr.values += /^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy);
-      //   dataCopy = dataCopy.slice(`${/^"\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+"/.exec(dataCopy)} `.length, dataCopy.length);
-      // }
+      // Nu er det første ord i strengen en "val". Denne hentes med exec funktionen som før men sættes i values.
       dataArr.values += /^".*?"/.exec(dataCopy);
+      // Der slices nu ordet "val" fra strengen, plus mellemrummet ` `;
       dataCopy = dataCopy.slice(`${/^".*?"/.exec(dataCopy)} `.length, dataCopy.length);
       try {
+        // Her forsøges der at findes et "AND". Hvis det findes, så skal loopet gentages.
+        // Findes det ikke, så gives der en "TypeError" (deraf brugen af try/catch)
         if (/^\w+/.exec(dataCopy)[0] === `AND`) {
-          dataArr.columns += `, `;
-          dataArr.values  += `, `;
-          dataCopy = dataCopy.slice(`AND `.length, dataCopy.length);
+          dataArr.columns += `, `;  // Dette er nødendigt at lægge til, grundet INSERT syntaksen er SET (col1, col2, col3) etc.
+          dataArr.values  += `, `; // Dette er nødendigt at lægge til, grundet INSERT syntaksen er VALUES (val1, val2, val3) etc.
+          dataCopy = dataCopy.slice(`AND `.length, dataCopy.length); // Her slices det sidste "AND " fra, og en ny streng begynder.
         }
       }
       catch (error) {
-        if (/^TypeError/.test(error) === true) {
+        if (/^TypeError/.test(error) === true) { // Er nødvendig for at fange typefejlen. Hvis den fanges er strengen tom.
           done = true;
         }
         else {
-          console.log(`FEJL IKKE FANGET i insertSplitter!\n`);
+          console.log(`FEJL IKKE FANGET i insertSplitter!\n`); // Denne fanger andre usete fejl, så try/catch aldrig gør noget uforudset.
         }
       }
+    }
+
+    for (let i = 0; i < dataArr.values.length; i++) {
+      dataArr[i] = SqlString.escape(dataArr[i]); // Alle værdier i values escapes, for at undgå SQL injection
     }
 
     return dataArr;

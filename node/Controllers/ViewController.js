@@ -201,7 +201,6 @@ class ViewController {
       keywords: dataArray[5],
     };
     this.ejs = path.join(`${this.root}/www/views/viewSectionsAndEvaluationsDocument.ejs`);
-    console.log(data);
     res.render(this.ejs, { data });
   }
 
