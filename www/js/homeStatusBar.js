@@ -7,10 +7,23 @@ async function calculateCurrentProgress() {
   const progress = await getTakenProgress();
   takenVal = progress.totalProgress;
   correctVal = progress.correctProgress;
-  takenBar.innerHTML = `${takenVal}%`;
-  takenBar.style.width = `${takenVal}%`;
-  correctBar.innerHTML = `${correctVal}%`;
-  correctBar.style.width = `${correctVal}%`;
+  if (takenVal === 0) {
+    takenBar.innerHTML = `Ingen data at beregne endnu`;
+    takenBar.style.width = `100%`;
+  }
+  else {
+    takenBar.innerHTML = `${takenVal}%`;
+    takenBar.style.width = `${takenVal}%`;
+  }
+
+  if (correctVal === 0) {
+    correctBar.innerHTML = `Ingen data at beregne endnu`;
+    correctBar.style.width = `100%`;
+  }
+  else {
+    correctBar.innerHTML = `${correctVal}%`;
+    correctBar.style.width = `${correctVal}%`;
+  }
 }
 
 async function getTakenProgress() {
