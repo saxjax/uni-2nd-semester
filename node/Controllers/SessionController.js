@@ -20,7 +20,6 @@ class SessionController {
   async userSession(req, res) {
     const currentUser = new User(req);
     const data = await currentUser.loginValid();
-    console.log(`data ${data[0]}`);
     if (data.fatal) {
       res.redirect(204, `/dbdown`);
     }
