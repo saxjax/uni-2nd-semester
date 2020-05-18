@@ -1,7 +1,7 @@
 /* eslint no-console: off */
 
 const mysql = require(`mysql`);
-const fs = require(`fs`);
+const SqlString = require(`sqlstring`);
 
 const { ParseSql } = require(`./ParseSQL`);
 
@@ -97,7 +97,8 @@ class Database {
         }
         else if (/SELECT/.test(choice)) { // Parseren er kun relevant når der hentes data fra databasen (eg. et select)
           const outputParser = new ParseSql(this.elementType);
-          resolve(outputParser.parseArrayOfObjects(result));
+          const parsedResult = outputParser.parseArrayOfObjects(result);
+          resolve(parsedResult);
         }
         else {
           resolve(result);
@@ -224,6 +225,7 @@ class Database {
     let done = false;
     let dataCopy = data;
     const dataArr = { columns: ``, values: `` };
+    console.log(`NonEscaped: `, data, ` Data Arr `, dataCopy);
 
     while (!done) {
       dataArr.columns += /^\w+/.exec(dataCopy);
@@ -250,6 +252,10 @@ class Database {
           console.log(`FEJL IKKE FANGET i insertSplitter!\n`);
         }
       }
+    }
+
+    for (let i = 0; i < dataArr.values.length; i++) {
+      dataArr[i] = SqlString.escape(dataArr[i]);
     }
 
     return dataArr;
