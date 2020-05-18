@@ -10,7 +10,7 @@ class SpacedRepetition extends Model {
     super();
     this.minTimestamp = 2; // 24 timer
     this.comprehentionRatio = 3; // hvert forkert svar kræver mindst 3 rigtige svar for at blive registreret som forstået
-    this.repetitionInterval = 1;
+    this.repetitionScalar = 1;
     this.elementType = `repetition_task`;
     this.table = `repetition_task`;
   }
@@ -172,14 +172,14 @@ class SpacedRepetition extends Model {
       if (evaluationResult.repetitions > 1) { // er evalueringsopgaven blevet taget før?
         if (evaluationResult.failedAttempts > 0) { // er evalueringsopgaven svaret forkert før?
           rightWrongRatio = (evaluationResult.successAttempts / evaluationResult.failedAttempts); // udregn rigtig-forkert ratio
-          this.repetitionInterval =  rightWrongRatio > 1 ? rightWrongRatio : 1;// sæt repetitionsinterval til mindst 1, ellers = rightWrongRatio
+          this.repetitionScalar =  rightWrongRatio > 1 ? rightWrongRatio : 1;// sæt repetitionsinterval til mindst 1, ellers = rightWrongRatio
         }
         else { // hvis den IKKE er blevet svaret forkert på før OG du svarer rigtigt, sæt repetitionsintervallet = antal rigtige forsøg
-          this.repetitionInterval = evaluationResult.successAttempts;
+          this.repetitionScalar = evaluationResult.successAttempts;
         }
       }
       else { // der er svaret rigtet OG det er første gang evalueringesopgaven er besvaret.
-        this.repetitionInterval = 1;
+        this.repetitionScalar = 2;
       }
 
       setMinTimestamp = false; // hvis der svares rigtigt så skal timestampet ALTID beregnes til false
@@ -206,7 +206,7 @@ class SpacedRepetition extends Model {
       newRepTimeStamp.setHours(newRepTimeStamp.getHours() + this.minTimestamp);
     }
     else {
-      newRepTimeStamp.setHours(newRepTimeStamp.getHours() + ((this.repetitionInterval * this.repetitionInterval) * this.minTimestamp));
+      newRepTimeStamp.setHours(newRepTimeStamp.getHours() + ((this.repetitionScalar * this.repetitionScalar) * this.minTimestamp));
     }
 
     return newRepTimeStamp;
