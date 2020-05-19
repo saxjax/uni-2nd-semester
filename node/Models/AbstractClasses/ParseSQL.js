@@ -249,6 +249,7 @@ class ParseSql {
   }
 
 
+<<<<<<< Updated upstream
   /* Formål: At parse Quiz-resultData specialdesignet returværdi fra SQL databasen
    * Input:  Et dataobjekt som indeholder nedenstående properties
    * Output: Et parset dataobjekt, som kan forståes af spacedrepetition funktionerne
@@ -269,6 +270,20 @@ class ParseSql {
     });
 
     return tempData;
+=======
+  parseQuizResultsForSpacedRepetition(data) {
+    return {
+      idQuizQuestion: data[this.idQuizQuestion],
+      idUser: data[this.idUser],
+      recentResult: data.RECENT_RESULT,
+      recentAttemptDate: data.RECENT_ATTEMPT_DATE,
+      nextRepetition: data.NEXT_REPITITION,
+      repetitions: data.TOTAL,
+      failedAttempts: data.FAILED_ATTEMPTS,
+      successAttempts: data.SUCESS_ATTEMPTS,
+      // nextRepetition: QR.calculateNextRepetitionTimeStampForEvaluation(quizResult),
+    };
+>>>>>>> Stashed changes
   }
 
   /* Formål: At parse Flashcard-data
