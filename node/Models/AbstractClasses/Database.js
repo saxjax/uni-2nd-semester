@@ -222,7 +222,7 @@ class Database {
     let done = false;
     let dataCopy = data;
     const dataArr = { columns: ``, values: `` };
-    console.log(`NonEscaped: `, data, ` Data Arr `, dataCopy);
+    // console.log(`NonEscaped: `, data, ` Data Arr `, dataCopy);
 
     // Loopet går igennem et antal 'kolonne = "value"' forbundet med et antal " AND "
     // HUSK at dataCopy er en laaaang streng med mange col = "val" AND col = "val" AND col = "val" AND ... etc.

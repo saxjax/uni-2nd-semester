@@ -19,9 +19,9 @@ class CreateController extends ErrorController {
     this.root = root;
   }
 
-  /* Formål: Gør det muligt for en bruger at oprette et grupperum.
+  /* Formål: Gør det muligt for en bruger at oprette et grupperum. Redirecter til /groups side
    * Input : @req.body har alle post data
-   * Output: En redirect til /groups siden
+   * Output: -
    */
   async createGroup(req, res) {
     const G = new Group(req);
@@ -36,8 +36,8 @@ class CreateController extends ErrorController {
   }
 
   /* Formål: At oprette en bruger i databasen hvis registrerings informationen er valid.
-   * Input : Username, Password, Firstname, Lastname, Semester, University, Email, Studysubject.
-   * Output: Opretter bruger eller informerer om fejl.
+   * Input : @req.body som skal indeholde Username, Password, Firstname, Lastname, Semester, University, Email, Studysubject.
+   * Output: -
    */
   async RegisterNewUser(req, res) {
     const newUser = new User(req);
@@ -53,6 +53,10 @@ class CreateController extends ErrorController {
   }
 
   /* UNDER CONSTRUCTION */
+  /* Formål: Oprette et dokument i databasen og derefter redirect til en visning af dokumentet
+   * Input : @req, som skal indeholde idGroup, idUser, loggedIn og title
+   * Output: -
+   */
   async createDocument(req, res) {
     const D = new Document(req);
     try {

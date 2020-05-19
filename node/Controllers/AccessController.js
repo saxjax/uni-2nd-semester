@@ -15,6 +15,10 @@ class AccessController {
   }
 
   /* FIXME: UNDER CONSTRUCTION */
+  /* Formål: Visning af dbDown.ejs
+   * Input: -
+   * Output: -
+   */
   dbDown(req, res) {
     this.ejs = path.join(`${this.root}/www/views/dbDown.ejs`);
     res.render(this.ejs);
@@ -22,8 +26,10 @@ class AccessController {
 
   /* Session Interaction URLs */
 
-  /* UNDER CONSTRUCTION
-   *
+  /* UNDER CONSTRUCTION */
+  /* Formål: Vise oversigten over grupper user er del af efter login
+   * Input: Request
+   * Output: -
    */
   async viewGroupsPage(req, res) {
     const U = new User(req);
@@ -39,8 +45,10 @@ class AccessController {
     res.render(this.ejs, { data });
   }
 
-  /* UNDER CONSTRUCTION
-   *
+  /* UNDER CONSTRUCTION */
+  /* Formål: Visning af postGroup.ejs side hvor man kan oprette ny gruppe
+   * Input: @Req som skal indeholde: idGroup, idUser, loggedIn, username, password, firstName, lastName, studySubject, semester, university, email;
+   * Output: - 
    */
   async postGroupPage(req, res) {
     const U = new User(req);
@@ -57,6 +65,10 @@ class AccessController {
   }
 
   /* UNDER CONSTRUCTION */
+  /* Formål: Videredirigere til registeringsside register.ejs
+   * Input: -  
+   * Output: -
+   */
   registerPage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/register.ejs`);
     res.render(this.ejs);
@@ -65,6 +77,10 @@ class AccessController {
   /* No Session Requirement URLs */
 
   /* UNDER CONSTRUCTION */
+  /* Formål: Videredirigere til loginsiden login.ejs
+   * Input: -
+   * Output: -
+   */
   loginPage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/login.ejs`);
     res.render(this.ejs);
