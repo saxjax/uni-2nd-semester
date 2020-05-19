@@ -116,7 +116,7 @@ class Model extends Database {
    * Output: En liste af underobjekter som er udvalgt ud fra Id'et i det øvre objekt.
    */
   async getAllElementsOfType(choice) {
-    const parentTable = this.table;
+    const trueObjectTable = this.table;
     const choiceTable = this.parseElementTypesTable(choice);
     this.table = choiceTable;
     let queryData = await this.query(`SELECT *`, `${this.idColumnName} = "${this.idQuery}" AND ${this.idColumnGroup} = "${this.idGroup}"`)
@@ -126,7 +126,7 @@ class Model extends Database {
       })
       .catch((error) => {
         console.warn(`\n\nDet givne tabelnavn er højst sandsynligt forkert angivet i parseElementTypesTable!\n\n`);
-        this.table = parentTable;
+        this.table = trueObjectTable;
         return error;
       });
 
