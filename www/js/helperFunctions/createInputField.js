@@ -6,11 +6,11 @@
 let fieldCount = 0;
 
 function createInputField(appendToThis, type, minimumFieldCount) {
-  fieldCount++;
+  const uniqueId = `${type.toLowerCase()}${++fieldCount}`;
   const container = appendDomNode(`DIV`, appendToThis, undefined, [{ class: `${type.toLowerCase()}Container` }]);
   const label = appendDomNode(`LABEL`, container, `${type}:`);
-  label.htmlFor = `${type.toLowerCase()}${fieldCount}`;
-  appendDomNode(`INPUT`, container, `Indtast dit ${type.toLowerCase()} her`, [{ class: `${type.toLowerCase()}Input` }, { id: `${type.toLowerCase()}${fieldCount}` }]);
+  label.htmlFor = uniqueId;
+  appendDomNode(`INPUT`, container, `Indtast dit ${type.toLowerCase()} her`, [{ class: `${type.toLowerCase()}Input` }, { id: uniqueId }]);
   const removeFieldBtn = appendDomNode(`BUTTON`, container, `X`, [{ class: `remove${type}Btn` }, { class: `btn` }, { class: `btn-danger` }]);
   removeFieldBtn.addEventListener(`click`, () => {
     const amountOfInputFields = appendToThis.getElementsByClassName(`${type.toLowerCase()}Container`).length;

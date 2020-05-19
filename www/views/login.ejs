@@ -3,26 +3,23 @@
 	<head>
 		<title>GroupHub | Login</title>
 		<%- include(`meta/header.ejs`)  %> 
-		<title>Login Form Tutorial</title>
 		<link rel="stylesheet" href="/css/login_register_form.css">
 		<link rel="stylesheet" href="/css/design.css">
     </head>
-    <%- include('meta/navbar') %> 
 	<body>
-        <div class="container">
-            <p>Username = Test User : Password = Test</p>
-        </div>
-		<div class="login-form">
-			<h1>Login Form</h1>
-			<form action="/session/auth/user" method="POST">
-				<input type="text" name="username" placeholder="Username" required>
-				<input type="password" name="password" placeholder="Password" required>
-				<input type="submit">
-			</form>
-			<p>
-				<a href="/access/register">Register here!</a>
-			</p>
-		</div>
+    <%- include('meta/navbar') %> 
+    <div class="container">
+      <p>Username = Test User : Password = Test</p>
+		  <div class="login-form">
+		  	<h1>Login Form</h1>
+		  	<form action="/session/auth/user" method="POST">
+		  		<input type="text" name="username" placeholder="Username" required>
+		  		<input type="password" name="password" placeholder="Password" required>
+		  		<input type="submit">
+		  	</form>
+		  	<p><a href="/access/register">Register here!</a></p>
+		  </div>
+    </div>
 		<%- include(`meta/footer.ejs`) %> 	
 	</body>
 </html>

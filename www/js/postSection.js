@@ -20,10 +20,11 @@ class Section {
   }
 }
 
-/* Formål: Poste alle sections når brugeren trykker på submit-knappen
-   * Input : -
-   * Output: Intet - men efter brugerens sections er oprettet i databasen videredirigeres brugeren til en URL, som er bestemt fra serversiden
-   */
+/* Formål: Poste sectionsdata når brugeren trykker på submit-knappen
+ *           efter brugerens section er oprettet i databasen videredirigeres brugeren til en URL, som er bestemt fra serversiden
+ * Input : -
+ * Output: -
+ */
 document.getElementById(`submitBtn`).addEventListener(`click`, async () => {
   const formContainer = document.getElementById(`formContainer`);
   const response = await fetch(`/post/section`, {

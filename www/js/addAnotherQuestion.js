@@ -2,7 +2,6 @@
 // Test her: http://localhost:3000/post/questions?titleEvaluation=Test (Der kan ikke submittes)
 
 const addAnotherQuestionButtons = document.querySelectorAll(`.addAnotherQuestionButton`);
-const questionCountDisplay = document.getElementById(`questionCountDisplay`);
 let questionCount = 0;
 
 // ON LOAD //
@@ -20,15 +19,15 @@ addAnotherQuestionButtons.forEach((button) => {
 });
 
 function addAnotherQuestion() {
-  questionCount += 1;
+  const uniqueQuestionId = `question${++questionCount}`;
 
   const questionContainer = insertDomNode(`DIV`, addAnotherQuestionButtons[1], undefined, [{ class: `questionContainer` }]);
 
   const questionInputContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `questionInputContainer` }]);
   const questionLabel = appendDomNode(`LABEL`, questionInputContainer, `Spørgsmål:`);
-  questionLabel.htmlFor = `question${questionCount}`; // Corresponderer til nedenstående input.id
-  const questionInput = appendDomNode(`INPUT`, questionInputContainer, `Indtast dit spørgsmål her`, [{ id: `question${questionCount}` }, { class: `questionInput` }]);
-  questionInput.name = `question${questionCount}`;
+  questionLabel.htmlFor = uniqueQuestionId; // Corresponderer til nedenstående input.id
+  const questionInput = appendDomNode(`INPUT`, questionInputContainer, `Indtast dit spørgsmål her`, [{ id: uniqueQuestionId }, { class: `questionInput` }]);
+  questionInput.name = uniqueQuestionId;
 
   addAnswerElements(questionContainer);
   addKeywordElements(questionContainer);

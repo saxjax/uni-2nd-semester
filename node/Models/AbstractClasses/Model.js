@@ -84,7 +84,7 @@ class Model extends Database {
    */
   async getThisGroupData() {
     const trueObjectTable = this.table;
-    this.table = `USER_GROUP`;
+    this.table = `user_group`;
     const data = this.query(`SELECT *`, `${this.idColumnGroup} = "${this.idGroup}"`)
       .then((result) => result)
       .catch((error) => error);
@@ -101,7 +101,7 @@ class Model extends Database {
   */
   async getThisUserData() {
     const trueObjectTable = this.table;
-    this.table = `USER`;
+    this.table = `user`;
     const data = this.query(`SELECT *`, `${this.idColumnUser} = "${this.idUser}"`)
       .then((result) => result)
       .catch((error) => error);
@@ -121,7 +121,7 @@ class Model extends Database {
     this.table = choiceTable;
     let queryData = await this.query(`SELECT *`, `${this.idColumnName} = "${this.idQuery}" AND ${this.idColumnGroup} = "${this.idGroup}"`)
       .then((result) => {
-        this.table = parentTable;
+        this.table = trueObjectTable;
         return result;
       })
       .catch((error) => {
