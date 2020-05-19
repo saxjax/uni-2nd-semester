@@ -39,7 +39,7 @@ function addAnotherQuestion() {
       questionContainer.remove();
     }
     else {
-      displayErrorMessage(questionContainer, `Du skal indtaste mindst 1 spørgsmål}.`); // Ligger i createInputField.js
+      displayErrorMessage(questionContainer, `Du skal indtaste mindst 1 spørgsmål.`); // Ligger i createInputField.js
     }
   });
 }

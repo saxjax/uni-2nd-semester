@@ -56,8 +56,7 @@ class Question {
  * Input : -
  * Output: Intet - men efter brugerens questions er oprettet i databasen videredirigeres brugeren til en URL, som er bestemt fra serversiden
  */
-document.getElementById(`submit`).addEventListener(`click`, postQuizQuestions);
-async function postQuizQuestions() {
+document.getElementById(`submit`).addEventListener(`click`, async () => {
   const questionContainers = document.getElementsByClassName(`questionContainer`);
   const questionsArray = [];
 
@@ -65,17 +64,19 @@ async function postQuizQuestions() {
     questionsArray.push(new Question(questionContainers[i]));
   }
 
-  const response = await fetch(`/post/questions`, {
-    method: `POST`,
-    body: JSON.stringify(questionsArray),
-    headers: { "Content-Type": `application/json` },
-  });
-  const responseJSON = await response.json();
 
-  if (responseJSON.error) {
-    alert(responseJSON.error);
-  }
-  else {
-    window.location.replace(responseJSON.url);
-  }
-}
+  console.log(questionsArray);
+  // const response = await fetch(`/post/questions`, {
+  //   method: `POST`,
+  //   body: JSON.stringify(questionsArray),
+  //   headers: { "Content-Type": `application/json` },
+  // });
+  // const responseJSON = await response.json();
+
+  // if (responseJSON.error) {
+  //   alert(responseJSON.error);
+  // }
+  // else {
+  //   window.location.replace(responseJSON.url);
+  // }
+});
