@@ -76,7 +76,7 @@ class ParseSql {
    */
   parseArrayOfObjects(data) {
     if (!Array.isArray(data)) { // giver en fejl hvis data ikke er et array
-      throw new Error(`Data sendt til parseren er ikke et array, og kommer derfor ikke fra Database Modulet`);
+      throw new Error(`PARSESQL.JS_NOT_ARRAY: Data sendt til parseren er ikke et array, og kommer derfor ikke fra Database Modulet`);
     }
     if (data.length === 0) { // returnere en tom RowDataPacket hvis data er et tomt array (se Output)
       return [{ RowDataPacket: {} }];
