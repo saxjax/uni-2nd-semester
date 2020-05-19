@@ -188,13 +188,13 @@ class CreateController extends ErrorController {
   */
   async createAnswers(req, res) {
     const QR = new QuizResult(req);
-    const Parser = new Parser(ELEMENT_TYPE: "costum");
+    const Parser = new ParseSQL(``);
     let idAttempt;
     let quizResultData;
     try {
       idAttempt = await QR.insertToDatabase();
       quizResultData = await QR.getHistoricQuizResultData(idAttempt, req.body.questionsArray);
-      quizResultData = parser.parseQuizResultsForSpacedRepetition(quizResultData);
+      quizResultData = Parser.parseQuizResultsForSpacedRepetition(quizResultData);
       console.log(quizResultData);
 
       quizResultData.resultData.forEach((quizResult) => {
