@@ -40,7 +40,6 @@ class ProgressBar extends Model {
                                                               WHERE e.ID_DOCUMENT IN (SELECT ID_DOCUMENT from document WHERE ID_USER_GROUP = "${this.idGroup}")
                                                               AND qr.ID_USER = "${this.idUser}"`);
     if (EvaluationsForUser[0].UserTotal > 0) {
-      console.log(`EvaluationsForUser is > 0`);
       EvaluationsForUser = EvaluationsForUser[0].UserTotal;
       progress.totalProgress = (EvaluationsForUser / totalEvaluationsForGroup);
       progress.totalProgress = progress.totalProgress.toFixed(2) * 100; // Round to 2 decimals and multiply by 100 to get percentage.
@@ -54,7 +53,6 @@ class ProgressBar extends Model {
                                                                  AND qr.POINT = qr.TOTAL
                                                                  AND qr.ID_USER = "${this.idUser}"`);
     if (totalCorrectProgressForUser[0].TotalCorrect > 0) {
-      console.log(`totalCorrectProgressForUser is > 0`);
       totalCorrectProgressForUser = totalCorrectProgressForUser[0].TotalCorrect;
       progress.totalCorrectProgress = (totalCorrectProgressForUser / totalEvaluationsForGroup);
       progress.totalCorrectProgress = progress.totalProgress.toFixed(2) * 100; // Round to 2 decimals and multiply by 100 to get percentage.
