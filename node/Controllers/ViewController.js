@@ -286,10 +286,10 @@ class ViewController {
   async viewEvaluationsExpertPage(req, res) {
     const Expert = new User(req);
     const dataArray = await Promise.all([
-      Expert.getThisGroupData(),                // dataArray[0]
-      Expert.getThisUserData(),                 // dataArray[1]
-      Expert.getAllElementsOfType(`Evaluation`),      // dataArray[2]
-      Expert.getAllElementsOfType(`Flashcard`), // dataArray[3]
+      Expert.getThisGroupData(),                 // dataArray[0]
+      Expert.getThisUserData(),                  // dataArray[1]
+      Expert.getAllElementsOfType(`Evaluation`), // dataArray[2]
+      Expert.getAllElementsOfType(`Flashcard`),  // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2], flashcards: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsExpert.ejs`);

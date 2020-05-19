@@ -99,7 +99,7 @@ class CreateController extends ErrorController {
     const QQ = new QuizQuestion(req);
     try {
       await QQ.insertToDatabase();
-      res.send({ url: `/view/evaluations/recipient` }); // TODO: Kan eventuelt senere videredirigere til siden, hvor man kan tage evalueringen
+      res.send({ url: `/view/evaluations/expert` }); // TODO: Kan eventuelt senere videredirigere til siden, hvor man kan tage evalueringen
     }
     catch (error) {
       const errorMsg = this.produceErrorMessageToUser(error);
