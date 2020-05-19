@@ -191,7 +191,6 @@ class ViewController {
       Doc.getThis(),                          // dataArray[2]
       Doc.getAllElementsOfType(`Section`),    // dataArray[3]
       Doc.getAllElementsOfType(`Evaluation`), // dataArray[4]
-      Doc.getAllElementsOfType(`Keyword`),    // dataArray[5]
     ]);
     const data = {
       group: dataArray[0],
@@ -199,7 +198,6 @@ class ViewController {
       document: dataArray[2],
       sections: dataArray[3],
       evaluations: dataArray[4],
-      keywords: dataArray[5],
     };
     this.ejs = path.join(`${this.root}/www/views/viewSectionsAndEvaluationsDocument.ejs`);
     res.render(this.ejs, { data });

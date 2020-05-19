@@ -184,7 +184,7 @@ class Model extends Database {
   }
 
   async setKeywordsInObjectOfType(object, choice) {
-    if (!object.RowDataPacket.elementType) {
+    if (!object[0].elementType) {
       return object;
     }
     const objectCopy = object;
@@ -201,7 +201,7 @@ class Model extends Database {
       const objectId = keywords[i][choiceColName];
       const colToCamelCase = this.getColInCamelCase(choiceColName);
       const objectWithKeyword = objectCopy.find((owk) => owk[colToCamelCase] === objectId);
-      objectWithKeyword.keywords.push({ keyyword: keywords[i].KEYWORD, idKeyword: keywords[i].ID_KEYWORD });
+      objectWithKeyword.keywords.push({ keyword: keywords[i].KEYWORD, idKeyword: keywords[i].ID_KEYWORD });
     }
 
     return objectCopy;
