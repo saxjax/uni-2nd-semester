@@ -4,4 +4,9 @@ input{
 
 .questionContainer {
     border-style: groove;
+    position: relative;
+}
+
+.removeQuestionBtn{
+    position:absolute; top:10%; right:5%;
 }
