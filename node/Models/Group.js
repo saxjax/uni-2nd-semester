@@ -47,6 +47,11 @@ class Group extends Model {
       }
     }
   }
+
+  async getIdGroupFromUser(User) {
+    const groupIdFromUser = await User.query(`SELECT ${User.idColumnGroup}`, `${User.idColumnUser} = "${User.idUser}"`);
+    this.idGroup = groupIdFromUser[0].idGroup;
+  }
 }
 
 module.exports = {

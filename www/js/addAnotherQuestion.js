@@ -1,7 +1,8 @@
 /* eslint no-undef: 0 */
 // Test her: http://localhost:3000/post/questions?titleEvaluation=Test (Der kan ikke submittes)
 
-const addAnotherQuestionButtons = document.querySelectorAll(`.addAnotherQuestionButton`);
+const addAnotherQuestionButton = document.getElementById(`addAnotherQuestionButton`);
+const questionsContainer = document.getElementById(`questionsContainer`);
 let questionCount = 0;
 
 // ON LOAD //
@@ -14,14 +15,11 @@ evaluationTitleHeader.innerHTML = `Tilføj nye spørgsmål til ${titleEvaluation
 addAnotherQuestion(); // Tilføjer automatisk et spørgsmål, når htmlen er loadet.
 // /ON LOAD //
 
-addAnotherQuestionButtons.forEach((button) => {
-  button.addEventListener(`click`, addAnotherQuestion);
-});
+addAnotherQuestionButton.addEventListener(`click`, addAnotherQuestion);
 
 function addAnotherQuestion() {
   const uniqueQuestionId = `question${++questionCount}`;
-
-  const questionContainer = insertDomNode(`DIV`, addAnotherQuestionButtons[1], undefined, [{ class: `questionContainer` }]);
+  const questionContainer = appendDomNode(`DIV`, questionsContainer, undefined, [{ class: `questionContainer` }]);
 
   const questionInputContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `questionInputContainer` }]);
   const questionLabel = appendDomNode(`LABEL`, questionInputContainer, `Spørgsmål:`);
@@ -31,9 +29,10 @@ function addAnotherQuestion() {
 
   addAnswerElements(questionContainer);
   addKeywordElements(questionContainer);
+
   const removeQuestionBtn = appendDomNode(`BUTTON`, questionContainer, `X`, [{ class: `removeQuestionBtn` }, { class: `btn` }, { class: `btn-danger` }]);
   removeQuestionBtn.addEventListener(`click`, () => {
-    const amountOfQuestions = document.getElementsByClassName(`questionContainer`).length;
+    const amountOfQuestions = questionsContainer.children.length;
     if (amountOfQuestions > 1) {
       questionContainer.remove();
     }
@@ -46,15 +45,18 @@ function addAnotherQuestion() {
 function addAnswerElements(questionContainer) {
   const allAnswersContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `answersContainer` }]);
   const addAnotherAnswerButton = appendDomNode(`BUTTON`, questionContainer, `Tilføj svar`);
+
   createAnswerField(allAnswersContainer);
   createAnswerField(allAnswersContainer);
   addAnotherAnswerButton.addEventListener(`click`, () => {
     createAnswerField(allAnswersContainer);
   });
+
+  return allAnswersContainer;
 }
 
 function createAnswerField(appendToThis) {
-  const inputFieldContainer = createInputField(appendToThis, `Svar`, 2);
+  const inputFieldContainer = createInputField(appendToThis, `Svar`, 2); // Ligger i createInputField.js
 
   const removeButton = inputFieldContainer.getElementsByClassName(`removeSvarBtn`)[0];
   const correctAnswerCheckbox = insertDomNode(`INPUT`, removeButton, undefined, [{ class: `correctAnswerCheckbox` }]);
@@ -66,10 +68,12 @@ function createAnswerField(appendToThis) {
 
 function addKeywordElements(questionContainer) {
   const allKeywordsContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `allKeywordsContainer` }]);
-  const addKeywordButton = appendDomNode(`BUTTON`, questionContainer, `Tilføj keyword`);
+  const addAnotherKeywordButton = appendDomNode(`BUTTON`, questionContainer, `Tilføj keyword`);
 
-  createInputField(allKeywordsContainer, `Keyword`, 1);
-  addKeywordButton.addEventListener(`click`, () => {
+  createInputField(allKeywordsContainer, `Keyword`, 1); // Ligger i createInputField.js
+  addAnotherKeywordButton.addEventListener(`click`, () => {
     createInputField(allKeywordsContainer, `Keyword`, 1);
   });
+
+  return allKeywordsContainer;
 }
