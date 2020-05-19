@@ -33,8 +33,7 @@ let result = 0;
 function calculateNextRepetitionTimeStampForEvaluation(evaluationResult) {
   let newRepTimestamp = 0;
   let rightWrongRatio = 0;
-  let setMinTimestamp = true; // hvis setMinTimestamp er sat til TRUE, betyder det, at brugeren skal have evalueringsopgaven indenfor de næste 24 timer, hvis FALSE skal evalueringsopgaven repeteres senere.
-
+  let setMinTimestamp = true; // hvis setMinTimestamp er sat til TRUE, betyder det, at brugeren skal have evalueringsopgaven indenfor de næste 24 timer
 
   if (evaluationResult.recentResult === `false`) { // hvis der svares forkert på opgaven
     setMinTimestamp = true;
@@ -55,13 +54,15 @@ function calculateNextRepetitionTimeStampForEvaluation(evaluationResult) {
   else {
     setMinTimestamp = true; // hvis intet kan beregnes, sæt da minTimestamp til true
   }
+
   console.log(setMinTimestamp);
   console.log(`repetitionScarlar`, repetitionScalar);
 
-  newRepTimestamp = calculateTimeStamp(setMinTimestamp); // beregn tidsstempel
+  newRepTimestamp = calculateTimeStamp(setMinTimestamp); // beregn tidsspunkt
 
   return newRepTimestamp;
 }
+
 
 function calculateTimeStamp(setMinTimestamp = true) {
   const newRepTimeStamp = new Date();
