@@ -35,7 +35,7 @@ class ViewController {
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),               // dataArray[0]
       Recipient.getThisUserData(),                // dataArray[1]
-      Recipient.getAllElementsOfType(`Document`), // dataArray[2]
+      Recipient.getAllElementsOfType(`document`), // dataArray[2]
       SpacedRep.getIdQuizquestionsDueForRepetition(), // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2], repetitionTask: dataArray[3] };
@@ -55,7 +55,7 @@ class ViewController {
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),               // dataArray[0]
       Recipient.getThisUserData(),                // dataArray[1]
-      Recipient.getAllElementsOfType(`Document`), // dataArray[2]
+      Recipient.getAllElementsOfType(`document`), // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewDocumentRecipient.ejs`);
@@ -72,7 +72,7 @@ class ViewController {
     const dataArray = await Promise.all([
       Expert.getThisGroupData(),               // dataArray[0]
       Expert.getThisUserData(),                // dataArray[1]
-      Expert.getAllElementsOfType(`Document`), // dataArray[2]
+      Expert.getAllElementsOfType(`document`), // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewDocumentExpert.ejs`);
@@ -141,7 +141,7 @@ class ViewController {
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),               // dataArray[0]
       Recipient.getThisUserData(),                // dataArray[1]
-      Recipient.getAllElementsOfType(`Section`),  // dataArray[2]
+      Recipient.getAllElementsOfType(`section`),  // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], sections: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewSectionsRecipient.ejs`);
@@ -157,7 +157,7 @@ class ViewController {
     const dataArray = await Promise.all([
       Expert.getThisGroupData(),               // dataArray[0]
       Expert.getThisUserData(),                // dataArray[1]
-      Expert.getAllElementsOfType(`Section`),  // dataArray[2]
+      Expert.getAllElementsOfType(`section`),  // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], sections: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewSectionsExpert.ejs`);
@@ -175,7 +175,7 @@ class ViewController {
       Doc.getThisGroupData(),               // dataArray[0]
       Doc.getThisUserData(),                // dataArray[1]
       Doc.getThis(),                        // dataArray[2]
-      Doc.getAllElementsOfType(`Section`),  // dataArray[3]
+      Doc.getAllElementsOfType(`section`),  // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], sections: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewSectionDocument.ejs`);
@@ -193,8 +193,8 @@ class ViewController {
       Doc.getThisGroupData(),                 // dataArray[0]
       Doc.getThisUserData(),                  // dataArray[1]
       Doc.getThis(),                          // dataArray[2]
-      Doc.getAllElementsOfType(`Section`),    // dataArray[3]
-      Doc.getAllElementsOfType(`Evaluation`), // dataArray[4]
+      Doc.getAllElementsOfType(`section`),    // dataArray[3]
+      Doc.getAllElementsOfType(`evaluation`), // dataArray[4]
     ]);
     const data = {
       group: dataArray[0],
@@ -274,8 +274,8 @@ class ViewController {
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),                // dataArray[0]
       Recipient.getThisUserData(),                 // dataArray[1]
-      Recipient.getAllElementsOfType(`Evaluation`),      // dataArray[2]
-      Recipient.getAllElementsOfType(`Flashcard`), // dataArray[3]   ->   FIXME: Ikke oprettet endnu
+      Recipient.getAllElementsOfType(`evaluation`),      // dataArray[2]
+      Recipient.getAllElementsOfType(`flashcard`), // dataArray[3]   ->   FIXME: Ikke oprettet endnu
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2], flashcards: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsRecipient.ejs`);
@@ -293,8 +293,8 @@ class ViewController {
     const dataArray = await Promise.all([
       Expert.getThisGroupData(),                 // dataArray[0]
       Expert.getThisUserData(),                  // dataArray[1]
-      Expert.getAllElementsOfType(`Evaluation`), // dataArray[2]
-      Expert.getAllElementsOfType(`Flashcard`),  // dataArray[3]
+      Expert.getAllElementsOfType(`evaluation`), // dataArray[2]
+      Expert.getAllElementsOfType(`flashcard`),  // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2], flashcards: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsExpert.ejs`);
@@ -312,8 +312,8 @@ class ViewController {
       Doc.getThisGroupData(),                // dataArray[0]
       Doc.getThisUserData(),                 // dataArray[1]
       Doc.getThis(),                         // dataArray[2]
-      Doc.getAllElementsOfType(`Evaluation`),      // dataArray[3]
-      Doc.getAllElementsOfType(`Flashcard`), // dataArray[4]
+      Doc.getAllElementsOfType(`evaluation`),      // dataArray[3]
+      Doc.getAllElementsOfType(`flashcard`), // dataArray[4]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], evaluation: dataArray[3], flashcards: dataArray[4] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsDocument.ejs`);
@@ -330,8 +330,8 @@ class ViewController {
       Sec.getThisGroupData(),                 // dataArray[0]
       Sec.getThisUserData(),                  // dataArray[1]
       Sec.getThis(),                          // dataArray[2]
-      Sec.getAllElementsOfType(`Evaluation`),       // dataArray[3]
-      Sec.getAllElementsOfType(`Flashcard`),  // dataArray[4]
+      Sec.getAllElementsOfType(`evaluation`),       // dataArray[3]
+      Sec.getAllElementsOfType(`flashcard`),  // dataArray[4]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], evaluations: dataArray[3], flashcards: dataArray[4] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsSection.ejs`);
@@ -351,7 +351,7 @@ class ViewController {
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),               // dataArray[0]
       Recipient.getThisUserData(),                // dataArray[1]
-      Recipient.getAllElementsOfType(`Evaluation`),     // dataArray[2]
+      Recipient.getAllElementsOfType(`evaluation`),     // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationRecipient.ejs`);
@@ -367,7 +367,7 @@ class ViewController {
     const dataArray = await Promise.all([
       Expert.getThisGroupData(),               // dataArray[0]
       Expert.getThisUserData(),                // dataArray[1]
-      Expert.getAllElementsOfType(`Evaluation`),     // dataArray[2]
+      Expert.getAllElementsOfType(`evaluation`),     // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationExpert.ejs`);
@@ -386,7 +386,7 @@ class ViewController {
       Doc.getThisGroupData(),               // dataArray[0]
       Doc.getThisUserData(),                // dataArray[1]
       Doc.getThis(),                        // dataArray[2]
-      Doc.getAllElementsOfType(`Evaluation`),     // dataArray[3]
+      Doc.getAllElementsOfType(`evaluation`),     // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], evaluations: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewDocument.ejs`);
@@ -404,7 +404,7 @@ class ViewController {
       Sec.getThisGroupData(),               // dataArray[0]
       Sec.getThisUserData(),                // dataArray[1]
       Sec.getThis(),                        // dataArray[2]
-      Sec.getAllElementsOfType(`Evaluation`),  // dataArray[3]
+      Sec.getAllElementsOfType(`evaluation`),  // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], section: dataArray[2], evaluations: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationSection.ejs`);
@@ -532,7 +532,7 @@ class ViewController {
       E.getThisGroupData(),                    // dataArray[0]
       E.getThisUserData(),                     // dataArray[1]
       E.getThis(),                             // dataArray[2]
-      E.getAllElementsOfType(`QuizQuestion`),  // dataArray[3]
+      E.getAllElementsOfType(`quiz_question`),  // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], questions: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/putEvaluation.ejs`);
@@ -551,7 +551,7 @@ class ViewController {
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),                 // dataArray[0]
       Recipient.getThisUserData(),                  // dataArray[1]
-      Recipient.getAllElementsOfType(`Flashcard`),  // dataArray[2]
+      Recipient.getAllElementsOfType(`flashcard`),  // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], flashcards: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewFlashcardRecipient.ejs`);
@@ -569,7 +569,7 @@ class ViewController {
     const dataArray = await Promise.all([
       Expert.getThisGroupData(),                 // dataArray[0]
       Expert.getThisUserData(),                  // dataArray[1]
-      Expert.getAllElementsOfType(`Flashcard`),  // dataArray[2]
+      Expert.getAllElementsOfType(`flashcard`),  // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], flashcards: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewFlashcardExpert.ejs`);
@@ -587,7 +587,7 @@ class ViewController {
       Doc.getThisGroupData(),                 // dataArray[0]
       Doc.getThisUserData(),                  // dataArray[1]
       Doc.getThis(),                          // dataArray[2]
-      Doc.getAllElementsOfType(`Flashcard`),  // dataArray[3]
+      Doc.getAllElementsOfType(`flashcard`),  // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], flashcards: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewFlashcardDocument.ejs`);
@@ -605,7 +605,7 @@ class ViewController {
       Sec.getThisGroupData(),                 // dataArray[0]
       Sec.getThisUserData(),                  // dataArray[1]
       Sec.getThis(),                          // dataArray[2]
-      Sec.getAllElementsOfType(`Flashcard`),  // dataArray[3]
+      Sec.getAllElementsOfType(`flashcard`),  // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], section: dataArray[2], flashcards: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewFlashcardSection.ejs`);
@@ -677,7 +677,7 @@ class ViewController {
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),               // dataArray[0]
       Recipient.getThisUserData(),                // dataArray[1]
-      Recipient.getAllElementsOfType(`Keyword`),  // dataArray[2]
+      Recipient.getAllElementsOfType(`keyword`),  // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], keywords: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewKeywordRecipient.ejs`);
@@ -694,7 +694,7 @@ class ViewController {
     const dataArray = await Promise.all([
       Expert.getThisGroupData(),               // dataArray[0]
       Expert.getThisUserData(),                // dataArray[1]
-      Expert.getAllElementsOfType(`Keyword`),  // dataArray[2]
+      Expert.getAllElementsOfType(`keyword`),  // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], keywords: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewKeywordExpert.ejs`);
@@ -712,7 +712,7 @@ class ViewController {
       Doc.getThisGroupData(),               // dataArray[0]
       Doc.getThisUserData(),                // dataArray[1]
       Doc.getThis(),                        // dataArray[2]
-      Doc.getAllElementsOfType(`Keyword`),  // dataArray[3]
+      Doc.getAllElementsOfType(`keyword`),  // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], keywords: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewKeywordDocument.ejs`);
@@ -730,7 +730,7 @@ class ViewController {
       Sec.getThisGroupData(),               // dataArray[0]
       Sec.getThisUserData(),                // dataArray[1]
       Sec.getThis(),                        // dataArray[2]
-      Sec.getAllElementsOfType(`Keyword`),  // dataArray[3]
+      Sec.getAllElementsOfType(`keyword`),  // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], section: dataArray[2], keywords: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewKeywordSection.ejs`);

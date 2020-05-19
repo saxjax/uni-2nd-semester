@@ -78,7 +78,7 @@ class Model extends Database {
       || this.elementType === `section`
       || this.elementType === `evaluation`
       || this.elementType === `quiz_question`) {
-      queryData = this.getKeywordsInObject(queryData, `Document`);
+      queryData = this.getKeywordsInObject(queryData);
     }
 
     return queryData;
@@ -170,14 +170,14 @@ class Model extends Database {
    */
   parseElementTypesTable(choice) {
     switch (choice) {
-      case `Document`: return `document`;
-      case `Flashcard`: return `flashcard`;
-      case `Group`: return `user_group`;
-      case `Keyword`: return `keyword_link`;
-      case `Evaluation`: return `evaluation`;
-      case `QuizQuestion`: return `quiz_question`;
-      case `Section`: return `document_section`;
-      case `User`: return `user`;
+      case `document`: return `document`;
+      case `flashcard`: return `flashcard`;
+      case `group`: return `user_group`;
+      case `keyword`: return `keyword_link`;
+      case `evaluation`: return `evaluation`;
+      case `quiz_question`: return `quiz_question`;
+      case `section`: return `document_section`;
+      case `user`: return `user`;
       default: throw new Error(`WARNING: Element Type not implemented in parseElementTypesTable in Model`);
     }
   }
@@ -188,10 +188,10 @@ class Model extends Database {
    */
   getChoiceColName(choice) {
     switch (choice) {
-      case `Document`: return `ID_DOCUMENT`;
-      case `Section`: return `ID_DOCUMENT_SECTION`;
-      case `Evaluation`: return `ID_EVALUATION`;
-      case `QuizQuestion`: return `ID_QUIZ_QUESTION`;
+      case `document`: return `ID_DOCUMENT`;
+      case `section`: return `ID_DOCUMENT_SECTION`;
+      case `evaluation`: return `ID_EVALUATION`;
+      case `quiz_question`: return `ID_QUIZ_QUESTION`;
       default: throw new Error(`WARNING: Kolonne ikke korrekt angivet i getChoiceColName`);
     }
   }
@@ -201,7 +201,7 @@ class Model extends Database {
    * Input : @object er det queryobjekt der kommer fra databasen med 0 til flere arrays af objekter
    * Output: Et array af objekter som har fået et array af keywords-objekter (med keyword og idKeyword) på hver eneste objekt
    */
-  async getKeywordsInObject(object, choice) {
+  async getKeywordsInObject(object, choice = this.elementType) {
     try {
       if (this.idColumnName === `ID_USER`) { // FIXME: Når en User prøver at se alle sine evalueringer vil evalueringerne hente alle keywords.
         return object;                       //        Siden keyword_link pt. ikke er knyttet til en user, kan denne query ikke foretages.
@@ -212,11 +212,9 @@ class Model extends Database {
                                       + `INNER JOIN keyword ON keyword_link.ID_KEYWORD = keyword.ID_KEYWORD `
                                       + `WHERE keyword_link.${this.idColumnName} = "${this.idQuery}"`);
 
-
       for (let j = 0; j < objectCopy.length; j++) {
         objectCopy[j].keywords = [];
       }
-
       for (let i = 0; i < keywords.length; i++) {
         if (keywords[i][choiceColName] !== ``) {
           const objectId = keywords[i][choiceColName];

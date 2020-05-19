@@ -348,8 +348,8 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   /* 4.1  */
   console.log(`4: Database.js skal kunne oprette data til MySQL databasen`);
   try {
-    await object.query(`INSERT`, `TEST_OPTION_1 = "test10" AND TEST_OPTION_2 = "test11" AND TEST_OPTION_3 = "test12" 
-                         AND TEST_OPTION_4 = "ikkeNull" AND TEST_OPTION_5_FLOAT = 1.42`);
+    await object.query(`INSERT`, `TEST_OPTION_1 = "test10" AND TEST_OPTION_2 = "test11" AND TEST_OPTION_3 = "test12" `
+                    +  `AND TEST_OPTION_4 = "ikkeNull" AND TEST_OPTION_5_FLOAT = 1.42`);
   }
   catch (error) {
     console.log(`TEST FORKERT IMPLEMENTERET PGA: ${error}`);
