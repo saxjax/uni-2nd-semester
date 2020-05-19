@@ -19,9 +19,7 @@ class Evaluation {
 }
 
 document.getElementById(`submitButton`).addEventListener(`click`, async () => {
-  console.log("HEY")
   const evaluationForm = document.getElementById(`evaluationForm`);
-
   const response = await fetch(`/post/evaluation`, {
     method: `POST`,
     body: JSON.stringify(new Evaluation(evaluationForm)),

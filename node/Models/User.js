@@ -16,7 +16,7 @@ class User extends Model {
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
           this.idColumnName = `ID_USER`;
-          this.idQuery       = req.params.idQuery;
+          this.idQuery       = this.idUser;
           break;
         case `POST`:
           this.username     = req.body.username;
@@ -31,6 +31,10 @@ class User extends Model {
         default: break;
       }
     }
+  }
+
+  print(objToPrint) {
+    console.log(objToPrint);
   }
 
   /* Formål: At oprette en bruger i databasen hvis validering returnerer 'True'

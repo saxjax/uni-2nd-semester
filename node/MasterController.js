@@ -152,6 +152,7 @@ class MasterController {
     this.app.get(`/view/evaluations/:idQuery`,          (req, res) => Show.viewEvaluationPage(req, res));// idQuery indeholder et evaluation id
     this.app.get(`/view/SpacedRepetition`,          (req, res) => Show.viewSpacedRepetitionPage(req, res));
     this.app.get(`/view/evaluationResult/:idAttempt`,          (req, res) => Show.viewEvaluationResultPage(req, res));
+    this.app.get(`/view/evaluationProgress`,          (req, res) => Show.viewEvaluationProgress(req, res));
     // this.app.get(`/put/evaluation/:idQuery`,        (req, res) => Show.putEvaluationPage(req, res));
 
     // Flashcard

@@ -35,6 +35,7 @@ class AccessController {
       user: await U.getThisUserData(),
       group: await G.getThisGroupData(),
     };
+    console.log(data.group);
     this.ejs = path.join(`${this.root}/www/views/groups.ejs`);
     res.render(this.ejs, { data });
   }

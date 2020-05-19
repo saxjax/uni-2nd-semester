@@ -85,7 +85,6 @@ class SpacedRepetition extends Model {
       const string = this.createQueryStringFromQuestionIDs(idQuizQuestions);
       quizQuestionContent = await this.query(`SELECT *`, `${string}`);
     }
-    // console.log(quizQuestionContent);
     this.table = trueObjectTable;
     return quizQuestionContent;
   }
@@ -99,15 +98,12 @@ class SpacedRepetition extends Model {
   createQueryStringFromQuestionIDs(idQuizQuestions) {
     let string = ``;
     idQuizQuestions.forEach((element, index) => {
-      // console.log(index, element);
       if (index > 0) {
         string += ` OR `;
       }
       string += `ID_QUIZ_QUESTION = "${element}"`;
     });
     string += ` ;`;
-    // console.log(idQuizQuestions);
-    // console.log(string);
 
     return string;
   }

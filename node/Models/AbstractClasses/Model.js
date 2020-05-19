@@ -84,7 +84,7 @@ class Model extends Database {
    */
   async getThisGroupData() {
     const trueObjectTable = this.table;
-    this.table = `USER_GROUP`;
+    this.table = `user_group`;
     const data = this.query(`SELECT *`, `${this.idColumnGroup} = "${this.idGroup}"`)
       .then((result) => result)
       .catch((error) => error);
@@ -101,7 +101,7 @@ class Model extends Database {
   */
   async getThisUserData() {
     const trueObjectTable = this.table;
-    this.table = `USER`;
+    this.table = `user`;
     const data = this.query(`SELECT *`, `${this.idColumnUser} = "${this.idUser}"`)
       .then((result) => result)
       .catch((error) => error);
@@ -116,16 +116,16 @@ class Model extends Database {
    * Output: En liste af underobjekter som er udvalgt ud fra Id'et i det øvre objekt.
    */
   async getAllElementsOfType(choice) {
-    const parentTable = this.table;
+    const trueObjectTable = this.table;
     this.table = this.parseElementTypesTable(choice);
     return this.query(`SELECT *`, `${this.idColumnName} = "${this.idQuery}" AND ${this.idColumnGroup} = "${this.idGroup}"`)
       .then((result) => {
-        this.table = parentTable;
+        this.table = trueObjectTable;
         return result;
       })
       .catch((error) => {
         console.warn(`\n\nDet givne tabelnavn er højst sandsynligt forkert angivet i parseElementTypesTable!\n\n`);
-        this.table = parentTable;
+        this.table = trueObjectTable;
         console.log(`4`);
         return error;
       });
