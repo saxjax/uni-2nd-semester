@@ -13,14 +13,20 @@
           <h2> <%= data.document[0].title %>s Afsnit </h2>
           <div class="leftside">  
             <br>
-            <% data.sections.forEach((section) => { %>
+            <% data.sections.forEach((section, index) => { %>
               <br>
               <a href="/view/section/<%= section.idSection %>">
                 <%= section.number %> <strong><%= section.title %></strong>
               </a>
               <p><%= section.teaser %></p>
               <p><strong>Evalueringer: </strong></p>
-              <!-- HER SKAL DER OPSTILLES EVALUERINGER!!!-->
+              <% data.evaluations.forEach((evaluation) => { %> 
+                <% if(evaluation.idSection === section.idSection) { %>
+                  <p>
+                    <a href="/view/evaluations/<%=evaluation.idEvaluation %>">Se evalueringen: <%= evaluation.title %> </a>
+                  </p>
+                <% } %> 
+              <% }); %> 
               <button class="btn btn-info">
                 <a href="/post/evaluation/section/<%= section.idSection %>"> 
                   Opret Evaluering til <%= section.title %> 

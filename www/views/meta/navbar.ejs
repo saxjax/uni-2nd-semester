@@ -8,6 +8,7 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <% if (isloggedin) { %>
+        <p>Hej <%= data.user[0].username %> </p>
         <a class="nav-item nav-link" href="/">Forsiden</a>
         <a class="nav-item nav-link" href="/session/logout">Logout</a>
         <a class="nav-item nav-link" href="/view/evaluations/expert">Dine Evalueringer</a>
