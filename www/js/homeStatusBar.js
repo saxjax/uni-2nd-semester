@@ -1,28 +1,33 @@
 async function calculateCurrentProgress() {
   const takenBar = document.getElementById(`taken`);
+  const takenBarWidth = document.getElementById(`takenWidth`);
   const correctBar = document.getElementById(`correct`);
+  const correctBarWidth = document.getElementById(`correctWidth`);
   let takenVal = 0;
   let correctVal = 0;
 
   const progress = await getTakenProgress();
   takenVal = progress.totalProgress;
   correctVal = progress.correctProgress;
+
+  // Progressbar for gennemgåede evalueringer
   if (takenVal === 0) {
     takenBar.innerHTML = `Ingen data at beregne endnu`;
-    takenBar.style.width = `100%`;
+    takenBarWidth.style.width = `100%`;
   }
   else {
     takenBar.innerHTML = `${takenVal}%`;
-    takenBar.style.width = `${takenVal}%`;
+    takenBarWidth.style.width = `${takenVal}%`;
   }
 
+  // Progressbar for korrekt besvarede evalueringer
   if (correctVal === 0) {
     correctBar.innerHTML = `Ingen data at beregne endnu`;
-    correctBar.style.width = `100%`;
+    correctBarWidth.style.width = `100%`;
   }
   else {
     correctBar.innerHTML = `${correctVal}%`;
-    correctBar.style.width = `${correctVal}%`;
+    correctBarWidth.style.width = `${correctVal}%`;
   }
 }
 
