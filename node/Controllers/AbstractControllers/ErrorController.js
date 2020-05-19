@@ -9,7 +9,7 @@ class ErrorController {
       case `USER_ALREADY_REGISTERED`:
         errorMsg = `Error: User is already registered.`;
         break;
-      case `ER_PARSE_ERROR`:
+      case `ER_PARSE_ERROR`: case `ER_BAD_FIELD_ERROR`:
         errorMsg = `Please do not use silly characters.`;
         break;
       default:

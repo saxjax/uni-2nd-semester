@@ -22,7 +22,7 @@ class Question {
    */
   getAnswers(questionContainer) {
     const answers = [];
-    const answerInputs = questionContainer.getElementsByClassName(`answerInput`);
+    const answerInputs = questionContainer.getElementsByClassName(`svarInput`);
     for (let i = 0; i < answerInputs.length; i++) {
       answers.push(answerInputs[i].value);
     }
@@ -56,8 +56,7 @@ class Question {
  * Input : -
  * Output: Intet - men efter brugerens questions er oprettet i databasen videredirigeres brugeren til en URL, som er bestemt fra serversiden
  */
-document.getElementById(`submit`).addEventListener(`click`, postQuizQuestions);
-async function postQuizQuestions() {
+document.getElementById(`submit`).addEventListener(`click`, async () => {
   const questionContainers = document.getElementsByClassName(`questionContainer`);
   const questionsArray = [];
 
@@ -78,4 +77,4 @@ async function postQuizQuestions() {
   else {
     window.location.replace(responseJSON.url);
   }
-}
+});

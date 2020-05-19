@@ -1,4 +1,4 @@
-/* HEAD */
+/* eslint no-unused-vars: 0 */
 
 // Formål: Indsætter et DOM-element før insBeforeThisElem
 function insertDomNode(tagName, insBeforeThisElem, text, selectors) {

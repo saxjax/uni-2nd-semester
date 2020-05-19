@@ -5,7 +5,8 @@
     <title>GroupHub | Tilføj Spørgsmål</title>
     <link rel="stylesheet" href="/css/design.css">
     <link rel="stylesheet" href="/css/postQuestions.css">
-    <script src="/js/insertHTMLElements.js"></script>
+    <script src="/js/helperFunctions/insertHTMLElements.js"></script>
+    <script src="/js/helperFunctions/createInputField.js"></script>
     <script defer src="/js/addAnotherQuestion.js"></script>
     <script defer src="/js/postQuizQuestions.js"></script>
   </head>
@@ -25,7 +26,6 @@
       <!--Det her bliver fyldt ind fra den tilhørende JS-fil, når brugeren trykker på knappen addAnotherQuestionButton-->
       <button type="button" class="addAnotherQuestionButton">Tilføj endnu et spørgsmål</button><br>
       <button id="submit">Indsend</button>
-      <p id="questionCountDisplay">Antal spørgsmål: 0</p>
     </div>
     <%- include('meta/footer') %> 
   </body>
