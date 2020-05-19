@@ -70,9 +70,18 @@ class Model extends Database {
     else {
       choice = `*`;
     }
-    return this.query(`SELECT ${choice}`, `${this.idColumnName} = "${this.idQuery}"`)
+    let queryData = await this.query(`SELECT ${choice}`, `${this.idColumnName} = "${this.idQuery}"`)
       .then((result) => result)
       .catch((error) => error);
+
+    if (this.elementType === `document` // et check for om objektet skal hente keywords
+      || this.elementType === `section`
+      || this.elementType === `evaluation`
+      || this.elementType === `quiz_question`) {
+      queryData = this.getKeywordsInObject(queryData, `Document`);
+    }
+
+    return queryData;
   }
 
   /* Formål: At kunne tilgå data om den gruppe man er en del af såsom gruppens navn med videre.
@@ -173,6 +182,10 @@ class Model extends Database {
     }
   }
 
+  /* Formål: At få den MySQL kolonne der svarer til det objekt der søges
+   * Input : @choice som indeholder en string med navnet på et objekt med keywords
+   * Output: Det valgte objekts tilsvarende ID_kolonne
+   */
   getChoiceColName(choice) {
     switch (choice) {
       case `Document`: return `ID_DOCUMENT`;
@@ -183,6 +196,11 @@ class Model extends Database {
     }
   }
 
+  /* Formål: At få alle de keywords som er i nogle objekter på den mest effektive måde (aka. 1 databasekald)
+   *         Ved at gøre dette automatisk "bagved" sikres det at keywords altid er tilgængelige.
+   * Input : @object er det queryobjekt der kommer fra databasen med 0 til flere arrays af objekter
+   * Output: Et array af objekter som har fået et array af keywords-objekter (med keyword og idKeyword) på hver eneste objekt
+   */
   async getKeywordsInObject(object, choice) {
     try {
       if (this.idColumnName === `ID_USER`) { // FIXME: Når en User prøver at se alle sine evalueringer vil evalueringerne hente alle keywords.
@@ -215,6 +233,12 @@ class Model extends Database {
     }
   }
 
+  /* Formål: Bruges i objectCopy.find funktionen til at korrekt søge efter det valgte objekt.
+   *         Hvis denne ikke er der, kan objektet ikke finde sit eget id (da MySQL og JS har inkompatibel syntaks)
+   *         Denne måde at gøre det på, vidner om at koden her burde være blevet bygget op anderledes.
+   * Input : @choice er det ID_kolonnenavn som er queryObjekternes primære kolonne.
+   * Output: ID_Kolonnenavnet omskrevet til camelCase
+   */
   getColInCamelCase(choice) {
     switch (choice) {
       case `ID_DOCUMENT`: return `idDocument`;

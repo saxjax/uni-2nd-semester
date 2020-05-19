@@ -2,7 +2,6 @@
 
 const { Model } = require(`./AbstractClasses/Model`);
 const { Keyword } = require(`./Keyword`);
-const SqlString = require(`sqlstring`);
 
 /* Section er det objekt som indeholder data vedr�rende de afsnit der findes i et dokument.
 * en section oprettes ved at.....
