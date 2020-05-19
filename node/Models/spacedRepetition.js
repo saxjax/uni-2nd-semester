@@ -212,3 +212,40 @@ class SpacedRepetition extends Model {
 module.exports = {
   SpacedRepetition,
 };
+
+
+
+
+// calculateNextRepetitionTimeStampForEvaluation(evaluationResult) {
+//   let newRepTimestamp = 0;
+//   let rightWrongRatio = 0;
+//   let setMinTimestamp = true; // hvis setMinTimestamp er sat til TRUE, betyder det, at brugeren skal have evalueringsopgaven indenfor de næste 24 timer, hvis FALSE skal evalueringsopgaven repeteres senere.
+
+//   if (evaluationResult.recentResult === `false`) { // hvis der svares forkert på opgaven
+//       setMinTimestamp = true;
+
+//   } else if (evaluationResult.repetitions < 2){ // du svarer rigtigt og evalueringen er IKKE taget før
+//       this.repetitionScalar = 2;
+//       setMinTimestamp = false;
+    
+//   } else if (evaluationResult.repetitions > 1 && evaluationResult.failedAttempts > 0){ // du svarer rigtigt, men evalueringen er taget før OG der er blevet svaret forkert før
+//       rightWrongRatio = (evaluationResult.successAttempts / evaluationResult.failedAttempts); 
+//       this.repetitionScalar =  rightWrongRatio > 1 ? rightWrongRatio : 1;
+//       setMinTimestamp = false;
+
+//   } else if (evaluationResult.repetitions > 1 && evaluationResult.failedAttempts < 1){ // du svarer rigtigt, evalueringen er taget før, men du har aldrig svaret forkert før
+//       this.repetitionScalar = evaluationResult.successAttempts;
+//       setMinTimestamp = false;
+
+//   } else {
+//       setMinTimestamp = true; // hvis intet kan beregnes, sæt da minTimestamp til true
+//   }
+
+//   newRepTimestamp = this.calculateTimeStamp(setMinTimestamp); // beregn tidsstempel
+
+//   return newRepTimestamp;
+
+// }
+
+
+

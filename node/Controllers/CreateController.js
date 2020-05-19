@@ -2,14 +2,13 @@
 /* eslint no-console: off */
 const { Group } = require(`../Models/Group`);
 const { User } = require(`../Models/User`);
-const { ParseSql } = require(`../Models/AbstractClasses/ParseSQL`);
+const { ParseSQL } = require(`../Models/AbstractClasses/ParseSQL`);
 const { Document } = require(`../Models/Document`);
 const { Section } = require(`../Models/Section`);
 const { Evaluation } = require(`../Models/Evaluation`);
 const { QuizQuestion } = require(`../Models/QuizQuestion`);
 const { QuizResult } = require(`../Models/QuizResult`);
 const { ErrorController } = require(`./AbstractControllers/ErrorController`);
-const { ParseSQL } = require(`../Models/AbstractClasses/ParseSQL`);
 
 /* UNDER CONSTRUCTION */
 
