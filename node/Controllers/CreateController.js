@@ -188,11 +188,7 @@ class CreateController extends ErrorController {
   */
   async createAnswers(req, res) {
     const QR = new QuizResult(req);
-<<<<<<< Updated upstream
     const Parser = new Parser(ELEMENT_TYPE: "costum");
-=======
-    const Parser = new ParseSql();
->>>>>>> Stashed changes
     let idAttempt;
     let quizResultData;
     try {
@@ -202,24 +198,7 @@ class CreateController extends ErrorController {
       console.log(quizResultData);
 
       quizResultData.resultData.forEach((quizResult) => {
-<<<<<<< Updated upstream
         quizResult.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
-=======
-        let result = quizResult;
-        result.ELEMENT_TYPE = `costum_spaced_repetition`;
-        console.log(`WWWWWWWWWWWWWWWWWWWWW`);
-        console.log(result);
-        result = Parser(result);
-        // result.idQuizQuestion = quizResult.ID_QUIZ_QUESTION;
-        // result.idUser = quizResult.ID_USER;
-        // result.recentResult = quizResult.RECENT_RESULT;
-        // result.recentAttemptDate = quizResult.RECENT_ATTEMPT_DATE;
-        // result.nextRepetition = quizResult.NEXT_REPITITION;
-        // result.repetitions = quizResult.TOTAL;
-        // result.failedAttempts = quizResult.FAILED_ATTEMPTS;
-        // result.successAttempts = quizResult.SUCESS_ATTEMPTS;
-        result.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
->>>>>>> Stashed changes
       });
     }
     catch (error) {
