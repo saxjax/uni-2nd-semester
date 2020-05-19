@@ -57,6 +57,7 @@ class ParseSql {
     this.QRResultCol = `RESULT`;
     this.QRCreatedDateCol = `CREATED_DATE`;
     this.QRUserAnswerCol  = `USER_ANSWER`;
+
     /* Flashcard Kolonner */
     /* FLASHCARD IKKE IMPLEMENTERET!
     this.FConceptCol = `CONCEPT`;
@@ -245,6 +246,29 @@ class ParseSql {
       createdData: data[this.QRCreatedDateCol],
       userAnswers: data[this.QRUserAnswerCol],
     };
+  }
+
+
+  /* Formål: At parse Quiz-resultData specialdesignet returværdi fra SQL databasen
+   * Input:  Et dataobjekt som indeholder nedenstående properties
+   * Output: Et parset dataobjekt, som kan forståes af spacedrepetition funktionerne
+   */
+  parseQuizResultsForSpacedRepetition(quizResultData) {
+    const tempData = quizResultData;
+    tempData.resultData.forEach((quizResult) => {
+      const result = quizResult;
+      result.idQuizQuestion = quizResult.ID_QUIZ_QUESTION;
+      result.idUser = quizResult.ID_USER;
+      result.recentResult = quizResult.RECENT_RESULT;
+      result.recentAttemptDate = quizResult.RECENT_ATTEMPT_DATE;
+      result.nextRepetition = quizResult.NEXT_REPITITION;
+      result.repetitions = quizResult.TOTAL;
+      result.failedAttempts = quizResult.FAILED_ATTEMPTS;
+      result.successAttempts = quizResult.SUCESS_ATTEMPTS;
+      // result.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
+    });
+
+    return tempData;
   }
 
   /* Formål: At parse Flashcard-data

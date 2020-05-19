@@ -8,6 +8,7 @@ const { Evaluation } = require(`../Models/Evaluation`);
 const { QuizQuestion } = require(`../Models/QuizQuestion`);
 const { QuizResult } = require(`../Models/QuizResult`);
 const { ErrorController } = require(`./AbstractControllers/ErrorController`);
+const { ParseSQL } = require(`../Models/AbstractClasses/ParseSQL`);
 
 /* UNDER CONSTRUCTION */
 
@@ -186,28 +187,17 @@ class CreateController extends ErrorController {
   */
   async createAnswers(req, res) {
     const QR = new QuizResult(req);
+    const Parser = new Parser(ELEMENT_TYPE: "costum");
     let idAttempt;
     let quizResultData;
     try {
       idAttempt = await QR.insertToDatabase();
       quizResultData = await QR.getHistoricQuizResultData(idAttempt, req.body.questionsArray);
+      quizResultData = parser.parseQuizResultsForSpacedRepetition(quizResultData);
+      console.log(quizResultData);
 
       quizResultData.resultData.forEach((quizResult) => {
-        const result = quizResult;
-        result.idQuizQuestion = quizResult.ID_QUIZ_QUESTION;
-        result.idUser = quizResult.ID_USER;
-        result.recentResult = quizResult.RECENT_RESULT;
-        result.recentAttemptDate = quizResult.RECENT_ATTEMPT_DATE;
-        result.nextRepetition = quizResult.NEXT_REPITITION;
-        result.repetitions = quizResult.TOTAL;
-        result.failedAttempts = quizResult.FAILED_ATTEMPTS;
-        result.successAttempts = quizResult.SUCESS_ATTEMPTS;
-        result.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
-      });
-
-      quizResultData.resultData.forEach((quizResult) => {
-        const result = quizResult;
-        result.NEXT_REPITITION = quizResult.nextRepetition;
+        quizResult.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
       });
     }
     catch (error) {
