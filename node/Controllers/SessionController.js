@@ -23,7 +23,7 @@ class SessionController {
     if (data.fatal) {
       res.redirect(204, `/dbdown`);
     }
-    else if (data.length > 0) {
+    else if (Object.keys(data[0]).length > 1) {
       req.session.idUser = data[0].idUser;
       req.session.loggedIn = true;
       req.session.username = data[0].username;
