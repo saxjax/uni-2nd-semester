@@ -36,6 +36,8 @@ class AccessController {
       group: await G.getThisGroupData(),
     };
     this.ejs = path.join(`${this.root}/www/views/groups.ejs`);
+    U.connect.end();
+    G.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -53,6 +55,8 @@ class AccessController {
       group: await G.getThisGroupData(),
     };
     this.ejs = path.join(`${this.root}/www/views/postGroup.ejs`);
+    U.connect.end();
+    G.connect.end();
     res.render(this.ejs, { data });
   }
 

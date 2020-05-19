@@ -134,7 +134,7 @@ class Model extends Database {
       || choice === `Section`
       || choice === `Evaluation`
       || choice === `QuizQuestion`) {
-      queryData = await this.setKeywordsInObjectOfType(queryData, choice);
+      queryData = this.setKeywordsInObjectOfType(queryData, choice);
     }
 
     return queryData;
@@ -184,27 +184,32 @@ class Model extends Database {
   }
 
   async setKeywordsInObjectOfType(object, choice) {
-    if (!object[0].elementType) {
-      return object;
-    }
-    const objectCopy = object;
-    const choiceColName = this.getChoiceColName(choice);
-    const keywords = await this.query(`CUSTOM`, `SELECT keyword_link.ID_KEYWORD, KEYWORD, ${choiceColName} FROM keyword_link `
-                                    + `INNER JOIN keyword ON keyword_link.ID_KEYWORD = keyword.ID_KEYWORD `
-                                    + `WHERE keyword_link.${this.idColumnName} = "${this.idQuery}"`);
+    try {
+      const objectCopy = object;
+      const choiceColName = this.getChoiceColName(choice);
+      const keywords = await this.query(`CUSTOM`, `SELECT keyword_link.ID_KEYWORD, KEYWORD, ${choiceColName} FROM keyword_link `
+                                      + `INNER JOIN keyword ON keyword_link.ID_KEYWORD = keyword.ID_KEYWORD `
+                                      + `WHERE keyword_link.${this.idColumnName} = "${this.idQuery}"`);
 
-    for (let j = 0; j < objectCopy.length; j++) {
-      objectCopy[j].keywords = [];
-    }
 
-    for (let i = 0; i < keywords.length; i++) {
-      const objectId = keywords[i][choiceColName];
-      const colToCamelCase = this.getColInCamelCase(choiceColName);
-      const objectWithKeyword = objectCopy.find((owk) => owk[colToCamelCase] === objectId);
-      objectWithKeyword.keywords.push({ keyword: keywords[i].KEYWORD, idKeyword: keywords[i].ID_KEYWORD });
-    }
+      for (let j = 0; j < objectCopy.length; j++) {
+        objectCopy[j].keywords = [];
+      }
 
-    return objectCopy;
+      for (let i = 0; i < keywords.length; i++) {
+        if (keywords[i][choiceColName] !== ``) {
+          const objectId = keywords[i][choiceColName];
+          const colToCamelCase = this.getColInCamelCase(choiceColName);
+          const objectWithKeyword = objectCopy.find((owk) => owk[colToCamelCase] === objectId);
+          objectWithKeyword.keywords.push({ keyword: keywords[i].KEYWORD, idKeyword: keywords[i].ID_KEYWORD });
+        }
+      }
+
+      return objectCopy;
+    }
+    catch (error) {
+      throw new Error(`Keywords blev ikke joined korrekt`);
+    }
   }
 
   getColInCamelCase(choice) {
