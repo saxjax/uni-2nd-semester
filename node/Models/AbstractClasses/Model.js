@@ -134,7 +134,7 @@ class Model extends Database {
       || choice === `Section`
       || choice === `Evaluation`
       || choice === `QuizQuestion`) {
-      queryData = this.setKeywordsInObjectOfType(queryData, choice);
+      queryData = this.getKeywordsInObject(queryData, choice);
     }
 
     return queryData;
@@ -183,8 +183,11 @@ class Model extends Database {
     }
   }
 
-  async setKeywordsInObjectOfType(object, choice) {
+  async getKeywordsInObject(object, choice) {
     try {
+      if (this.idColumnName === `ID_USER`) { // FIXME: Når en User prøver at se alle sine evalueringer vil evalueringerne hente alle keywords.
+        return object;                       //        Siden keyword_link pt. ikke er knyttet til en user, kan denne query ikke foretages.
+      }                                      //        Det kan evt. give mening at tilføje ID_USER til keyword link???
       const objectCopy = object;
       const choiceColName = this.getChoiceColName(choice);
       const keywords = await this.query(`CUSTOM`, `SELECT keyword_link.ID_KEYWORD, KEYWORD, ${choiceColName} FROM keyword_link `
