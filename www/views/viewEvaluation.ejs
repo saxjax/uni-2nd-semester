@@ -11,6 +11,7 @@
   <body>
     <%- include('meta/navbar') %> 
     <script> const data = <%- JSON.stringify(data) %> </script>
+    <script>console.log(data)</script>
     <div id="allQuestions">
       <% let questionCount = 1; %>
       <% data.questions.forEach((question, i) => { %>

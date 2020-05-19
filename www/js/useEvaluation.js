@@ -1,7 +1,7 @@
 class Question {
   constructor(questionContainer, index) {
     this.idQuestion         = questionContainer.getAttribute(`idQuestion`);
-    this.idEvaluation       = data.evaluation[index];
+    this.idEvaluation       = data.questions[index].idEvaluation;
     this.questionText       = questionContainer.getElementsByClassName(`questionText`)[0].innerHTML;
     this.userAnswers        = this.getUserAnswers(questionContainer);
     this.correctAnswers     = data.questions[index].correctness;
@@ -31,7 +31,6 @@ async function submitAnswers() {
     // Checks if the given answer is correct and saves the status to the Question object.
     questionsArray[i].correctAnswerGiven = questionsArray[i].userAnswers === questionsArray[i].correctAnswers;
   }
-
   const score = calculateScore(questionsArray);
   const body = { questionsArray, score };
   const response = await fetch(`/post/answers/`, {
