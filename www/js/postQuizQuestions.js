@@ -22,7 +22,7 @@ class Question {
    */
   getAnswers(questionContainer) {
     const answers = [];
-    const answerInputs = questionContainer.getElementsByClassName(`answerInput`);
+    const answerInputs = questionContainer.getElementsByClassName(`svarInput`);
     for (let i = 0; i < answerInputs.length; i++) {
       answers.push(answerInputs[i].value);
     }
@@ -64,19 +64,17 @@ document.getElementById(`submit`).addEventListener(`click`, async () => {
     questionsArray.push(new Question(questionContainers[i]));
   }
 
+  const response = await fetch(`/post/questions`, {
+    method: `POST`,
+    body: JSON.stringify(questionsArray),
+    headers: { "Content-Type": `application/json` },
+  });
+  const responseJSON = await response.json();
 
-  console.log(questionsArray);
-  // const response = await fetch(`/post/questions`, {
-  //   method: `POST`,
-  //   body: JSON.stringify(questionsArray),
-  //   headers: { "Content-Type": `application/json` },
-  // });
-  // const responseJSON = await response.json();
-
-  // if (responseJSON.error) {
-  //   alert(responseJSON.error);
-  // }
-  // else {
-  //   window.location.replace(responseJSON.url);
-  // }
+  if (responseJSON.error) {
+    alert(responseJSON.error);
+  }
+  else {
+    window.location.replace(responseJSON.url);
+  }
 });
