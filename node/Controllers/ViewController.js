@@ -91,6 +91,7 @@ class ViewController {
     ]);
     const data = { group: dataArray[0], user: dataArray[1] };
     this.ejs = path.join(`${this.root}/www/views/postDocument.ejs`);
+    Expert.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -107,6 +108,7 @@ class ViewController {
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewDocument.ejs`);
+    Doc.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -159,6 +161,7 @@ class ViewController {
     ]);
     const data = { group: dataArray[0], user: dataArray[1], sections: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewSectionsExpert.ejs`);
+    Expert.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -176,6 +179,7 @@ class ViewController {
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], sections: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewSectionDocument.ejs`);
+    Doc.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -191,7 +195,6 @@ class ViewController {
       Doc.getThis(),                          // dataArray[2]
       Doc.getAllElementsOfType(`Section`),    // dataArray[3]
       Doc.getAllElementsOfType(`Evaluation`), // dataArray[4]
-      Doc.getAllElementsOfType(`Keyword`),    // dataArray[5]
     ]);
     const data = {
       group: dataArray[0],
@@ -199,9 +202,9 @@ class ViewController {
       document: dataArray[2],
       sections: dataArray[3],
       evaluations: dataArray[4],
-      keywords: dataArray[5],
     };
     this.ejs = path.join(`${this.root}/www/views/viewSectionsAndEvaluationsDocument.ejs`);
+    Doc.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -222,6 +225,7 @@ class ViewController {
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/postSection.ejs`);
+    Doc.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -275,6 +279,7 @@ class ViewController {
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2], flashcards: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsRecipient.ejs`);
+    Group.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -330,6 +335,7 @@ class ViewController {
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], evaluations: dataArray[3], flashcards: dataArray[4] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationsSection.ejs`);
+    Sec.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -365,6 +371,7 @@ class ViewController {
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationExpert.ejs`);
+    Expert.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -422,6 +429,7 @@ class ViewController {
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], sections: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/postEvaluationDocument.ejs`);
+    Doc.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -434,6 +442,7 @@ class ViewController {
     ]);
     const data = { group: dataArray[0], user: dataArray[1], section: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/postEvaluationSection.ejs`);
+    Sec.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -466,6 +475,7 @@ class ViewController {
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], questions: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluation.ejs`);
+    E.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -480,6 +490,7 @@ class ViewController {
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], questions: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluation.ejs`);
+    QR.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -497,6 +508,7 @@ class ViewController {
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2],   quizQuestions: dataArray[3] };
 
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationResult.ejs`);
+    QR.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -505,6 +517,7 @@ class ViewController {
     const takenEvalProgress = await PB.getProgressFromDB();
     const totalP = takenEvalProgress.totalProgress;
     const correctP = takenEvalProgress.totalCorrectProgress;
+    PB.connect.end();
     res.send({ totalProgress: totalP, correctProgress: correctP });
   }
 
@@ -542,6 +555,7 @@ class ViewController {
     ]);
     const data = { group: dataArray[0], user: dataArray[1], flashcards: dataArray[2] };
     this.ejs = path.join(`${this.root}/www/views/viewFlashcardRecipient.ejs`);
+    Recipient.connect.end();
     res.render(this.ejs, { data });
   }
 

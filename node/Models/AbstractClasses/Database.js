@@ -154,8 +154,6 @@ class Database {
           }
           break;
         case `CUSTOM`:
-          if (texton) {
-          }
           sql = data;
           break;
         default:
@@ -179,6 +177,7 @@ class Database {
        || /^UPDATE$/.test(choice)
        || /^DELETE$/.test(choice)
        || /^HEAD$/.test(choice)
+       || /^KEYWORD_JOIN/.test(choice)
        || /^CUSTOM$/.test(choice)) {
       choiceValid = true;
     }
@@ -222,7 +221,6 @@ class Database {
     let done = false;
     let dataCopy = data;
     const dataArr = { columns: ``, values: `` };
-    console.log(`NonEscaped: `, data, ` Data Arr `, dataCopy);
 
     // Loopet går igennem et antal 'kolonne = "value"' forbundet med et antal " AND "
     // HUSK at dataCopy er en laaaang streng med mange col = "val" AND col = "val" AND col = "val" AND ... etc.

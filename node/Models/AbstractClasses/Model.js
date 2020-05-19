@@ -117,8 +117,9 @@ class Model extends Database {
    */
   async getAllElementsOfType(choice) {
     const trueObjectTable = this.table;
-    this.table = this.parseElementTypesTable(choice);
-    return this.query(`SELECT *`, `${this.idColumnName} = "${this.idQuery}" AND ${this.idColumnGroup} = "${this.idGroup}"`)
+    const choiceTable = this.parseElementTypesTable(choice);
+    this.table = choiceTable;
+    let queryData = await this.query(`SELECT *`, `${this.idColumnName} = "${this.idQuery}" AND ${this.idColumnGroup} = "${this.idGroup}"`)
       .then((result) => {
         this.table = trueObjectTable;
         return result;
@@ -126,9 +127,17 @@ class Model extends Database {
       .catch((error) => {
         console.warn(`\n\nDet givne tabelnavn er højst sandsynligt forkert angivet i parseElementTypesTable!\n\n`);
         this.table = trueObjectTable;
-        console.log(`4`);
         return error;
       });
+
+    if (choice === `Document` // et check for om objektet skal hente keywords
+      || choice === `Section`
+      || choice === `Evaluation`
+      || choice === `QuizQuestion`) {
+      queryData = this.getKeywordsInObject(queryData, choice);
+    }
+
+    return queryData;
   }
 
   /* Formål: Denne funktion sletter den instance af klassen som kalder denne funktion
@@ -161,6 +170,58 @@ class Model extends Database {
       case `Section`: return `document_section`;
       case `User`: return `user`;
       default: throw new Error(`WARNING: Element Type not implemented in parseElementTypesTable in Model`);
+    }
+  }
+
+  getChoiceColName(choice) {
+    switch (choice) {
+      case `Document`: return `ID_DOCUMENT`;
+      case `Section`: return `ID_DOCUMENT_SECTION`;
+      case `Evaluation`: return `ID_EVALUATION`;
+      case `QuizQuestion`: return `ID_QUIZ_QUESTION`;
+      default: throw new Error(`WARNING: Kolonne ikke korrekt angivet i getChoiceColName`);
+    }
+  }
+
+  async getKeywordsInObject(object, choice) {
+    try {
+      if (this.idColumnName === `ID_USER`) { // FIXME: Når en User prøver at se alle sine evalueringer vil evalueringerne hente alle keywords.
+        return object;                       //        Siden keyword_link pt. ikke er knyttet til en user, kan denne query ikke foretages.
+      }                                      //        Det kan evt. give mening at tilføje ID_USER til keyword link???
+      const objectCopy = object;
+      const choiceColName = this.getChoiceColName(choice);
+      const keywords = await this.query(`CUSTOM`, `SELECT keyword_link.ID_KEYWORD, KEYWORD, ${choiceColName} FROM keyword_link `
+                                      + `INNER JOIN keyword ON keyword_link.ID_KEYWORD = keyword.ID_KEYWORD `
+                                      + `WHERE keyword_link.${this.idColumnName} = "${this.idQuery}"`);
+
+
+      for (let j = 0; j < objectCopy.length; j++) {
+        objectCopy[j].keywords = [];
+      }
+
+      for (let i = 0; i < keywords.length; i++) {
+        if (keywords[i][choiceColName] !== ``) {
+          const objectId = keywords[i][choiceColName];
+          const colToCamelCase = this.getColInCamelCase(choiceColName);
+          const objectWithKeyword = objectCopy.find((owk) => owk[colToCamelCase] === objectId);
+          objectWithKeyword.keywords.push({ keyword: keywords[i].KEYWORD, idKeyword: keywords[i].ID_KEYWORD });
+        }
+      }
+
+      return objectCopy;
+    }
+    catch (error) {
+      throw new Error(`Keywords blev ikke joined korrekt`);
+    }
+  }
+
+  getColInCamelCase(choice) {
+    switch (choice) {
+      case `ID_DOCUMENT`: return `idDocument`;
+      case `ID_DOCUMENT_SECTION`: return `idSection`;
+      case `ID_EVALUATION`: return `idEvaluation`;
+      case `ID_QUIZ_QUESTION`: return `idQuizQuestion`;
+      default: throw new Error(`WARNING: kolonnenavn er ikke angivet i getColInCamelCase i Model`);
     }
   }
 }

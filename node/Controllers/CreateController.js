@@ -27,10 +27,12 @@ class CreateController extends ErrorController {
     const G = new Group(req);
     try {
       await G.insertToDatabase();
+      G.connect.end();
       res.redirect(`/groups`);
     }
     catch (error) {
       const errorMsg = this.produceErrorMessageToUser(error);
+      G.connect.end();
       res.send(errorMsg);
     }
   }
@@ -44,10 +46,12 @@ class CreateController extends ErrorController {
     try {
       await newUser.validateRegister();
       await newUser.insertToDatabase();
+      newUser.connect.end();
       res.redirect(`/`);
     }
     catch (error) { // User could not be validated
       const errorMsg = this.produceErrorMessageToUser(error);
+      newUser.connect.end();
       res.send(errorMsg);
     }
   }
@@ -57,10 +61,12 @@ class CreateController extends ErrorController {
     const D = new Document(req);
     try {
       const document = await D.insertToDatabase();
+      D.connect.end();
       res.redirect(`/view/sectionsAndEvaluations/document/${document[0].idDocument}`);
     }
     catch (error) {
       const errorMsg = this.produceErrorMessageToUser(error);
+      D.connect.end();
       res.send(errorMsg);
     }
   }
@@ -70,10 +76,12 @@ class CreateController extends ErrorController {
     const S = new Section(req);
     try {
       const idSection = await S.insertToDatabase();
+      S.connect.end();
       res.send({ url: `/view/section/${idSection}` });
     }
     catch (error) {
       const errorMsg = this.produceErrorMessageToUser(error);
+      S.connect.end();
       res.send({ error: errorMsg });
     }
   }
@@ -83,10 +91,12 @@ class CreateController extends ErrorController {
     const E = new Evaluation(req);
     try {
       const idEvaluation = await E.insertToDatabase();
+      E.connect.end();
       res.send({ url: `/post/questions?idEvaluation=${idEvaluation}&titleEvaluation=${E.title}` });
     }
     catch (error) {
       const errorMsg = this.produceErrorMessageToUser(error);
+      E.connect.end();
       res.send({ error: errorMsg });
     }
   }
@@ -99,10 +109,12 @@ class CreateController extends ErrorController {
     const QQ = new QuizQuestion(req);
     try {
       await QQ.insertToDatabase();
+      QQ.connect.end();
       res.send({ url: `/view/evaluations/expert` }); // TODO: Kan eventuelt senere videredirigere til siden, hvor man kan tage evalueringen
     }
     catch (error) {
       const errorMsg = this.produceErrorMessageToUser(error);
+      QQ.connect.end();
       res.send({ error: errorMsg });
     }
   }
@@ -212,15 +224,18 @@ class CreateController extends ErrorController {
     }
     catch (error) {
       console.log(error);
+      QR.connect.end();
       res.redirect(503, `/dbdown`);
     }
 
     try {
       await QR.insertToDatabaseSpacedRepetition(quizResultData.resultData);
+      QR.connect.end();
       res.send({ newURL: `/view/evaluationResult/${idAttempt}`, quizResultData });
     }
     catch (error) {
       console.log(error);
+      QR.connect.end();
       res.redirect(204, `/dbdown`);
     }
   }
