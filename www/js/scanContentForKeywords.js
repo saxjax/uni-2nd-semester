@@ -60,7 +60,7 @@ function insertKeywords(keywords) {
     insertKeywordOnPage(longWord, i);
   });
   if (!allKeywordsContainer.firstChild) {
-    createKeywordField(allKeywordsContainer);
+    createInputField(allKeywordsContainer, `Keyword`, 1);
   }
 }
 
@@ -72,7 +72,7 @@ function insertKeywordOnPage(newWord, keyWordNum) {
     newKeywordInputField = keywordInputFields[keyWordNum];
   }
   else {
-    const newKeywordDiv = createKeywordField(allKeywordsContainer); // Kommer fra addAnotherKeyword.js
+    const newKeywordDiv = createInputField(allKeywordsContainer, `Keyword`, 1); // Kommer fra addAnotherKeyword.js
     newKeywordInputField = newKeywordDiv.getElementsByTagName(`input`)[0];
   }
 
