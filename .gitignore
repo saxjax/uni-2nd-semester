@@ -99,6 +99,7 @@ Thumbs.db
 *.key
 *.pem
 password.txt
+Database.js
 
 # -------------------------
 # BEGIN Whitelisted Files

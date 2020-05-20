@@ -28,7 +28,8 @@ class Database {
       host: `213.32.247.201`,
       user: `ADMIN`,
       port: `3306`,
-      password: `DGzU+w9tkW9Ms&j_7-Ec+u@26Wz?P*5L`, // fs.readFileSync(` ./node/Models/AbstractClasses/password.txt`, `utf8`), // `./node/Models/AbstractClasses/password.txt `, `utf8`),
+      password: `g&!zP-zN9rCFF9X-Zgc7vRM8p@4CDsx6`,
+      // fs.readFileSync(`../AbstractClasses/password.txt `, `utf8`), // `./node/Models/AbstractClasses/password.txt `, `utf8`),
       database: this.database,
     };
     this.connect = mysql.createConnection(this.dbConfig);
