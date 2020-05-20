@@ -42,12 +42,12 @@ function calculateNextRepetitionTimeStampForEvaluation(evaluationResult) {
     repetitionScalar = 2;
     setMinTimestamp = false;
   }
-  else if (evaluationResult.repetitions > 1 && evaluationResult.failedAttempts > 0) { // du svarer rigtigt, men evalueringen er taget før OG der er blevet svaret forkert før
+  else if (evaluationResult.failedAttempts > 0) { // du svarer rigtigt, men evalueringen er taget før OG der er blevet svaret forkert før
     rightWrongRatio = (evaluationResult.successAttempts / evaluationResult.failedAttempts);
     repetitionScalar =  rightWrongRatio > 1 ? rightWrongRatio : 1;
     setMinTimestamp = false;
   }
-  else if (evaluationResult.repetitions > 1 && evaluationResult.failedAttempts < 1) { // du svarer rigtigt, evalueringen er taget før, men du har aldrig svaret forkert før
+  else if (evaluationResult.failedAttempts < 1) { // du svarer rigtigt, evalueringen er taget før, men du har aldrig svaret forkert før
     repetitionScalar = evaluationResult.successAttempts;
     setMinTimestamp = false;
   }
