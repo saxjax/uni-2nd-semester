@@ -1,6 +1,7 @@
 /* eslint no-console: off */
 
 const { SpacedRepetition } = require(`./spacedRepetition`);
+const { ParseSql } = require(`../Models/AbstractClasses/ParseSQL`);
 
 class QuizResult extends SpacedRepetition {
   constructor(req) {
@@ -94,13 +95,11 @@ class QuizResult extends SpacedRepetition {
     return string;
   }
 
-  /* Formål: At kunne hente historisk quiz data ud fra et forsøgsID.
+  /* Formål: At kunne hente historisk quiz data ud fra et forsøgsID samt beregne næste repetationsdato
    * Input : forsøgsID og QuestionData
    * Output: Object med historisk quiz data for de omhandlede input quizzer.
    */
   async getHistoricQuizResultData(idAttempt, reqBodyQuestionArray) {
-    let resultData;
-    let recentAttempt;
     let stringforSQL = ``;
 
     // Lav en string til SQL så vi kan sortere udelukkende på de pågældende quizzer
@@ -108,12 +107,10 @@ class QuizResult extends SpacedRepetition {
     questionsArray.forEach((id) => {
       stringforSQL += `"${id}",`;
     });
-
-    stringforSQL = stringforSQL.slice(0, -1);
+    stringforSQL = stringforSQL.slice(0, -1); // Fjerner det sidste komma
 
     // Hent historisk data omkring quizzerne for den pågældende bruger
-    try {
-      resultData = await this.query(`CUSTOM`, `SELECT QR1.ID_EVALUATION,
+    const resultData = await this.query(`CUSTOM`, `SELECT QR1.ID_EVALUATION,
                                                QR1.ID_QUIZ_QUESTION,
                                                QR1.ID_USER,
                                                (SELECT QR2.RESULT FROM quiz_result QR2 WHERE QR1.ID_QUIZ_QUESTION = QR2.ID_QUIZ_QUESTION AND QR1.ID_USER = QR2.ID_USER ORDER BY QR2.CREATED_DATE DESC limit 1 ) as RECENT_RESULT,
@@ -125,24 +122,18 @@ class QuizResult extends SpacedRepetition {
                                                FROM p2.quiz_result QR1
                                                WHERE QR1.ID_USER = "${this.idUser}" AND QR1.ID_QUIZ_QUESTION in (${stringforSQL})
                                                GROUP BY QR1.ID_USER,QR1.ID_QUIZ_QUESTION;`);
-    }
-    catch (error) {
-      console.log(error);
-    }
-
     // Hent data omkring de sidste quiz forsøg for den pågældende bruger.
     // KAN FORMENTLIG SLETTES, DA OVENSTÅENDE QUERY HAR DENNE INFORMATION ALLEREDE.
-    try {
-      recentAttempt = await this.query(`CUSTOM`, `SELECT ID_QUIZ_QUESTION,RESULT,CREATED_DATE 
+    const recentAttempt = await this.query(`CUSTOM`, `SELECT ID_QUIZ_QUESTION,RESULT,CREATED_DATE 
                                          FROM quiz_result WHERE ID_ATTEMPT = "${idAttempt}"
                                          ORDER BY CREATED_DATE DESC`);
-    }
-    catch (error) {
-      console.log(error);
-    }
+    const Parser = new ParseSql();
+    const parsedResultData = Parser.parseQuizResultsForSpacedRepetition(resultData);
+    parsedResultData.forEach((quizResult) => {
+      quizResult.nextRepetition = this.calculateNextRepetitionTimeStampForEvaluation(quizResult); // eslint-disable-line no-param-reassign
+    });
 
-    const result = { resultData, recentAttempt };
-    return result;
+    return { resultData: parsedResultData, recentAttempt };
   }
 }
 

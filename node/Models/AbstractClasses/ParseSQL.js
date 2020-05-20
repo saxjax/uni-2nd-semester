@@ -1,5 +1,3 @@
-/* eslint no-console: off */
-
 /* ParseSql er en hjælpeklasse til Database.js.
  * ParseSql parser den SQL, som vi får leveret af databasen til et format, som frontend kan forstå
  * Klassen skal kunne parse alle former for input fra databasen, og sikre at JavaScript siden
@@ -250,25 +248,25 @@ class ParseSql {
 
 
   /* Formål: At parse Quiz-resultData specialdesignet returværdi fra SQL databasen
-   * Input:  Et dataobjekt som indeholder nedenstående properties
-   * Output: Et parset dataobjekt, som kan forståes af spacedrepetition funktionerne
+   * Input:  Et array som indeholder nedenstående properties
+   * Output: Et parset array, som kan forståes af spacedrepetition funktionerne
    */
   parseQuizResultsForSpacedRepetition(quizResultData) {
-    const tempData = quizResultData;
-    tempData.resultData.forEach((quizResult) => {
-      const result = quizResult;
-      result.idQuizQuestion = quizResult.ID_QUIZ_QUESTION;
-      result.idUser = quizResult.ID_USER;
-      result.recentResult = quizResult.RECENT_RESULT;
-      result.recentAttemptDate = quizResult.RECENT_ATTEMPT_DATE;
-      result.nextRepetition = quizResult.NEXT_REPITITION;
-      result.repetitions = quizResult.TOTAL;
-      result.failedAttempts = quizResult.FAILED_ATTEMPTS;
-      result.successAttempts = quizResult.SUCESS_ATTEMPTS;
-      // result.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
+    const result = [];
+    quizResultData.forEach((quizResult) => {
+      result.push({
+        idQuizQuestion: quizResult.ID_QUIZ_QUESTION,
+        idUser: quizResult.ID_USER,
+        recentResult: quizResult.RECENT_RESULT,
+        recentAttemptDate: quizResult.RECENT_ATTEMPT_DATE,
+        nextRepetition: quizResult.NEXT_REPITITION,
+        repetitions: quizResult.TOTAL,
+        failedAttempts: quizResult.FAILED_ATTEMPTS,
+        successAttempts: quizResult.SUCESS_ATTEMPTS,
+      });
     });
 
-    return tempData;
+    return result;
   }
 
   /* Formål: At parse Flashcard-data
