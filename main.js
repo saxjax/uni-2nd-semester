@@ -7,6 +7,7 @@ const settings = {
   debug: true,       // Angiver om programmet skal køre i udviklingsmode eller i productionmode.
   skipAccess: false, // Angiver om programmet automatisk skal logges ind som Test User i Tester Group
 };
+module.exports.settings = settings;
 
 const Start = new MasterController(settings);
 Start.startServer();
