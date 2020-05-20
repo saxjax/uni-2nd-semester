@@ -59,6 +59,12 @@ class ProgressBar extends Model {
     }
     return progress;
   }
+
+  // Retrives the evaluations that the user has not yet taken for display on the homepage
+  async getEvaluationsNotYetTaken() {
+    const evaluationsNotYetTaken = await this.query(`CUSTOM`, `SELECT * FROM evaluation e WHERE e.ID_DOCUMENT IN (SELECT ID_DOCUMENT FROM document WHERE ID_USER_GROUP = "${this.idGroup}") AND e.ID_EVALUATION NOT IN (SELECT DISTINCT(ID_EVALUATION) FROM quiz_result WHERE ID_USER = "${this.idUser}");`);
+    return (evaluationsNotYetTaken);
+  }
 }
 
 

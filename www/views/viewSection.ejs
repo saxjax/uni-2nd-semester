@@ -14,9 +14,16 @@
           <p> <%= data.section[0].content %> </p>
         </div>
         <div class="col-12">
-          <a href="/view/sectionsAndEvaluations/document/<%= data.section[0].idDocument %>">
-            Tilbage til oversigten
-          </a>
+          <button class="btn btn-primary">
+            <a href="/view/sectionsAndEvaluations/document/<%= data.section[0].idDocument %>">
+              Tilbage til oversigten
+            </a>
+          </button>
+          <button class="btn btn-primary">
+            <a href="/post/evaluation/section/<%= data.section[0].idSection %>"> 
+              Opret Evaluering til denne sektion 
+            </a>
+          </button>
         </div>
         <div class="rightside">
             <h5> Keywords </h5>

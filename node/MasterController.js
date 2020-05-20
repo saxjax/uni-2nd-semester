@@ -22,9 +22,9 @@ const pad = require(`./HelperFunctions/Pad`);
 class MasterController {
   constructor(settings) {
     this.app = express();
-    this.root = settings.root;
-
+    this.settings = settings;
     this.name = settings.name;
+    this.root = settings.root;
     this.port = settings.port;
     this.debug = settings.debug;
     this.skipAccess = settings.skipAccess;
@@ -63,7 +63,7 @@ class MasterController {
    * Output: Opsætning af url'er som kan tilgås via serverens port.
    */
   accessPatterns() {
-    const Access = new AccessController(this.root);
+    const Access = new AccessController(this.settings);
     this.app.get(`/dbdown`,         (req, res) => Access.dbDown(req, res));
     // No Session URLs
     this.app.get(`/access/about`,    (req, res) => Access.aboutPage(req, res));
@@ -84,7 +84,7 @@ class MasterController {
    * Output: Opsætning af url'er som kan tilgås via serverens port.
    */
   sessionPatterns() {
-    const Session = new SessionController(this.root);
+    const Session = new SessionController(this.settings);
     this.app.post(`/session/auth/user`, (req, res) => Session.userSession(req, res));
     this.app.get(`/session/group/:idQuery`, (req, res) => Session.groupSession(req, res));
     this.app.get(`/session/logout`,                    (req, res) => Session.logout(req, res));
@@ -116,7 +116,7 @@ class MasterController {
    * TODO: de kommenterede (//) har ikke en tilsvarende EJS fil endnu.
    */
   viewPatterns() {
-    const Show = new ViewController(this.root);
+    const Show = new ViewController(this.settings);
     this.app.get(`/`,                             (req, res) => Show.homePage(req, res));
 
     // Documents
@@ -151,7 +151,7 @@ class MasterController {
     this.app.get(`/post/evaluation/document/:idQuery`,                 (req, res) => Show.postEvaluationDocumentPage(req, res));
     this.app.get(`/post/evaluation/section/:idQuery`,                 (req, res) => Show.postEvaluationSectionPage(req, res));
     this.app.get(`/post/questions`,                 (req, res) => Show.postQuestionsPage(req, res));
-    this.app.get(`/view/evaluations/:idQuery`,          (req, res) => Show.viewEvaluationPage(req, res));
+    this.app.get(`/view/evaluations/:idQuery`,          (req, res) => Show.viewEvaluationPage(req, res));// idQuery indeholder et evaluation id
     this.app.get(`/view/SpacedRepetition`,          (req, res) => Show.viewSpacedRepetitionPage(req, res));
     this.app.get(`/view/evaluationResult/:idAttempt`,          (req, res) => Show.viewEvaluationResultPage(req, res));
     this.app.get(`/view/evaluationProgress`,          (req, res) => Show.viewEvaluationProgress(req, res));
@@ -184,7 +184,7 @@ class MasterController {
   * Output: Setup af muligheden for klienten at poste data til databasen.
   */
   createPatterns() {
-    const Creator = new CreateController(this.root);
+    const Creator = new CreateController(this.settings);
     this.app.post(`/post/group`,       (req, res) => Creator.createGroup(req, res));
     this.app.post(`/access/register`,  (req, res) => Creator.RegisterNewUser(req, res));
     this.app.post(`/post/document`,    (req, res) => Creator.createDocument(req, res));
@@ -212,7 +212,7 @@ class MasterController {
    * Output: Setup af muligheden for udviklere at teste ting før de implementeres.
    */
   testPatterns() {
-    const Tester = new TestController(this.root);
+    const Tester = new TestController(this.settings);
     this.app.get(`/test`, (req, res) => Tester.test(req, res));
     this.app.get(`/test2`, (req, res) => Tester.test2(req, res));
     this.app.get(`/test3`, (req, res) => Tester.test3(req, res));

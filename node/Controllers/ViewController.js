@@ -19,9 +19,9 @@ const { ProgressBar } = require(`../Models/ProgressBar`);
  */
 
 class ViewController {
-  constructor(root) {
+  constructor(settings) {
     this.name = `ViewController`;
-    this.root = root;
+    this.root = settings.root;
     this.ejs = ``;
   }
 
@@ -32,13 +32,15 @@ class ViewController {
   async homePage(req, res) {
     const Recipient = new Group(req);
     const SpacedRep = new QuizResult(req);
+    const PB        = new ProgressBar(req);
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),               // dataArray[0]
       Recipient.getThisUserData(),                // dataArray[1]
       Recipient.getAllElementsOfType(`document`), // dataArray[2]
       SpacedRep.getIdQuizquestionsDueForRepetition(), // dataArray[3]
+      PB.getEvaluationsNotYetTaken(),
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2], repetitionTask: dataArray[3] };
+    const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2], repetitionTask: dataArray[3], evaluationsNotYetTaken: dataArray[4] };
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs, { data });
   }
@@ -222,8 +224,9 @@ class ViewController {
       Doc.getThisGroupData(),               // dataArray[0]
       Doc.getThisUserData(),                // dataArray[1]
       Doc.getThis(),                        // dataArray[2]
+      Doc.getAllElementsOfType(`section`),
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2] };
+    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], reservedSections: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/postSection.ejs`);
     Doc.connect.end();
     res.render(this.ejs, { data });
@@ -462,7 +465,7 @@ class ViewController {
 
 
   /* Formål: Viser siden til en evaluering som en bruger kan tage
-   * Input : Et request med et queryId samt en session med userId og groupId
+   * Input : Et request med et queryId med et evaluation-ID samt en session med userId og groupId
    * Output: En fremvisning af en evaluering og dens tilhørende opgaver så en bruger kan tage den
    */
   async viewEvaluationPage(req, res) {
