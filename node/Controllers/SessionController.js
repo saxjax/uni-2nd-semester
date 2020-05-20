@@ -19,13 +19,18 @@ class SessionController {
    */
   async userSession(req, res) {
     const currentUser = new User(req);
-    const data = await currentUser.loginValid();
-    console.log(`data ${data[0]}`);
-    if (data.fatal) {
+    let data;
+    try{
+      data = await currentUser.loginValid();
+      console.log(`data:`);
+      console.log(data[0]);
+    }
+    catch{
       currentUser.connect.end();
       res.redirect(204, `/dbdown`);
     }
-    else if (Object.keys(data[0]).length > 1) {
+    
+    if (data[0]) {
       req.session.idUser = data[0].idUser;
       req.session.loggedIn = true;
       req.session.username = data[0].username;
