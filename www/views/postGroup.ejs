@@ -2,30 +2,29 @@
 <html>
   <head>
     <%- include('meta/header') %> 
-    <link rel="stylesheet" href="/css/design.css">
     <title>GroupHub | New Group</title>
+    <link rel="stylesheet" href="/css/design.css">
+    <script src="/js/helperFunctions/insertHTMLElements.js"></script>
+    <script src="/js/helperFunctions/createInputField.js"></script>
+    <script defer src="/js/addAnotherMember.js"></script>
+    <script defer src="/js/postGroup.js"></script>
   </head>
   <body>
     <%- include('meta/navbar') %> 
     <div class="container" id="content" style="text-align: center; font-weight: bold;">
-        <h1>Opret en ny gruppe</h1>
-    <form action="/post/group" method="POST">
+    <h1>Opret en ny gruppe</h1>
+    <div id="formContainer">
       <label for="name">Gruppenavn</label><br>
-      <input name="name" id="name" type="text" size="60%" placeholder="Gruppe navn" required><br>
+      <input id="name" type="text" size="60%" placeholder="Gruppe navn"><br>
 
-      <label for="members">Tilføj andre medlemmer end <%= data.user[0].username %>, max 7</label>
-      <input name="members" id="members" type="hidden" value="<%= data.user[0].username %>">
-      <br>
-      <input name="members" class="members" type="text" size="60%" placeholder="Medlemmets Username"><br>
-      <input name="members" class="members" type="text" size="60%" placeholder="Medlemmets Username"><br>
-      <input name="members" class="members" type="text" size="60%" placeholder="Medlemmets Username"><br>
-      <input name="members" class="members" type="text" size="60%" placeholder="Medlemmets Username"><br>
-      <input name="members" class="members" type="text" size="60%" placeholder="Medlemmets Username"><br>
-      <input name="members" class="members" type="text" size="60%" placeholder="Medlemmets Username"><br>
-      <input name="members" class="members" type="text" size="60%" placeholder="Medlemmets Username"><br>
+      <h6><strong>Tilføj andre medlemmer end <%= data.user[0].username %></strong></h6>
+      <div id="membersContainer">
+        <input class="medlemInput" type="hidden" value="<%= data.user[0].username %>">
+      </div>
+      <button id="addAnotherMemberBtn">Tilføj endnu et gruppemedlem</button><br>
       
-      <input type="submit" value="Create!">
-    </form>
+      <button id="submitBtn">Lav gruppen!</button>
+    </div>
   </div>
     <%- include('meta/footer') %> 
   </body>

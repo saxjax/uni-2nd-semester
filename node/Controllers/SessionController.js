@@ -20,16 +20,20 @@ class SessionController {
   async userSession(req, res) {
     const currentUser = new User(req);
     const data = await currentUser.loginValid();
+    console.log(`data ${data[0]}`);
     if (data.fatal) {
+      currentUser.connect.end();
       res.redirect(204, `/dbdown`);
     }
-    else if (data.length > 0) {
+    else if (Object.keys(data[0]).length > 1) {
       req.session.idUser = data[0].idUser;
       req.session.loggedIn = true;
       req.session.username = data[0].username;
+      currentUser.connect.end();
       res.redirect(`/access/view/groups`);
     }
     else { // Hvis queriet returnere et tomt array (aka. ingen user fra loginValid())
+      currentUser.connect.end();
       res.redirect(`/access/register`); // FIXME: Statuskode indsættes
     }
   }
@@ -45,9 +49,11 @@ class SessionController {
     if (data) {
       req.session.idGroup = data[0].idGroup;
       req.session.groupname = data[0].name;
+      G.connect.end();
       res.redirect(`/`);
     }
     else {                     // FIXME: Dokumentation mangler - hvornår rammer man denne else-clause?
+      G.connect.end();
       res.redirect(`/access/view/groups`); // FIXME: Statuskode indsættes
     }
   }
@@ -56,12 +62,13 @@ class SessionController {
    * Input : @req som indeholder en brugers session data.
    * Output: Et reset af brugerens session data, og redirect til loginpagen
    */
-  logout(req, res) { // FIXME: logout fjerner ikke korrekt session (aka. der kan trykkes logout og direkte bagefter tilgås home)
+  logout(req, res) {
     req.session.destroy((err) => {
       if (err) {
         return console.log(err);
       }
       res.redirect(`/access/login`);
+      return false;
     });
   }
 }

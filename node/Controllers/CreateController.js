@@ -28,12 +28,13 @@ class CreateController extends ErrorController {
     const G = new Group(req);
     try {
       await G.insertToDatabase();
-      res.redirect(`/groups`);
+      res.send({ url: `/groups` });
     }
     catch (error) {
       const errorMsg = this.produceErrorMessageToUser(error);
-      res.send(errorMsg);
+      res.send({ error: errorMsg });
     }
+    G.connect.end();
   }
 
   /* Formål: At oprette en bruger i databasen hvis registrerings informationen er valid.
@@ -51,6 +52,7 @@ class CreateController extends ErrorController {
       const errorMsg = this.produceErrorMessageToUser(error);
       res.send(errorMsg);
     }
+    newUser.connect.end();
   }
 
   /* UNDER CONSTRUCTION */
@@ -64,6 +66,7 @@ class CreateController extends ErrorController {
       const errorMsg = this.produceErrorMessageToUser(error);
       res.send(errorMsg);
     }
+    D.connect.end();
   }
 
   /* UNDER CONSTRUCTION */
@@ -77,6 +80,7 @@ class CreateController extends ErrorController {
       const errorMsg = this.produceErrorMessageToUser(error);
       res.send({ error: errorMsg });
     }
+    S.connect.end();
   }
 
   /* FIXME: UNDER CONSTRUCTION */
@@ -90,6 +94,7 @@ class CreateController extends ErrorController {
       const errorMsg = this.produceErrorMessageToUser(error);
       res.send({ error: errorMsg });
     }
+    E.connect.end();
   }
 
   /* Formål: At oprette nye quiz questions i databasen (bemærk flertal)
@@ -106,6 +111,7 @@ class CreateController extends ErrorController {
       const errorMsg = this.produceErrorMessageToUser(error);
       res.send({ error: errorMsg });
     }
+    QQ.connect.end();
   }
 
   /* Formål: At gemme en brugers svar, når brugeren har afsluttet en evaluering
@@ -213,6 +219,7 @@ class CreateController extends ErrorController {
       console.log(error);
       res.redirect(204, `/dbdown`);
     }
+    QR.connect.end();
   }
 }
 

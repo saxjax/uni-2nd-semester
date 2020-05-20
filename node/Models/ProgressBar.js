@@ -55,7 +55,7 @@ class ProgressBar extends Model {
     if (totalCorrectProgressForUser[0].TotalCorrect > 0) {
       totalCorrectProgressForUser = totalCorrectProgressForUser[0].TotalCorrect;
       progress.totalCorrectProgress = (totalCorrectProgressForUser / totalEvaluationsForGroup);
-      progress.totalCorrectProgress = progress.totalProgress.toFixed(2) * 100; // Round to 2 decimals and multiply by 100 to get percentage.
+      progress.totalCorrectProgress = progress.totalCorrectProgress.toFixed(2) * 100; // Round to 2 decimals and multiply by 100 to get percentage.
     }
     return progress;
   }

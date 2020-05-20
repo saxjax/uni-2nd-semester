@@ -27,16 +27,16 @@ class AccessController {
    */
   async viewGroupsPage(req, res) {
     const U = new User(req);
-    const groupIdFromUser = await U.query(`SELECT ${U.idColumnGroup}`, `${U.idColumnUser} = "${U.idUser}"`);
     const G = new Group(req);
-    G.idGroup = groupIdFromUser[0].idGroup;
+    G.getIdGroupFromUser(U);
 
     const data = {
       user: await U.getThisUserData(),
       group: await G.getThisGroupData(),
     };
-    console.log(data.group);
     this.ejs = path.join(`${this.root}/www/views/groups.ejs`);
+    U.connect.end();
+    G.connect.end();
     res.render(this.ejs, { data });
   }
 
@@ -54,6 +54,8 @@ class AccessController {
       group: await G.getThisGroupData(),
     };
     this.ejs = path.join(`${this.root}/www/views/postGroup.ejs`);
+    U.connect.end();
+    G.connect.end();
     res.render(this.ejs, { data });
   }
 

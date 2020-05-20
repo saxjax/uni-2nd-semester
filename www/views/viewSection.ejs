@@ -18,6 +18,12 @@
             Tilbage til oversigten
           </a>
         </div>
+        <div class="rightside">
+            <h5> Keywords </h5>
+            <% data.section[0].keywords.forEach((keyObj) => { %>
+              <p><%= keyObj.keyword %></p>
+            <% }); %>
+          </div>
       </div>
     </div>
     <%- include('meta/footer') %> 

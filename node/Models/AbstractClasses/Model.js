@@ -70,9 +70,18 @@ class Model extends Database {
     else {
       choice = `*`;
     }
-    return this.query(`SELECT ${choice}`, `${this.idColumnName} = "${this.idQuery}"`)
+    let queryData = await this.query(`SELECT ${choice}`, `${this.idColumnName} = "${this.idQuery}"`)
       .then((result) => result)
       .catch((error) => error);
+
+    if (this.elementType === `document` // et check for om objektet skal hente keywords
+      || this.elementType === `section`
+      || this.elementType === `evaluation`
+      || this.elementType === `quiz_question`) {
+      queryData = this.getKeywordsInObject(queryData);
+    }
+
+    return queryData;
   }
 
   /* Formål: At kunne tilgå data om den gruppe man er en del af såsom gruppens navn med videre.
@@ -117,8 +126,9 @@ class Model extends Database {
    */
   async getAllElementsOfType(choice) {
     const trueObjectTable = this.table;
-    this.table = this.parseElementTypesTable(choice);
-    return this.query(`SELECT *`, `${this.idColumnName} = "${this.idQuery}" AND ${this.idColumnGroup} = "${this.idGroup}"`)
+    const choiceTable = this.parseElementTypesTable(choice);
+    this.table = choiceTable;
+    let queryData = await this.query(`SELECT *`, `${this.idColumnName} = "${this.idQuery}" AND ${this.idColumnGroup} = "${this.idGroup}"`)
       .then((result) => {
         this.table = trueObjectTable;
         return result;
@@ -126,9 +136,17 @@ class Model extends Database {
       .catch((error) => {
         console.warn(`\n\nDet givne tabelnavn er højst sandsynligt forkert angivet i parseElementTypesTable!\n\n`);
         this.table = trueObjectTable;
-        console.log(`4`);
         return error;
       });
+
+    if (choice === `Document` // et check for om objektet skal hente keywords
+      || choice === `Section`
+      || choice === `Evaluation`
+      || choice === `QuizQuestion`) {
+      queryData = this.getKeywordsInObject(queryData, choice);
+    }
+
+    return queryData;
   }
 
   /* Formål: Denne funktion sletter den instance af klassen som kalder denne funktion
@@ -152,15 +170,80 @@ class Model extends Database {
    */
   parseElementTypesTable(choice) {
     switch (choice) {
-      case `Document`: return `document`;
-      case `Flashcard`: return `flashcard`;
-      case `Group`: return `user_group`;
-      case `Keyword`: return `keyword_link`;
-      case `Evaluation`: return `evaluation`;
-      case `QuizQuestion`: return `quiz_question`;
-      case `Section`: return `document_section`;
-      case `User`: return `user`;
+      case `document`: return `document`;
+      case `flashcard`: return `flashcard`;
+      case `group`: return `user_group`;
+      case `keyword`: return `keyword_link`;
+      case `evaluation`: return `evaluation`;
+      case `quiz_question`: return `quiz_question`;
+      case `section`: return `document_section`;
+      case `user`: return `user`;
       default: throw new Error(`WARNING: Element Type not implemented in parseElementTypesTable in Model`);
+    }
+  }
+
+  /* Formål: At få den MySQL kolonne der svarer til det objekt der søges
+   * Input : @choice som indeholder en string med navnet på et objekt med keywords
+   * Output: Det valgte objekts tilsvarende ID_kolonne
+   */
+  getChoiceColName(choice) {
+    switch (choice) {
+      case `document`: return `ID_DOCUMENT`;
+      case `section`: return `ID_DOCUMENT_SECTION`;
+      case `evaluation`: return `ID_EVALUATION`;
+      case `quiz_question`: return `ID_QUIZ_QUESTION`;
+      default: throw new Error(`WARNING: Kolonne ikke korrekt angivet i getChoiceColName`);
+    }
+  }
+
+  /* Formål: At få alle de keywords som er i nogle objekter på den mest effektive måde (aka. 1 databasekald)
+   *         Ved at gøre dette automatisk "bagved" sikres det at keywords altid er tilgængelige.
+   * Input : @object er det queryobjekt der kommer fra databasen med 0 til flere arrays af objekter
+   * Output: Et array af objekter som har fået et array af keywords-objekter (med keyword og idKeyword) på hver eneste objekt
+   */
+  async getKeywordsInObject(object, choice = this.elementType) {
+    try {
+      if (this.idColumnName === `ID_USER`) { // FIXME: Når en User prøver at se alle sine evalueringer vil evalueringerne hente alle keywords.
+        return object;                       //        Siden keyword_link pt. ikke er knyttet til en user, kan denne query ikke foretages.
+      }                                      //        Det kan evt. give mening at tilføje ID_USER til keyword link???
+      const objectCopy = object;
+      const choiceColName = this.getChoiceColName(choice);
+      const keywords = await this.query(`CUSTOM`, `SELECT keyword_link.ID_KEYWORD, KEYWORD, ${choiceColName} FROM keyword_link `
+                                      + `INNER JOIN keyword ON keyword_link.ID_KEYWORD = keyword.ID_KEYWORD `
+                                      + `WHERE keyword_link.${this.idColumnName} = "${this.idQuery}"`);
+
+      for (let j = 0; j < objectCopy.length; j++) {
+        objectCopy[j].keywords = [];
+      }
+      for (let i = 0; i < keywords.length; i++) {
+        if (keywords[i][choiceColName] !== ``) {
+          const objectId = keywords[i][choiceColName];
+          const colToCamelCase = this.getColInCamelCase(choiceColName);
+          const objectWithKeyword = objectCopy.find((owk) => owk[colToCamelCase] === objectId);
+          objectWithKeyword.keywords.push({ keyword: keywords[i].KEYWORD, idKeyword: keywords[i].ID_KEYWORD });
+        }
+      }
+
+      return objectCopy;
+    }
+    catch (error) {
+      throw new Error(`Keywords blev ikke joined korrekt`);
+    }
+  }
+
+  /* Formål: Bruges i objectCopy.find funktionen til at korrekt søge efter det valgte objekt.
+   *         Hvis denne ikke er der, kan objektet ikke finde sit eget id (da MySQL og JS har inkompatibel syntaks)
+   *         Denne måde at gøre det på, vidner om at koden her burde være blevet bygget op anderledes.
+   * Input : @choice er det ID_kolonnenavn som er queryObjekternes primære kolonne.
+   * Output: ID_Kolonnenavnet omskrevet til camelCase
+   */
+  getColInCamelCase(choice) {
+    switch (choice) {
+      case `ID_DOCUMENT`: return `idDocument`;
+      case `ID_DOCUMENT_SECTION`: return `idSection`;
+      case `ID_EVALUATION`: return `idEvaluation`;
+      case `ID_QUIZ_QUESTION`: return `idQuizQuestion`;
+      default: throw new Error(`WARNING: kolonnenavn er ikke angivet i getColInCamelCase i Model`);
     }
   }
 }

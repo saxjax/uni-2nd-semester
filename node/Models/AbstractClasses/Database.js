@@ -154,8 +154,6 @@ class Database {
           }
           break;
         case `CUSTOM`:
-          if (texton) {
-          }
           sql = data;
           break;
         default:
@@ -179,6 +177,7 @@ class Database {
        || /^UPDATE$/.test(choice)
        || /^DELETE$/.test(choice)
        || /^HEAD$/.test(choice)
+       || /^KEYWORD_JOIN/.test(choice)
        || /^CUSTOM$/.test(choice)) {
       choiceValid = true;
     }
@@ -219,62 +218,55 @@ class Database {
    * Output: Returnere et JSON objekt, hvor dataene er udsplittet i columns og deres vaerdier.
    */
   insertSplitter(data) {
-    let done = false;
-    let dataCopy = data;
-    const dataArr = { columns: ``, values: `` };
-    console.log(`NonEscaped: `, data, ` Data Arr `, dataCopy);
+    let copyData = data;
+    const dataArr = { columns: ``, values: `` }; // Det objekt der indeholder de opsplittede værdier.
+    let newWord;                                // Henter det første ord i strengen, inklusiv specialtegn, i første felt af arrayet (de andre er index, input og evt. groups)
+    let newWordWithSpaceLength;                 // Dette bruges til at forkorte strengen, hvor mellemrummet huskes.
+    let wordSwitcher = `nextWordIsCol`;         // sørger for at sikre om det næste ord er en kolonne eller en værdi. Det første er altid et kolonnenavn
 
-    // Loopet går igennem et antal 'kolonne = "value"' forbundet med et antal " AND "
-    // HUSK at dataCopy er en laaaang streng med mange col = "val" AND col = "val" AND col = "val" AND ... etc.
-    while (!done) {
-      // Først assignes det første ord (^\w+) i columns ud fra dataCopy med exec regex funktionen.
-      dataArr.columns += /^\w+/.exec(dataCopy);
-      // Dernæst slices den oprindelige streng ned med det første ord plus midterstrengen ' = '
-      dataCopy = dataCopy.slice(`${/^\w+/.exec(dataCopy)} = `.length, dataCopy.length);
-      // Nu er det første ord i strengen en "val". Denne hentes med exec funktionen som før men sættes i values.
-      dataArr.values += /^".*?"/.exec(dataCopy);
-      // Der slices nu ordet "val" fra strengen, plus mellemrummet ` `;
-      dataCopy = dataCopy.slice(`${/^".*?"/.exec(dataCopy)} `.length, dataCopy.length);
-      try {
-        // Her forsøges der at findes et "AND". Hvis det findes, så skal loopet gentages.
-        // Findes det ikke, så gives der en "TypeError" (deraf brugen af try/catch)
-        if (/^\w+/.exec(dataCopy)[0] === `AND`) {
-          dataArr.columns += `, `;  // Dette er nødendigt at lægge til, grundet INSERT syntaksen er SET (col1, col2, col3) etc.
-          dataArr.values  += `, `; // Dette er nødendigt at lægge til, grundet INSERT syntaksen er VALUES (val1, val2, val3) etc.
-          dataCopy = dataCopy.slice(`AND `.length, dataCopy.length); // Her slices det sidste "AND " fra, og en ny streng begynder.
-        }
+    for (let i = 0; i < data.length; i += newWordWithSpaceLength) {
+      // Først scannes det første ord i strengen og ordets længde plus et mellemrum udregnes til når det skal slices fra.
+      [newWord] = /[^\s]+/.exec(copyData);  // Scanner alle tegn indtil næste mellemrum
+      newWordWithSpaceLength = parseInt(newWord.length + 1);
+
+      // Dernæst går rækkefølgen og operationerne alt efter ordet, eksempelvis col -> equals -> val -> val -> val -> AND -> ... -> done
+      if (wordSwitcher === `nextWordIsCol`) {
+        dataArr.columns += newWord;
+        wordSwitcher = `nextWordIsEquals`;
       }
-      catch (error) {
-        if (/^TypeError/.test(error) === true) { // Er nødvendig for at fange typefejlen. Hvis den fanges er strengen tom.
-          done = true;
-        }
-        else {
-          console.log(`FEJL IKKE FANGET i insertSplitter!\n`); // Denne fanger andre usete fejl, så try/catch aldrig gør noget uforudset.
-        }
+      else if (wordSwitcher === `nextWordIsEquals`) {
+        wordSwitcher = `nextWordIsFirstVal`;
       }
+      else if (wordSwitcher === `nextWordIsFirstVal`) {
+        dataArr.values += newWord; // Den første værdi skal ikke have et mellemrum før sig (mens alle andre skal)
+        wordSwitcher = `nextWordIsAndOrValOrDone`;
+      }
+      else if (wordSwitcher === `nextWordIsAndOrValOrDone` && newWord === `AND`) {
+        dataArr.columns += `, `;         // Her sikres en komma separering, da et "AND" antyder en ny col = "val" funktion
+        dataArr.values += `, `;
+        wordSwitcher = `nextWordIsCol`;
+      }
+      else if (wordSwitcher === `nextWordIsAndOrValOrDone` && newWord.length > 0) {
+        dataArr.values += ` `; // Her sikres de nødvendige mellemrum, efter det første ord
+        dataArr.values += newWord;
+        wordSwitcher = `nextWordIsAndOrValOrDone`;
+      }
+      else if (wordSwitcher === `nextWordIsAndOrValOrDone` && newWord === ``) {
+        // done
+      }
+      else {
+        console.log(`Error: Something went wrong in Insert Splitter`);
+      }
+      copyData = copyData.slice(newWordWithSpaceLength, copyData.length); // her "slices" ordet plus et mellemrum fra copydata, så det næste ord står forrest, klar til scanning
     }
 
+    // Alle værdier i values escapes, for at undgå SQL injection
     for (let i = 0; i < dataArr.values.length; i++) {
-      dataArr[i] = SqlString.escape(dataArr[i]); // Alle værdier i values escapes, for at undgå SQL injection
+      dataArr[i] = SqlString.escape(dataArr[i]);
     }
 
     return dataArr;
   }
-
-  /* Metoden insertSplitter bliver her beskrevet mere i detaljen for dem der ikke kender saa meget til regular expressions.
-           * Lokken har til formaal at opsplitte "col = var" grupper i kolonner og variable, saa de kan bruges som INSERT SQL
-           * Der initialiseres en "done" variabel der returnere true naar der ikke er flere ´col = var´ grupper tilbage
-           * /^\w+/.exec(dataCopy) finder det forste alfanumeriske element og laegger det til column variablen --
-           * -- i et JSON objekt med matchet som det forste element
-           * data = data.slice "slicer" det alfanumeriske element vaek + " = " strengen, saa variablen i "col = var" konstruktionen er klar.
-           * values bruger samme regular expression for at faa variablen ud af den nu forkortede data streng
-           * Der tjekkes nu for, om der er en ny "col = var" ved at se om det naeste element er et AND
-           * /^\w+/.exec(dataCopy) returnere null hvis der IKKE er et match, hvilket giver en typefejl naar der skal ledes efter --
-           * -- det forste element i /^\w+/.exec(dataCopy)[0]
-           * Er der det appendes der ", " for at gore det brugbart som en INSERT SQL, og "AND " slices vaek fra datasaettet
-           * Er der ikke flere elementer, dvs. der er ikke flere "col = var" der skal postes, saa giver det den fornaevnte typefejl.
-           * Inden der returnes true sikrer vi os at det rent faktisk er en typefejl, og ikke alt muligt andet der kunne vaere gaaet galt.
-           */
 }
 
 
