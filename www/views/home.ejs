@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="rightside">
-          <%- include(`homeStatusBar`) %> 
+          <%- include(`homeProgressBar`) %> 
           <h2> News Feed</h2>
             <!-- <a href="/view/spacedrepetition">der er opgaver til repetition</a> -->
             <% if (data.repetitionTask.length > 0 ) { %>
@@ -35,6 +35,21 @@
             <% } %>
         </div>
       </div>  
+    </div>
+    <div class="unusedEvaluations">
+      <h3>Du har ikke taget følgende evalueringer endnu:</h1>
+        <ul>
+          <% data.evaluationsNotYetTaken.forEach((evaluation, i) => { %>
+            <li>
+              <p style="display: inline;">
+                <%= evaluation.EVALUATION_TITLE %> |
+              </p>
+              <p style="display: inline;">
+                <a href="/view/evaluations/<%= evaluation.ID_EVALUATION %> ">Gå til denne evaluering</a>
+              </p>
+            </li>
+          <% }) %>
+        </ul>
     </div>
     <div class='footer'>
       <%- include('meta/footer') %>

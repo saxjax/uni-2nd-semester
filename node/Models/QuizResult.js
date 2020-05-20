@@ -45,16 +45,16 @@ class QuizResult extends SpacedRepetition {
    */
   async insertToDatabase() {
     const UUID = await this.getUuid();
-    const string = await this.makeInsertString(uuid);
-    this.query(`CUSTOM`, `INSERT INTO quiz_result (ID_USER, ID_EVALUATION, ID_QUIZ_QUESTION, ID_ATTEMPT, POINT, TOTAL, RESULT, USER_ANSWER) VALUES ${string}`);
+    const string = await this.makeInsertString(UUID);
+    this.query(`CUSTOM`, `INSERT INTO quiz_result (ID_USER_GROUP, ID_USER, ID_EVALUATION, ID_QUIZ_QUESTION, ID_ATTEMPT, POINT, TOTAL, RESULT, USER_ANSWER) VALUES ${string}`);
     return UUID;
   }
 
   /* Formål: Siden der modtages flere resultater i èt attempt, så  */
-  async makeInsertString(uuid) {
+  async makeInsertString(UUID) {
     let string = ``;
     this.questionArray.forEach((question) => {
-      string += `("${this.idUser}", "${question.idEvaluation}", "${question.idQuestion}", "${uuid[0].UUID}", "${this.points}", "${this.total}", "${question.correctAnswerGiven}", "${question.userAnswers}"),`;
+      string += `("${this.idGroup}","${this.idUser}", "${question.idEvaluation}", "${question.idQuestion}", "${UUID}", "${this.points}", "${this.total}", "${question.correctAnswerGiven}", "${question.userAnswers}"),`;
     });
 
     return string.slice(0, -1);

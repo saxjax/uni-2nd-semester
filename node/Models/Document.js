@@ -38,7 +38,6 @@ class Document extends Model {
                 + `AND ID_USER = "${this.idUser}" `
                 + `AND TITLE = "${this.title}"`;
     await this.query(`INSERT`, data);
-    console.log(UUID);
     return UUID;
   }
 }
