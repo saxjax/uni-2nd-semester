@@ -2,6 +2,7 @@
 
 const mysql = require(`mysql`);
 const SqlString = require(`sqlstring`);
+const main = require(`../../../main`);
 const { ParseSql } = require(`./ParseSQL`);
 
 /* Database objektet stiller alle manipulationer af databasen til raadighed for modeller med tilhorende database tabeller.
@@ -36,16 +37,18 @@ class Database {
     this.table = `database`;
     this.elementType = `test`;
     this.idColumnName = `ID_DATABASE`;
+
+    this.debug = main.settings.debug;
   }
 
   /* Formål: Naar der sker fejl ved brug af querymetoden vil denne metode give den nodvendige information med det samme.
    *         Desuden fungere dette som dokumentation af Database klassen som helhed.
-   * Input:  Metoden modtager et optional texton variabel, som defaulter til true hvis den ikke medsendes.
+   * Input:  -
    * Output: Metoden har som (primaer) sideeffect information om hvordan querymetoden bruges.
              Metoden outputter true, saa den kan testes i tests/backend/Database/test.Class.js
    */
-  info(texton = true) {
-    if (texton) {
+  info() {
+    if (this.debug) {
       console.log(`INFORMATION\n`
       + `\nEn query tager et "choice" som sit forste variabel, og "data" som sin anden variabel\n`
       + `\nFoRSTE PARAMETER kan vaere:\n`
@@ -78,12 +81,10 @@ class Database {
    *            "INSERT", "UPDATE", "DELETE" eller "HEAD".
    *         @data er de data der queries for, og har en struktur på "kolonnenavn = "værdi" ", hvor "" omkring værdi er væsentlige
    *            Et eksempel kunne være "ID_USER = "Hans" ". For nærmere information, se info() metoden.
-   *         @texton er en boolsk parameter der default til true, der aktivere fejlmeddelser
-   *             i kommando prompten. Under testning slås den fra ved at gives med som "false".
    * Output: Metoden outputter et array af objekter, hvor hvert objekt er en række fra MySQL databasen.
    */
-  async query(choice, data, texton = true) {
-    this.sql = this.inputParser(choice, data, texton);
+  async query(choice, data) {
+    this.sql = this.inputParser(choice, data);
     return new Promise((resolve, reject) => {
       this.connect.query(this.sql, (error, result) => {
         if (error) {
@@ -102,18 +103,17 @@ class Database {
   }
 
   /* Input:  Metoden modtager de valg som brugeren har lavet
-   *         Metoden indtager ogsaa texton parameter, som frakobles info() kald under test af catching af errors, men ellers altid er true.
    *        (`HEAD`,`COLUMN_NAME`) giver os column navne retur fra databasen
    * Output: Metoden outputter en brugbar SQL streng til brug i mysql
    * Formaal: Ved at standardisere maaden der skrives SQL kan andre modeller nemmere haandtere queries.
    *         Det oger laesbarheden af koden, samtidigt med at det ikke abstrahere for meget,
    *         da det er SQL kommandoer der bruges.
    */
-  inputParser(choice, data, texton = true) {
-    const valid = this.parserValidator(choice, data, texton);
+  inputParser(choice, data) {
+    const valid = this.parserValidator(choice, data);
     let sql = ``;
     if (!valid) {
-      if (texton) {
+      if (this.debug) {
         this.info();
       }
       throw (new Error(`ERROR: Query ikke oprettet korrekt.\
@@ -165,7 +165,7 @@ class Database {
    * Output: Metoden outputter true hvis baade choice og data folger det fastsatte format.
              Ellers false med information om hvordan metoden bruges
    */
-  parserValidator(choice, data, texton = true) {
+  parserValidator(choice, data) {
     let choiceValid = false;
     if (/^SELECT [A-Za-z0-9*]+/.test(choice)
        || /^INSERT$/.test(choice)
@@ -176,7 +176,7 @@ class Database {
        || /^CUSTOM$/.test(choice)) {
       choiceValid = true;
     }
-    else if (texton) {
+    else if (this.debug) {
       console.log(`\n\nChoice variablen er sat forkert. Har du husket at det skal vaere store bogstaver? Korrekt sat Mellemrum?\n\n`);
     }
 
@@ -198,7 +198,7 @@ class Database {
     else if (dataEmpty || dataRe.test(data)) {
       dataValid = true;
     }
-    else if (texton) {
+    else if (this.debug) {
       console.log(`\n\nData variablen er sat forkert. \
                    Har du husket at der skal vaere mellemrum mellem = tegnet og de forskellige operatorer?\
                    anforselstegn "" omkring strings?\n\n`);
