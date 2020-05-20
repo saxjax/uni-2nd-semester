@@ -11,16 +11,3 @@ module.exports.settings = settings;
 
 const Start = new MasterController(settings);
 Start.startServer();
-/*
-<% data.keywords.forEach((keyword) => { %>
-    <a href="/view/evaluations/<%= evaluation.idEvaluation %>">
-      <strong><%= evaluation.title %></strong>
-    </a>
-    <p><strong>Nøgleord: </strong> PT. ikke implementeret</p>
-  <% }); %>
-  <button class="btn btn-info">
-    <a href="/post/evaluation/<%= data.document[0].idDocument %>">
-        Opret Evaluering til Afsnit i <%= data.document[0].title %>
-    </a>
-  </button>
-  */
