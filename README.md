@@ -6,6 +6,8 @@ node main.js
 ## Test
 ### Alle test:
 node_modules\.bin\tape tests/**/test.*.js | node_modules\.bin\tap-spec
+### mac version
+./node_modules/.bin/tape tests/**/test.*.js | ./node_modules/.bin/tap-spec
 
 ### Backend test:
 node_modules\.bin\tape tests/backend/**/test.*.js | node_modules\.bin\tap-spec

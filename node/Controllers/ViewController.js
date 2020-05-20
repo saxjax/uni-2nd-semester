@@ -465,7 +465,7 @@ class ViewController {
 
 
   /* Formål: Viser siden til en evaluering som en bruger kan tage
-   * Input : Et request med et queryId samt en session med userId og groupId
+   * Input : Et request med et queryId med et evaluation-ID samt en session med userId og groupId
    * Output: En fremvisning af en evaluering og dens tilhørende opgaver så en bruger kan tage den
    */
   async viewEvaluationPage(req, res) {

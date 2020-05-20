@@ -20,6 +20,9 @@ class ErrorController {
       case `ER_PARSE_ERROR`: case `ER_BAD_FIELD_ERROR`:
         errorMsg = `Lad lige være med at bruge fjollede bogstaver.`;
         break;
+      case `USER_NOT_EXISTING`:
+        errorMsg = `De brugeroplysninger du har indtastet findes ikke, prøv igen!`;
+        break;
       default:
         errorMsg = `Whoops. Noget gik galt.\nPrøv igen senere.`;
         break;

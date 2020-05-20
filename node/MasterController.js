@@ -149,7 +149,7 @@ class MasterController {
     this.app.get(`/post/evaluation/document/:idQuery`,                 (req, res) => Show.postEvaluationDocumentPage(req, res));
     this.app.get(`/post/evaluation/section/:idQuery`,                 (req, res) => Show.postEvaluationSectionPage(req, res));
     this.app.get(`/post/questions`,                 (req, res) => Show.postQuestionsPage(req, res));
-    this.app.get(`/view/evaluations/:idQuery`,          (req, res) => Show.viewEvaluationPage(req, res));
+    this.app.get(`/view/evaluations/:idQuery`,          (req, res) => Show.viewEvaluationPage(req, res));// idQuery indeholder et evaluation id
     this.app.get(`/view/SpacedRepetition`,          (req, res) => Show.viewSpacedRepetitionPage(req, res));
     this.app.get(`/view/evaluationResult/:idAttempt`,          (req, res) => Show.viewEvaluationResultPage(req, res));
     this.app.get(`/view/evaluationProgress`,          (req, res) => Show.viewEvaluationProgress(req, res));
