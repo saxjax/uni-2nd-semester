@@ -2,7 +2,6 @@
 
 const mysql = require(`mysql`);
 const SqlString = require(`sqlstring`);
-
 const { ParseSql } = require(`./ParseSQL`);
 
 /* Database objektet stiller alle manipulationer af databasen til raadighed for modeller med tilhorende database tabeller.
@@ -88,10 +87,6 @@ class Database {
     return new Promise((resolve, reject) => {
       this.connect.query(this.sql, (error, result) => {
         if (error) {
-          if (texton) {
-            console.log(`Here at node/Database/Database.js-data the error \n${error.code}\n
-            and ${error.stack}`);
-          }
           reject(error);
         }
         else if (/SELECT/.test(choice)) { // Parseren er kun relevant når der hentes data fra databasen (eg. et select)

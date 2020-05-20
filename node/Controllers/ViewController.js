@@ -19,9 +19,9 @@ const { ProgressBar } = require(`../Models/ProgressBar`);
  */
 
 class ViewController {
-  constructor(root) {
+  constructor(settings) {
     this.name = `ViewController`;
-    this.root = root;
+    this.root = settings.root;
     this.ejs = ``;
   }
 
