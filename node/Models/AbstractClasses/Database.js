@@ -94,7 +94,7 @@ class Database {
           reject(error);
         }
         else if (/SELECT/.test(choice)) { // Parseren er kun relevant når der hentes data fra databasen (eg. et select)
-          const outputParser = new ParseSql(this.elementType);
+          const outputParser = new ParseSql();
           const parsedResult = outputParser.parseArrayOfObjects(result);
           resolve(parsedResult);
         }

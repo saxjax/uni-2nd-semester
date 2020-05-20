@@ -1,13 +1,14 @@
 /* eslint no-console: off */
 
 const { SpacedRepetition } = require(`./spacedRepetition`);
+const { ParseSql } = require(`../Models/AbstractClasses/ParseSQL`);
 
 class QuizResult extends SpacedRepetition {
   constructor(req) {
     super(req);
     this.elementType = `quiz_result`;
     this.table = `quiz_result`;
-    this.idDocument = `11111111-aaaa-bbbb-1111-111111111111`; // Hardcoded into every section - can be changed in the future
+    this.idDocument = `11111111-aaaa-bbbb-1111-111111111111`; // FIXME: Hardcoded into every section - can be changed in the future
 
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
@@ -45,40 +46,43 @@ class QuizResult extends SpacedRepetition {
    */
   async insertToDatabase() {
     const uuid = await this.getUuid();
-    const string = await this.makeInsertString(uuid);
-    this.query(`CUSTOM`, `INSERT INTO quiz_result (ID_USER_GROUP, ID_USER, ID_EVALUATION, ID_QUIZ_QUESTION, ID_ATTEMPT, POINT, TOTAL, RESULT, USER_ANSWER) VALUES ${string}`);
+    const string = this.makeInsertString(uuid);
+    await this.query(`CUSTOM`, `INSERT INTO quiz_result (ID_USER_GROUP, ID_USER, ID_EVALUATION, ID_QUIZ_QUESTION, ID_ATTEMPT, POINT, TOTAL, RESULT, USER_ANSWER) `
+                             + `VALUES ${string}`);
     return uuid[0].UUID;
   }
 
-  async makeInsertString(uuid) {
+  makeInsertString(uuid) {
     let string = ``;
     this.questionArray.forEach((question) => {
-      string += `("${this.idGroup}","${this.idUser}", "${question.idEvaluation}", "${question.idQuestion}", "${uuid[0].UUID}", "${this.points}", "${this.total}", "${question.correctAnswerGiven}", "${question.userAnswers}"),`;
+      string += `("${this.idGroup}", `
+               + `"${this.idUser}", `
+               + `"${question.idEvaluation}", `
+               + `"${question.idQuestion}", `
+               + `"${uuid[0].UUID}", `
+               + `"${this.points}", `
+               + `"${this.total}", `
+               + `"${question.correctAnswerGiven}", `
+               + `"${question.userAnswers}"),`;
     });
 
     return string.slice(0, -1);
   }
 
   async getUuid() {
-    const result = await this.query(`CUSTOM`, `SELECT UUID() AS UUID`);
-    return result;
+    return this.query(`CUSTOM`, `SELECT UUID() AS UUID`);
   }
 
   async getAllQuizQuestions() {
     const trueTable = this.table;
-    let queryResult;
 
     let string = ``;
     const idQuestions = await this.query(`SELECT ID_QUIZ_QUESTION`, `ID_ATTEMPT = "${this.idQuery}"`);
     string = this.createQueryString(idQuestions);
     this.table = `quiz_question`;
-    try {
-      queryResult = await this.query(`SELECT *`, `${string}`);
-    }
-    catch (error) {
-      console.log(error);
-    }
+    const queryResult = await this.query(`SELECT *`, `${string}`);
     this.table = trueTable;
+
     return queryResult;
   }
 
@@ -94,13 +98,11 @@ class QuizResult extends SpacedRepetition {
     return string;
   }
 
-  /* Formål: At kunne hente historisk quiz data ud fra et forsøgsID.
+  /* Formål: At kunne hente historisk quiz data ud fra et forsøgsID samt beregne næste repetationsdato
    * Input : forsøgsID og QuestionData
    * Output: Object med historisk quiz data for de omhandlede input quizzer.
    */
   async getHistoricQuizResultData(idAttempt, reqBodyQuestionArray) {
-    let resultData;
-    let recentAttempt;
     let stringforSQL = ``;
 
     // Lav en string til SQL så vi kan sortere udelukkende på de pågældende quizzer
@@ -108,12 +110,10 @@ class QuizResult extends SpacedRepetition {
     questionsArray.forEach((id) => {
       stringforSQL += `"${id}",`;
     });
-
-    stringforSQL = stringforSQL.slice(0, -1);
+    stringforSQL = stringforSQL.slice(0, -1); // Fjerner det sidste komma
 
     // Hent historisk data omkring quizzerne for den pågældende bruger
-    try {
-      resultData = await this.query(`CUSTOM`, `SELECT QR1.ID_EVALUATION,
+    const resultData = await this.query(`CUSTOM`, `SELECT QR1.ID_EVALUATION,
                                                QR1.ID_QUIZ_QUESTION,
                                                QR1.ID_USER,
                                                (SELECT QR2.RESULT FROM quiz_result QR2 WHERE QR1.ID_QUIZ_QUESTION = QR2.ID_QUIZ_QUESTION AND QR1.ID_USER = QR2.ID_USER ORDER BY QR2.CREATED_DATE DESC limit 1 ) as RECENT_RESULT,
@@ -125,24 +125,18 @@ class QuizResult extends SpacedRepetition {
                                                FROM p2.quiz_result QR1
                                                WHERE QR1.ID_USER = "${this.idUser}" AND QR1.ID_QUIZ_QUESTION in (${stringforSQL})
                                                GROUP BY QR1.ID_USER,QR1.ID_QUIZ_QUESTION;`);
-    }
-    catch (error) {
-      console.log(error);
-    }
-
     // Hent data omkring de sidste quiz forsøg for den pågældende bruger.
     // KAN FORMENTLIG SLETTES, DA OVENSTÅENDE QUERY HAR DENNE INFORMATION ALLEREDE.
-    try {
-      recentAttempt = await this.query(`CUSTOM`, `SELECT ID_QUIZ_QUESTION,RESULT,CREATED_DATE 
+    const recentAttempt = await this.query(`CUSTOM`, `SELECT ID_QUIZ_QUESTION,RESULT,CREATED_DATE 
                                          FROM quiz_result WHERE ID_ATTEMPT = "${idAttempt}"
                                          ORDER BY CREATED_DATE DESC`);
-    }
-    catch (error) {
-      console.log(error);
-    }
+    const Parser = new ParseSql();
+    const parsedResultData = Parser.parseQuizResultsForSpacedRepetition(resultData);
+    parsedResultData.forEach((quizResult) => {
+      quizResult.nextRepetition = this.calculateNextRepetitionTimeStampForEvaluation(quizResult); // eslint-disable-line no-param-reassign
+    });
 
-    const result = { resultData, recentAttempt };
-    return result;
+    return { resultData: parsedResultData, recentAttempt };
   }
 }
 
