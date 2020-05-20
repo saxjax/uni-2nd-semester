@@ -191,20 +191,67 @@ class CreateController extends ErrorController {
     }
   ]
   */
+  /* FIXME:brug funktionen i ParseSQL :parseQuizResultsForSpacedRepetition() til at parse quizResultData
+  * Det kræver at der oprettes en instans af ParseSQL eller en klasse som extender ParseSQL
+  * udkomenter denne funktion og fix problemet med at oprette Parser i linie 199
+  */
+  //   async createAnswers(req, res) {
+  //     const QR = new QuizResult(req);
+  //     const Parser = new ParseSQL(``);
+  //     let idAttempt;
+  //     let quizResultData;
+  //     try {
+  //       idAttempt = await QR.insertToDatabase();
+  //       quizResultData = await QR.getHistoricQuizResultData(idAttempt, req.body.questionsArray);
+  //       quizResultData = Parser.parseQuizResultsForSpacedRepetition(quizResultData);
+
+  //       quizResultData.resultData.forEach((quizResult) => {
+  //         quizResult.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
+  //       });
+  //     }
+  //     catch (error) {
+  //       console.log(error);
+  //       res.redirect(503, `/dbdown`);
+  //     }
+
+  //     try {
+  //       await QR.insertToDatabaseSpacedRepetition(quizResultData.resultData);
+  //       res.send({ newURL: `/view/evaluationResult/${idAttempt}`, quizResultData });
+  //     }
+  //     catch (error) {
+  //       console.log(error);
+  //       res.redirect(204, `/dbdown`);
+  //     }
+  //     QR.connect.end();
+  //   }
+  // }
+
   async createAnswers(req, res) {
     const QR = new QuizResult(req);
-    const Parser = new ParseSQL(``);
+    // const Parser = new ParseSQL(``);
     let idAttempt;
     let quizResultData;
     try {
       idAttempt = await QR.insertToDatabase();
       quizResultData = await QR.getHistoricQuizResultData(idAttempt, req.body.questionsArray);
-      quizResultData = Parser.parseQuizResultsForSpacedRepetition(quizResultData);
-      console.log(quizResultData);
+      // quizResultData = Parser.parseQuizResultsForSpacedRepetition(quizResultData);
+
 
       quizResultData.resultData.forEach((quizResult) => {
-        quizResult.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
+        const result = quizResult;
+        result.idQuizQuestion = quizResult.ID_QUIZ_QUESTION;
+        result.idUser = quizResult.ID_USER;
+        result.recentResult = quizResult.RECENT_RESULT;
+        result.recentAttemptDate = quizResult.RECENT_ATTEMPT_DATE;
+        result.nextRepetition = quizResult.NEXT_REPITITION;
+        result.repetitions = quizResult.TOTAL;
+        result.failedAttempts = quizResult.FAILED_ATTEMPTS;
+        result.successAttempts = quizResult.SUCESS_ATTEMPTS;
+        // result.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
+
+        result.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
       });
+      console.log(quizResultData);
     }
     catch (error) {
       console.log(error);
