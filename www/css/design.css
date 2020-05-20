@@ -107,3 +107,7 @@ nav {text-align: center;}
     font-weight: bold;
     color:cornsilk;
  }
+
+ button > a{
+     color: white;
+ }
