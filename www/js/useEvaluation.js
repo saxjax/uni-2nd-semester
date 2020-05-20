@@ -39,6 +39,7 @@ async function submitAnswers() {
     headers: { "Content-Type": `application/json` },
   });
   const responseJSON = await response.json();
+
   if (responseJSON.error) {
     alert(responseJSON.error);
   }
