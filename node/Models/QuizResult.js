@@ -41,16 +41,16 @@ class QuizResult extends SpacedRepetition {
   /* Formål: At kunne oprette den givne model i databasen ud fra posted data fra en form.
              Der bliver desuden automatisk oprettet de forskellige dependencies/foreign keys som objektet tilhører.
    * Input : Et objekt oprettet med et request med postdata i body samt user/group data i session
-   * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
+   * Output: UUID'et som er blevet oprettet i databasen.
    */
   async insertToDatabase() {
-    const uuid = await this.getUuid();
-    console.log(this.reqBody);
+    const UUID = await this.getUuid();
     const string = await this.makeInsertString(uuid);
     this.query(`CUSTOM`, `INSERT INTO quiz_result (ID_USER, ID_EVALUATION, ID_QUIZ_QUESTION, ID_ATTEMPT, POINT, TOTAL, RESULT, USER_ANSWER) VALUES ${string}`);
-    return uuid[0].UUID;
+    return UUID;
   }
 
+  /* Formål: Siden der modtages flere resultater i èt attempt, så  */
   async makeInsertString(uuid) {
     let string = ``;
     this.questionArray.forEach((question) => {
@@ -58,11 +58,6 @@ class QuizResult extends SpacedRepetition {
     });
 
     return string.slice(0, -1);
-  }
-
-  async getUuid() {
-    const result = await this.query(`CUSTOM`, `SELECT UUID() AS UUID`);
-    return result;
   }
 
   async getAllQuizQuestions() {

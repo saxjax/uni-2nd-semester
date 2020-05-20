@@ -58,8 +58,8 @@ class CreateController extends ErrorController {
   async createDocument(req, res) {
     const D = new Document(req);
     try {
-      const document = await D.insertToDatabase();
-      res.redirect(`/view/sectionsAndEvaluations/document/${document[0].idDocument}`);
+      const idQuery = await D.insertToDatabase();
+      res.redirect(`/view/sectionsAndEvaluations/document/${idQuery}`);
     }
     catch (error) {
       const errorMsg = this.produceErrorMessageToUser(error);

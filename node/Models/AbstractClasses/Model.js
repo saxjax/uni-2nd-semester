@@ -18,6 +18,16 @@ class Model extends Database {
     this.idColumnUser = `ID_USER`;
   }
 
+  /* Formål: Opretter et unikt UUID som hentes fra databasen.
+   *         Dette gøres for at sikre at der altid bruges unikke ID'er.
+   * Input : Intet.
+   * Output: En string med et UUID.
+   */
+  async getUuid() {
+    const uuidArr = await this.query(`CUSTOM`, `SELECT UUID() AS UUID`);
+    return uuidArr[0].UUID;
+  }
+
   /* Formål: Alle modeller konstrueres ud fra den givne session brugeren er en del af, samt
    *         de parametre der er medsendt hvis det er et ikke-POST request (params) eller,
    *         i tilfælde af et POST request, så er objektet i den body der medsendes.

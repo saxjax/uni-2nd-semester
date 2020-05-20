@@ -264,7 +264,6 @@ class Database {
     for (let i = 0; i < dataArr.values.length; i++) {
       dataArr[i] = SqlString.escape(dataArr[i]);
     }
-
     return dataArr;
   }
 }
