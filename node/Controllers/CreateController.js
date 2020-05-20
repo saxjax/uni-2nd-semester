@@ -2,7 +2,6 @@
 /* eslint no-console: off */
 const { Group } = require(`../Models/Group`);
 const { User } = require(`../Models/User`);
-const { ParseSQL } = require(`../Models/AbstractClasses/ParseSQL`);
 const { Document } = require(`../Models/Document`);
 const { Section } = require(`../Models/Section`);
 const { Evaluation } = require(`../Models/Evaluation`);

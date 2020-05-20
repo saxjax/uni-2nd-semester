@@ -2,13 +2,16 @@
 /* eslint no-console: off */
 const { User } = require(`../Models/User`);
 const { Group } = require(`../Models/Group`);
+const { ErrorController } = require(`./AbstractControllers/ErrorController`);
+
 
 /* Controllere for sessions
  * Omdirigere altid til `/` (som det står nu)
  */
 
-class SessionController {
+class SessionController extends ErrorController {
   constructor(root) {
+    super();
     this.name = `SessionController`;
     this.root = root;
   }
@@ -19,28 +22,17 @@ class SessionController {
    */
   async userSession(req, res) {
     const currentUser = new User(req);
-    let data;
-    try{
-      data = await currentUser.loginValid();
-      console.log(`data:`);
-      console.log(data[0]);
-    }
-    catch{
-      currentUser.connect.end();
-      res.redirect(204, `/dbdown`);
-    }
-    
-    if (data[0]) {
-      req.session.idUser = data[0].idUser;
-      req.session.loggedIn = true;
-      req.session.username = data[0].username;
-      currentUser.connect.end();
+    try {
+      await currentUser.loginValid();
       res.redirect(`/access/view/groups`);
     }
-    else { // Hvis queriet returnere et tomt array (aka. ingen user fra loginValid())
-      currentUser.connect.end();
-      res.redirect(`/access/register`); // FIXME: Statuskode indsættes
+    catch (error) {
+      const errorMsg = this.produceErrorMessageToUser(error);
+      res.send({ errorMsg });
     }
+
+
+    currentUser.connect.end();
   }
 
   /* Formål: At oprette den session som bestemmer hvilken gruppe brugeren er tilkoblet.
