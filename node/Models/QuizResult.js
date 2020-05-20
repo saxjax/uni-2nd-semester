@@ -8,7 +8,7 @@ class QuizResult extends SpacedRepetition {
     super(req);
     this.elementType = `quiz_result`;
     this.table = `quiz_result`;
-    this.idDocument = `11111111-aaaa-bbbb-1111-111111111111`; // Hardcoded into every section - can be changed in the future
+    this.idDocument = `11111111-aaaa-bbbb-1111-111111111111`; // FIXME: Hardcoded into every section - can be changed in the future
 
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
@@ -46,40 +46,43 @@ class QuizResult extends SpacedRepetition {
    */
   async insertToDatabase() {
     const uuid = await this.getUuid();
-    const string = await this.makeInsertString(uuid);
-    this.query(`CUSTOM`, `INSERT INTO quiz_result (ID_USER_GROUP, ID_USER, ID_EVALUATION, ID_QUIZ_QUESTION, ID_ATTEMPT, POINT, TOTAL, RESULT, USER_ANSWER) VALUES ${string}`);
+    const string = this.makeInsertString(uuid);
+    await this.query(`CUSTOM`, `INSERT INTO quiz_result (ID_USER_GROUP, ID_USER, ID_EVALUATION, ID_QUIZ_QUESTION, ID_ATTEMPT, POINT, TOTAL, RESULT, USER_ANSWER) `
+                             + `VALUES ${string}`);
     return uuid[0].UUID;
   }
 
-  async makeInsertString(uuid) {
+  makeInsertString(uuid) {
     let string = ``;
     this.questionArray.forEach((question) => {
-      string += `("${this.idGroup}","${this.idUser}", "${question.idEvaluation}", "${question.idQuestion}", "${uuid[0].UUID}", "${this.points}", "${this.total}", "${question.correctAnswerGiven}", "${question.userAnswers}"),`;
+      string += `("${this.idGroup}", `
+               + `"${this.idUser}", `
+               + `"${question.idEvaluation}", `
+               + `"${question.idQuestion}", `
+               + `"${uuid[0].UUID}", `
+               + `"${this.points}", `
+               + `"${this.total}", `
+               + `"${question.correctAnswerGiven}", `
+               + `"${question.userAnswers}"),`;
     });
 
     return string.slice(0, -1);
   }
 
   async getUuid() {
-    const result = await this.query(`CUSTOM`, `SELECT UUID() AS UUID`);
-    return result;
+    return this.query(`CUSTOM`, `SELECT UUID() AS UUID`);
   }
 
   async getAllQuizQuestions() {
     const trueTable = this.table;
-    let queryResult;
 
     let string = ``;
     const idQuestions = await this.query(`SELECT ID_QUIZ_QUESTION`, `ID_ATTEMPT = "${this.idQuery}"`);
     string = this.createQueryString(idQuestions);
     this.table = `quiz_question`;
-    try {
-      queryResult = await this.query(`SELECT *`, `${string}`);
-    }
-    catch (error) {
-      console.log(error);
-    }
+    const queryResult = await this.query(`SELECT *`, `${string}`);
     this.table = trueTable;
+
     return queryResult;
   }
 
