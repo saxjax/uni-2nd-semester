@@ -94,12 +94,32 @@ class Model extends Database {
   async getThisGroupData() {
     const trueObjectTable = this.table;
     this.table = `user_group`;
-    const data = this.query(`SELECT *`, `${this.idColumnGroup} = "${this.idGroup}"`)
+
+    // let data = await this.query(`SELECT *`, `${this.idColumnGroup} = "${this.idGroup}"`);
+    // console.log(data[0]);
+    // console.log(Object.keys(data[0]).length);
+
+    // if (Object.keys(data[0]).length) {
+    //   this.req.session.idGroup = data[0].idGroup;
+    //   this.req.session.groupname = data[0].name;
+    // }
+    // else {
+    //   data = undefined;
+    // }
+    // this.table = trueObjectTable;
+    // return data;
+    // else {
+    //   // this.res.redirect(`/access/view/groups`);
+    //   throw new Error(`GROUP_NOT_EXISTING: getThisGroupData() did not find any Group matching ${this.idColumnGroup} = ${this.idGroup} in SQL-Database`);
+    // }
+
+    const data = await this.query(`SELECT *`, `${this.idColumnGroup} = "${this.idGroup}"`)
       .then((result) => result)
       .catch((error) => error);
     this.table = trueObjectTable;
     return data;
   }
+
 
   /* Formål: At kunne tilgå data om den user man er såsom ens username med videre.
   * Input : Et objekt der er oprettet med et idUser i session

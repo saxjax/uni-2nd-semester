@@ -26,7 +26,7 @@ class Database {
    */
   constructor() {
     this.settings = serverSettings;
-
+    // console.log(this.settings.root);
     this.database = `p2`;
     this.dbConfig = {
       host: `213.32.247.201`,

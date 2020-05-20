@@ -40,17 +40,33 @@ class SessionController extends ErrorController {
    */
   async groupSession(req, res) {
     const G = new Group(req);
-    G.idGroup = req.params.idQuery;
+    // G.idGroup = req.params.idQuery;
+    // const data = await G.getThisGroupData();
+    // if (data) {
+    //   console.log(`got Data`);
+    //   res.redirect(`/`);
+    // }
+    // else {
+    //   console.log(`NO Data`);
+
+    //   res.redirect(`/access/view/groups`); // FIXME: Statuskode indsættes
+    // }
+
+    // G.connect.end();
+
+
     const data = await G.getThisGroupData();
     if (data) {
+      console.log(data);
       req.session.idGroup = data[0].idGroup;
       req.session.groupname = data[0].name;
       G.connect.end();
+      // res.redirect(`/access/view/groups`);
       res.redirect(`/`);
     }
     else {                     // FIXME: Dokumentation mangler - hvornår rammer man denne else-clause?
       G.connect.end();
-      res.redirect(`/access/view/groups`); // FIXME: Statuskode indsættes
+      // res.redirect(`/access/view/groups`); // FIXME: Statuskode indsættes
     }
   }
 
