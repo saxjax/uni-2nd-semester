@@ -63,9 +63,7 @@ class Section extends Model {
    * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
-    // Get UUID for section
-    const selectUUID = await this.query(`CUSTOM`, `SELECT UUID() as UUID`);
-    this.idSection = selectUUID[0].UUID;
+    this.idSection = await this.getUuid();
     // Insert section to database
     const data = `ID_DOCUMENT_SECTION = "${this.idSection}" AND `
                + `SECTION_TITLE = "${this.title}" AND `

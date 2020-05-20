@@ -33,8 +33,8 @@ class Group extends Model {
    * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
-    await this.query(`INSERT`, `NAME = "${this.name}"`);
-    const newGroup = await this.query(`SELECT *`, `NAME = "${this.name}"`);
+    this.idGroup = await this.getUuid();
+    await this.query(`INSERT`, `NAME = "${this.name}" AND ID_GROUP = "${this.idGroup}"`);
 
     this.table = `user`;
     for (let i = 0; i < this.members.length; i++) {
