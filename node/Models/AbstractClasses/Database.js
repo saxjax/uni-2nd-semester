@@ -2,6 +2,7 @@
 
 const mysql = require(`mysql`);
 const SqlString = require(`sqlstring`);
+const fs = require(`fs`);
 const { ParseSql } = require(`./ParseSQL`);
 // const main = require(`../../../main`);
 
@@ -29,7 +30,7 @@ class Database {
       host: `213.32.247.201`,
       user: `ADMIN`,
       port: `3306`,
-      password: `DGzU+w9tkW9Ms&j_7-Ec+u@26Wz?P*5L`, // fs.readFileSync(` ./node/Models/AbstractClasses/password.txt`, `utf8`), // `./node/Models/AbstractClasses/password.txt `, `utf8`),
+      password: fs.readFileSync(`./node/Models/AbstractClasses/password.txt`, `utf8`), // `./node/Models/AbstractClasses/password.txt `, `utf8`),
       database: this.database,
     };
     this.connect = mysql.createConnection(this.dbConfig);

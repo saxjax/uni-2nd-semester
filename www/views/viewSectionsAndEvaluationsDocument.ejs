@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%- include('meta/header') %> 
+    <%- include('meta/header') %>
     <link href="/css/design.css" rel="stylesheet">
+    <script defer src="/js/viewSectionsAndEvaluationsDocument.js"></script>
     <title>GroupHub | Document </title>
   </head>
   <body>
@@ -11,7 +12,11 @@
       <div class="row">
         <div class="col-6">
           <h2> <%= data.document[0].title %>'s Afsnit </h2>
-          <div class="leftside">  
+          
+          <div class="leftside">
+            <button class="btn btn-info">
+              <a href="/post/section/<%= data.document[0].idDocument %>"> Opret Afsnit til <%= data.document[0].title %> </a>
+            </button>  
             <br>
             <% data.sections.forEach((section, index) => { %>
               <br>
@@ -32,12 +37,15 @@
                   Opret Evaluering til <%= section.title %> 
                 </a>
               </button>
+              <button class="removeKeywordBtn btn btn-danger">
+                <a onclick="DeleteSection(`<%= section.idSection %>`)"  style="color: cornsilk;" >
+                  Slet Afsnit
+                </a>
+              </button>
               <br>
             <% }); %>
             <br>
-            <button class="btn btn-info">
-              <a href="/post/section/<%= data.document[0].idDocument %>"> Opret Afsnit til <%= data.document[0].title %> </a>
-            </button>
+            
           </div>
         </div>
         <div class="col-6">
