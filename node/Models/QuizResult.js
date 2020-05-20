@@ -45,16 +45,15 @@ class QuizResult extends SpacedRepetition {
    */
   async insertToDatabase() {
     const uuid = await this.getUuid();
-    console.log(this.reqBody);
     const string = await this.makeInsertString(uuid);
-    this.query(`CUSTOM`, `INSERT INTO quiz_result (ID_USER, ID_EVALUATION, ID_QUIZ_QUESTION, ID_ATTEMPT, POINT, TOTAL, RESULT, USER_ANSWER) VALUES ${string}`);
+    this.query(`CUSTOM`, `INSERT INTO quiz_result (ID_USER_GROUP, ID_USER, ID_EVALUATION, ID_QUIZ_QUESTION, ID_ATTEMPT, POINT, TOTAL, RESULT, USER_ANSWER) VALUES ${string}`);
     return uuid[0].UUID;
   }
 
   async makeInsertString(uuid) {
     let string = ``;
     this.questionArray.forEach((question) => {
-      string += `("${this.idUser}", "${question.idEvaluation}", "${question.idQuestion}", "${uuid[0].UUID}", "${this.points}", "${this.total}", "${question.correctAnswerGiven}", "${question.userAnswers}"),`;
+      string += `("${this.idGroup}","${this.idUser}", "${question.idEvaluation}", "${question.idQuestion}", "${uuid[0].UUID}", "${this.points}", "${this.total}", "${question.correctAnswerGiven}", "${question.userAnswers}"),`;
     });
 
     return string.slice(0, -1);
