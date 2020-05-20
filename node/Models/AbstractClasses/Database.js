@@ -2,8 +2,8 @@
 
 const mysql = require(`mysql`);
 const SqlString = require(`sqlstring`);
-const main = require(`../../../main`);
 const { ParseSql } = require(`./ParseSQL`);
+// const main = require(`../../../main`);
 
 /* Database objektet stiller alle manipulationer af databasen til raadighed for modeller med tilhorende database tabeller.
  * Databasen er designet efter et REST princip, som betyder at databasen skal kunne:
@@ -38,7 +38,7 @@ class Database {
     this.elementType = `test`;
     this.idColumnName = `ID_DATABASE`;
 
-    this.debug = main.settings.debug;
+    this.debug = true;// main.settings.debug;
   }
 
   /* Formål: Naar der sker fejl ved brug af querymetoden vil denne metode give den nodvendige information med det samme.
