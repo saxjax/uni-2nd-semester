@@ -130,7 +130,7 @@ class QuizResult extends SpacedRepetition {
     const Parser = new ParseSql();
     const parsedResultData = Parser.parseQuizResultsForSpacedRepetition(resultData);
     parsedResultData.forEach((quizResult) => {
-      quizResult.nextRepetition = this.calculateNextRepetitionTimeStampForEvaluation(quizResult);
+      quizResult.nextRepetition = this.calculateNextRepetitionTimeStampForEvaluation(quizResult); // eslint-disable-line no-param-reassign
     });
 
     return { resultData: parsedResultData, recentAttempt };
