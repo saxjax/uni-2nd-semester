@@ -250,7 +250,6 @@ class CreateController extends ErrorController {
 
         result.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
       });
-      console.log(quizResultData);
     }
     catch (error) {
       console.log(error);
