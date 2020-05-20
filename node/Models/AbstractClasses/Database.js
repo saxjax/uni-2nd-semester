@@ -3,7 +3,8 @@
 const mysql = require(`mysql`);
 const SqlString = require(`sqlstring`);
 const { ParseSql } = require(`./ParseSQL`);
-// const main = require(`../../../main`);
+const { serverSettings } = require(`../../../serverSettings`);
+const fs = require(`fs`);
 
 /* Database objektet stiller alle manipulationer af databasen til raadighed for modeller med tilhorende database tabeller.
  * Databasen er designet efter et REST princip, som betyder at databasen skal kunne:
@@ -24,12 +25,14 @@ class Database {
    * Output: Extender alle disse variable til modellerne.
    */
   constructor() {
+    this.settings = serverSettings;
+
     this.database = `p2`;
     this.dbConfig = {
       host: `213.32.247.201`,
       user: `ADMIN`,
       port: `3306`,
-      password: `DGzU+w9tkW9Ms&j_7-Ec+u@26Wz?P*5L`, // fs.readFileSync(` ./node/Models/AbstractClasses/password.txt`, `utf8`), // `./node/Models/AbstractClasses/password.txt `, `utf8`),
+      password: fs.readFileSync(`${this.settings.root}/node/Models/AbstractClasses/password.txt`, `utf8`),
       database: this.database,
     };
     this.connect = mysql.createConnection(this.dbConfig);
@@ -38,7 +41,7 @@ class Database {
     this.elementType = `test`;
     this.idColumnName = `ID_DATABASE`;
 
-    this.debug = true;// main.settings.debug;
+    this.debug = this.settings.debug;
   }
 
   /* Formål: Naar der sker fejl ved brug af querymetoden vil denne metode give den nodvendige information med det samme.
