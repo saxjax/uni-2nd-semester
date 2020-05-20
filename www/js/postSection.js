@@ -25,17 +25,39 @@ class Section {
    * Output: Intet - men efter brugerens sections er oprettet i databasen videredirigeres brugeren til en URL, som er bestemt fra serversiden
    */
 document.getElementById(`submitBtn`).addEventListener(`click`, async () => {
-  const formContainer = document.getElementById(`formContainer`);
-  const response = await fetch(`/post/section`, {
-    method: `POST`,
-    body: JSON.stringify(new Section(formContainer)),
-    headers: { "Content-Type": `application/json` },
-  });
-  const responseJSON = await response.json();
-  if (responseJSON.error) {
-    alert(responseJSON.error);
+  if (sectionTitleIsUnique()) {
+    const formContainer = document.getElementById(`formContainer`);
+    const response = await fetch(`/post/section`, {
+      method: `POST`,
+      body: JSON.stringify(new Section(formContainer)),
+      headers: { "Content-Type": `application/json` },
+    });
+    const responseJSON = await response.json();
+    if (responseJSON.error) {
+      alert(responseJSON.error);
+    }
+    else {
+      window.location.replace(responseJSON.url);
+    }
   }
   else {
-    window.location.replace(responseJSON.url);
+    alert(`Der findes allerede en sektion med denne titel.`);
   }
 });
+
+/* Formål: At tjekke for om en sektion allerede er oprettet med denne titel.
+   * Input : -
+   * Output: en true eller false værdi, alt efter om navnet er unikt eller ej.
+   */
+function sectionTitleIsUnique() {
+  const titleField = document.getElementById(`title`);
+  let unique = true;
+  let i = 0;
+  while (unique === true && i < data.reservedSections.length) {
+    if (titleField.value === data.reservedSections[i].title) {
+      unique = false;
+    }
+    i++;
+  }
+  return unique;
+}
