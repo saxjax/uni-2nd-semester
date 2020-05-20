@@ -10,6 +10,7 @@ const { ViewController } = require(`./Controllers/ViewController`);
 const { AccessController } = require(`./Controllers/AccessController`);
 const { SessionController } = require(`./Controllers/SessionController`);
 const { CreateController } = require(`./Controllers/CreateController`);
+const { DeleteController } = require(`./Controllers/DeleteController`);
 const { TestController } = require(`./Controllers/TestController`);
 const { Database } = require(`./Models/AbstractClasses/Database`);
 const pad = require(`./HelperFunctions/Pad`);
@@ -48,6 +49,7 @@ class MasterController {
     this.accessPatterns();
     this.viewPatterns();
     this.createPatterns();
+    this.deletePatterns();
     if (this.debug) {
       this.testPatterns();
     }
@@ -199,7 +201,8 @@ class MasterController {
    * TODO: De udkommenterede (//) er ikke implementeret endnu
    */
   deletePatterns() {
-    // const Deletter = new DeletController(this.root);
+    const Deletter = new DeleteController(this.root);
+    this.app.delete(`/delete/evaluation/section/:idQuery`, (req, res) => Deletter.DeleteSection(req, res));
   }
 
   /* Formål: En "catch all" for alle de tests der ønskes at blive lavet, så de ikke "clutter" de andre URL'er til.
