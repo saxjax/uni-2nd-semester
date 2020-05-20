@@ -46,7 +46,7 @@ class SpacedRepetition extends Model {
     now = now.toISOString().slice(0, 19).replace(`T`, ` `);// konverterer en JS Date til SQL format
 
 
-    // FIXME: SKAL VI HAVE DEN HER TRY CATCH BLOK VÆK? 
+    // FIXME: SKAL VI HAVE DEN HER TRY CATCH BLOK VÆK?
     try {
       this.table = `repetition_task`;// sætter table til repetition_task for en sikkerhedsskyld, da denne funktion kan kaldes fra andre klasser
       queryResult = await this.query(`SELECT ID_QUIZ_QUESTION`, `REPETITION_DATE <= "${now}" 
@@ -162,30 +162,29 @@ class SpacedRepetition extends Model {
   calculateNextRepetitionTimeStampForEvaluation(evaluationResult) {
     let newRepTimestamp = 0;
     let rightWrongRatio = 0;
-    let setMinTimestamp = true; // hvis setMinTimestamp er sat til TRUE, betyder det, at brugeren skal have evalueringsopgaven indenfor de næste 24 timer, hvis FALSE skal evalueringsopgaven repeteres senere.
+    let setMinTimestamp = true; // hvis setMinTimestamp er sat til TRUE, betyder det, at brugeren skal have evalueringsopgaven indenfor de næste 24 timer
 
-    if (evaluationResult.recentResult === `true`) { // er der blevet svaret korrekt på spørgsmålet?
-      if (evaluationResult.repetitions > 1) { // er evalueringsopgaven blevet taget før?
-        if (evaluationResult.failedAttempts > 0) { // er evalueringsopgaven svaret forkert før?
-          rightWrongRatio = (evaluationResult.successAttempts / evaluationResult.failedAttempts); // udregn rigtig-forkert ratio
-          this.repetitionScalar =  rightWrongRatio > 1 ? rightWrongRatio : 1;// sæt repetitionsinterval til mindst 1, ellers = rightWrongRatio
-        }
-        else { // hvis den IKKE er blevet svaret forkert på før OG du svarer rigtigt, sæt repetitionsintervallet = antal rigtige forsøg
-          this.repetitionScalar = evaluationResult.successAttempts;
-        }
-      }
-      else { // der er svaret rigtet OG det er første gang evalueringesopgaven er besvaret.
-        this.repetitionScalar = 2;
-      }
-
-      setMinTimestamp = false; // hvis der svares rigtigt så skal timestampet ALTID beregnes til false
-    }
-
-    else { // hvis der svares forkert på evalueringen sættes setMinTimestamp til true
+    if (evaluationResult.recentResult === `false`) { // hvis der svares forkert på opgaven
       setMinTimestamp = true;
     }
+    else if (evaluationResult.repetitions < 2) { // du svarer rigtigt og evalueringen er IKKE taget før
+      this.repetitionScalar = 2;
+      setMinTimestamp = false;
+    }
+    else if (evaluationResult.failedAttempts > 0) { // du svarer rigtigt, men evalueringen er taget før OG der er blevet svaret forkert før
+      rightWrongRatio = (evaluationResult.successAttempts / evaluationResult.failedAttempts);
+      this.repetitionScalar =  rightWrongRatio > 1 ? rightWrongRatio : 1;
+      setMinTimestamp = false;
+    }
+    else if (evaluationResult.failedAttempts < 1) { // du svarer rigtigt, evalueringen er taget før, men du har aldrig svaret forkert før
+      this.repetitionScalar = evaluationResult.successAttempts;
+      setMinTimestamp = false;
+    }
+    else {
+      setMinTimestamp = true; // hvis intet kan beregnes, sæt da minTimestamp til true
+    }
 
-    newRepTimestamp = this.calculateTimeStamp(setMinTimestamp); // beregn tidsstempel
+    newRepTimestamp = this.calculateTimeStamp(setMinTimestamp); // beregn tidsspunkt
 
     return newRepTimestamp;
   }
@@ -214,38 +213,69 @@ module.exports = {
 };
 
 
+// NY VERSION
+// function calculateNextRepetitionTimeStampForEvaluation(evaluationResult) {
+//   let newRepTimestamp = 0;
+//   let rightWrongRatio = 0;
+//   let setMinTimestamp = true; // hvis setMinTimestamp er sat til TRUE, betyder det, at brugeren skal have evalueringsopgaven indenfor de næste 24 timer
+
+//   if (evaluationResult.recentResult === `false`) { // hvis der svares forkert på opgaven
+//     setMinTimestamp = true;
+//   }
+//   else if (evaluationResult.repetitions < 2) { // du svarer rigtigt og evalueringen er IKKE taget før
+//     this.repetitionScalar = 2;
+//     setMinTimestamp = false;
+//   }
+//   else if (evaluationResult.failedAttempts > 0) { // du svarer rigtigt, men evalueringen er taget før OG der er blevet svaret forkert før
+//     rightWrongRatio = (evaluationResult.successAttempts / evaluationResult.failedAttempts);
+//     this.repetitionScalar =  rightWrongRatio > 1 ? rightWrongRatio : 1;
+//     setMinTimestamp = false;
+//   }
+//   else if (evaluationResult.failedAttempts < 1) { // du svarer rigtigt, evalueringen er taget før, men du har aldrig svaret forkert før
+//     this.repetitionScalar = evaluationResult.successAttempts;
+//     setMinTimestamp = false;
+//   }
+//   else {
+//     setMinTimestamp = true; // hvis intet kan beregnes, sæt da minTimestamp til true
+//   }
+
+//   console.log(setMinTimestamp);
+//   console.log(`repetitionScarlar`, repetitionScalar);
+
+//   newRepTimestamp = calculateTimeStamp(setMinTimestamp); // beregn tidsspunkt
+
+//   return newRepTimestamp;
+// }
 
 
+// GAMMEL VERSION
 // calculateNextRepetitionTimeStampForEvaluation(evaluationResult) {
 //   let newRepTimestamp = 0;
 //   let rightWrongRatio = 0;
 //   let setMinTimestamp = true; // hvis setMinTimestamp er sat til TRUE, betyder det, at brugeren skal have evalueringsopgaven indenfor de næste 24 timer, hvis FALSE skal evalueringsopgaven repeteres senere.
 
-//   if (evaluationResult.recentResult === `false`) { // hvis der svares forkert på opgaven
-//       setMinTimestamp = true;
-
-//   } else if (evaluationResult.repetitions < 2){ // du svarer rigtigt og evalueringen er IKKE taget før
+//   if (evaluationResult.recentResult === `true`) { // er der blevet svaret korrekt på spørgsmålet?
+//     if (evaluationResult.repetitions > 1) { // er evalueringsopgaven blevet taget før?
+//       if (evaluationResult.failedAttempts > 0) { // er evalueringsopgaven svaret forkert før?
+//         rightWrongRatio = (evaluationResult.successAttempts / evaluationResult.failedAttempts); // udregn rigtig-forkert ratio
+//         this.repetitionScalar =  rightWrongRatio > 1 ? rightWrongRatio : 1;// sæt repetitionsinterval til mindst 1, ellers = rightWrongRatio
+//       }
+//       else { // hvis den IKKE er blevet svaret forkert på før OG du svarer rigtigt, sæt repetitionsintervallet = antal rigtige forsøg
+//         this.repetitionScalar = evaluationResult.successAttempts;
+//       }
+//     }
+//     else { // der er svaret rigtet OG det er første gang evalueringesopgaven er besvaret.
 //       this.repetitionScalar = 2;
-//       setMinTimestamp = false;
-    
-//   } else if (evaluationResult.repetitions > 1 && evaluationResult.failedAttempts > 0){ // du svarer rigtigt, men evalueringen er taget før OG der er blevet svaret forkert før
-//       rightWrongRatio = (evaluationResult.successAttempts / evaluationResult.failedAttempts); 
-//       this.repetitionScalar =  rightWrongRatio > 1 ? rightWrongRatio : 1;
-//       setMinTimestamp = false;
+//     }
 
-//   } else if (evaluationResult.repetitions > 1 && evaluationResult.failedAttempts < 1){ // du svarer rigtigt, evalueringen er taget før, men du har aldrig svaret forkert før
-//       this.repetitionScalar = evaluationResult.successAttempts;
-//       setMinTimestamp = false;
+//     setMinTimestamp = false; // hvis der svares rigtigt så skal timestampet ALTID beregnes til false
+//   }
 
-//   } else {
-//       setMinTimestamp = true; // hvis intet kan beregnes, sæt da minTimestamp til true
+//   else { // hvis der svares forkert på evalueringen sættes setMinTimestamp til true
+//     setMinTimestamp = true;
 //   }
 
 //   newRepTimestamp = this.calculateTimeStamp(setMinTimestamp); // beregn tidsstempel
 
 //   return newRepTimestamp;
-
 // }
-
-
-
