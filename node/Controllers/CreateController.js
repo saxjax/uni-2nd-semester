@@ -13,10 +13,10 @@ const { ErrorController } = require(`./AbstractControllers/ErrorController`);
 
 class CreateController extends ErrorController {
   /* UNDER CONSTRUCTION */
-  constructor(root) {
-    super();
+  constructor(settings) {
+    super(settings.debug);
     this.name = `CreateController`;
-    this.root = root;
+    this.root = settings.root;
   }
 
   /* Formål: Gør det muligt for en bruger at oprette et grupperum.

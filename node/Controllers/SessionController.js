@@ -9,11 +9,10 @@ const { ErrorController } = require(`./AbstractControllers/ErrorController`);
  * Omdirigere altid til `/` (som det står nu)
  */
 
-class SessionController extends ErrorController {
-  constructor(root) {
-    super();
+class SessionController {
+  constructor(settings) {
     this.name = `SessionController`;
-    this.root = root;
+    this.root = settings.root;
   }
 
   /* Formål: At validere et login og oprette brugerens session som den bruger der er logget ind med

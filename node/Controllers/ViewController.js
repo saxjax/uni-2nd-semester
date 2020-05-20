@@ -19,9 +19,9 @@ const { ProgressBar } = require(`../Models/ProgressBar`);
  */
 
 class ViewController {
-  constructor(root) {
+  constructor(settings) {
     this.name = `ViewController`;
-    this.root = root;
+    this.root = settings.root;
     this.ejs = ``;
   }
 
@@ -32,13 +32,15 @@ class ViewController {
   async homePage(req, res) {
     const Recipient = new Group(req);
     const SpacedRep = new QuizResult(req);
+    const PB        = new ProgressBar(req);
     const dataArray = await Promise.all([
       Recipient.getThisGroupData(),               // dataArray[0]
       Recipient.getThisUserData(),                // dataArray[1]
       Recipient.getAllElementsOfType(`document`), // dataArray[2]
       SpacedRep.getIdQuizquestionsDueForRepetition(), // dataArray[3]
+      PB.getEvaluationsNotYetTaken(),
     ]);
-    const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2], repetitionTask: dataArray[3] };
+    const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2], repetitionTask: dataArray[3], evaluationsNotYetTaken: dataArray[4] };
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs, { data });
   }
