@@ -66,16 +66,30 @@ class QuizQuestion extends Model {
         + `AND ${this.QQAnswersCol} = "${question.answers.join(`;`)}"`);
   }
 
+  /* Formål: At hente alle de UUID som skal bruges til oprettelsen af alle QuizQuestions
+   * Input : @uuidAmount er et tal svarende til mængden af QuizQuestions der ønskes oprettet
+   * Output: Et promise som resolver til en datapakke med et antal UUID der svarer til @uuidAmount
+   */
   async getQuizQuestionUUID(uuidAmount) {
     const selectString = this.generateSelectString(uuidAmount);
     return this.query(`CUSTOM`, `${selectString}`);
   }
 
+  /* Formål: At få fat i Document og Section ID'er fra en evaluation, så QuizQuestion kobles til den overordnede struktur
+   * Input : Intet, men bruger idEvaluation til at hente idSection og idDocument
+   * Output: Et promise der resolver til det første element i en datapakke der indeholder et objekt med idSection og idDocument
+   */
   async getDocumentAndSectionID() {
     const select = await this.query(`CUSTOM`, `SELECT ${this.documentCol} as idDocument ,${this.sectionCol} as idSection FROM ${this.evaluationTable} WHERE ${this.evaluationCol} = "${this.idEvaluation}"`);
     return select[0];
   }
 
+  /* Formål: At indsætte alle de keywords som er tilknyttet hvert eneste question der i gang med at blive oprettet
+   * Input : @question som er den data pakke der indeholder nogle keywords
+   *         @questionUUID som er det unikke ID der er hentet fra getQuizQuestionUUID
+   *         @docAndSecId som er de unikke ID'er der er hentet fra getDocumentAndSectionId
+   * Output: Intet, men inserter alle keywords i keyword tabellen.
+   */
   async insertKeywordQuizQuestion(question, questionUUID, docAndSecID) {
     if (question.keyword !== []) { // If the user put any keywords they get inserted
       const insertKeyword = new Keyword(this.req);
@@ -89,6 +103,10 @@ class QuizQuestion extends Model {
     }
   }
 
+  /* Formål: At hente alle de UUID fra databasen som kan bruges til at oprette en bestemt bunke af QuizQuestion
+   * Input : @uuidAmount er et tal svarende til mængden af QuizQuestions der ønskes oprettet
+   * Output: En streng af mange forespørgsler for UUID, som bruges i getQuizQuestionUUID
+   */
   generateSelectString(uuidAmount) {
     let string = ``;
     for (let i = uuidAmount; i > 0; i--) {

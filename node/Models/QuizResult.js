@@ -3,6 +3,11 @@
 const { SpacedRepetition } = require(`./SpacedRepetition`);
 const { ParseSql } = require(`../Models/AbstractClasses/ParseSQL`);
 
+/* QuizResult er den klasse som holder styr på de resultater som en bruger har til et specifikt QuizQuestion
+ * QuizResult nedarver fra SpacedRepetition, da den indeholder nogle hjælpefunktioner til at sikre spaced repetition
+ * QuizResult er QuizQuestions anden halvdel, som gør spørgsmålene brugbare, og som tilkobler en User med et bestemt forsøg på et QuizQuestion
+ */
+
 class QuizResult extends SpacedRepetition {
   /* Alle quizResultType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
@@ -48,6 +53,11 @@ class QuizResult extends SpacedRepetition {
     return UUID;
   }
 
+  /* Formål: At oprette den streng af forskellige resultater som en bruger har svaret på.
+   *            Ved at oprette hele strengen i et gò reduceres mængden af nødvendige SQL kald til MySQL databasen
+   * Input : @UUID som er det idAttempt der tillægges alle de svar en bruger har taget
+   * Output: En streng med alle de QuizResults der skal oprettes, hvor det sidste "," er slicet fra
+   */
   makeInsertString(UUID) {
     let string = ``;
     this.questionArray.forEach((question) => {
@@ -65,6 +75,10 @@ class QuizResult extends SpacedRepetition {
     return string.slice(0, -1);
   }
 
+  /* Formål: Henter alle de QuizResults som findes i det objekt der kalder denne funktion
+   * Input : Ingen, men modificere this.tabel hen til quiz_result og tilbage igen
+   * Output: Et promise der resolver til en datapakke med alle QuizResults der er tilgængeligt i en øvre klasse
+   */
   async getAllQuizQuestionResults() {
     const trueTable = this.table;
 
@@ -78,6 +92,7 @@ class QuizResult extends SpacedRepetition {
     return queryResult;
   }
 
+  /* Formål:  */
   createQueryString(idQuizQuestions) {
     let string = ``;
     idQuizQuestions.forEach((element, index) => {
