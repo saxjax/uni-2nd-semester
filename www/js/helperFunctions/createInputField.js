@@ -25,9 +25,9 @@ function createInputField(appendToThis, type, minimumFieldCount) {
 }
 
 function displayErrorMessage(container, message) {
-  const messageNode = appendDomNode(`P`, container, `Fejl! ${message}`);
-  messageNode.style.color = `red`;
+  const alertNotif = appendDomNode(`DIV`, container, `Fejl! ${message}`, [{ class: `alert` }, { class: `alert-danger` }]);
+
   setTimeout(() => {
-    messageNode.remove();
+    alertNotif.remove();
   }, 5000);
 }
