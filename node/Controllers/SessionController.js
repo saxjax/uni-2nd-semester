@@ -46,11 +46,9 @@ class SessionController {
       if (Object.keys(data[0]).length > 1) {
         req.session.idGroup = data[0].idGroup;
         req.session.groupname = data[0].name;
-        G.connect.end();
         res.redirect(`/`);
       }
       else {                     // FIXME: Dokumentation mangler - hvornår rammer man denne else-clause?
-        G.connect.end();
         res.redirect(`/access/view/groups`); // FIXME: Statuskode indsættes
       }
     }
@@ -59,7 +57,7 @@ class SessionController {
       const errorMsg = E.produceErrorMessageToUser();
       res.send(errorMsg);
     }
-    G.connect.end;
+    G.connect.end();
   }
 
   /* Formål: At gøre det muligt at skifte bruger og grupperum.

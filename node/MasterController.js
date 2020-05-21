@@ -21,12 +21,12 @@ const pad = require(`./HelperFunctions/Pad`);
  */
 class MasterController {
   constructor(settings) {
-    this.app = express();
-    this.settings = settings;
-    this.name = settings.name;
-    this.root = settings.root;
-    this.port = settings.port;
-    this.debug = settings.debug;
+    this.app        = express();
+    this.settings   = settings;
+    this.name       = settings.name;
+    this.root       = settings.root;
+    this.port       = settings.port;
+    this.debug      = settings.debug;
     this.skipAccess = settings.skipAccess;
   }
 
@@ -64,18 +64,15 @@ class MasterController {
    */
   accessPatterns() {
     const Access = new AccessController(this.settings);
-    this.app.get(`/dbdown`,         (req, res) => Access.dbDown(req, res));
-
+    this.app.get(`/dbdown`,             (req, res) => Access.dbDown(req, res));
     // No Session URLs
-    this.app.get(`/access/about`,    (req, res) => Access.aboutPage(req, res));
-    this.app.get(`/access/register`, (req, res) => Access.registerPage(req, res));
-
+    this.app.get(`/access/about`,       (req, res) => Access.aboutPage(req, res));
+    this.app.get(`/access/register`,    (req, res) => Access.registerPage(req, res));
     // idUser Session URLs
-    this.app.get(`/access/login`,    (req, res) => Access.loginPage(req, res));
-
+    this.app.get(`/access/login`,       (req, res) => Access.loginPage(req, res));
     // idGroup Session URLs
-    this.app.get(`/access/view/groups`,   (req, res) => Access.viewGroupsPage(req, res));
-    this.app.get(`/access/post/group`,   (req, res) => Access.postGroupPage(req, res));
+    this.app.get(`/access/view/groups`, (req, res) => Access.viewGroupsPage(req, res));
+    this.app.get(`/access/post/group`,  (req, res) => Access.postGroupPage(req, res));
   }
 
   /* Formål: At opstille alle de funktioner som opsætter, ændrer og stopper sessions
@@ -88,9 +85,9 @@ class MasterController {
    */
   sessionPatterns() {
     const Session = new SessionController(this.settings);
-    this.app.post(`/session/auth/user`, (req, res) => Session.userSession(req, res));
+    this.app.post(`/session/auth/user`,     (req, res) => Session.userSession(req, res));
     this.app.get(`/session/group/:idQuery`, (req, res) => Session.groupSession(req, res));
-    this.app.get(`/session/logout`,                    (req, res) => Session.logout(req, res));
+    this.app.get(`/session/logout`,         (req, res) => Session.logout(req, res));
   }
 
   /* Formål: At opstille alle de funktioner som loader en ejs fil og viser en side i et grupperum
@@ -119,28 +116,25 @@ class MasterController {
    */
   viewPatterns() {
     const Show = new ViewController(this.settings);
-    this.app.get(`/`,                             (req, res) => Show.homePage(req, res));
-
+    this.app.get(`/`,                                              (req, res) => Show.homePage(req, res));
     // Documents
-    this.app.get(`/post/document/`,         (req, res) => Show.postDocumentPage(req, res));
-    this.app.get(`/view/document/:idQuery`,   (req, res) => Show.viewDocumentPage(req, res));
-
+    this.app.get(`/post/document/`,                                (req, res) => Show.postDocumentPage(req, res));
+    this.app.get(`/view/document/:idQuery`,                        (req, res) => Show.viewDocumentPage(req, res));
     // Sections
-    this.app.get(`/view/sections/expert`,            (req, res) => Show.viewSectionExpertPage(req, res));
+    this.app.get(`/view/sections/expert`,                          (req, res) => Show.viewSectionExpertPage(req, res));
     this.app.get(`/view/sectionsAndEvaluations/document/:idQuery`, (req, res) => Show.viewSectionsAndEvaluationsDocumentPage(req, res));
-    this.app.get(`/post/section/:idQuery`,                 (req, res) => Show.postSectionPage(req, res));
-    this.app.get(`/view/section/:idQuery`,          (req, res) => Show.viewSectionPage(req, res));
-
+    this.app.get(`/post/section/:idQuery`,                         (req, res) => Show.postSectionPage(req, res));
+    this.app.get(`/view/section/:idQuery`,                         (req, res) => Show.viewSectionPage(req, res));
     // Evaluations
-    this.app.get(`/view/evaluations/expert`,            (req, res) => Show.viewEvaluationsExpertPage(req, res));
-    this.app.get(`/view/evaluations/section/:idQuery`,  (req, res) => Show.viewEvaluationsSectionPage(req, res));
-    this.app.get(`/post/evaluation/document/:idQuery`,                 (req, res) => Show.postEvaluationDocumentPage(req, res));
-    this.app.get(`/post/evaluation/section/:idQuery`,                 (req, res) => Show.postEvaluationSectionPage(req, res));
-    this.app.get(`/post/questions`,                 (req, res) => Show.postQuestionsPage(req, res));
-    this.app.get(`/view/evaluations/:idQuery`,          (req, res) => Show.viewEvaluationPage(req, res));// idQuery indeholder et evaluation id
-    this.app.get(`/view/SpacedRepetition`,          (req, res) => Show.viewSpacedRepetitionPage(req, res));
-    this.app.get(`/view/evaluationResult/:idAttempt`,          (req, res) => Show.viewEvaluationResultPage(req, res));
-    this.app.get(`/view/evaluationProgress`,          (req, res) => Show.viewEvaluationProgress(req, res));
+    this.app.get(`/view/evaluations/expert`,                       (req, res) => Show.viewEvaluationsExpertPage(req, res));
+    this.app.get(`/view/evaluations/section/:idQuery`,             (req, res) => Show.viewEvaluationsSectionPage(req, res));
+    this.app.get(`/post/evaluation/document/:idQuery`,             (req, res) => Show.postEvaluationDocumentPage(req, res));
+    this.app.get(`/post/evaluation/section/:idQuery`,              (req, res) => Show.postEvaluationSectionPage(req, res));
+    this.app.get(`/post/questions`,                                (req, res) => Show.postQuestionsPage(req, res));
+    this.app.get(`/view/evaluations/:idQuery`,                     (req, res) => Show.viewEvaluationPage(req, res));// idQuery indeholder et evaluation id
+    this.app.get(`/view/SpacedRepetition`,                         (req, res) => Show.viewSpacedRepetitionPage(req, res));
+    this.app.get(`/view/evaluationResult/:idAttempt`,              (req, res) => Show.viewEvaluationResultPage(req, res));
+    this.app.get(`/view/evaluationProgress`,                       (req, res) => Show.viewEvaluationProgress(req, res));
   }
 
   /* Formål: Struktur for de URL Patterns der indsætter data i databasen.
@@ -150,13 +144,13 @@ class MasterController {
   */
   createPatterns() {
     const Creator = new CreateController(this.settings);
-    this.app.post(`/post/group`,       (req, res) => Creator.createGroup(req, res));
-    this.app.post(`/access/register`,  (req, res) => Creator.RegisterNewUser(req, res));
-    this.app.post(`/post/document`,    (req, res) => Creator.createDocument(req, res));
-    this.app.post(`/post/section`,     (req, res) => Creator.createSection(req, res));
-    this.app.post(`/post/evaluation`,  (req, res) => Creator.createEvaluation(req, res));
-    this.app.post(`/post/questions`,   (req, res) => Creator.createQuestions(req, res));
-    this.app.post(`/post/answers`,     (req, res) => Creator.createAnswers(req, res));
+    this.app.post(`/post/group`,      (req, res) => Creator.createGroup(req, res));
+    this.app.post(`/access/register`, (req, res) => Creator.RegisterNewUser(req, res));
+    this.app.post(`/post/document`,   (req, res) => Creator.createDocument(req, res));
+    this.app.post(`/post/section`,    (req, res) => Creator.createSection(req, res));
+    this.app.post(`/post/evaluation`, (req, res) => Creator.createEvaluation(req, res));
+    this.app.post(`/post/questions`,  (req, res) => Creator.createQuestions(req, res));
+    this.app.post(`/post/answers`,    (req, res) => Creator.createAnswers(req, res));
   }
 
   /* Formål: Struktur for de URL Patterns der sletter data i databasen.
@@ -177,11 +171,11 @@ class MasterController {
    */
   testPatterns() {
     const Tester = new TestController(this.settings);
-    this.app.get(`/test`, (req, res) => Tester.test(req, res));
-    this.app.get(`/test2`, (req, res) => Tester.test2(req, res));
-    this.app.get(`/test3`, (req, res) => Tester.test3(req, res));
+    this.app.get(`/test`,           (req, res) => Tester.test(req, res));
+    this.app.get(`/test2`,          (req, res) => Tester.test2(req, res));
+    this.app.get(`/test3`,          (req, res) => Tester.test3(req, res));
     this.app.get(`/test3/:idQuery`, (req, res) => Tester.test3(req, res));
-    this.app.get(`/whatever`, (req, res) => Tester.whatever(req, res));
+    this.app.get(`/whatever`,       (req, res) => Tester.whatever(req, res));
   }
 
   /* Formål: Opsætning af en viewEngine så det er muligt at render ejs filer.
@@ -253,11 +247,11 @@ class MasterController {
    */
   createTestUserAndidGroup(req, res, next) {
     if (!req.session.idUser || !req.session.idGroup) {
-      req.session.username = `Test User`;
-      req.session.loggedIn = true;
-      req.session.idUser = `553e422d-7c29-11ea-86e2-2c4d54532c7a`;
+      req.session.username  = `Test User`;
+      req.session.loggedIn  = true;
+      req.session.idUser    = `553e422d-7c29-11ea-86e2-2c4d54532c7a`;
       req.session.groupName = `Test Group`;
-      req.session.idGroup = `34701dd1-7c29-11ea-86e2-2c4d54532c7a`;
+      req.session.idGroup   = `34701dd1-7c29-11ea-86e2-2c4d54532c7a`;
     }
     next();
   }
@@ -298,10 +292,10 @@ class MasterController {
    */
   logger(req, res, next) {
     const reqMethod = pad(req.method, -6, ` `);
-    const reqUrl = `${req.protocol}://${req.get(`host`)}${req.originalUrl}`;
-    const now = new Date();
-    const date = `${pad(now.getDate(), -2, `0`)}/${pad(now.getMonth(), -2, `0`)}/${now.getFullYear()}`;
-    const time = `${pad(now.getHours(), -2, `0`)}:${pad(now.getMinutes(), -2, `0`)}:${pad(now.getSeconds(), -2, `0`)}`;
+    const reqUrl    = `${req.protocol}://${req.get(`host`)}${req.originalUrl}`;
+    const now       = new Date();
+    const date      = `${pad(now.getDate(), -2, `0`)}/${pad(now.getMonth(), -2, `0`)}/${now.getFullYear()}`;
+    const time      = `${pad(now.getHours(), -2, `0`)}:${pad(now.getMinutes(), -2, `0`)}:${pad(now.getSeconds(), -2, `0`)}`;
     console.log(`${date} ${time} - GOT ${reqMethod}: ${reqUrl}`);
     next();
   }

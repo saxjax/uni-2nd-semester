@@ -1,3 +1,5 @@
+/* eslint no-undef: 0 */
+
 class Section {
   constructor(formContainer) {
     this.idDocument = formContainer.querySelector(`#idDocument`).value;
@@ -53,7 +55,7 @@ function sectionTitleIsUnique() {
   const titleField = document.getElementById(`title`);
   let unique = true;
   let i = 0;
-  while (unique === true && i < data.reservedSections.length) {
+  while (unique === true && i < data.reservedSections.length) { // "data" bliver sendt med EJSen
     if (titleField.value === data.reservedSections[i].title) {
       unique = false;
     }

@@ -1,3 +1,5 @@
+/* eslint no-undef: 0 */
+
 const questionDivs = document.getElementsByClassName(`questionDiv`);
 
 /* Formål: Dette forloop checker hvert spørgsmåls div igennem og tilføjer grøn farve hvis brugeren havde
@@ -5,7 +7,7 @@ const questionDivs = document.getElementsByClassName(`questionDiv`);
            samt hvilke svar der er de rigtige.
 */
 for (let i = 1; i <= questionDivs.length; i++) {
-  if (data.evaluation[i - 1].result === `true`) {
+  if (data.evaluation[i - 1].result === `true`) { // "data" bliver sendt med EJSen
     document.querySelector(`#question${i}`).classList.add(`true`);
   }
   else {
@@ -19,7 +21,7 @@ for (let i = 1; i <= questionDivs.length; i++) {
 
 /* Formål: Viser hvilket svar der er det korrekte ud for en spørgsmålsdiv */
 function showTheCorrectAnswers(htmlAnswersArray, i) {
-  const correctAnswers = data.quizQuestions[i - 1].correctness.split(`;`);
+  const correctAnswers = data.quizQuestions[i - 1].correctness.split(`;`); // "data" bliver sendt med EJSen
   correctAnswers.forEach((answer, index) => {
     if (answer === `true`) {
       htmlAnswersArray[index].innerHTML += ` - (This was the correct answer)`;
@@ -30,7 +32,7 @@ function showTheCorrectAnswers(htmlAnswersArray, i) {
 
 /* Formål: Viser hvilket svar brugeren har angivet ud for et bestemt spørgsmålsdiv. */
 function showTheUsersAnswers(htmlAnswersArray, i) {
-  const userAnswersArray = data.evaluation[i - 1].userAnswers.split(`;`);
+  const userAnswersArray = data.evaluation[i - 1].userAnswers.split(`;`); // "data" bliver sendt med EJSen
   userAnswersArray.forEach((answer, index) => {
     if (answer === `true`) {
       htmlAnswersArray[index].innerHTML += ` - (Your answer)`;

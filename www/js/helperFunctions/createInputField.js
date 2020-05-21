@@ -5,6 +5,12 @@
 
 let fieldCount = 0;
 
+/* Formål: At gøre det nemt at lave et input field med et tilhørende label, med en knap, som gør det muligt at slette det hele igen
+ * Input:  @appendToThis      skal være en HTML DOM-node, som label, input og knap kan appendes til
+ *         @type              skal være en tekststreng, som indikerer hvad der skal indsættes i input-feltet
+ *         @minimumFieldCount skal være et heltalt, som indikerer hvor mange af disse felter der skal være som minimum
+ * Output: En div (container), som indeholder den label, det input-felt samt den knap, som er blevet lavet i funktionen
+ */
 function createInputField(appendToThis, type, minimumFieldCount) {
   const uniqueId = `${type.toLowerCase()}${++fieldCount}`;
   const container = appendDomNode(`DIV`, appendToThis, undefined, [{ class: `${type.toLowerCase()}Container` }]);
@@ -18,14 +24,18 @@ function createInputField(appendToThis, type, minimumFieldCount) {
       container.remove();
     }
     else {
-      displayErrorMessage(appendToThis, `Du skal indtaste mindst ${parseInt(minimumFieldCount)} ${type.toLowerCase()}.`);
+      displayErrorMessage(appendToThis, `Du skal indtaste mindst ${parseInt(minimumFieldCount)} ${type.toLowerCase()}(s).`);
     }
   });
   return container;
 }
 
-function displayErrorMessage(container, message) {
-  const alertNotif = appendDomNode(`DIV`, container, `Fejl! ${message}`, [{ class: `alert` }, { class: `alert-danger` }]);
+/* Formål: At producere og vise en fejlmeddelelse til brugeren, som slettes efter 5 sekunder
+ * Input:  @appendToThis skal være en HTML DOM-node, som fejlmeddelelsen skal appendes til
+           @message      skal være en tekststreng som indeholder fejlmeddelelsen til brugeren
+ */
+function displayErrorMessage(appendToThis, message) {
+  const alertNotif = appendDomNode(`DIV`, appendToThis, `Fejl! ${message}`, [{ class: `alert` }, { class: `alert-danger` }]);
 
   setTimeout(() => {
     alertNotif.remove();
