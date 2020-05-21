@@ -81,7 +81,9 @@ class Model extends Database {
     else {
       choice = `*`;
     }
-    let queryData = await this.query(`SELECT ${choice}`, `${this.idColumnName} = "${this.idQuery}"`);
+    let queryData = await this.query(`SELECT ${choice}`, `${this.idColumnName} = "${this.idQuery}"`)
+      .then((result) => result)
+      .catch((error) => error);
 
     if (this.elementType === `${this.documentType}` // et check for om objektet skal hente keywords
       || this.elementType === `${this.sectionType}`
@@ -103,7 +105,9 @@ class Model extends Database {
   async getThisGroupData() {
     const trueObjectTable = this.table;
     this.table = `${this.groupTable}`;
-    const data = await this.query(`SELECT *`, `${this.idColumnGroup} = "${this.idGroup}"`);
+    const data = this.query(`SELECT *`, `${this.idColumnGroup} = "${this.idGroup}"`)
+      .then((result) => result)
+      .catch((error) => error);
     this.table = trueObjectTable;
     return data;
   }
@@ -118,7 +122,9 @@ class Model extends Database {
   async getThisUserData() {
     const trueObjectTable = this.table;
     this.table = `${this.userTable}`;
-    const data = await this.query(`SELECT *`, `${this.idColumnUser} = "${this.idUser}"`);
+    const data = this.query(`SELECT *`, `${this.idColumnUser} = "${this.idUser}"`)
+      .then((result) => result)
+      .catch((error) => error);
     this.table = trueObjectTable;
     return data;
   }
@@ -182,7 +188,6 @@ class Model extends Database {
       case `${this.quizQuestionType}`: return `${this.quizQuestionTable}`;
       case `${this.sectionType}`:      return `${this.sectionTable}`;
       case `${this.userType}`:         return `${this.userTable}`;
-      case `${this.quizResultTable}`:  return `${this.quizResultTable}`;
       default: throw new Error(`WARNING: Element Type not implemented in parseElementTypesTable in Model`);
     }
   }
@@ -193,9 +198,9 @@ class Model extends Database {
    */
   getChoiceColName(choice) {
     switch (choice) {
-      case `${this.documentType}`:     return `${this.documentCol}`;
-      case `${this.sectionType}`:      return `${this.sectionCol}`;
-      case `${this.evaluationType}`:   return `${this.evaluationCol}`;
+      case `${this.documentType}`: return `${this.documentCol}`;
+      case `${this.sectionType}`: return `${this.sectionCol}`;
+      case `${this.evaluationType}`: return `${this.evaluationCol}`;
       case `${this.quizQuestionType}`: return `${this.quizQuestionCol}`;
       default: throw new Error(`WARNING: Kolonne ikke korrekt angivet i getChoiceColName`);
     }

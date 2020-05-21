@@ -8,13 +8,13 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       <% if (isloggedin) { %>
-      <p>Hej <%= data.user[0].username %> </p>
-      <a class="nav-item nav-link" href="/">Forsiden</a>
-      <a class="nav-item nav-link" href="/session/logout">Logout</a>
-      <a class="nav-item nav-link" href="/view/evaluations/expert">Dine Evalueringer</a>
-      <a class="nav-item nav-link" href="/view/sections/expert">Dine Afsnit</a>
+        <p>Hej <%= data.user[0].username %> </p>
+        <a class="nav-item nav-link" href="/">Forsiden</a>
+        <a class="nav-item nav-link" href="/session/logout">Logout</a>
+        <a class="nav-item nav-link" href="/view/evaluations/expert">Dine Evalueringer</a>
+        <a class="nav-item nav-link" href="/view/sections/expert">Dine Afsnit</a>
       <% } else { %>
-      <a class="nav-item nav-link" href="/access/login">Login</a>
+        <a class="nav-item nav-link" href="/access/login">Login</a>
       <% } %>
     </div>
   </div>
