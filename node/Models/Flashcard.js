@@ -37,19 +37,7 @@ class Flashcard extends Model {
    * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
-    try {
-      await this.query(`ID_USER_GROUP = "${this.idGroup}" `
-                 + `AND ID_USER = "${this.idUser}" `
-                 + `AND ID_DOCUMENT = "${this.idDocument}" `
-                 + `AND ID_DOCUMENT_SECTION = "${this.idSection}" `
-                 + `AND CONCEPT = "${this.concept}" `
-                 + `AND DEFINITION = "${this.definition}"`);
-    }
-    catch (error) {
-      console.log(error);
-      return false;
-    }
-    return true;
+    // UNDER CONSTRUCTION! Gør ligesom QuizQuestion
   }
 }
 module.exports = {

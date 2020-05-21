@@ -32,15 +32,15 @@ class Document extends Model {
    * Output: True hvis queren inserter, ellers false hvis der sker en fejl. FIXME: Ikke sandt - hvad indeholder newObject?
    */
   async insertToDatabase() {
+    this.idDocument = await this.getUuid();
     const data = `ID_USER_GROUP = "${this.idGroup}" `
-                 + `AND ID_USER = "${this.idUser}" `
-                 + `AND TITLE = "${this.title}"`;
+                + `AND ID_DOCUMENT = "${this.idDocument}" `
+                + `AND ID_USER = "${this.idUser}" `
+                + `AND TITLE = "${this.title}"`;
     await this.query(`INSERT`, data);
-    const newObject = await this.query(`SELECT *`, data);
-    return newObject;
+    return this.idDocument;
   }
 }
-
 
 module.exports = {
   Document,

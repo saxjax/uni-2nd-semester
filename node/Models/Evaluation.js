@@ -45,18 +45,14 @@ class Evaluation extends Model {
    * Output: Evalueringens ID hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
-    const idDocQuery = await this.query(`CUSTOM`, `SELECT ID_DOCUMENT FROM document_section WHERE ID_DOCUMENT_SECTION = "${this.idSection}"`);
-    this.idDocument = idDocQuery[0].ID_DOCUMENT;
-    await this.query(`INSERT`, `ID_DOCUMENT_SECTION = "${this.idSection}" AND `
+    this.idEvaluation = await this.getUuid();
+    this.idDocument = await this.getDocId();
+    await this.query(`INSERT`, `ID_DOCUMENT = "${this.idDocument}" AND `
+                               + `ID_DOCUMENT_SECTION = "${this.idSection}" AND `
+                               + `ID_EVALUATION = "${this.idEvaluation}" AND `
                                + `ID_USER = "${this.idUser}" AND `
                                + `ID_USER_GROUP = "${this.idGroup}" AND `
-                               + `EVALUATION_TITLE = "${this.title}" AND `
-                               + `ID_DOCUMENT = "${this.idDocument}"`);
-
-    const idEvalQuery = await this.query(`SELECT ID_EVALUATION`, `EVALUATION_TITLE = "${this.title}" `
-                       + `AND ID_DOCUMENT_SECTION = "${this.idSection}" `
-                       + `AND ID_USER_GROUP = "${this.idGroup}"`);
-    this.idEvaluation = idEvalQuery[0].idEvaluation;
+                               + `EVALUATION_TITLE = "${this.title}"`);
 
     const keyw = new Keyword(this.req);
     const idObject = {
@@ -67,6 +63,13 @@ class Evaluation extends Model {
     };
     await keyw.insertToDatabase(idObject, this.keywords);
     return this.idEvaluation;
+  }
+
+  async getDocId() {
+    this.table = `document_section`;
+    const idDocumentArr = await this.query(`SELECT ID_DOCUMENT`, `ID_DOCUMENT_SECTION = "${this.idSection}"`);
+    this.table = `evaluation`;
+    return idDocumentArr[0].idDocument;
   }
 
   // FIXME:denne funktion findes allerede getAllElementsOftype(`quiz_question`)

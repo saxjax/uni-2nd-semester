@@ -34,16 +34,14 @@ class User extends Model {
     }
   }
 
-  print(objToPrint) {
-    console.log(objToPrint);
-  }
-
   /* Formål: At oprette en bruger i databasen hvis validering returnerer 'True'
    * Input : N/A
    * Output: True/False
    */
   async insertToDatabase() {
+    this.idUser = await this.getUuid();
     await this.query(`INSERT`, `ID_USER_GROUP = "${this.idGroup}" `
+                     + `AND ID_USER = "${this.idUser}" `
                      + `AND USER_NAME = "${this.username}" `
                      + `AND PASSWORD = "${this.password}" `
                      + `AND FIRST_NAME = "${this.firstName}" `
@@ -52,6 +50,7 @@ class User extends Model {
                      + `AND STUDY_SUBJECT = "${this.studySubject}" `
                      + `AND EMAIL = "${this.email}" `
                      + `AND SEMESTER = "${this.semester}"`);
+    return this.idUser;
   }
 
   /* Formål: At validere om et brugernavn og password matcher og så returnere brugerens data
