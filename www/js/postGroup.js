@@ -4,6 +4,10 @@ class Group {
     this.members = this.getMembers(formContainer);
   }
 
+  /* Formål: Gemmer alle usernames fra HTML input fælterne
+  *  Input : Container med bruger input.
+  *  Output: Array af usernames.
+  */
   getMembers(formContainer) {
     const members = [];
     const memberInputs = formContainer.getElementsByClassName(`medlemInput`);

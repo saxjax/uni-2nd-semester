@@ -1,6 +1,10 @@
 /* eslint no-unused-vars: 0 */
 /* eslint no-undef: 0 */
 
+/* Formål: Sender et request til serveren som sletter et afsnit.
+*  Input : afsnitID, Div-containerID
+*  Output: N/A
+*/
 async function deleteSection(sectionID, sectionContainerID) {
   const choice = confirm(`Er du sikker på at du vil slette dette afsnit? \nDenne handling vil også slette tilknyttede evalueringer.`); // eslint-disable-line no-restricted-globals
   if (choice === true) {
