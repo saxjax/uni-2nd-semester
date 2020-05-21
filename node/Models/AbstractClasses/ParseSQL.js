@@ -7,6 +7,34 @@
 class ParseSql {
   constructor() {
     this.parsedData = [];
+    /* Tabel navnene */
+    this.databaseTable = `database`;
+    this.groupTable = `user_group`;
+    this.userTable = `user`;
+    this.documentTable = `document`;
+    this.sectionTable = `document_section`;
+    this.evaluationTable = `evaluation`;
+    this.quizQuestionTable = `quiz_question`;
+    this.quizResultTable = `quiz_result`;
+    this.flashcardTable = `flashcard`;
+    this.flashcardResultTable = `flashcard_result`;
+    this.keywordTable = `keyword`;
+    this.keywordLinkTable = `keyword_link`;
+    this.spacedRepetitionTable = `repetition_task`;
+    /* Elementtypes */
+    this.databaseType = `test`;
+    this.groupType = `group`;
+    this.userType = `user`;
+    this.documentType = `document`;
+    this.sectionType = `section`;
+    this.evaluationType = `evaluation`;
+    this.quizQuestionType = `quiz_question`;
+    this.quizResultType = `quiz_result`;
+    this.flashcardType = `flashcard`;
+    this.flashcardResultType = `flashcard_result`;
+    this.keywordType = `keyword`;
+    this.keywordLinkType = `keyword_link`;
+    this.spacedRepetitionType = `repetition_task`;
     /* ID kolonner der bruges alt efter hieraki */
     this.groupCol = `ID_USER_GROUP`;
     this.userCol = `ID_USER`;
@@ -20,6 +48,7 @@ class ParseSql {
     this.keywordCol = `ID_KEYWORD`;
     this.keywordLinkCol = `ID_KEYWORD_LINK`;
     this.attemptCol = `ID_ATTEMPT`;
+    this.spacedRepetitionCol = `ID_REPETITION_TASK`;
     /* kolonner i alle klasser */
     this.typeCol = `ELEMENT_TYPE`;
     /* Group kolonner */
@@ -58,6 +87,8 @@ class ParseSql {
     /* Keyword kolonner */
     this.KKeywordCol = `KEYWORD`;
     /* KeywordLink kolonner */
+    /* Spaced Repetition kolonner */
+    this.SRRepetitionDate = `REPETITION_DATE`;
   }
 
   /* Formål: Dette er tiltænkt som den overordnede funktion, som bliver kaldt fra Database.js
@@ -246,8 +277,8 @@ class ParseSql {
     const result = [];
     quizResultData.forEach((quizResult) => {
       result.push({
-        idQuizQuestion: quizResult.ID_QUIZ_QUESTION,
-        idUser: quizResult.ID_USER,
+        idQuizQuestion: quizResult[this.quizQuestionCol],
+        idUser: quizResult[this.userCol],
         recentResult: quizResult.RECENT_RESULT,
         recentAttemptDate: quizResult.RECENT_ATTEMPT_DATE,
         nextRepetition: quizResult.NEXT_REPITITION,

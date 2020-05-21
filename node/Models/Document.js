@@ -5,17 +5,18 @@ const { Model } = require(`./AbstractClasses/Model.js`);
 /* FIXME: UNDER CONSTRUCTION */
 
 class Document extends Model {
+  /* Alle documentType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super();
-    this.elementType = `document`;
-    this.table       = `document`;
+    this.elementType = `${this.documentType}`;
+    this.table       = `${this.documentTable}`;
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
       this.idUser  = req.session.idUser;
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
-          this.idColumnName   = `ID_DOCUMENT`;
+          this.idColumnName   = `${this.documentCol}`;
           this.idQuery        =  req.params.idQuery;
           break;
         case `POST`:
@@ -34,10 +35,10 @@ class Document extends Model {
    */
   async insertToDatabase() {
     this.idDocument = await this.getUuid();
-    const data = `ID_USER_GROUP = "${this.idGroup}" `
-                + `AND ID_DOCUMENT = "${this.idDocument}" `
-                + `AND ID_USER = "${this.idUser}" `
-                + `AND TITLE = "${this.title}"`;
+    const data = `${this.groupCol} = "${this.idGroup}" `
+                + `AND ${this.documentCol} = "${this.idDocument}" `
+                + `AND ${this.userCol} = "${this.idUser}" `
+                + `AND ${this.DTitleCol} = "${this.title}"`;
     await this.query(`INSERT`, data);
     return this.idDocument;
   }
