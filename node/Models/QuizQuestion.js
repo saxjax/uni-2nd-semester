@@ -7,7 +7,6 @@ const { Keyword } = require(`./keyword.js`);
 /* MANGLER DESIGN!!!!
  * Det kan vel ikke passe at vi hardcoder 4 svarmuligheder? kommaseparering/opreting af ny sql database /whatever er muligheder
  */
-// TODO:
 class QuizQuestion extends Model {
   /* Alle quizQuestionType/Col og Table er hentet fra ParseSql! */
   constructor(req) {

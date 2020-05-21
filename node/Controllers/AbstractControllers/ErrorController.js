@@ -26,7 +26,7 @@ class ErrorController {
     switch (errorType) {
       /* LOGIN FEJL */
       case `USER_ALREADY_REGISTERED`:
-        errorMsg = `Brugeren er allerede registreret. Du kan allerede logge ind med den.`;
+        errorMsg = `Brugeren er allerede registreret.`;
         break;
       case `USER_NOT_EXISTING`:
         errorMsg = `De brugeroplysninger du har indtastet findes ikke, prøv igen!`;
