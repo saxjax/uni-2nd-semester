@@ -1,37 +1,42 @@
 /* eslint no-console: off */
 
-/* Spaced repetition er en funktion som stiller funktioner til rådighed for at udføre spaced repetition og active recall */
 const { Model } = require(`./AbstractClasses/Model`);
 
-
-// extend Model
+/* Formål: Spaced repetition er en klasse som stiller funktioner til rådighed for at udføre spaced repetition og active recall
+ *         Spacedrepetitionalgoritmen udgøres af funktionerne: calculateNextRepetitionTimeStampForEvaluation() og calculateTimeStamp()
+ */
 class SpacedRepetition extends Model {
   /* Alle spacedRepetitionType/Col og Table er hentet fra ParseSql! */
   constructor() {
     super();
-    this.minTimestamp = 2; // 24 timer
-    this.comprehentionRatio = 3; // hvert forkert svar kræver mindst 3 rigtige svar for at blive registreret som forstået
+    if (this.settings.debug) {
+      this.minTimestamp = 1;
+    }
+    else {
+      this.minTimestamp = 24;
+    }
     this.repetitionScalar = 1;
-    this.elementType = `${this.spacedRepetitionType}`;
-    this.table = `${this.spacedRepetitionTable}`;
+    this.elementType = this.spacedRepetitionType;
+    this.table = this.spacedRepetitionTable;
   }
 
 
   /* Formål: Hente alle quizquestions hvor datoen er due til at blive afviklet, de hentes fra tabellen repetition_task
    * Input:  NONE
-   * Output: et array af quizQuestions
+   * Output: et array af quizQuestions - returnerer et tomt array hvis der ikke er nogen quizquestions som er due til afvikling
    */
   async getTasksforRepetition() {
-    let repetitionTasks = []; // idQuizQuestion array
-    let quizContent = [];// array af quizquestions
+    let quizContent; // array af quizquestions
 
-    repetitionTasks = await this.getIdQuizquestionsDueForRepetition();// henter array af idQuizQuestions.
-
+    const repetitionTasks = await this.getIdQuizquestionsDueForRepetition(); // henter array af idQuizQuestions.
     if (repetitionTasks.length > 0) {
-      quizContent = await this.getQuizQuestionContent(repetitionTasks);// henter array af quizQuestions.
-      return quizContent;
+      quizContent = await this.getQuizQuestionContent(repetitionTasks); // henter array af quizQuestions.
     }
-    return [];// returnerer et tomt array hvis der ikke er nogen quizquestions som er due til afvikling
+    else {
+      quizContent = []; // returnerer et tomt array hvis der ikke er nogen quizquestions som er due til afvikling
+    }
+
+    return quizContent;
   }
 
 
@@ -42,9 +47,9 @@ class SpacedRepetition extends Model {
   async getIdQuizquestionsDueForRepetition() {
     const trueObjectTable = this.table;
     const repetitionTasks = [];
-    const now = (new Date()).toISOString().slice(0, 19).replace(`T`, ` `);// konverterer en JS Date til SQL format
+    const now = (new Date()).toISOString().slice(0, 19).replace(`T`, ` `); // konverterer en JS Date til SQL format
 
-    this.table = `${this.spacedRepetitionTable}`;// sætter table til repetition_task for en sikkerhedsskyld, da denne funktion kan kaldes fra andre klasser
+    this.table = `${this.spacedRepetitionTable}`; // sætter table til repetition_task for en sikkerhedsskyld, da denne funktion kan kaldes fra andre klasser
     const queryResult = await this.query(`SELECT ${this.quizQuestionCol}`, `${this.SRRepetitionDateCol} <= "${now}" 
                                     AND ${this.userCol} = "${this.idUser}" 
                                     AND ${this.groupCol} = "${this.idGroup}"`);
@@ -102,23 +107,23 @@ class SpacedRepetition extends Model {
 
 
   /* Formål:Indsætte/opdatere  idQuizquestions i repetition_task tabellen
-   * Input: resultData: på formen
+   * Input: resultData: på formen:
                                   [
-                                  RowDataPacket {
-                                    idQuizQuestion: '6b0f6da9-8e00-11ea-a6c9-2c4d54532c7a',
-                                    idUser: '553e422d-7c29-11ea-86e2-2c4d54532c7a',
-                                    recentResult: 'true',
-                                    recentAttemptDate: 2020-05-13T13:16:40.000Z,
-                                    nextRepetition: 2020-05-26T23:16:40.974Z,
-                                    repetitions: 14,
-                                    failedAttempts: 3,
-                                    successAttempts: 11
-                                  },
-                                  RowDataPacket {
-                                  },
-                                  RowDataPacket {
-                                  }
-                                ]
+                                    RowDataPacket {
+                                      idQuizQuestion: '6b0f6da9-8e00-11ea-a6c9-2c4d54532c7a',
+                                      idUser: '553e422d-7c29-11ea-86e2-2c4d54532c7a',
+                                      recentResult: 'true',
+                                      recentAttemptDate: 2020-05-13T13:16:40.000Z,
+                                      nextRepetition: 2020-05-26T23:16:40.974Z,
+                                      repetitions: 14,
+                                      failedAttempts: 3,
+                                      successAttempts: 11
+                                    },
+                                    RowDataPacket {
+                                    },
+                                    RowDataPacket {
+                                    }
+                                  ]
    * Output: Bool som angiver om dataene er blevet indsat i databasen
    */
   async insertToDatabaseSpacedRepetition(resultData) {
@@ -136,8 +141,6 @@ class SpacedRepetition extends Model {
     this.table = trueObjectTable;
     return successfullInsert;
   }
-
-  // spacedrepetition algoritmen udgøres af funktionerne : calculateNextRepetitionTimeStampForEvaluation() og calculateTimeStamp() //
 
   /*
    * Formål: Afgør Hvilket timestamp der skal knyttes til et evaluation result , minimum eller et beregnet.
@@ -176,13 +179,13 @@ class SpacedRepetition extends Model {
 
   /*
   * Formål: Beregn timestamp for næste spaced-repetition
-  * Input : setMinimumTimestamp = true/false, successAttempts=(antal gange spørgsmålet er besvaret korrekt)
-  * Output: Dato
+  * Input : @setMinimumTimestamp skal være en boolsk værdi
+  * Output: En dato for næste repetition
   */
-  calculateTimeStamp(setMinTimestamp = true) {
+  calculateTimeStamp(setMinTimestamp) {
     const newRepTimeStamp = new Date();
 
-    if (setMinTimestamp === true) { // hvis der er svaret forkert eller comprehentionRatio ikke er opfyldt
+    if (setMinTimestamp === true) { // hvis der er svaret forkert
       newRepTimeStamp.setHours(newRepTimeStamp.getHours() + this.minTimestamp);
     }
     else {
