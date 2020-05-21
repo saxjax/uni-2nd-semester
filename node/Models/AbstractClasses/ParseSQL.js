@@ -113,7 +113,7 @@ class ParseSql {
         case `evaluation`:       this.parsedData.push(this.parseEvaluation(data[i]));       break;
         case `quiz_question`:    this.parsedData.push(this.parseQuizQuestion(data[i]));     break;
         case `quiz_result`:      this.parsedData.push(this.parseQuizResult(data[i]));       break;
-        case `repetition_task`:  this.parsedData.push(this.parseQuizResult(data[i]));       break;//! !!! FIXME:der skal oprettes en parser til repetitiontask
+        case `repetition_task`:  this.parsedData.push(this.parseRepetitionTask(data[i]));   break;
         // case `flashcard`:        this.parsedData.push(this.parseFlashcard(data[i]));        break;
         // case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i]));  break;
         case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));          break;
@@ -268,6 +268,15 @@ class ParseSql {
     };
   }
 
+  parseRepetitionTask(data) {
+    return {
+      idRepetitionTask: data[this.spacedRepetitionCol],
+      idQuizQuestion: data[this.quizQuestionCol],
+      idUser: data[this.userCol],
+      idGroup: data[this.groupCol],
+      repetitionDate: data[this.SRRepetitionDate],
+    };
+  }
 
   /* Formål: At parse Quiz-resultData specialdesignet returværdi fra SQL databasen
    * Input:  Et array som indeholder nedenstående properties
