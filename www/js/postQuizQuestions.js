@@ -42,6 +42,7 @@ class Question {
     return correctAnswers;
   }
 
+  /* Formål: Finder keywords som tilhører spørgsmålet */
   getKeywords(questionContainer) {
     const keywords = [];
     const keywordInputs = questionContainer.getElementsByClassName(`keywordInput`);

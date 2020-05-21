@@ -20,16 +20,17 @@ class Question {
 }
 
 const submitButton = document.querySelector(`#submitButton`);
-// const { idEvaluation } = data.evaluation[0];
 submitButton.addEventListener(`click`, submitAnswers);
 
 
+/* Formål: Beregne resultatet efter en evaluering er blevet taget,
+           og sender et POST til serveren som indsætter brugerens evaluerings resultat i databasen. */
 async function submitAnswers() {
   const questionContainers = document.getElementsByClassName(`questionDiv`);
   const questionsArray = [];
   for (let i = 0; i < questionContainers.length; i++) {
     questionsArray.push(new Question(questionContainers[i], i));
-    // Checks if the given answer is correct and saves the status to the Question object.
+    // Checker om svaret er korrekt og gemmer statusen i Question objectet.
     questionsArray[i].correctAnswerGiven = questionsArray[i].userAnswers === questionsArray[i].correctAnswers;
   }
   const score = calculateScore(questionsArray);
@@ -49,7 +50,10 @@ async function submitAnswers() {
   }
 }
 
-
+/* Formål: Tæller hvor mange points (korrekt besvarede spørgsmål) brugeren har opnået efter en quiz.
+*  Input : Array af spørgsmål
+*  Output: Points brugeren har tjænt, max mulige points.
+*/
 function calculateScore(questionsArray) {
   let points = 0;
   const total = questionsArray.length;
