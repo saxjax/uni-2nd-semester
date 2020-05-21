@@ -4,7 +4,9 @@ const { Model } = require(`./AbstractClasses/Model.js`);
 const { KeywordLink } = require(`./KeywordLink`);
 const SqlString = require(`sqlstring`);
 
-/* FIXME: UNDER CONSTRUCTION */
+/* Keyword er et nøglebegreb som knyttes an til andre klasse.
+ * Keyword kan knyttes til Document, Section og Evaluation.
+ */
 
 class Keyword extends Model {
   /* Alle keywordType/Col og Table er hentet fra ParseSql! */
@@ -15,8 +17,6 @@ class Keyword extends Model {
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
       this.idUser  = req.session.idUser;
-      // this.idDocument?
-      // this.idSection?
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
@@ -36,18 +36,6 @@ class Keyword extends Model {
    * Input : Object som indeholder reference ID'er og array af Keywords.
    * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
-
-  /* INPUT OBJECT:
-     idLinks{
-       idDocument: `123-abc-fff`,
-       idSection: `345-efg-fff`,
-       idEvaluation: `542-gds-fff`,
-       idQuizQuestion: `653-asd-fff`,
-     }
-
-     INPUT ARRAY:
-     keywordArray  ["Kylling","Abe","Bille"]
-  */
   // FIXME: lav check om createkeywords og createKeywordLinks har oprettet det de skal i databasen og return true
   async insertToDatabase(idLinks, keywordArray) {
     if (keywordArray.length > 0) {
@@ -228,6 +216,10 @@ class Keyword extends Model {
     return queryString;
   }
 
+  /* Formål: At escape alle keywords så der ikke kan foregå sql injection
+   * Input : @keywordArray er et array af de keywords der skal postes som er lavet til UpperCase
+   * Output: Et sql escaped, uppercase array af keywords
+   */
   makeArrayUppercaseAndEscape(keywordArray) {
     const uppercaseKeywordArray = [];
     keywordArray.forEach((word) => {
@@ -237,6 +229,10 @@ class Keyword extends Model {
     return uppercaseKeywordArray;
   }
 
+  /* Formål: At fjerne duplicates, så der altid kun er èt keyword i tabellen
+   * Input : @keywordArray er et array af de keywords der skal postes som er lavet til UpperCase
+   * Output: Et array af keywords, hvor alle er unikke.
+   */
   removeDuplicates(keywordArray) {
     const uniqueKeywordArray = [...new Set(keywordArray)];
     return uniqueKeywordArray;

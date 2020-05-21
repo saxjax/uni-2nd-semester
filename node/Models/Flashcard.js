@@ -3,7 +3,10 @@
 const { Model }   = require(`./AbstractClasses/Model`);
 
 
-/* FIXME: UNDER CONSTRUCTION */
+/* Flashcard er den klasse der består af et concept og en definition
+ * Sammen med QuizQuestion er de pt. de primære evalueringselementer i en Evaluation.
+ * TODO: Flashcard er ikke implementeret pt.
+ */
 
 class Flashcard extends Model {
   /* Alle flashcardType/Col og Table er hentet fra ParseSql! */
@@ -15,8 +18,6 @@ class Flashcard extends Model {
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
       this.idUser  = req.session.idUser;
-      // this.idDocument?
-      // this.idSection?
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
@@ -38,7 +39,7 @@ class Flashcard extends Model {
    * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
-    // UNDER CONSTRUCTION! Gør ligesom QuizQuestion
+    // TODO: Gør ligesom QuizQuestion
   }
 }
 module.exports = {

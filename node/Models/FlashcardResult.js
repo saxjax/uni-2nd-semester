@@ -2,7 +2,10 @@
 
 const { Model } = require(`./AbstractClasses/Model`);
 
-/* UNDER CONSTRUCTION! Alt i denne fil er alene for test_purposes og intet andet som det står nu. */
+/* FlashcardResult er den klasse der holder styr på hvilke resultater brugerne har fået ved brugen af et flashcard
+ * Den holder dermed styr på hver eneste gang en bruger tager et specifikt flashcard.
+ * TODO: Er pt. ikke implementeret
+ */
 
 class FlashcardResult extends Model {
   /* Alle flashcardResultType/Col og Table er hentet fra ParseSql! */
