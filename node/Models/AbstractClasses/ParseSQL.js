@@ -40,7 +40,6 @@ class ParseSql {
     this.STitleCol = `SECTION_TITLE`;
     this.STeaserCol = `SECTION_TEASER`;
     this.SNumberCol = `SECTION_NUMBER`;
-    this.SKeywordsCol = `KEYWORDS`;
     /* Evaluation kolonner */
     this.ETitleCol = `EVALUATION_TITLE`;
     /* QuizQuestion kolonner */
@@ -181,7 +180,6 @@ class ParseSql {
       title: data[this.STitleCol],
       content: data[this.SContentCol],
       teaser: data[this.STeaserCol] || (data[this.SContentCol] ? data[this.SContentCol].slice(0, 200) : undefined), // dette gøres for at undgå at der throwes en Error, i tilfælde af at data[this.SContentCol] giver undefined (eg. man kan ikke "slice" undefined)
-      keywords: data[this.SKeywordsCol],
     };
   }
 
@@ -322,6 +320,7 @@ class ParseSql {
     return {
       elementType: data[this.typeCol],
       // IDs
+      idGroup: data[this.groupCol],
       idDocument: data[this.documentCol],
       idSection: data[this.sectionCol],
       idEvaluation: data[this.evaluationCol],
