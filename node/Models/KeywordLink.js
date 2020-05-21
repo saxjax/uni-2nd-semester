@@ -2,6 +2,10 @@
 
 const { Model } = require(`./AbstractClasses/Model.js`);
 
+/* KeywordLink er den klasse der holder styr på alle de links som et keyword har
+ * KeywordLink kan dermed sikre flere links til forskellige dokumenter, section og evalueringer for samme keyword
+ */
+
 class KeywordLink extends Model {
   /* Alle keywordLinkType/Col og Table er hentet fra ParseSql! */
   constructor(req) {

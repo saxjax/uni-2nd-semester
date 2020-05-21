@@ -2,7 +2,10 @@
 
 const { Model } = require(`./AbstractClasses/Model.js`);
 
-/* FIXME: UNDER CONSTRUCTION */
+/* ProgressBar er en hjælperfunktion til quizResult, som sørger for at sende data til frontend når det efterspørges
+ * ProgressBar er den bar i programmet, som holder styr på en brugers foreløbige fremskridt med evalueringerne.
+ * Progressbar henter og præsentere data til frontend om en specifik brugers resultater, og giver dermed et overblik
+ */
 
 class ProgressBar extends Model {
   /* Alle "modelnavn"Type/Col og Table er hentet fra ParseSql! */
@@ -27,6 +30,12 @@ class ProgressBar extends Model {
     }
   }
 
+  /* Formål: At få alt den progress som en bruger har i sine evalueringer i et grupperum
+   *         Funktionen virker pt. kun på et gruppebasis (men kan udvides til at vise progressen i et dokument/section/evaluation)
+   * Input : Intet, men gør brug af idUser og idGroup for at lave de korrekt queries
+   * Output: @progress, som er den variabel der indeholder de forskellige typer af progress en bruger kan have.
+   *         --  || --  Ses initialiseret øverst i funktionen
+   */
   async getProgressFromDB() {
     const progress = { totalProgress: 0, totalCorrectProgress: 0 };
     // Totalt Evalueringer for en gruppe.
@@ -60,7 +69,10 @@ class ProgressBar extends Model {
     return progress;
   }
 
-  // Retrives the evaluations that the user has not yet taken for display on the homepage
+  /* Formål: Får de evalueringer som endnu ikke er taget af en User der tilgår et grupperum.
+   * Input : Ingen, men bruger idUser og idGroup til at query for manglende evalueringer
+   * Output: Et Promise der resolver til en database pakke med de endnu ikke tagede evalueringer.
+   */
   async getEvaluationsNotYetTaken() {
     const evaluationsNotYetTaken = await this.query(`CUSTOM`, `SELECT * FROM ${this.evaluationTable} e `
                                                   + `WHERE e.${this.documentCol} IN (SELECT ${this.documentCol} FROM ${this.documentTable} `
