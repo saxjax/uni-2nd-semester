@@ -105,7 +105,9 @@ class Model extends Database {
   async getThisGroupData() {
     const trueObjectTable = this.table;
     this.table = `${this.groupTable}`;
-    const data = await this.query(`SELECT *`, `${this.idColumnGroup} = "${this.idGroup}"`);
+    const data = this.query(`SELECT *`, `${this.idColumnGroup} = "${this.idGroup}"`)
+      .then((result) => result)
+      .catch((error) => error);
     this.table = trueObjectTable;
     return data;
   }
@@ -120,7 +122,9 @@ class Model extends Database {
   async getThisUserData() {
     const trueObjectTable = this.table;
     this.table = `${this.userTable}`;
-    const data = await this.query(`SELECT *`, `${this.idColumnUser} = "${this.idUser}"`);
+    const data = this.query(`SELECT *`, `${this.idColumnUser} = "${this.idUser}"`)
+      .then((result) => result)
+      .catch((error) => error);
     this.table = trueObjectTable;
     return data;
   }
@@ -184,7 +188,6 @@ class Model extends Database {
       case `${this.quizQuestionType}`: return `${this.quizQuestionTable}`;
       case `${this.sectionType}`:      return `${this.sectionTable}`;
       case `${this.userType}`:         return `${this.userTable}`;
-      case `${this.quizResultTable}`:  return `${this.quizResultTable}`;
       default: throw new Error(`WARNING: Element Type not implemented in parseElementTypesTable in Model`);
     }
   }
