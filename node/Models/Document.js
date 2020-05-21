@@ -2,7 +2,10 @@
 
 const { Model } = require(`./AbstractClasses/Model.js`);
 
-/* FIXME: UNDER CONSTRUCTION */
+/* Document er det øverste objekt indenfor en Group.
+ * Document har Evaluation og Section knyttet til sig, primært.
+ * Dertil er alle keywords i Evaluations og Sections tilknyttet Document.
+ */
 
 class Document extends Model {
   /* Alle documentType/Col og Table er hentet fra ParseSql! */

@@ -3,6 +3,8 @@
 const { Model }   = require(`./AbstractClasses/Model`);
 const { Keyword } = require(`./keyword.js`);
 
+/* Evaluation er  */
+
 class Evaluation extends Model {
   /* Alle evaluationType/Col og Table er hentet fra ParseSql! */
   constructor(req) {

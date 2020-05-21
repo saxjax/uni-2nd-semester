@@ -5,6 +5,7 @@
  */
 
 class ParseSql {
+  /* Dette er en oversigt over alle de tabelnavne, elementtyper og kolonnenavne som programmet gør brug af */
   constructor() {
     this.parsedData = [];
     /* Tabel navnene */
@@ -135,7 +136,6 @@ class ParseSql {
   /* Formål: At parse Group-data
    * Input:  Et dataobjekt af typen "Group" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
-   * FIXME: Metoden skal udvikles
    */
   parseGroup(data) {
     return {
@@ -150,7 +150,6 @@ class ParseSql {
   /* Formål: At parse User-data
    * Input:  Et dataobjekt af typen "user" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
-   * FIXME: Metoden skal udvikles
    */
   parseUser(data) {
     return {
@@ -170,7 +169,6 @@ class ParseSql {
     };
   }
 
-  /* TODO: */
   /* Formål: At parse Document-data
    * Input:  Et dataobjekt af typen "document" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
@@ -207,7 +205,6 @@ class ParseSql {
     };
   }
 
-  // TODO: keywords er undefined
   /* Formål: At parse Quiz-data
    * Input:  Et dataobjekt af typen "evaluation" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
@@ -248,7 +245,6 @@ class ParseSql {
   /* Formål: At parse Quiz-result
    * Input:  Et dataobjekt af typen "quiz_result" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
-   * FIXME: Metoden skal udvikles
    */
   parseQuizResult(data) {
     return {
@@ -269,6 +265,10 @@ class ParseSql {
     };
   }
 
+  /* Formål: At parse data fra repetition_task
+   * Input:  Et array som indeholder nedenstående properties
+   * Output: Et parset array, som kan forståes af spacedrepetition funktionerne
+   */
   parseRepetitionTask(data) {
     return {
       idRepetitionTask: data[this.spacedRepetitionCol],
@@ -304,7 +304,6 @@ class ParseSql {
   /* Formål: At parse Keyword-data
    * Input:  Et dataobjekt af typen "keyword" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
-   * FIXME: Metoden skal udvikles
    */
   parseKeyword(data) {
     return {
@@ -316,6 +315,10 @@ class ParseSql {
     };
   }
 
+  /* Formål: At parse et KeywordLink så et keyword kan linkes til forskellige instanser
+   * Input:  Et dataobjekt af typen "keyword_link" fra parse metoden.
+   * Output: Et parset dataobjekt, som kan forståes på backend og frontend
+   */
   parseKeywordLink(data) {
     return {
       elementType: data[this.typeCol],
