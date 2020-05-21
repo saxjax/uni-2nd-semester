@@ -18,32 +18,37 @@
               <a href="/post/section/<%= data.document[0].idDocument %>"> Opret Afsnit til <%= data.document[0].title %> </a>
             </button>  
             <br>
-            <% data.sections.forEach((section, index) => { %>
-              <br>
-              <a href="/view/section/<%= section.idSection %>">
-                <%= section.number %> <strong><%= section.title %></strong>
-              </a>
-              <p><%= section.teaser %></p>
-              <p><strong>Evalueringer: </strong></p>
-              <% data.evaluations.forEach((evaluation) => { %> 
-                <% if(evaluation.idSection === section.idSection) { %>
-                  <p>
-                    <a href="/view/evaluations/<%=evaluation.idEvaluation %>">Se evalueringen: <%= evaluation.title %> </a>
-                  </p>
-                <% } %> 
-              <% }); %> 
-              <button class="btn btn-info">
-                <a href="/post/evaluation/section/<%= section.idSection %>"> 
-                  Opret Evaluering til <%= section.title %> 
-                </a>
-              </button>
-              <button class="removeKeywordBtn btn btn-danger">
-                <a onclick="DeleteSection(`<%= section.idSection %>`)"  style="color: cornsilk;" >
-                  Slet Afsnit
-                </a>
-              </button>
-              <br>
-            <% }); %>
+            <!-- hvis der ikke findes en RowDataPacket (Der er blevet hentet noget fra databasen) så vises inholdet -->
+              <% if(!data.sections[0].RowDataPacket){ %> 
+                <% data.sections.forEach((section, index) => { %>
+                  <br>
+                  <a href="/view/section/<%= section.idSection %>">
+                    <%= section.number %> <strong><%= section.title %></strong>
+                  </a>
+                  <p><%= section.teaser %></p>
+                  <p><strong>Evalueringer: </strong></p>
+                  <% data.evaluations.forEach((evaluation) => { %> 
+                    <% if(evaluation.idSection === section.idSection) { %>
+                      <p>
+                        <a href="/view/evaluations/<%=evaluation.idEvaluation %>">Se evalueringen: <%= evaluation.title %> </a>
+                      </p>
+                    <% } %> 
+                  <% }); %> 
+                  <button class="btn btn-info">
+                    <a href="/post/evaluation/section/<%= section.idSection %>"> 
+                      Opret Evaluering til <%= section.title %> 
+                    </a>
+                  </button>
+                  <button class="removeKeywordBtn btn btn-danger">
+                    <a onclick="DeleteSection(`<%= section.idSection %>`)"  style="color: cornsilk;" >
+                      Slet Afsnit
+                    </a>
+                  </button>
+                  <br>
+                <% }); %>
+              <% } else { %>
+                <h3 class="noContent">Der er endnu ikke oprettet nogen sektioner til dette dokument</h3>
+              <% } %> 
             <br>
             
           </div>
