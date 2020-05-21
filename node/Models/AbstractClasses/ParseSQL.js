@@ -55,13 +55,6 @@ class ParseSql {
     this.QRCreatedDateCol = `CREATED_DATE`;
     this.QRUserAnswerCol  = `USER_ANSWER`;
 
-    /* Flashcard Kolonner */
-    /* FLASHCARD IKKE IMPLEMENTERET!
-    this.FConceptCol = `CONCEPT`;
-    this.FDefinitionCol = `DEFINITION`;
-    this.FCorrectnessCol = `CORRECT_ANSWER`;
-    */
-    /* FlaschardResult kolonner */
     /* Keyword kolonner */
     this.KKeywordCol = `KEYWORD`;
     /* KeywordLink kolonner */
@@ -267,40 +260,6 @@ class ParseSql {
     return result;
   }
 
-  /* Formål: At parse Flashcard-data
-   * Input:  Et dataobjekt af typen "flashcard" fra parse metoden.
-   * Output: Et parset dataobjekt, som kan forståes på frontend
-   * FIXME: Metoden skal udvikles
-   */
-  /* FLASHCARD IKKE IMPLEMENTERET!
-  parseFlashcard(data) {
-    return {
-      elementType: data[this.typeCol],
-      // IDs
-      idEvaluation: data[this.evaluationCol],
-      idFlashcard: data[this.flashcardCol],
-      // data
-      concept: data[this.FConceptCol],
-      definition: data[this.FDefinitionCol],
-      correctness: data[this.FCorrectnessCol],
-    };
-  } */
-
-  /* Formål: At parse Flashcard-result data
-   * Input:  Et dataobjekt af typen "flashcaard_result" fra parse metoden.
-   * Output: Et parset dataobjekt, som kan forståes på frontend
-   * FIXME: Metoden skal udvikles
-   */
-  /* FLASHCARD IKKE IMPLEMENTERET!
-  parseFlashcardResult(data) {
-    return {
-      elementType: data[this.typeCol],
-      // IDs
-      idFlashcardResult: data[this.flashcardResultCol],
-      // data
-    };
-  } */
-
   /* Formål: At parse Keyword-data
    * Input:  Et dataobjekt af typen "keyword" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
@@ -332,7 +291,6 @@ class ParseSql {
     };
   }
 }
-
 
 module.exports = {
   ParseSql,
