@@ -70,7 +70,6 @@ class AccessController {
     res.render(this.ejs);
   }
 
-  // TODO: Mangler EJS fil
   /* Formål: En side der angiver information om hjemmesiden.
    *         Denne side skal være tilgængelig fra alle sider af hjemmesiden.
    * Input : Non.

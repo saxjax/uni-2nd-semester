@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('meta/header') %> 
+    <link href="/css/design.css" rel="stylesheet">
+    <meta http-equiv="refresh" content="14; URL=https://www.youtube.com/watch?v=dQw4w9WgXcQ/autoplay=1">
+    <script src="/js/helperFunctions/insertHTMLElements.js"></script>
+    <title>GroupHub | About</title>
+  </head>
+  <body>
+    <%- include('meta/navbar') %> 
+    <div class="container" id="content">
+      <div class="row">
+        <div id="listen" class="col-4">
+            <h3>Velkommen til GroupHub!</h3>
+            <p>På GroupHub kan du:</p>
+        </div>
+      </div>
+    </div>
+    <%- include('meta/footer') %> 
+  </body>
+</html>
+
+<script>
+  function Troll() {
+    const listen = document.getElementById(`listen`);
+    setTimeout(() => appendDomNode(`P`,listen,`Lave en gruppe med dine medstuderende!`),1500);
+    setTimeout(() => appendDomNode(`P`,listen,`Oprette dit projekts kapitler eller andre dokumenter!!`),3000);
+    setTimeout(() => appendDomNode(`P`,listen,`Tilføje de afsnit som udgør kapitlerne eller dokumenterne!!!`),4500);
+    setTimeout(() => appendDomNode(`P`,listen,`Lave EVALUERINGER til dine afsnit så også andre end dig fatter det!!!!`),7000);
+    setTimeout(() => appendDomNode(`P`,listen,`OG... TIL... SIDST...`),9000);
+    setTimeout(() => appendDomNode(`P`,listen,`SÅ KAN DU TESTE DIN VIDEN MED EVALUERINGERNE!!!!!!!!!!!!`),12000);
+    setTimeout(() => appendDomNode(`P`,listen,`wow`),13000);
+  }
+
+  Troll();
+</script>
