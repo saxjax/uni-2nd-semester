@@ -2,8 +2,8 @@
 
 const { Model } = require(`./AbstractClasses/Model.js`);
 
-/* FIXME: UNDER CONSTRUCTION */
 
+/* Formål: At håndtere alle request omhandlende en bruger */
 class User extends Model {
   /* Alle userType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
@@ -36,7 +36,7 @@ class User extends Model {
   }
 
   /* Formål: At oprette en bruger i databasen hvis validering returnerer 'True'
-   * Input : N/A
+   * Input : Ø
    * Output: True/False
    */
   async insertToDatabase() {
@@ -70,13 +70,6 @@ class User extends Model {
     }
   }
 
-  alreadyLoggedIn() {
-    if (this.loggedin === true) {
-      return true;
-    }
-    return false;
-  }
-
   /* Formål: Checker først om register req indeholder de nødvendige informationer og derefter om brugen allerede
    * er oprettet i database
    * input: Request sendt fra register form
@@ -101,6 +94,7 @@ module.exports = {
   User,
 };
 
+// Formål: At returnere true, hvis den streng som den modtager enten er en falsy værdi eller tom
 function isEmpty(str) {
   return (!str || str.length === 0);
 }

@@ -3,15 +3,12 @@
 const { Model } = require(`./AbstractClasses/Model`);
 const { Keyword } = require(`./Keyword`);
 
-/* Section er det objekt som indeholder data vedr�rende de afsnit der findes i et dokument.
-* en section oprettes ved at.....
-* det er muligt at oprette et section object med alle elementer sat til undefined til test brug.
-* dettes bruges af testData klassen som opretter opjekter med predefinerede data.
-* for at oprette en tom section g�res f�lgende:
-const req = {method: `TEST`, session: {}, params: {}, body: {},};
-const sec = new Section(req);
-
- * UDVID MED INFORMATION NÅR SECTION ER DESIGNET
+/* Section er den klasse som indeholder data vedrørende de afsnit der findes i et dokument.
+ * Det er muligt at oprette et section object med alle elementer sat til undefined til test brug.
+ * Dettes bruges af testData klassen som opretter opjekter med predefinerede data.
+ * For at oprette en tom section gøres følgende:
+ *   const req = {method: `TEST`, session: {}, params: {}, body: {},};
+ *   const sec = new Section(req);
  */
 
 class Section extends Model {
@@ -85,6 +82,7 @@ class Section extends Model {
     return keywords;
   }
 
+  /* Formål: At slette et afsnit (section) fra databasen samt alt hvad der ligger under afsnittet. */
   async deleteFromDatabase() {
     await this.query(`CUSTOM`, `DELETE FROM ${this.quizResultTable} WHERE ${this.evaluationCol} in (SELECT ${this.evaluationCOl} FROM ${this.evaluationTable} WHERE ${this.sectionCol} = "${this.idQuery}")`);
     await this.query(`CUSTOM`, `DELETE FROM ${this.spacedRepetitionTable} WHERE ${this.quizQuestionCol} in (SELECT ${this.quizQuestionCol} 
