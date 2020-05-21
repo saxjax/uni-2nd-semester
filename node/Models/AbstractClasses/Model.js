@@ -81,9 +81,7 @@ class Model extends Database {
     else {
       choice = `*`;
     }
-    let queryData = await this.query(`SELECT ${choice}`, `${this.idColumnName} = "${this.idQuery}"`)
-      .then((result) => result)
-      .catch((error) => error);
+    let queryData = await this.query(`SELECT ${choice}`, `${this.idColumnName} = "${this.idQuery}"`);
 
     if (this.elementType === `${this.documentType}` // et check for om objektet skal hente keywords
       || this.elementType === `${this.sectionType}`
@@ -195,9 +193,9 @@ class Model extends Database {
    */
   getChoiceColName(choice) {
     switch (choice) {
-      case `${this.documentType}`: return `${this.documentCol}`;
-      case `${this.sectionType}`: return `${this.sectionCol}`;
-      case `${this.evaluationType}`: return `${this.evaluationCol}`;
+      case `${this.documentType}`:     return `${this.documentCol}`;
+      case `${this.sectionType}`:      return `${this.sectionCol}`;
+      case `${this.evaluationType}`:   return `${this.evaluationCol}`;
       case `${this.quizQuestionType}`: return `${this.quizQuestionCol}`;
       default: throw new Error(`WARNING: Kolonne ikke korrekt angivet i getChoiceColName`);
     }
