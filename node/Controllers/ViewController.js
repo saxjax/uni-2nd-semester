@@ -12,12 +12,12 @@ const { Flashcard } = require(`../Models/Flashcard`);
 const { Keyword } = require(`../Models/Keyword`);
 const { ProgressBar } = require(`../Models/ProgressBar`);
 
-/* ViewController er den controller som præsentere alle de "views" som brugeren kan se i et grupperum.
- * ViewControllerens metoder vil dermed alle sammen hente og vise et ejs dokument, hvor der medsendes data.
- * ViewController vil dermed være den simpleste form, da der ikke bør være nogen form for logik, men alt andet logik bør
- * henvises til eksempelvis RedirectController (hvis der skal tjekkes for redirects) mv.
+/* Formål: ViewController er den controller som præsentere alle de "views" som brugeren kan se i et grupperum.
+ *         ViewControllerens metoder vil dermed alle sammen hente og vise et ejs dokument, hvor der medsendes data.
+ *         ViewController vil dermed være den simpleste form, da der ikke bør være nogen form for logik, men alt andet logik bør
+ *         henvises til eksempelvis RedirectController (hvis der skal tjekkes for redirects) mv.
+ * Input:  Modtager en settingsfil, indeholder serverinstillingerne bestemt i filen serverSettings.js i roden
  */
-
 class ViewController {
   constructor(settings) {
     this.name = `ViewController`;
@@ -34,52 +34,18 @@ class ViewController {
     const SpacedRep = new QuizResult(req);
     const PB        = new ProgressBar(req);
     const dataArray = await Promise.all([
-      Recipient.getThisGroupData(),               // dataArray[0]
-      Recipient.getThisUserData(),                // dataArray[1]
-      Recipient.getAllElementsOfType(`document`), // dataArray[2]
+      Recipient.getThisGroupData(),                   // dataArray[0]
+      Recipient.getThisUserData(),                    // dataArray[1]
+      Recipient.getAllElementsOfType(`document`),     // dataArray[2]
       SpacedRep.getIdQuizquestionsDueForRepetition(), // dataArray[3]
-      PB.getEvaluationsNotYetTaken(),
+      PB.getEvaluationsNotYetTaken(),                 // dataArray[4]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2], repetitionTask: dataArray[3], evaluationsNotYetTaken: dataArray[4] };
     this.ejs = path.join(`${this.root}/www/views/home.ejs`);
     res.render(this.ejs, { data });
   }
 
-  /* Document Views TODO: */
-
-  // TODO: Mangler EJS fil
-  /* Formål: BESKRIV EJS FORMÅL HER
-   * Input : En session med groupId
-   * Output: En liste af de dokumenter som er lagt op i gruppen.
-   */
-  async viewDocumentRecipientPage(req, res) {
-    const Recipient = new Group(req);
-    const dataArray = await Promise.all([
-      Recipient.getThisGroupData(),               // dataArray[0]
-      Recipient.getThisUserData(),                // dataArray[1]
-      Recipient.getAllElementsOfType(`document`), // dataArray[2]
-    ]);
-    const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2] };
-    this.ejs = path.join(`${this.root}/www/views/viewDocumentRecipient.ejs`);
-    res.render(this.ejs, { data });
-  }
-
-  // TODO: Mangler EJS fil
-  /* Formål: BESKRIV EJS FORMÅL HER
-   * Input : En session med userId og groupId
-   * Output: En liste af dokumenter som brugeren har lagt op.
-   */
-  async viewDocumentExpertPage(req, res) {
-    const Expert = new User(req);
-    const dataArray = await Promise.all([
-      Expert.getThisGroupData(),               // dataArray[0]
-      Expert.getThisUserData(),                // dataArray[1]
-      Expert.getAllElementsOfType(`document`), // dataArray[2]
-    ]);
-    const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2] };
-    this.ejs = path.join(`${this.root}/www/views/viewDocumentExpert.ejs`);
-    res.render(this.ejs, { data });
-  }
+  /* Document Views */
 
   /* Formål: At gøre det muligt at oprette et nyt Document
    * Input : En session med userId og groupId
@@ -114,43 +80,7 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // TODO: Mangler EJS fil
-  /* Formål: BESKRIV EJS FORMÅL HER
-   * Input : Et request med et queryId samt en session med userId og groupId
-   * Output: Ens dokument data med mulighed for at rette i det.
-   */
-  async putDocumentPage(req, res) {
-    const Doc = new Document(req);
-    const dataArray = await Promise.all([
-      Doc.getThisGroupData(),               // dataArray[0]
-      Doc.getThisUserData(),                // dataArray[1]
-      Doc.getThis(),                        // dataArray[2]
-    ]);
-    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2] };
-    this.ejs = path.join(`${this.root}/www/views/putDocument.ejs`);
-    res.render(this.ejs, { data });
-  }
-
-  /* Section Views TODO: */
-
-  // TODO: Mangler EJS fil
-  /* Formål: At vise alle de sektioner som er tilgængelige for en bruger i en gruppe.
-   * Input : En session med userId og groupId
-   * Output: En liste af de sections som er lagt op i gruppen.
-   */
-  async viewSectionsRecipientPage(req, res) {
-    const Recipient = new Group(req);
-    const dataArray = await Promise.all([
-      Recipient.getThisGroupData(),               // dataArray[0]
-      Recipient.getThisUserData(),                // dataArray[1]
-      Recipient.getAllElementsOfType(`section`),  // dataArray[2]
-    ]);
-    const data = { group: dataArray[0], user: dataArray[1], sections: dataArray[2] };
-    this.ejs = path.join(`${this.root}/www/views/viewSectionsRecipient.ejs`);
-    res.render(this.ejs, { data });
-  }
-
-  /* Formål: BESKRIV EJS FORMÅL HER
+  /* Formål: At hente data, som gør det muligt at vise en side for brugeren med de afsnit, som brugeren har oprettet
    * Input : En session med userId og groupId
    * Output: En liste af de sections som brugeren har oprettet
    */
@@ -213,10 +143,6 @@ class ViewController {
   /* Formål: Gør det muligt for en bruger at oprette en section så den er tilkoblet et dokument i gruppen.
    * Input : En session med userId og groupId
    * Output: En visning af en form hvor brugeren kan tilføje en section
-   * FIXME: Som det står nu er sections DOCUMENT_ID blot sat til null, og formålet er dermed ikke opfyldt.
-   * FIXME: Denne funktion skal gerne, på en eller anden måde, kunne vurdere om der er valgt et dokument/section på forhånd
-   *        som denne post skal knyttes til.
-   *        Det er vigtigt, at strukturen for hvordan det løses på, er den samme for alle de andre URL'er.
    */
   async postSectionPage(req, res) {
     const Doc = new Document(req);
@@ -232,8 +158,7 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // TODO: Mangler EJS
-  /* Formål: BESKRIV EJS FORMÅL HER
+  /* Formål: At hente data, som gør det muligt at vise brugeren al data omhandlende et afsnit (section)
    * Input : Et request med et queryId samt en session med userId og groupId
    * Output: En visning af en enkelt section til brugeren
    */
@@ -249,45 +174,9 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // TODO: Mangler EJS
-  /* Formål: BESKRIV EJS FORMÅL HER
-   * Input : Et request med et queryId samt en session med userId og groupId
-   * Output: En præsentation af en section i en form som kan ændres
-   */
-  async putSectionPage(req, res) {
-    const Sec = new Section(req);
-    const dataArray = await Promise.all([
-      Sec.getThisGroupData(),               // dataArray[0]
-      Sec.getThisUserData(),                // dataArray[1]
-      Sec.getThis(),                        // dataArray[2]
-    ]);
-    const data = { group: dataArray[0], user: dataArray[1], section: dataArray[2] };
-    this.ejs = path.join(`${this.root}/www/views/putSection.ejs`);
-    res.render(this.ejs, { data });
-  }
+  /* Evaluation Views */
 
-  /* Evaluation Views TODO: */
-
-  /* Formål: At vise alle de tilgængelige evalueringer som en bruger kan give sig i kast med.
-   * Input : En session med userId og groupId
-   * Output: En liste med alle de oprettede evalueringsværktøjer som er i gruppen
-   */
-  async viewEvaluationsRecipientPage(req, res) {
-    const Recipient = new Group(req);
-    const dataArray = await Promise.all([
-      Recipient.getThisGroupData(),                // dataArray[0]
-      Recipient.getThisUserData(),                 // dataArray[1]
-      Recipient.getAllElementsOfType(`evaluation`),      // dataArray[2]
-      Recipient.getAllElementsOfType(`flashcard`), // dataArray[3]   ->   FIXME: Ikke oprettet endnu
-    ]);
-    const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2], flashcards: dataArray[3] };
-    this.ejs = path.join(`${this.root}/www/views/viewEvaluationsRecipient.ejs`);
-    Group.connect.end();
-    res.render(this.ejs, { data });
-  }
-
-  // TODO: Mangler EJS
-  /* Formål: BESKRIV EJS FORMÅL HER
+  /* Formål: At hente data, som gør det muligt at vise brugeren alle de evalueringer brugeren selv har oprettet
    * Input : En session med userId og groupId
    * Output: En liste med alle de oprettede evalueringsværktøjer som en bruger har oprettet.
    */
@@ -304,25 +193,6 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  // TODO: Mangler EJS
-  /* Formål: BESKRIV EJS FORMÅL HER
-   * Input : En session med userId og groupId og queryId fra params
-   * Output: En liste af alle de evalueringer der er tilknyttet et dokument
-   */
-  async viewEvaluationsDocumentPage(req, res) {
-    const Doc = new Document(req);
-    const dataArray = await Promise.all([
-      Doc.getThisGroupData(),                // dataArray[0]
-      Doc.getThisUserData(),                 // dataArray[1]
-      Doc.getThis(),                         // dataArray[2]
-      Doc.getAllElementsOfType(`evaluation`),      // dataArray[3]
-      Doc.getAllElementsOfType(`flashcard`), // dataArray[4]
-    ]);
-    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], evaluation: dataArray[3], flashcards: dataArray[4] };
-    this.ejs = path.join(`${this.root}/www/views/viewEvaluationsDocument.ejs`);
-    res.render(this.ejs, { data });
-  }
-
   /* Formål: At vise et afsnit med alle de tilhørende evalueringer som er mulige at tage til dette afsnit.
    * Input : En session med userId og groupId og queryId fra params
    * Output: En liste med alle de evalueringer der er tilknyttet en section
@@ -333,7 +203,7 @@ class ViewController {
       Sec.getThisGroupData(),                 // dataArray[0]
       Sec.getThisUserData(),                  // dataArray[1]
       Sec.getThis(),                          // dataArray[2]
-      Sec.getAllElementsOfType(`evaluation`),       // dataArray[3]
+      Sec.getAllElementsOfType(`evaluation`), // dataArray[3]
       Sec.getAllElementsOfType(`flashcard`),  // dataArray[4]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], evaluations: dataArray[3], flashcards: dataArray[4] };

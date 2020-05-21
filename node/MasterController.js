@@ -135,7 +135,6 @@ class MasterController {
     // this.app.get(`/put/section/:idQuery`,        (req, res) => Show.putSectionPage(req, res));
 
     // Evaluations
-    // this.app.get(`/view/evaluations/recipient`,         (req, res) => Show.viewEvaluationsRecipientPage(req, res));
     this.app.get(`/view/evaluations/expert`,            (req, res) => Show.viewEvaluationsExpertPage(req, res));
     // this.app.get(`/view/evaluations/document/:idQuery`, (req, res) => Show.viewEvaluationsDocumentPage(req, res));
     this.app.get(`/view/evaluations/section/:idQuery`,  (req, res) => Show.viewEvaluationsSectionPage(req, res));
@@ -202,7 +201,7 @@ class MasterController {
    */
   deletePatterns() {
     const Deletter = new DeleteController(this.root);
-    this.app.delete(`/delete/evaluation/section/:idQuery`, (req, res) => Deletter.DeleteSection(req, res));
+    this.app.delete(`/delete/evaluation/section/:idQuery`, (req, res) => Deletter.deleteSection(req, res));
   }
 
   /* Formål: En "catch all" for alle de tests der ønskes at blive lavet, så de ikke "clutter" de andre URL'er til.

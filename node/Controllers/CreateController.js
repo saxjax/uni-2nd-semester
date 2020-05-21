@@ -9,8 +9,9 @@ const { QuizQuestion } = require(`../Models/QuizQuestion`);
 const { QuizResult } = require(`../Models/QuizResult`);
 const { ErrorController } = require(`./AbstractControllers/ErrorController`);
 
-/* UNDER CONSTRUCTION */
-
+/* Formål: CreateControllerens opgave er at håndtere alle POST-requests fra platformen
+ * Input:  Modtager en settingsfil, indeholder serverinstillingerne bestemt i filen serverSettings.js i roden
+ */
 class CreateController {
   constructor(settings) {
     this.name = `CreateController`;
@@ -54,7 +55,7 @@ class CreateController {
     newUser.connect.end();
   }
 
-  /* UNDER CONSTRUCTION */
+  /* Formål: At oprette et dokument i databasen */
   async createDocument(req, res) {
     const D = new Document(req);
     try {
@@ -69,7 +70,7 @@ class CreateController {
     D.connect.end();
   }
 
-  /* UNDER CONSTRUCTION */
+  /* Formål: At oprette et afsnit (section) i databasen */
   async createSection(req, res) {
     const S = new Section(req);
     try {
@@ -84,7 +85,7 @@ class CreateController {
     S.connect.end();
   }
 
-  /* FIXME: UNDER CONSTRUCTION */
+  /* Formål: At oprette en evaluering (evaluation) i databasen */
   async createEvaluation(req, res) {
     const E = new Evaluation(req);
     try {
@@ -107,7 +108,7 @@ class CreateController {
     const QQ = new QuizQuestion(req);
     try {
       await QQ.insertToDatabase();
-      res.send({ url: `/view/evaluations/expert` }); // TODO: Kan eventuelt senere videredirigere til siden, hvor man kan tage evalueringen
+      res.send({ url: `/view/evaluations/expert` });
     }
     catch (error) {
       const E = new ErrorController(error);

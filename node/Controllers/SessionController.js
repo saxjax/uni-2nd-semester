@@ -5,10 +5,9 @@ const { Group } = require(`../Models/Group`);
 const { ErrorController } = require(`./AbstractControllers/ErrorController`);
 
 
-/* Controllere for sessions
- * Omdirigere altid til `/` (som det står nu)
+/* Formål: SessionControllerens opgave er at håndtere alle requests omhandlende sessions på platformen
+ * Input:  Modtager en settingsfil, indeholder serverinstillingerne bestemt i filen serverSettings.js i roden
  */
-
 class SessionController {
   constructor(settings) {
     this.name = `SessionController`;

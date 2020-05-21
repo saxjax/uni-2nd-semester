@@ -14,7 +14,7 @@ class AccessController {
     this.ejs = ``;
   }
 
-  /* Formål */
+  /* Formål: At rendere en side, som fortæller brugeren at vores database ikke virker */
   dbDown(req, res) {
     this.ejs = path.join(`${this.root}/www/views/dbDown.ejs`);
     res.render(this.ejs);
@@ -22,9 +22,7 @@ class AccessController {
 
   /* Session Interaction URLs */
 
-  /* UNDER CONSTRUCTION
-   *
-   */
+  /* Formål: At hente og videresende data omkring de grupper, som en given bruger er tilknyttet */
   async viewGroupsPage(req, res) {
     const U = new User(req);
     const G = new Group(req);
@@ -40,9 +38,7 @@ class AccessController {
     res.render(this.ejs, { data });
   }
 
-  /* UNDER CONSTRUCTION
-   *
-   */
+  /* Formål: At hente og videresende data forbundet med at en bruger skal oprette et nyt grupperum */
   async postGroupPage(req, res) {
     const U = new User(req);
     const groupIdFromUser = await U.query(`SELECT ${U.idColumnGroup}`, `${U.idColumnUser} = "${U.idUser}"`);
@@ -59,15 +55,16 @@ class AccessController {
     res.render(this.ejs, { data });
   }
 
-  /* UNDER CONSTRUCTION */
+
+  /* No Session Requirement URLs */
+
+  /* Formål: At rendere en side for brugeren, hvor brugeren kan registrere en bruger i systemet */
   registerPage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/register.ejs`);
     res.render(this.ejs);
   }
 
-  /* No Session Requirement URLs */
-
-  /* UNDER CONSTRUCTION */
+  /* Formål: At rendere en side for brugeren, hvor brugeren kan logge ind */
   loginPage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/login.ejs`);
     res.render(this.ejs);
@@ -78,9 +75,6 @@ class AccessController {
    *         Denne side skal være tilgængelig fra alle sider af hjemmesiden.
    * Input : Non.
    * Output: Visning af information om hjemmesiden, uden man behøver være User.
-   * FIXME: Implementation af denne funktionalitet kræver højst sandsynligt en ændring i Servermetoden "noSessionNoAccess"
-   *         da den blokere for alt adgang til hjemmesiden, hvis man ikke er logget ind og har valgt gruppe, hvor denne
-   *         vil være en undtagelse. Implementer gerne så denne kan være "en af flere" undtagelser.
    */
   async aboutPage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/about.ejs`);

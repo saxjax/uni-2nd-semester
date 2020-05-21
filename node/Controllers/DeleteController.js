@@ -3,16 +3,17 @@
 const { Section } = require(`../Models/Section`);
 const { ErrorController } = require(`./AbstractControllers/ErrorController`);
 
-/* UNDER CONSTRUCTION */
-
+/* Formål: CreateControllerens opgave er at håndtere alle DELETE-requests fra platformen
+ * Input:  Modtager en settingsfil, indeholder serverinstillingerne bestemt i filen serverSettings.js i roden
+ */
 class DeleteController {
-  /* UNDER CONSTRUCTION */
   constructor(root) {
     this.name = `CreateController`;
     this.root = root;
   }
 
-  async DeleteSection(req, res) {
+  /* Formål: At slette et afsnit (section) i databasen */
+  async deleteSection(req, res) {
     try {
       const Sec = new Section(req);
       await Sec.deleteFromDatabase();

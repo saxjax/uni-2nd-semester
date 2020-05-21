@@ -19,7 +19,8 @@ class Document extends Model {
           this.idQuery        =  req.params.idQuery;
           break;
         case `POST`:
-          this.title     = req.body.title;
+          this.title      = req.body.title;
+          this.idDocument = undefined;
           break;
         default: break;
       }
@@ -29,7 +30,7 @@ class Document extends Model {
   /* Formål: At kunne oprette den givne model i databasen ud fra posted data fra en form.
              Der bliver desuden automatisk oprettet de forskellige dependencies/foreign keys som objektet tilhører.
    * Input : Et objekt oprettet med et request med postdata i body samt user/group data i session
-   * Output: True hvis queren inserter, ellers false hvis der sker en fejl. FIXME: Ikke sandt - hvad indeholder newObject?
+   * Output: Dokumentets ID
    */
   async insertToDatabase() {
     this.idDocument = await this.getUuid();
