@@ -27,12 +27,12 @@ function createDomNode(tagNameParam, text, selectors) {
     switch (tagName) {
       case `P`:
         elem.appendChild(document.createTextNode(text)); break;
-      case `BUTTON`: case `LABEL`:
+      case `BUTTON`: case `LABEL`: case `DIV`:
         elem.innerHTML = text;                           break;
       case `INPUT`:
         elem.placeholder = text;                         break;
       default:
-        console.warn(`tagName Warning: ${tagName} is not defined in switch. Text was not applied.`);
+        console.warn(`tagName Warning: ${tagName} is not defined in switch. Text was not applied.`); // eslint-disable-line no-console
         break;
     }
   }

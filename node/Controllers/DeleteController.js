@@ -21,9 +21,15 @@ class DeleteController extends ErrorController {
   }
 
   async DeleteSection(req, res) {
-    const Sec = new Section(req);
-    await Sec.deleteFromDatabase();
-    res.send({ response: `OK` });
+    try {
+      const Sec = new Section(req);
+      await Sec.deleteFromDatabase();
+      res.send({ response: `OK` });
+    }
+    catch (error) {
+      const errorMsg = this.produceErrorMessageToUser(error);
+      res.send({ error: errorMsg });
+    }
   }
 }
 
