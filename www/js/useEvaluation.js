@@ -1,3 +1,4 @@
+/* Denne   */
 class Question {
   constructor(questionContainer, index) {
     this.idQuestion         = questionContainer.getAttribute(`idQuestion`);
