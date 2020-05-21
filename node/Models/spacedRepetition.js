@@ -48,7 +48,7 @@ class SpacedRepetition extends Model {
     const queryResult = await this.query(`SELECT ${this.quizQuestionCol}`, `${this.SRRepetitionDate} <= "${now}" 
                                     AND ${this.userCol} = "${this.idUser}" 
                                     AND ${this.groupCol} = "${this.idGroup}"`);
-
+    console.log(queryResult);
     queryResult.forEach((element) => {
       if (element.idQuizQuestion !== undefined) { // populerer repetitiontasks med idQuizQuestions hvis der er nogen til repetition
         repetitionTasks.push(element.idQuizQuestion);
