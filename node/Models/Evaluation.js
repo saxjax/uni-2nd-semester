@@ -46,13 +46,13 @@ class Evaluation extends Model {
    */
   async insertToDatabase() {
     this.idEvaluation = await this.getUuid();
-    this.idDocument = this.getDocId();
+    this.idDocument = await this.getDocId();
     await this.query(`INSERT`, `ID_DOCUMENT = "${this.idDocument}" AND `
                                + `ID_DOCUMENT_SECTION = "${this.idSection}" AND `
-                               + `ID_EVALUATION = "${this.idEvaluation}" AND`
+                               + `ID_EVALUATION = "${this.idEvaluation}" AND `
                                + `ID_USER = "${this.idUser}" AND `
                                + `ID_USER_GROUP = "${this.idGroup}" AND `
-                               + `EVALUATION_TITLE = "${this.title}" AND `);
+                               + `EVALUATION_TITLE = "${this.title}"`);
 
     const keyw = new Keyword(this.req);
     const idObject = {
@@ -67,7 +67,7 @@ class Evaluation extends Model {
 
   async getDocId() {
     this.table = `document_section`;
-    const idDocumentArr = await this.query(`SELECT`, `ID_DOCUMENT_SECTION = "${this.idSection}"`);
+    const idDocumentArr = await this.query(`SELECT ID_DOCUMENT`, `ID_DOCUMENT_SECTION = "${this.idSection}"`);
     this.table = `evaluation`;
     return idDocumentArr[0].idDocument;
   }

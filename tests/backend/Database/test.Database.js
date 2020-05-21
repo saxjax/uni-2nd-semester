@@ -474,7 +474,8 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   assert.equal(actual, expected,
     `(4.7.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data med specialtegn der indeholder mellemrum.`);
 
-  /* 4.7 */
+  /* 4.8 DENNE TEST AKTIVERES NÅR VI FORSØGER AT OPNÅ DET DER STÅR HERUNDER! */
+  /*
   try {
     await object.query(`INSERT`, `TEST_OPTION_1 = "med dig" `
                            + `AND TEST_OPTION_1 = "også med dig"`

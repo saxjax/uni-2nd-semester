@@ -68,13 +68,6 @@ class QuizResult extends SpacedRepetition {
     return string.slice(0, -1);
   }
 
-<<<<<<< HEAD
-=======
-  async getUuid() {
-    return this.query(`CUSTOM`, `SELECT UUID() AS UUID`);
-  }
-
->>>>>>> 4387d9b971d95593b28fa91b0cc381135d12c35b
   async getAllQuizQuestions() {
     const trueTable = this.table;
 

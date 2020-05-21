@@ -34,13 +34,13 @@ class Group extends Model {
    */
   async insertToDatabase() {
     this.idGroup = await this.getUuid();
-    await this.query(`INSERT`, `NAME = "${this.name}" AND ID_GROUP = "${this.idGroup}"`);
+    await this.query(`INSERT`, `NAME = "${this.name}" AND ID_USER_GROUP = "${this.idGroup}"`);
 
     this.table = `user`;
     for (let i = 0; i < this.members.length; i++) {
       const newUser = await this.query(`SELECT *`, `USER_NAME = "${this.members[i]}"`);
       if (newUser[0].idGroup === `undefined`) {
-        await this.query(`UPDATE`, `ID_USER_GROUP = "${newGroup[0].idGroup}" WHERE USER_NAME = "${this.members[i]}"`);
+        await this.query(`UPDATE`, `ID_USER_GROUP = "${this.idGroup}" WHERE USER_NAME = "${this.members[i]}"`);
       }
       else if (newUser[0].elementType === `user`) {
         // FIXME: En respons til brugeren om at brugernavnet er tastet forkert. Dette skal dog nok valideres inden på Frontend siden på en eller anden måde.

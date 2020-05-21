@@ -39,9 +39,9 @@ class User extends Model {
    * Output: True/False
    */
   async insertToDatabase() {
-    this.idUser = this.getUuid();
+    this.idUser = await this.getUuid();
     await this.query(`INSERT`, `ID_USER_GROUP = "${this.idGroup}" `
-                     + `AND ID_USER = "${this.idUser}"`
+                     + `AND ID_USER = "${this.idUser}" `
                      + `AND USER_NAME = "${this.username}" `
                      + `AND PASSWORD = "${this.password}" `
                      + `AND FIRST_NAME = "${this.firstName}" `
