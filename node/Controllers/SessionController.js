@@ -41,7 +41,7 @@ class SessionController {
     const G = new Group(req);
     G.idGroup = req.params.idQuery;
     const data = await G.getThisGroupData();
-    if (data) {
+    if (Object.keys(data[0]).length > 1) {
       req.session.idGroup = data[0].idGroup;
       req.session.groupname = data[0].name;
       G.connect.end();
