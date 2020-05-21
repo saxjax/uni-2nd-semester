@@ -8,79 +8,79 @@ class ParseSql {
   constructor() {
     this.parsedData = [];
     /* Tabel navnene */
-    this.databaseTable = `database`;
-    this.groupTable = `user_group`;
-    this.userTable = `user`;
-    this.documentTable = `document`;
-    this.sectionTable = `document_section`;
-    this.evaluationTable = `evaluation`;
-    this.quizQuestionTable = `quiz_question`;
-    this.quizResultTable = `quiz_result`;
-    this.flashcardTable = `flashcard`;
-    this.flashcardResultTable = `flashcard_result`;
-    this.keywordTable = `keyword`;
-    this.keywordLinkTable = `keyword_link`;
+    this.databaseTable         = `database`;
+    this.groupTable            = `user_group`;
+    this.userTable             = `user`;
+    this.documentTable         = `document`;
+    this.sectionTable          = `document_section`;
+    this.evaluationTable       = `evaluation`;
+    this.quizQuestionTable     = `quiz_question`;
+    this.quizResultTable       = `quiz_result`;
+    this.flashcardTable        = `flashcard`;
+    this.flashcardResultTable  = `flashcard_result`;
+    this.keywordTable          = `keyword`;
+    this.keywordLinkTable      = `keyword_link`;
     this.spacedRepetitionTable = `repetition_task`;
     /* Elementtypes */
-    this.databaseType = `test`;
-    this.groupType = `group`;
-    this.userType = `user`;
-    this.documentType = `document`;
-    this.sectionType = `section`;
-    this.evaluationType = `evaluation`;
-    this.quizQuestionType = `quiz_question`;
-    this.quizResultType = `quiz_result`;
-    this.flashcardType = `flashcard`;
-    this.flashcardResultType = `flashcard_result`;
-    this.keywordType = `keyword`;
-    this.keywordLinkType = `keyword_link`;
+    this.databaseType         = `test`;
+    this.groupType            = `group`;
+    this.userType             = `user`;
+    this.documentType         = `document`;
+    this.sectionType          = `section`;
+    this.evaluationType       = `evaluation`;
+    this.quizQuestionType     = `quiz_question`;
+    this.quizResultType       = `quiz_result`;
+    this.flashcardType        = `flashcard`;
+    this.flashcardResultType  = `flashcard_result`;
+    this.keywordType          = `keyword`;
+    this.keywordLinkType      = `keyword_link`;
     this.spacedRepetitionType = `repetition_task`;
     /* ID kolonner der bruges alt efter hieraki */
-    this.groupCol = `ID_USER_GROUP`;
-    this.userCol = `ID_USER`;
-    this.documentCol = `ID_DOCUMENT`;
-    this.sectionCol = `ID_DOCUMENT_SECTION`;
-    this.evaluationCol = `ID_EVALUATION`;
-    this.quizQuestionCol = `ID_QUIZ_QUESTION`;
-    this.quizResultCol = `ID_QUIZ_RESULT`;
-    this.flashcardCol = `ID_FLASHCARD`;
-    this.flashcardResultCol = `ID_FLASHCARD_RESULT`;
-    this.keywordCol = `ID_KEYWORD`;
-    this.keywordLinkCol = `ID_KEYWORD_LINK`;
-    this.attemptCol = `ID_ATTEMPT`;
+    this.groupCol            = `ID_USER_GROUP`;
+    this.userCol             = `ID_USER`;
+    this.documentCol         = `ID_DOCUMENT`;
+    this.sectionCol          = `ID_DOCUMENT_SECTION`;
+    this.evaluationCol       = `ID_EVALUATION`;
+    this.quizQuestionCol     = `ID_QUIZ_QUESTION`;
+    this.quizResultCol       = `ID_QUIZ_RESULT`;
+    this.flashcardCol        = `ID_FLASHCARD`;
+    this.flashcardResultCol  = `ID_FLASHCARD_RESULT`;
+    this.keywordCol          = `ID_KEYWORD`;
+    this.keywordLinkCol      = `ID_KEYWORD_LINK`;
+    this.attemptCol          = `ID_ATTEMPT`;
     this.spacedRepetitionCol = `ID_REPETITION_TASK`;
     /* kolonner i alle klasser */
     this.typeCol = `ELEMENT_TYPE`;
     /* Group kolonner */
     this.GNameCol = `NAME`;
     /* User kolonner */
-    this.UUsernameCol = `USER_NAME`;
-    this.UPasswordCol = `PASSWORD`;
-    this.UFirstNameCol = `FIRST_NAME`;
-    this.ULastNameCol = `LAST_NAME`;
-    this.UEmailCol = `EMAIL`;
+    this.UUsernameCol     = `USER_NAME`;
+    this.UPasswordCol     = `PASSWORD`;
+    this.UFirstNameCol    = `FIRST_NAME`;
+    this.ULastNameCol     = `LAST_NAME`;
+    this.UEmailCol        = `EMAIL`;
     this.UStudySubjectCol = `STUDY_SUBJECT`;
-    this.USemesterCol = `SEMESTER`;
-    this.UUniversityCol = `UNIVERSITY`;
+    this.USemesterCol     = `SEMESTER`;
+    this.UUniversityCol   = `UNIVERSITY`;
     /* Document kolonner */
     this.DTitleCol = `TITLE`;
     /* Section kolonner */
     this.SContentCol = `SECTION_CONTENT`;
-    this.STitleCol = `SECTION_TITLE`;
-    this.STeaserCol = `SECTION_TEASER`;
-    this.SNumberCol = `SECTION_NUMBER`;
+    this.STitleCol   = `SECTION_TITLE`;
+    this.STeaserCol  = `SECTION_TEASER`;
+    this.SNumberCol  = `SECTION_NUMBER`;
     /* Evaluation kolonner */
     this.ETitleCol = `EVALUATION_TITLE`;
     /* QuizQuestion kolonner */
-    this.QQQuestionCol = `QUESTION`;
-    this.QQAnswersCol = `ANSWERS`;
+    this.QQQuestionCol    = `QUESTION`;
+    this.QQAnswersCol     = `ANSWERS`;
     this.QQCorrectnessCol = `CORRECT_ANSWERS`;
-    this.QQKeywordsCol = `KEYWORD`;
+    this.QQKeywordsCol    = `KEYWORD`;
     /* QuizResult Kolonner */
-    this.QRAttemptCol = `ID_ATTEMPT`;
-    this.QRPointCol = `POINT`;
-    this.QRTotalCol = `TOTAL`;
-    this.QRResultCol = `RESULT`;
+    this.QRAttemptCol     = `ID_ATTEMPT`;
+    this.QRPointCol       = `POINT`;
+    this.QRTotalCol       = `TOTAL`;
+    this.QRResultCol      = `RESULT`;
     this.QRCreatedDateCol = `CREATED_DATE`;
     this.QRUserAnswerCol  = `USER_ANSWER`;
 
