@@ -7,9 +7,9 @@ const { ErrorController } = require(`./AbstractControllers/ErrorController`);
  * Input:  Modtager en settingsfil, indeholder serverinstillingerne bestemt i filen serverSettings.js i roden
  */
 class DeleteController {
-  constructor(root) {
+  constructor(settings) {
     this.name = `CreateController`;
-    this.root = root;
+    this.root = settings.root;
   }
 
   /* Formål: At slette et afsnit (section) i databasen */

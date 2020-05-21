@@ -76,7 +76,7 @@ class AccessController {
    * Input : Non.
    * Output: Visning af information om hjemmesiden, uden man behøver være User.
    */
-  async aboutPage(req, res) {
+  aboutPage(req, res) {
     this.ejs = path.join(`${this.root}/www/views/about.ejs`);
     res.render(this.ejs);
   }

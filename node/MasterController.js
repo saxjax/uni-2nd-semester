@@ -15,9 +15,9 @@ const { TestController } = require(`./Controllers/TestController`);
 const { Database } = require(`./Models/AbstractClasses/Database`);
 const pad = require(`./HelperFunctions/Pad`);
 
-/* MasterController er et objekt der opretter webapplikationen.
- * MasterController fungere dermed som den primære indgangsvinkel til programmet, og alle dele af programmet kan udledes herfra.
- * MasterController konstrueres ud fra nogle definerede settings, så det er muligt at opstarte en server i forskellige tilstande.
+/* Formål: MasterController er et objekt der opretter webapplikationen.
+ *         MasterController fungere dermed som den primære indgangsvinkel til programmet, og alle dele af programmet kan udledes herfra.
+ *         MasterController konstrueres ud fra nogle definerede settings, så det er muligt at opstarte en server i forskellige tilstande.
  */
 class MasterController {
   constructor(settings) {
@@ -65,11 +65,14 @@ class MasterController {
   accessPatterns() {
     const Access = new AccessController(this.settings);
     this.app.get(`/dbdown`,         (req, res) => Access.dbDown(req, res));
+
     // No Session URLs
     this.app.get(`/access/about`,    (req, res) => Access.aboutPage(req, res));
     this.app.get(`/access/register`, (req, res) => Access.registerPage(req, res));
+
     // idUser Session URLs
     this.app.get(`/access/login`,    (req, res) => Access.loginPage(req, res));
+
     // idGroup Session URLs
     this.app.get(`/access/view/groups`,   (req, res) => Access.viewGroupsPage(req, res));
     this.app.get(`/access/post/group`,   (req, res) => Access.postGroupPage(req, res));
@@ -113,40 +116,24 @@ class MasterController {
    *             der knytter sig til et unikt dokument/section, fremfor hele gruppen.
    * Input : Non. Her laves blot opsætningen.
    * Output: Opsætning af url'er som kan tilgås via serverens port.
-   * TODO: de kommenterede (//) har ikke en tilsvarende EJS fil endnu.
    */
   viewPatterns() {
     const Show = new ViewController(this.settings);
     this.app.get(`/`,                             (req, res) => Show.homePage(req, res));
 
     // Documents
-    // this.app.get(`/view/document/recipient`,  (req, res) => Show.viewDocumentRecipientPage(req, res));
-    // this.app.get(`/view/document/expert`,     (req, res) => Show.viewDocumentExpertPage(req, res));
     this.app.get(`/post/document/`,         (req, res) => Show.postDocumentPage(req, res));
     this.app.get(`/view/document/:idQuery`,   (req, res) => Show.viewDocumentPage(req, res));
-    // this.app.get(`/put/document/:idQuery`, (req, res) => Show.putDocumentPage(req, res));
 
     // Sections
-    // this.app.get(`/view/sections/recipient`,         (req, res) => Show.viewSectionsRecipientPage(req, res));
     this.app.get(`/view/sections/expert`,            (req, res) => Show.viewSectionExpertPage(req, res));
     this.app.get(`/view/sectionsAndEvaluations/document/:idQuery`, (req, res) => Show.viewSectionsAndEvaluationsDocumentPage(req, res));
     this.app.get(`/post/section/:idQuery`,                 (req, res) => Show.postSectionPage(req, res));
     this.app.get(`/view/section/:idQuery`,          (req, res) => Show.viewSectionPage(req, res));
-    // this.app.get(`/put/section/:idQuery`,        (req, res) => Show.putSectionPage(req, res));
 
     // Evaluations
     this.app.get(`/view/evaluations/expert`,            (req, res) => Show.viewEvaluationsExpertPage(req, res));
-    // this.app.get(`/view/evaluations/document/:idQuery`, (req, res) => Show.viewEvaluationsDocumentPage(req, res));
     this.app.get(`/view/evaluations/section/:idQuery`,  (req, res) => Show.viewEvaluationsSectionPage(req, res));
-    /* EVALUATIONS HAR IKKE post, view/:idQuery og put, da evaluations IKKE er et objekt som sådan
-     * Evaluations er blot det objekt der håndtere de usecases, hvor man vises for alle ens evaluation/flashcard sammen
-     */
-
-    // evaluation
-    // this.app.get(`/view/evaluation/recipient`,         (req, res) => Show.viewEvaluationRecipientPage(req, res));
-    // this.app.get(`/view/evaluation/expert`,            (req, res) => Show.viewEvaluationExpertPage(req, res));
-    // this.app.get(`/view/evaluation/document/:idQuery`, (req, res) => Show.viewEvaluationDocumentPage(req, res));
-    // this.app.get(`/view/evaluation/section/:idQuery`,  (req, res) => Show.viewEvaluationSectionPage(req, res));
     this.app.get(`/post/evaluation/document/:idQuery`,                 (req, res) => Show.postEvaluationDocumentPage(req, res));
     this.app.get(`/post/evaluation/section/:idQuery`,                 (req, res) => Show.postEvaluationSectionPage(req, res));
     this.app.get(`/post/questions`,                 (req, res) => Show.postQuestionsPage(req, res));
@@ -154,27 +141,6 @@ class MasterController {
     this.app.get(`/view/SpacedRepetition`,          (req, res) => Show.viewSpacedRepetitionPage(req, res));
     this.app.get(`/view/evaluationResult/:idAttempt`,          (req, res) => Show.viewEvaluationResultPage(req, res));
     this.app.get(`/view/evaluationProgress`,          (req, res) => Show.viewEvaluationProgress(req, res));
-    // this.app.get(`/put/evaluation/:idQuery`,        (req, res) => Show.putEvaluationPage(req, res));
-
-    // Flashcard
-    this.app.get(`/view/flashcard/recipient`, (req, res) => Show.viewFlashcardRecipientPage(req, res));
-    // this.app.get(`/view/flashcard/expert`, (req, res) => Show.viewFlashcardExpertPage(req, res));
-    // this.app.get(`/view/flashcard/document/:idQuery`, (req, res) => Show.viewFlashcardDocumentPage(req, res));
-    // this.app.get(`/view/flashcard/section/:idQuery`, (req, res) => Show.viewFlashcardSectionPage(req, res));
-    // this.app.get(`/post/flashcard`, (req, res) => Show.postFlashcardPage(req, res));
-    // this.app.get(`/view/flashcard/:idQuery`,        (req, res) => Show.viewFlashcardPage(req, res));
-    // this.app.get(`/put/flashcard/:idQuery`, (req, res) => Show.putFlashcardPage(req, res));
-
-    // Keywords
-    // this.app.get(`/view/keyword/recipient`, (req, res) => Show.viewKeywordRecipientPage(req, res));
-    // this.app.get(`/view/keyword/expert`, (req, res) => Show.viewKeywordExpertPage(req, res));
-    // this.app.get(`/view/keyword/document/:idQuery`, (req, res) => Show.viewKeywordDocumentPage(req, res));
-    // this.app.get(`/view/keyword/section/:idQuery`, (req, res) => Show.viewKeywordSectionPage(req, res));
-    // this.app.get(`/view/keyword/evaluation/:idQuery`, (req, res) => Show.viewKeywordEvaluationPage(req, res));
-    // this.app.get(`/view/keyword/flashcard/:idQuery`, (req, res) => Show.viewKeywordFlashcardPage(req, res));
-    // this.app.get(`/post/keyword`, (req, res) => Show.postKeywordPage(req, res));
-    // this.app.get(`/view/keyword/:idQuery`,        (req, res) => Show.viewKeywordPage(req, res));
-    // this.app.get(`/put/keyword/:idQuery`, (req, res) => Show.putKeywordPage(req, res));
   }
 
   /* Formål: Struktur for de URL Patterns der indsætter data i databasen.
@@ -197,10 +163,9 @@ class MasterController {
    *         Slettes et "højere" objekt, vil det automatisk slette sine tilhørende underobjekter.
    * Input : Ingen, denne opsætter blot URLerne
    * Output: Setup af muligheden for klienten at delete data.
-   * TODO: De udkommenterede (//) er ikke implementeret endnu
    */
   deletePatterns() {
-    const Deletter = new DeleteController(this.root);
+    const Deletter = new DeleteController(this.settings);
     this.app.delete(`/delete/evaluation/section/:idQuery`, (req, res) => Deletter.deleteSection(req, res));
   }
 
@@ -291,7 +256,6 @@ class MasterController {
       req.session.username = `Test User`;
       req.session.loggedIn = true;
       req.session.idUser = `553e422d-7c29-11ea-86e2-2c4d54532c7a`;
-
       req.session.groupName = `Test Group`;
       req.session.idGroup = `34701dd1-7c29-11ea-86e2-2c4d54532c7a`;
     }
@@ -302,8 +266,8 @@ class MasterController {
    * Input : Et request
    * Output: En omdirigering til login siden hvis man ikke er logget ind, eller til groups siden hvis man ikke har valgt gruppe.
    * FIXME: Denne funktion kan udvides til også at indeholde sikkerhed såsom
-   *         at sikre sig at idUser og idGroup stemmer overens.
-   *         Hvordan det gøres er dog lettere usikkert.
+   *        at sikre sig at idUser og idGroup stemmer overens.
+   *        Hvordan det gøres er dog lettere usikkert.
    */
   noSessionNoAccess(req, res, next) {
     if (isAccessURL(req)) {
