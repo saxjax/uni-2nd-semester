@@ -6,10 +6,9 @@
 const { Group } = require(`../Models/Group`);
 // const { User } = require(`../User/User`);
 
-/* Indsæt gerne test URLs her, husk at oprette dem i Server!
- * Dette kan bruges til at lave nogle prototyper på serveren, inden de implementeres formelt.
+/* Formål: TestControlleren kan bruges til at lave nogle prototyper på serveren, inden de implementeres formelt.
+ * Input:  Modtager en settingsfil, indeholder serverinstillingerne bestemt i filen serverSettings.js i roden
  */
-
 class TestController {
   constructor(settings) {
     this.name = `TestController`;
