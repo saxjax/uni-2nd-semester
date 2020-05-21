@@ -38,9 +38,9 @@ class Group extends Model {
 
     this.table = `user`;
     for (let i = 0; i < this.members.length; i++) {
-      const newUser = await this.query(`SELECT *`, `USER_NAME = "${this.members[i]}"`);
+      const newUser = await this.query(`SELECT *`, `USER_NAME = "${this.members[i]}"`); // eslint-disable-line no-await-in-loop
       if (newUser[0].idGroup === `undefined`) {
-        await this.query(`UPDATE`, `ID_USER_GROUP = "${this.idGroup}" WHERE USER_NAME = "${this.members[i]}"`);
+        await this.query(`UPDATE`, `ID_USER_GROUP = "${this.idGroup}" WHERE USER_NAME = "${this.members[i]}"`); // eslint-disable-line no-await-in-loop
       }
       else if (newUser[0].elementType === `user`) {
         // FIXME: En respons til brugeren om at brugernavnet er tastet forkert. Dette skal dog nok valideres inden på Frontend siden på en eller anden måde.
