@@ -19,42 +19,49 @@
             </button>  
             <br>
             <div id="sectionsContainer">
-              <% data.sections.forEach((section, index) => { %>
-                <br>
-                <div class="sectionContainer" id="sectionNumber<%= index %>">
-                  <a href="/view/section/<%= section.idSection %>">
-                    <%= section.number %> <strong><%= section.title %></strong>
-                  </a>
-                  <p><%= section.teaser %></p>
-                  <p><strong>Evalueringer: </strong></p>
-                  <% data.evaluations.forEach((evaluation) => { %> 
-                    <% if(evaluation.idSection === section.idSection) { %>
-                      <p>
-                        <a href="/view/evaluations/<%=evaluation.idEvaluation %>">Se evalueringen: <%= evaluation.title %> </a>
-                      </p>
-                    <% } %> 
-                  <% }); %> 
-                  <button class="btn btn-info">
-                    <a href="/post/evaluation/section/<%= section.idSection %>"> 
-                      Opret Evaluering til <%= section.title %> 
+              <!-- hvis der ikke findes en RowDataPacket (Der er blevet hentet noget fra databasen) så vises inholdet -->
+              <% if(!data.sections[0].RowDataPacket) { %> 
+                <% data.sections.forEach((section, index) => { %>
+                  <div class="sectionContainer" id="sectionNumber<%= index %>">
+                    <br>
+                    <a href="/view/section/<%= section.idSection %>">
+                      <%= section.number %> <strong><%= section.title %></strong>
                     </a>
-                  </button>
-                  <button class="removeKeywordBtn btn btn-danger">
-                    <a onclick="deleteSection(`<%= section.idSection %>`, `sectionNumber<%= index %>`)" >
-                      Slet Afsnit
-                    </a>
-                  </button>
-                </div>
-              <% }); %>
+                    <p><%= section.teaser %></p>
+                    <p><strong>Evalueringer: </strong></p>
+                    <% data.evaluations.forEach((evaluation) => { %> 
+                      <% if(evaluation.idSection === section.idSection) { %>
+                        <p>
+                          <a href="/view/evaluations/<%=evaluation.idEvaluation %>">Se evalueringen: <%= evaluation.title %> </a>
+                        </p>
+                      <% } %> 
+                    <% }); %> 
+                    <button class="btn btn-info">
+                      <a href="/post/evaluation/section/<%= section.idSection %>"> 
+                        Opret Evaluering til <%= section.title %> 
+                      </a>
+                    </button>
+                    <button class="removeKeywordBtn btn btn-danger">
+                      <a onclick="deleteSection(`<%= section.idSection %>`, `sectionNumber<%= index %>`)">
+                        Slet Afsnit
+                      </a>
+                    </button>
+                    <br>
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <h3 class="noContent">Der er endnu ikke oprettet nogen sektioner til dette dokument</h3>
+              <% } %> 
+              <br>
             </div>
           </div>
-        </div>
-        <div class="col-6">
-          <div class="rightside">
-            <h2> <%= data.document[0].title %>'s Keywords </h2>
-            <% data.document[0].keywords.forEach((keyObj) => { %>
-              <p><%= keyObj.keyword %></p>
-            <% }); %>
+          <div class="col-6">
+            <div class="rightside">
+              <h2> <%= data.document[0].title %>'s Keywords </h2>
+              <% data.document[0].keywords.forEach((keyObj) => { %>
+                <p><%= keyObj.keyword %></p>
+              <% }); %>
+            </div>
           </div>
         </div>
       </div>
