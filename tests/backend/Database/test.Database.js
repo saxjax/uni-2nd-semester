@@ -67,7 +67,6 @@ async function resetDB() {
 test(`Test af Database Klassen i node/Database`, async (assert) => {
   assert.equal(actual, expected, `Skulle gerne være oprettet.`);
 
-  object = new Database();
   object.debug = false; // sættes til false, da vi i tests ikke er interesseret i run-time fejlbeskeder
   /* 1.1 */
   console.log(`1: Databasen skal have adgang til MySQL databasen.`);
