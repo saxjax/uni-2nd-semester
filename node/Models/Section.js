@@ -100,6 +100,12 @@ class Section extends Model {
 
   async deleteFromDatabase() {
     await this.query(`CUSTOM`, `DELETE FROM quiz_result WHERE ID_EVALUATION in (SELECT ID_EVALUATION FROM evaluation WHERE ID_DOCUMENT_SECTION = "${this.idQuery}")`);
+    await this.query(`CUSTOM`, `DELETE FROM repetition_task WHERE ID_QUIZ_QUESTION in (SELECT ID_QUIZ_QUESTION 
+                                                                                         FROM quiz_question 
+                                                                                         INNER JOIN evaluation 
+                                                                                         ON evaluation.ID_EVALUATION = quiz_question.ID_EVALUATION 
+                                                                                         WHERE evaluation.ID_DOCUMENT_SECTION = "${this.idQuery}")`);
+
     await this.query(`CUSTOM`, `DELETE FROM quiz_question WHERE ID_EVALUATION in (SELECT ID_EVALUATION FROM evaluation WHERE ID_DOCUMENT_SECTION = "${this.idQuery}")`);
     await this.query(`CUSTOM`, `DELETE FROM keyword_link WHERE ID_DOCUMENT_SECTION = "${this.idQuery}"`);
     await this.query(`CUSTOM`, `DELETE FROM evaluation WHERE ID_DOCUMENT_SECTION = "${this.idQuery}"`);
