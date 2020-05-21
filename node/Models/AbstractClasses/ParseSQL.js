@@ -118,7 +118,7 @@ class ParseSql {
         // case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i]));  break;
         case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));          break;
         case `keyword_link`:     this.parsedData.push(this.parseKeywordLink(data[i]));      break;
-        default: console.log(`NO_ELEMENTTYPE: elementType er IKKE oprettet i ParseSQL.js!`); // eslint-disable-line no-console
+        default: console.warn(`NO_ELEMENTTYPE: elementType er IKKE oprettet i ParseSQL.js!`); // eslint-disable-line no-console
       }
     }
     return this.parsedData;
