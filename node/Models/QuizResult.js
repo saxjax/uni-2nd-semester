@@ -1,6 +1,6 @@
 /* eslint no-console: off */
 
-const { SpacedRepetition } = require(`./spacedRepetition`);
+const { SpacedRepetition } = require(`./SpacedRepetition`);
 const { ParseSql } = require(`../Models/AbstractClasses/ParseSQL`);
 
 class QuizResult extends SpacedRepetition {
