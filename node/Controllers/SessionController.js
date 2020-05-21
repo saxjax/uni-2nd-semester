@@ -40,6 +40,7 @@ class SessionController extends ErrorController {
   async groupSession(req, res) {
     const G = new Group(req);
     const data = await G.getThisGroupData();
+    console.log(`groupsession`);
     if (data) {
       console.log(data);
       req.session.idGroup = data[0].idGroup;
