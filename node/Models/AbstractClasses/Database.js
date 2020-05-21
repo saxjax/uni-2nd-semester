@@ -42,6 +42,8 @@ class Database {
     this.idColumnName = `ID_DATABASE`;
 
     this.debug = this.settings.debug;
+    this.seperator = ` ;:;:;:; `; // En seperationsstreng, som bruges i InsertSplitter og som aldrig må være mulig at gætte for brugeren.
+    // FIXME: PT. må brugeren ikke bruge "=" og "AND", da det ødelægger INSERT splitteren / laver SQL injection i en CUSTOM.
   }
 
   /* Formål: Naar der sker fejl ved brug af querymetoden vil denne metode give den nodvendige information med det samme.
@@ -240,8 +242,8 @@ class Database {
         wordSwitcher = `nextWordIsAndOrValOrDone`;
       }
       else if (wordSwitcher === `nextWordIsAndOrValOrDone` && newWord === `AND`) {
-        dataArr.columns += `, `;         // Her sikres en komma separering, da et "AND" antyder en ny col = "val" funktion
-        dataArr.values += `, `;
+        dataArr.columns += `, `;           // Her sikres en komma separering, da et "AND" antyder en ny col = "val" funktion
+        dataArr.values += this.seperator; // seperator mellem forskellige værdi-kollektioner
         wordSwitcher = `nextWordIsCol`;
       }
       else if (wordSwitcher === `nextWordIsAndOrValOrDone` && newWord.length > 0) {
@@ -258,10 +260,20 @@ class Database {
       copyData = copyData.slice(newWordWithSpaceLength, copyData.length); // her "slices" ordet plus et mellemrum fra copydata, så det næste ord står forrest, klar til scanning
     }
 
-    // Alle værdier i values escapes, for at undgå SQL injection
-    for (let i = 0; i < dataArr.values.length; i++) {
-      dataArr[i] = SqlString.escape(dataArr[i]);
+    // Her opsplittes alle værdierne, som hver især sql escapes
+    const valuesInArr = dataArr.values.split(this.seperator);
+    const escapedValues = [];
+    for (let i = 0; i < valuesInArr.length; i++) { // Hvis der er et " i starten, så slices det væk.
+      if (valuesInArr[i].charAt(0) === `"`) {
+        valuesInArr[i] = valuesInArr[i].slice(1);
+      }
+      if (valuesInArr[i].charAt(valuesInArr[i].length - 1) === `"`) { // Hvis der er et " i slutningen, så slices det væk.
+        valuesInArr[i] = valuesInArr[i].slice(0, -1);
+      }
+      escapedValues.push(SqlString.escape(valuesInArr[i])); // Når strengen er klar, så escapes værdierne
     }
+    dataArr.values = escapedValues.join(`, `); // Her indsættes den seperator som mysql ønsker
+
     return dataArr;
   }
 }
