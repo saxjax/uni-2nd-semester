@@ -7,9 +7,8 @@ class QuizResult extends SpacedRepetition {
   /* Alle quizResultType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super(req);
-    this.elementType = `quiz_result`;
-    this.table = `quiz_result`;
-    this.idDocument = `11111111-aaaa-bbbb-1111-111111111111`; // FIXME: Hardcoded into every section - can be changed in the future
+    this.elementType = `${this.quizResultType}`;
+    this.table = `${this.quizResultTable}`;
 
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
@@ -19,9 +18,9 @@ class QuizResult extends SpacedRepetition {
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
           // DET HER ER HARDCODED OG GÅR UDEN OM PARSEREN IKKE GODT!!!!!!!
-          this.idColumnName   = `ID_ATTEMPT`;
+          this.idColumnName   = `${this.attemptCol}`;
           this.idQuery        =  req.params.idAttempt;
-          this.idEvaluationCol = `ID_EVALUATION`;
+          this.idEvaluationCol = `${this.evaluationCol}`;
           this.idEvaluation = req.params.idQuery;
           break;
         case `POST`:
@@ -30,11 +29,6 @@ class QuizResult extends SpacedRepetition {
           this.total = req.body.score.total;
           this.questionArray = req.body.questionsArray;
           break;
-        case `TEST`:
-          this.elementType = `quizResult`;
-          this.table = `quiz_result`;
-          break;
-
         default: break;
       }
     }
@@ -48,7 +42,9 @@ class QuizResult extends SpacedRepetition {
   async insertToDatabase() {
     const UUID = await this.getUuid();
     const string = await this.makeInsertString(UUID);
-    this.query(`CUSTOM`, `INSERT INTO quiz_result (ID_USER_GROUP, ID_USER, ID_EVALUATION, ID_QUIZ_QUESTION, ID_ATTEMPT, POINT, TOTAL, RESULT, USER_ANSWER) VALUES ${string}`);
+    this.query(`CUSTOM`, `INSERT INTO ${this.quizResultTable} `
+                       + `(${this.groupCol}, ${this.userCol}, ${this.evaluationCol}, ${this.quizQuestionCol}, ${this.attemptCol}, ${this.QRPointCol}, ${this.QRTotalCol}, ${this.QRResultCol}, ${this.QRUserAnswerCol}) `
+                       + `VALUES ${string}`);
     return UUID;
   }
 
@@ -73,9 +69,9 @@ class QuizResult extends SpacedRepetition {
     const trueTable = this.table;
 
     let string = ``;
-    const idQuestions = await this.query(`SELECT ID_QUIZ_QUESTION`, `ID_ATTEMPT = "${this.idQuery}"`);
+    const idQuestions = await this.query(`SELECT ${this.quizQuestionCol}`, `${this.attemptCol} = "${this.idQuery}"`);
     string = this.createQueryString(idQuestions);
-    this.table = `quiz_question`;
+    this.table = `${this.quizQuestionTable}`;
     const queryResult = await this.query(`SELECT *`, `${string}`);
     this.table = trueTable;
 
@@ -88,7 +84,7 @@ class QuizResult extends SpacedRepetition {
       if (index > 0) {
         string += ` OR `;
       }
-      string += `ID_QUIZ_QUESTION = "${element.idQuizQuestion}"`;
+      string += `${this.quizQuestionCol} = "${element.idQuizQuestion}"`;
     });
     string += ` ;`;
     return string;
@@ -109,23 +105,25 @@ class QuizResult extends SpacedRepetition {
     stringforSQL = stringforSQL.slice(0, -1); // Fjerner det sidste komma
 
     // Hent historisk data omkring quizzerne for den pågældende bruger
-    const resultData = await this.query(`CUSTOM`, `SELECT QR1.ID_EVALUATION,
-                                               QR1.ID_QUIZ_QUESTION,
-                                               QR1.ID_USER,
-                                               (SELECT QR2.RESULT FROM quiz_result QR2 WHERE QR1.ID_QUIZ_QUESTION = QR2.ID_QUIZ_QUESTION AND QR1.ID_USER = QR2.ID_USER ORDER BY QR2.CREATED_DATE DESC limit 1 ) as RECENT_RESULT,
-                                               max(QR1.CREATED_DATE)  as RECENT_ATTEMPT_DATE,
-                                               "-----"  as NEXT_REPITITION,
-                                               COUNT(QR1.RESULT) as TOTAL,
-                                               sum(case when QR1.RESULT = 'false' then 1 else 0 end) AS FAILED_ATTEMPTS,
-                                               sum(case when QR1.RESULT = 'true' then 1 else 0 end) AS SUCESS_ATTEMPTS
-                                               FROM p2.quiz_result QR1
-                                               WHERE QR1.ID_USER = "${this.idUser}" AND QR1.ID_QUIZ_QUESTION in (${stringforSQL})
-                                               GROUP BY QR1.ID_USER,QR1.ID_QUIZ_QUESTION;`);
+    const resultData = await this.query(`CUSTOM`, `SELECT QR1.${this.evaluationCol}, `
+                                               + `QR1.${this.quizQuestionCol}, `
+                                               + `QR1.${this.userCol}, `
+                                               + `(SELECT QR2.${this.QRResultCol} FROM ${this.quizResultTable} QR2 `
+                                               + `WHERE QR1.${this.quizQuestionCol} = QR2.${this.quizQuestionCol} AND QR1.${this.userCol} = QR2.${this.userCol} `
+                                               + `ORDER BY QR2.${this.QRCreatedDateCol} DESC limit 1 ) as RECENT_RESULT, `
+                                               + `max(QR1.${this.QRCreatedDateCol})  as RECENT_ATTEMPT_DATE, `
+                                               + `"-----"  as NEXT_REPITITION, `
+                                               + `COUNT(QR1.${this.QRResultCol}) as TOTAL, `
+                                               + `sum(case when QR1.${this.QRResultCol} = 'false' then 1 else 0 end) AS FAILED_ATTEMPTS, `
+                                               + `sum(case when QR1.${this.QRResultCol} = 'true' then 1 else 0 end) AS SUCESS_ATTEMPTS `
+                                               + `FROM p2.${this.quizResultTable} QR1 `
+                                               + `WHERE QR1.${this.userCol} = "${this.idUser}" AND QR1.${this.quizQuestionCol} in (${stringforSQL}) `
+                                               + `GROUP BY QR1.${this.userCol},QR1.${this.quizQuestionCol};`);
     // Hent data omkring de sidste quiz forsøg for den pågældende bruger.
     // KAN FORMENTLIG SLETTES, DA OVENSTÅENDE QUERY HAR DENNE INFORMATION ALLEREDE.
-    const recentAttempt = await this.query(`CUSTOM`, `SELECT ID_QUIZ_QUESTION,RESULT,CREATED_DATE 
-                                         FROM quiz_result WHERE ID_ATTEMPT = "${idAttempt}"
-                                         ORDER BY CREATED_DATE DESC`);
+    const recentAttempt = await this.query(`CUSTOM`, `SELECT ${this.quizQuestionCol},${this.QRResultCol},${this.QRCreatedDateCol} 
+                                         FROM ${this.quizResultTable} WHERE ${this.attemptCol} = "${idAttempt}"
+                                         ORDER BY ${this.QRCreatedDateCol} DESC`);
     const Parser = new ParseSql();
     const parsedResultData = Parser.parseQuizResultsForSpacedRepetition(resultData);
     parsedResultData.forEach((quizResult) => {

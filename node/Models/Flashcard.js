@@ -9,7 +9,7 @@ class Flashcard extends Model {
   /* Alle flashcardType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super();
-    this.elementType = `flashcard`;
+    this.elementType = `${this.flashcardType}`;
     this.table = `${this.flashcardTable}`;
 
     if (this.validRequest(req)) {

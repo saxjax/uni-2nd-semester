@@ -11,7 +11,7 @@ class Keyword extends Model {
   /* Alle keywordType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super(req);
-    this.elementType = `keyword`;
+    this.elementType = `${this.keywordType}`;
     this.table = `${this.keywordTable}`;
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
@@ -82,19 +82,19 @@ class Keyword extends Model {
   async getRefIdKeyword(keyword, elementType) {
     let idCollumn = ``;
     switch (elementType) {
-      case `document`:
+      case `${this.documentType}`:
         idCollumn = `${this.documentCol}`;
         break;
-      case `section`:
+      case `${this.sectionType}`:
         idCollumn = `${this.sectionCol}`;
         break;
-      case `evaluation`:
+      case `${this.evaluationType}`:
         idCollumn = `${this.evaluationCol}`;
         break;
-      case `quiz_question`:
+      case `${this.quizQuestionType}`:
         idCollumn = `${this.quizQuestionCol}`;
         break;
-      case `flashcard`:
+      case `${this.flashcardType}`:
         idCollumn = `${this.flashcardCol}`;
         break;
       default:

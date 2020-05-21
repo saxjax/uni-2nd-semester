@@ -6,7 +6,7 @@ class KeywordLink extends Model {
   /* Alle keywordLinkType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super(req);
-    this.elementType = `keyword_link`;
+    this.elementType = `${this.keywordLinkType}`;
     this.table = `${this.keywordLinkTable}`;
 
     this.idKeyword = req.idKeyword === undefined ? `` : req.idKeyword;

@@ -5,9 +5,10 @@ const { Model } = require(`./AbstractClasses/Model.js`);
 /* FIXME: UNDER CONSTRUCTION */
 
 class Document extends Model {
+  /* Alle documentType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super();
-    this.elementType = `document`;
+    this.elementType = `${this.documentType}`;
     this.table       = `${this.documentTable}`;
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;

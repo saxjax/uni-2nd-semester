@@ -8,6 +8,7 @@ class ParseSql {
   constructor() {
     this.parsedData = [];
     /* Tabel navnene */
+    this.databaseTable = `database`;
     this.groupTable = `user_group`;
     this.userTable = `user`;
     this.documentTable = `document`;
@@ -21,6 +22,7 @@ class ParseSql {
     this.keywordLinkTable = `keyword_link`;
     this.spacedRepetitionTable = `repetition_task`;
     /* Elementtypes */
+    this.databaseType = `test`;
     this.groupType = `group`;
     this.userType = `user`;
     this.documentType = `document`;
@@ -46,6 +48,7 @@ class ParseSql {
     this.keywordCol = `ID_KEYWORD`;
     this.keywordLinkCol = `ID_KEYWORD_LINK`;
     this.attemptCol = `ID_ATTEMPT`;
+    this.spacedRepetitionCol = `ID_REPETITION_TASK`;
     /* kolonner i alle klasser */
     this.typeCol = `ELEMENT_TYPE`;
     /* Group kolonner */
@@ -91,6 +94,8 @@ class ParseSql {
     /* Keyword kolonner */
     this.KKeywordCol = `KEYWORD`;
     /* KeywordLink kolonner */
+    /* Spaced Repetition kolonner */
+    this.SRRepetitionDate = `REPETITION_DATE`;
   }
 
   /* Formål: Dette er tiltænkt som den overordnede funktion, som bliver kaldt fra Database.js
@@ -279,8 +284,8 @@ class ParseSql {
     const result = [];
     quizResultData.forEach((quizResult) => {
       result.push({
-        idQuizQuestion: quizResult.ID_QUIZ_QUESTION,
-        idUser: quizResult.ID_USER,
+        idQuizQuestion: quizResult[this.quizQuestionCol],
+        idUser: quizResult[this.userCol],
         recentResult: quizResult.RECENT_RESULT,
         recentAttemptDate: quizResult.RECENT_ATTEMPT_DATE,
         nextRepetition: quizResult.NEXT_REPITITION,

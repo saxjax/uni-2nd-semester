@@ -38,8 +38,8 @@ class Database extends ParseSql {
     };
     this.connect = mysql.createConnection(this.dbConfig);
 
-    this.table = `database`;
-    this.elementType = `test`;
+    this.table = `${this.databaseTable}`;
+    this.elementType = `${this.databaseType}`;
     this.idColumnName = `ID_DATABASE`;
 
     this.debug = this.settings.debug;

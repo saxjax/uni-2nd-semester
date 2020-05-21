@@ -12,8 +12,8 @@ class QuizQuestion extends Model {
   /* Alle quizQuestionType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super();
-    this.elementType = `quiz_question`;
-    this.table = `quiz_question`;
+    this.elementType = `${this.quizQuestionType}`;
+    this.table = `${this.quizQuestionTable}`;
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
       this.idUser  = req.session.idUser;
@@ -23,26 +23,13 @@ class QuizQuestion extends Model {
       this.req = req;
       switch (req.method) {
         case `GET`: case `DELETE`: case `UPDATE`:
-          this.idColumnName = `ID_QUIZ_QUESTION`;
+          this.idColumnName = `${this.quizQuestionCol}`;
           this.idQuery = req.params.idQuery;
           this.loggedIn = req.session.loggedIn;
           break;
         case `POST`:
           this.idEvaluation = req.body[0].idEvaluation;
           this.questions = req.body;
-          break;
-        case `TEST`:
-          this.elementtype = `quiz_question`;
-          this.table = `quiz_question`;
-          this.idSection =  undefined;
-          this.idDocument =  undefined;
-          this.idUser =  undefined;
-          this.idGroup =  undefined;
-          this.question =  undefined;
-          this.answer1 =  undefined;
-          this.answer2 =  undefined;
-          this.answer3 =  undefined;
-          this.answer4 =  undefined;
           break;
         default: break;
       }
@@ -72,12 +59,12 @@ class QuizQuestion extends Model {
    * Output: Et promise, som kommer fra query()
    */
   async insertQuestionToDatabase(question, UUID) {
-    return this.query(`INSERT`, `ID_EVALUATION = "${question.idEvaluation}" `
-        + `AND ID_QUIZ_QUESTION = "${UUID}" `
-        + `AND QUESTION = "${question.question}" `
-        + `AND CORRECT_ANSWERS = "${question.correctAnswers.join(`;`)}" `
-        + `AND KEYWORD = "${question.keyword.join(`;`)}" `
-        + `AND ANSWERS = "${question.answers.join(`;`)}"`);
+    return this.query(`INSERT`, `${this.evaluationCol} = "${question.idEvaluation}" `
+        + `AND ${this.quizQuestionCol} = "${UUID}" `
+        + `AND ${this.QQQuestionCol} = "${question.question}" `
+        + `AND ${this.QQCorrectnessCol} = "${question.correctAnswers.join(`;`)}" `
+        + `AND ${this.QQKeywordsCol} = "${question.keyword.join(`;`)}" `
+        + `AND ${this.QQAnswersCol} = "${question.answers.join(`;`)}"`);
   }
 
   async getQuizQuestionUUID(uuidAmount) {
@@ -86,7 +73,7 @@ class QuizQuestion extends Model {
   }
 
   async getDocumentAndSectionID() {
-    const select = await this.query(`CUSTOM`, `SELECT ID_DOCUMENT as idDocument ,ID_DOCUMENT_SECTION as idSection FROM evaluation WHERE ID_EVALUATION = "${this.idEvaluation}"`);
+    const select = await this.query(`CUSTOM`, `SELECT ${this.documentCol} as idDocument ,${this.sectionCol} as idSection FROM ${this.evaluationTable} WHERE ${this.evaluationCol} = "${this.idEvaluation}"`);
     return select[0];
   }
 

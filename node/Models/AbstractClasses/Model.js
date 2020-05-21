@@ -85,10 +85,10 @@ class Model extends Database {
       .then((result) => result)
       .catch((error) => error);
 
-    if (this.elementType === `document` // et check for om objektet skal hente keywords
-      || this.elementType === `section`
-      || this.elementType === `evaluation`
-      || this.elementType === `quiz_question`) {
+    if (this.elementType === `${this.documentType}` // et check for om objektet skal hente keywords
+      || this.elementType === `${this.sectionType}`
+      || this.elementType === `${this.evaluationType}`
+      || this.elementType === `${this.quizQuestionType}`) {
       queryData = await this.getKeywordsInObject(queryData);
     }
 
@@ -181,14 +181,14 @@ class Model extends Database {
    */
   parseElementTypesTable(choice) {
     switch (choice) {
-      case `document`: return `${this.documentTable}`;
-      case `flashcard`: return `${this.flashcardTable}`;
-      case `group`: return `${this.groupTable}`;
-      case `keyword`: return `${this.keywordLinkTable}`;
-      case `evaluation`: return `${this.evaluationTable}`;
-      case `quiz_question`: return `${this.quizQuestionTable}`;
-      case `section`: return `${this.sectionTable}`;
-      case `user`: return `${this.userTable}`;
+      case `${this.documentType}`:     return `${this.documentTable}`;
+      case `${this.flashcardType}`:    return `${this.flashcardTable}`;
+      case `${this.groupType}`:        return `${this.groupTable}`;
+      case `${this.keywordType}`:      return `${this.keywordLinkTable}`;
+      case `${this.evaluationType}`:   return `${this.evaluationTable}`;
+      case `${this.quizQuestionType}`: return `${this.quizQuestionTable}`;
+      case `${this.sectionType}`:      return `${this.sectionTable}`;
+      case `${this.userType}`:         return `${this.userTable}`;
       default: throw new Error(`WARNING: Element Type not implemented in parseElementTypesTable in Model`);
     }
   }

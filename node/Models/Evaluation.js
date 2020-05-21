@@ -7,7 +7,7 @@ class Evaluation extends Model {
   /* Alle evaluationType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super(req);
-    this.elementType = `evaluation`;
+    this.elementType = `${this.evaluationType}`;
     this.table = `${this.evaluationTable}`;
     this.req = req;
 
@@ -26,14 +26,6 @@ class Evaluation extends Model {
           this.idSection = req.body.selectSection;
           this.keywords = req.body.keywords;
           this.idDocument = undefined;
-          break;
-        case `TEST`:
-          this.elementType = `evaluation`;
-          this.idEvaluation = undefined;
-          this.idDocument = undefined;
-          this.idSection = undefined;
-          this.title = undefined;
-          this.keywords = undefined;
           break;
         default: break;
       }

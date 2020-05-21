@@ -8,7 +8,7 @@ class FlashcardResult extends Model {
   /* Alle flashcardResultType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super(req);
-    this.elementType = `flashcard_result`;
+    this.elementType = `${this.flashcardResultType}`;
     this.table = `${this.flashcardResultTable}`;
 
     if (this.validRequest(req)) {

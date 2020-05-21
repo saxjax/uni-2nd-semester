@@ -12,8 +12,8 @@ class SpacedRepetition extends Model {
     this.minTimestamp = 2; // 24 timer
     this.comprehentionRatio = 3; // hvert forkert svar kræver mindst 3 rigtige svar for at blive registreret som forstået
     this.repetitionScalar = 1;
-    this.elementType = `repetition_task`;
-    this.table = `repetition_task`;
+    this.elementType = `${this.spacedRepetitionType}`;
+    this.table = `${this.spacedRepetitionTable}`;
   }
 
 
@@ -44,10 +44,10 @@ class SpacedRepetition extends Model {
     const repetitionTasks = [];
     const now = (new Date()).toISOString().slice(0, 19).replace(`T`, ` `);// konverterer en JS Date til SQL format
 
-    this.table = `repetition_task`;// sætter table til repetition_task for en sikkerhedsskyld, da denne funktion kan kaldes fra andre klasser
-    const queryResult = await this.query(`SELECT ID_QUIZ_QUESTION`, `REPETITION_DATE <= "${now}" 
-                                    AND ID_USER = "${this.idUser}" 
-                                    AND ID_GROUP = "${this.idGroup}" ;`);
+    this.table = `${this.spacedRepetitionTable}`;// sætter table til repetition_task for en sikkerhedsskyld, da denne funktion kan kaldes fra andre klasser
+    const queryResult = await this.query(`SELECT ${this.quizQuestionCol}`, `${this.SRRepetitionDate} <= "${now}" 
+                                    AND ${this.userCol} = "${this.idUser}" 
+                                    AND ${this.groupCol} = "${this.idGroup}"`);
 
     queryResult.forEach((element) => {
       if (element.idQuizQuestion !== undefined) { // populerer repetitiontasks med idQuizQuestions hvis der er nogen til repetition
