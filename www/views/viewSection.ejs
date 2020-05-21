@@ -3,6 +3,7 @@
   <head>
     <%- include('meta/header') %> 
     <link rel="stylesheet" href="/css/design.css">
+    <script defer src="/js/viewSection.js"></script>
     <title>GroupHub | <%= data.section[0].title %> </title>
   </head>
   <body>
@@ -22,6 +23,11 @@
           <button class="btn btn-primary">
             <a href="/post/evaluation/section/<%= data.section[0].idSection %>"> 
               Opret Evaluering til denne sektion 
+            </a>
+          </button>
+          <button class="removeKeywordBtn btn btn-danger">
+            <a onclick="deleteSection(`<%= data.section[0].idSection %>`,`<%= data.section[0].idDocument %>`)" >
+              Slet Afsnit
             </a>
           </button>
         </div>

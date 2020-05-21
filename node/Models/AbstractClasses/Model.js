@@ -12,10 +12,21 @@ const { Database } = require(`./Database.js`);
  */
 
 class Model extends Database {
+  /* Alle "modelnavn"Type/Col og Table er hentet fra ParseSql! */
   constructor() {
     super();
-    this.idColumnGroup = `ID_USER_GROUP`;
-    this.idColumnUser = `ID_USER`;
+    this.idColumnGroup = `${this.groupCol}`;
+    this.idColumnUser = `${this.userCol}`;
+  }
+
+  /* Formål: Opretter et unikt UUID som hentes fra databasen.
+   *         Dette gøres for at sikre at der altid bruges unikke ID'er.
+   * Input : Intet.
+   * Output: En string med et UUID.
+   */
+  async getUuid() {
+    const uuidArr = await this.query(`CUSTOM`, `SELECT UUID() AS UUID`);
+    return uuidArr[0].UUID;
   }
 
   /* Formål: Alle modeller konstrueres ud fra den givne session brugeren er en del af, samt
@@ -74,11 +85,11 @@ class Model extends Database {
       .then((result) => result)
       .catch((error) => error);
 
-    if (this.elementType === `document` // et check for om objektet skal hente keywords
-      || this.elementType === `section`
-      || this.elementType === `evaluation`
-      || this.elementType === `quiz_question`) {
-      queryData = this.getKeywordsInObject(queryData);
+    if (this.elementType === `${this.documentType}` // et check for om objektet skal hente keywords
+      || this.elementType === `${this.sectionType}`
+      || this.elementType === `${this.evaluationType}`
+      || this.elementType === `${this.quizQuestionType}`) {
+      queryData = await this.getKeywordsInObject(queryData);
     }
 
     return queryData;
@@ -142,7 +153,6 @@ class Model extends Database {
       || choice === `QuizQuestion`) {
       queryData = this.getKeywordsInObject(queryData, choice);
     }
-
     return queryData;
   }
 
@@ -167,14 +177,14 @@ class Model extends Database {
    */
   parseElementTypesTable(choice) {
     switch (choice) {
-      case `document`: return `document`;
-      case `flashcard`: return `flashcard`;
-      case `group`: return `user_group`;
-      case `keyword`: return `keyword_link`;
-      case `evaluation`: return `evaluation`;
-      case `quiz_question`: return `quiz_question`;
-      case `section`: return `document_section`;
-      case `user`: return `user`;
+      case `${this.documentType}`:     return `${this.documentTable}`;
+      case `${this.flashcardType}`:    return `${this.flashcardTable}`;
+      case `${this.groupType}`:        return `${this.groupTable}`;
+      case `${this.keywordType}`:      return `${this.keywordLinkTable}`;
+      case `${this.evaluationType}`:   return `${this.evaluationTable}`;
+      case `${this.quizQuestionType}`: return `${this.quizQuestionTable}`;
+      case `${this.sectionType}`:      return `${this.sectionTable}`;
+      case `${this.userType}`:         return `${this.userTable}`;
       default: throw new Error(`WARNING: Element Type not implemented in parseElementTypesTable in Model`);
     }
   }
@@ -185,10 +195,10 @@ class Model extends Database {
    */
   getChoiceColName(choice) {
     switch (choice) {
-      case `document`: return `ID_DOCUMENT`;
-      case `section`: return `ID_DOCUMENT_SECTION`;
-      case `evaluation`: return `ID_EVALUATION`;
-      case `quiz_question`: return `ID_QUIZ_QUESTION`;
+      case `${this.documentType}`: return `${this.documentCol}`;
+      case `${this.sectionType}`: return `${this.sectionCol}`;
+      case `${this.evaluationType}`: return `${this.evaluationCol}`;
+      case `${this.quizQuestionType}`: return `${this.quizQuestionCol}`;
       default: throw new Error(`WARNING: Kolonne ikke korrekt angivet i getChoiceColName`);
     }
   }
@@ -200,14 +210,15 @@ class Model extends Database {
    */
   async getKeywordsInObject(object, choice = this.elementType) {
     try {
-      if (this.idColumnName === `ID_USER`) { // FIXME: Når en User prøver at se alle sine evalueringer vil evalueringerne hente alle keywords.
-        return object;                       //        Siden keyword_link pt. ikke er knyttet til en user, kan denne query ikke foretages.
-      }                                      //        Det kan evt. give mening at tilføje ID_USER til keyword link???
+      if (this.idColumnName === `${this.userCol}`) { // FIXME: Når en User prøver at se alle sine evalueringer vil evalueringerne hente alle keywords.
+        return object;                               //        Siden keyword_link pt. ikke er knyttet til en user, kan denne query ikke foretages.
+      }                                              //        Det kan evt. give mening at tilføje ID_USER til keyword link???
       const objectCopy = object;
       const choiceColName = this.getChoiceColName(choice);
-      const keywords = await this.query(`CUSTOM`, `SELECT keyword_link.ID_KEYWORD, KEYWORD, ${choiceColName} FROM keyword_link `
-                                      + `INNER JOIN keyword ON keyword_link.ID_KEYWORD = keyword.ID_KEYWORD `
-                                      + `WHERE keyword_link.${this.idColumnName} = "${this.idQuery}"`);
+      const keywords = await this.query(`CUSTOM`, `SELECT ${this.keywordLinkTable}.${this.keywordCol}, ${this.KKeywordCol}, ${choiceColName} `
+                                      + `FROM ${this.keywordLinkTable} `
+                                      + `INNER JOIN ${this.keywordTable} ON ${this.keywordLinkTable}.${this.keywordCol} = ${this.keywordTable}.${this.keywordCol} `
+                                      + `WHERE ${this.keywordLinkTable}.${this.idColumnName} = "${this.idQuery}"`);
 
       for (let j = 0; j < objectCopy.length; j++) {
         objectCopy[j].keywords = [];
@@ -236,10 +247,10 @@ class Model extends Database {
    */
   getColInCamelCase(choice) {
     switch (choice) {
-      case `ID_DOCUMENT`: return `idDocument`;
-      case `ID_DOCUMENT_SECTION`: return `idSection`;
-      case `ID_EVALUATION`: return `idEvaluation`;
-      case `ID_QUIZ_QUESTION`: return `idQuizQuestion`;
+      case `${this.documentCol}`: return `idDocument`;
+      case `${this.sectionCol}`: return `idSection`;
+      case `${this.evaluationCol}`: return `idEvaluation`;
+      case `${this.quizQuestionCol}`: return `idQuizQuestion`;
       default: throw new Error(`WARNING: kolonnenavn er ikke angivet i getColInCamelCase i Model`);
     }
   }

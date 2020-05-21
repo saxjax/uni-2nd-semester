@@ -1,29 +1,29 @@
 /* eslint-disable guard-for-in */
 /* eslint no-console: off */
-const path = require(`path`);
-const { Group } = require(`../Models/Group`);
-const { User } = require(`../Models/User`);
-const { Document } = require(`../Models/Document`);
 const { Section } = require(`../Models/Section`);
-const { Evaluation } = require(`../Models/Evaluation`);
-const { QuizQuestion } = require(`../Models/QuizQuestion`);
-const { QuizResult } = require(`../Models/QuizResult`);
 const { ErrorController } = require(`./AbstractControllers/ErrorController`);
 
-/* UNDER CONSTRUCTION */
-
-class DeleteController extends ErrorController {
-  /* UNDER CONSTRUCTION */
-  constructor(root) {
-    super();
+/* Formål: CreateControllerens opgave er at håndtere alle DELETE-requests fra platformen
+ * Input:  Modtager en settingsfil, indeholder serverinstillingerne bestemt i filen serverSettings.js i roden
+ */
+class DeleteController {
+  constructor(settings) {
     this.name = `CreateController`;
-    this.root = root;
+    this.root = settings.root;
   }
 
-  async DeleteSection(req, res) {
-    const Sec = new Section(req);
-    await Sec.deleteFromDatabase();
-    res.send({ response: `OK` });
+  /* Formål: At slette et afsnit (section) i databasen */
+  async deleteSection(req, res) {
+    try {
+      const Sec = new Section(req);
+      await Sec.deleteFromDatabase();
+      res.send({ response: `OK` });
+    }
+    catch (error) {
+      const E = new ErrorController(error);
+      const errorMsg = E.produceErrorMessageToUser();
+      res.send({ error: errorMsg });
+    }
   }
 }
 

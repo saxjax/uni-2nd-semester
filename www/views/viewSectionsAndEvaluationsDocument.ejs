@@ -3,6 +3,7 @@
   <head>
     <%- include('meta/header') %>
     <link href="/css/design.css" rel="stylesheet">
+    <script src="/js/helperFunctions/insertHTMLElements.js"></script>
     <script defer src="/js/viewSectionsAndEvaluationsDocument.js"></script>
     <title>GroupHub | Document </title>
   </head>
@@ -10,42 +11,49 @@
     <%- include('meta/navbar') %> 
     <div class="container" id="content">
       <div class="row">
-        <div class="col-6">
+        <div class="col-6"> 
           <h2> <%= data.document[0].title %>'s Afsnit </h2>
-          
           <div class="leftside">
             <button class="btn btn-info">
               <a href="/post/section/<%= data.document[0].idDocument %>"> Opret Afsnit til <%= data.document[0].title %> </a>
             </button>  
             <br>
-            <% data.sections.forEach((section, index) => { %>
+            <div id="sectionsContainer">
+              <!-- hvis der ikke findes en RowDataPacket (Der er blevet hentet noget fra databasen) så vises inholdet -->
+              <% if(!data.sections[0].RowDataPacket) { %> 
+                <% data.sections.forEach((section, index) => { %>
+                  <div class="sectionContainer" id="sectionNumber<%= index %>">
+                    <br>
+                    <a href="/view/section/<%= section.idSection %>">
+                      <%= section.number %> <strong><%= section.title %></strong>
+                    </a>
+                    <p><%= section.teaser %></p>
+                    <p><strong>Evalueringer: </strong></p>
+                    <% data.evaluations.forEach((evaluation) => { %> 
+                      <% if(evaluation.idSection === section.idSection) { %>
+                        <p>
+                          <a href="/view/evaluations/<%=evaluation.idEvaluation %>">Se evalueringen: <%= evaluation.title %> </a>
+                        </p>
+                      <% } %> 
+                    <% }); %> 
+                    <button class="btn btn-info">
+                      <a href="/post/evaluation/section/<%= section.idSection %>"> 
+                        Opret Evaluering til <%= section.title %> 
+                      </a>
+                    </button>
+                    <button class="removeKeywordBtn btn btn-danger">
+                      <a onclick="deleteSection(`<%= section.idSection %>`, `sectionNumber<%= index %>`)">
+                        Slet Afsnit
+                      </a>
+                    </button>
+                    <br>
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <h3 class="noContent">Der er endnu ikke oprettet nogen sektioner til dette dokument</h3>
+              <% } %> 
               <br>
-              <a href="/view/section/<%= section.idSection %>">
-                <%= section.number %> <strong><%= section.title %></strong>
-              </a>
-              <p><%= section.teaser %></p>
-              <p><strong>Evalueringer: </strong></p>
-              <% data.evaluations.forEach((evaluation) => { %> 
-                <% if(evaluation.idSection === section.idSection) { %>
-                  <p>
-                    <a href="/view/evaluations/<%=evaluation.idEvaluation %>">Se evalueringen: <%= evaluation.title %> </a>
-                  </p>
-                <% } %> 
-              <% }); %> 
-              <button class="btn btn-info">
-                <a href="/post/evaluation/section/<%= section.idSection %>"> 
-                  Opret Evaluering til <%= section.title %> 
-                </a>
-              </button>
-              <button class="removeKeywordBtn btn btn-danger">
-                <a onclick="DeleteSection(`<%= section.idSection %>`)"  style="color: cornsilk;" >
-                  Slet Afsnit
-                </a>
-              </button>
-              <br>
-            <% }); %>
-            <br>
-            
+            </div>
           </div>
         </div>
         <div class="col-6">

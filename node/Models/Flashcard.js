@@ -6,10 +6,11 @@ const { Model }   = require(`./AbstractClasses/Model`);
 /* FIXME: UNDER CONSTRUCTION */
 
 class Flashcard extends Model {
+  /* Alle flashcardType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super();
-    this.elementType = `flashcard`;
-    this.table = `flashcard`;
+    this.elementType = `${this.flashcardType}`;
+    this.table = `${this.flashcardTable}`;
 
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
@@ -19,7 +20,7 @@ class Flashcard extends Model {
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
-          this.idColumnName = `ID_FLASHCARD`;
+          this.idColumnName = `${this.flashcardCol}`;
           this.idQuery = req.params.idQuery;
           break;
         case `POST`:
@@ -37,19 +38,7 @@ class Flashcard extends Model {
    * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
-    try {
-      await this.query(`ID_USER_GROUP = "${this.idGroup}" `
-                 + `AND ID_USER = "${this.idUser}" `
-                 + `AND ID_DOCUMENT = "${this.idDocument}" `
-                 + `AND ID_DOCUMENT_SECTION = "${this.idSection}" `
-                 + `AND CONCEPT = "${this.concept}" `
-                 + `AND DEFINITION = "${this.definition}"`);
-    }
-    catch (error) {
-      console.log(error);
-      return false;
-    }
-    return true;
+    // UNDER CONSTRUCTION! Gør ligesom QuizQuestion
   }
 }
 module.exports = {

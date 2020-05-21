@@ -5,13 +5,11 @@ const { Group } = require(`../Models/Group`);
 const { ErrorController } = require(`./AbstractControllers/ErrorController`);
 
 
-/* Controllere for sessions
- * Omdirigere altid til `/` (som det står nu)
+/* Formål: SessionControllerens opgave er at håndtere alle requests omhandlende sessions på platformen
+ * Input:  Modtager en settingsfil, indeholder serverinstillingerne bestemt i filen serverSettings.js i roden
  */
-
-class SessionController extends ErrorController {
+class SessionController {
   constructor(settings) {
-    super(settings.debug);
     this.name = `SessionController`;
     this.root = settings.root;
   }
@@ -27,7 +25,8 @@ class SessionController extends ErrorController {
       res.redirect(`/access/view/groups`);
     }
     catch (error) {
-      const errorMsg = this.produceErrorMessageToUser(error);
+      const E = new ErrorController(error);
+      const errorMsg = E.produceErrorMessageToUser();
       res.send(errorMsg);
     }
     currentUser.connect.end();

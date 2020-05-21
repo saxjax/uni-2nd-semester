@@ -1,18 +1,28 @@
 /* eslint no-console: 0 */
 
-class ErrorController {
-  constructor(debug) {
-    this.debug = debug;
-  }
+const { serverSettings } = require(`../../../serverSettings`);
 
-  produceErrorMessageToUser(errorObj) {
+/* Formål: ErrorControlleren har til opgave at håndtere alle fejl i programmet
+ * Input : this.debug er en del af settings-objektet, som kommer fra serverSettings.js i roden oprindeligt
+ *                    den bestemmer om erroren skal console.logges.
+ *         @errorObj indeholder det errorobjekt som skal behandles
+ */
+class ErrorController {
+  constructor(errorObj) {
+    this.debug = serverSettings.debug;
+    this.error = errorObj;
     if (this.debug) {
       console.log(errorObj);
     }
+  }
 
+  /* Formål: At producere en fejlmeddelelse som brugeren kan forstå
+   * Output: En tekststreng med en passende fejlmeddelelse til brugeren
+   */
+  produceErrorMessageToUser() {
     let errorMsg = ``;
     // RegExen læser alt frem til det første kolon den finder, da SQL-error-beskeder ser ud på formen: "ERROR_CODE: Because.... "
-    const errorType = /^[^:]+/.exec(errorObj.message)[0];
+    const errorType = /^[^:]+/.exec(this.error.message)[0];
     switch (errorType) {
       /* LOGIN FEJL */
       case `USER_ALREADY_REGISTERED`:

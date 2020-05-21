@@ -7,31 +7,31 @@
     <script src="/js/helperFunctions/insertHTMLElements.js"></script>
     <script defer src="/js/useEvaluation.js" ></script>
     <title>GroupHub | Evaluering</title>
+    <script> const data = <%- JSON.stringify(data) %> </script>
   </head>
   <body>
     <%- include('meta/navbar') %> 
-    <script> const data = <%- JSON.stringify(data) %> </script>
-    <!-- Hvis evalueringen har spørgsmål vil de blive vist på siden, ellers vil der blive vist en besked om at der ikke er noget indhod -->
+    <!-- Evalueringen indeholder altid data, men det er kun hvis der findes mindst et spørgsmål til evalueringen at evalueringen vises. -->
     <% if(data.questions[0].question){ %>
       <div id="allQuestions">
         <% let questionCount = 1; %>
         <% data.questions.forEach((question, i) => { %>
           <div class="questionDiv" idQuestion="<%= data.questions[i].idQuizQuestion %>">
             <h3 class="questionText"> <%= question.question %> </h3>
-            <div>
-              <% let answerCount = 1 %>
-              <% question.answers.forEach(answer => { %>
-                <input id = <%= `question${questionCount}answer${answerCount++}` %> class ="correctAnswerCheckbox" type="checkbox">
-                <p class = "answer" >  <%= answer %> </p>
-              <% }); %>
+              <div>
+                <% let answerCount = 1 %>
+                <% question.answers.forEach(answer => { %>
+                  <input id = <%= `question${questionCount}answer${answerCount++}` %> class ="correctAnswerCheckbox" type="checkbox">
+                  <p class = "answer">  <%= answer %> </p>
+                <% }); %>
+              </div>
             </div>
-          </div>
           <% questionCount++ %>
-        <% }); %>
+          <% }); %>
       </div>
       <button id="submitButton">Indsend!</button>
     <% } else { %>
-      <h1>Denne evaluering er tom</h1>
+      <h3 class="noContent">Denne evaluering er tom</h3>
     <% } %> 
     <%- include('meta/footer') %> 
   </body>

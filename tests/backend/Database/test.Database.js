@@ -9,8 +9,6 @@ let actualObject = true;
 let actual = true;
 let expected = true;
 let object = new Database();
-/* textoff bruges til at slaa info() teksten fra diverse fejlmeddelser naar de testes */
-const textoff = false;
 
 /* Dokumentation */
 /*
@@ -50,16 +48,16 @@ const textoff = false;
  */
 async function resetDB() {
   try {
-    await object.query(`CUSTOM`, `DELETE FROM ${object.database}.${object.table}`, textoff);
+    await object.query(`CUSTOM`, `DELETE FROM ${object.database}.${object.table}`);
     await object.query(`CUSTOM`, `INSERT INTO ${object.database}.${object.table} 
              (TEST_OPTION_1, TEST_OPTION_2, TEST_OPTION_3, TEST_OPTION_4, TEST_OPTION_5_FLOAT, ELEMENT_TYPE)
-              VALUES ("test1", "test2", "test3", NULL, "1", "test")`, textoff);
+              VALUES ("test1", "test2", "test3", NULL, "1", "test")`);
     await object.query(`CUSTOM`, `INSERT INTO ${object.database}.${object.table} 
               (TEST_OPTION_1, TEST_OPTION_2, TEST_OPTION_3, TEST_OPTION_4, TEST_OPTION_5_FLOAT, ELEMENT_TYPE)
-               VALUES ("test4", "test5", "test6", NULL, "1.2", "test")`, textoff);
+               VALUES ("test4", "test5", "test6", NULL, "1.2", "test")`);
     await object.query(`CUSTOM`, `INSERT INTO ${object.database}.${object.table} 
                (TEST_OPTION_1, TEST_OPTION_2, TEST_OPTION_3, TEST_OPTION_4, TEST_OPTION_5_FLOAT, ELEMENT_TYPE)
-                VALUES ("test7", "test8", "test9", NULL, "-123", "test")`, textoff);
+                VALUES ("test7", "test8", "test9", NULL, "-123", "test")`);
   }
   catch (err) {
     throw (new Error(`Databasen er IKKE opsat korrekt! Check setupDB i Databasens tests`));
@@ -70,6 +68,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   assert.equal(actual, expected, `Skulle gerne være oprettet.`);
 
   object = new Database();
+  object.debug = false; // sættes til false, da vi i tests ikke er interesseret i run-time fejlbeskeder
   /* 1.1 */
   console.log(`1: Databasen skal have adgang til MySQL databasen.`);
   try {
@@ -96,10 +95,10 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     assert.equal(actual, expected,
       `(2.1.1) (get) Databasen skal kunne omskrive sit input til en valid SQL streng efter metodevalg`);
 
-    expected = `INSERT INTO ${object.database}.${object.table} (testfield1, testfield2, ELEMENT_TYPE) VALUES ("test1", "test2", "test")`;
+    expected = `INSERT INTO ${object.database}.${object.table} (testfield1, testfield2, ELEMENT_TYPE) VALUES (\'test1\', \'test2\', "test")`;
     actual = object.inputParser(`INSERT`, `testfield1 = "test1" AND testfield2 = "test2"`);
     assert.equal(actual, expected,
-      `(2.1.2) (post) Databasen skal kunne omskrive sit input til en valid SQL streng efter metodevalg`);
+      `(2.1.2) (post) Databasen skal kunne omskrive sit input, så indtastede værdier escapes og korrekt ELEMENT_TYPE sendes med`);
 
     expected = `UPDATE ${object.database}.${object.table} SET testfield1 = "test2" WHERE testfield1 = "test1"`;
     actual = object.inputParser(`UPDATE`, `testfield1 = "test2" WHERE testfield1 = "test1"`);
@@ -123,7 +122,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
 
   /* 2.2 */
   try {
-    actual = await object.query(`THIS IS NOT A VALID QUERY`, `NO IT IS NOT`, textoff);
+    actual = await object.query(`THIS IS NOT A VALID QUERY`, `NO IT IS NOT`);
     actual = false;
   }
   catch (error) {
@@ -403,7 +402,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
 
   /* 4.3 */
   try {
-    actualObject = await object.query(`INSERT`, `TEST_OPTION_1 = "test1"`, textoff);
+    actualObject = await object.query(`INSERT`, `TEST_OPTION_1 = "test1"`);
     actual = false;
   }
   catch (error) {
@@ -474,6 +473,66 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   assert.equal(actual, expected,
     `(4.7.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data med specialtegn der indeholder mellemrum.`);
 
+  /* 4.8 */
+  try {
+    await object.query(`INSERT`, `TEST_OPTION_1 = " SQL "" INJECTION " fdfj " """ " AND `
+                               + `TEST_OPTION_2 = "!"#¤%&/()??)(/&%¤"!@£$€{[]}|" AND `
+                               + `TEST_OPTION_3 = " AND = "`);
+  }
+  catch (error) {
+    actual = false;
+  }
+  actualObject = await object.query(`SELECT *`, `TEST_OPTION_3 = "!\"#¤%&/()??)(/&%¤\"!@£$€{[]}|" AND "`);
+
+  actual = actualObject[0].TEST_OPTION_1;
+  expected = ` SQL "" INJECTION " fdfj " """ " AND `;
+  assert.equal(actual, expected,
+    `(4.8.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne SQL escape mærkelige værdier `);
+
+  actual = actualObject[0].TEST_OPTION_2;
+  expected = `!"#¤%&/()??)(/&%¤"!@£$€{[]}|`;
+  assert.equal(actual, expected,
+    `(4.8.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne SQL escape mærkelige værdier`);
+
+  actual = actualObject[0].TEST_OPTION_3;
+  expected = ` AND `;
+  assert.equal(actual, expected,
+    `(4.8.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne SQL escape mærkelige værdier`);
+
+
+  /* 4.9 DENNE TEST AKTIVERES NÅR VI FORSØGER AT OPNÅ DET DER STÅR HERUNDER! */
+  /*
+  try {
+    await object.query(`INSERT`, `TEST_OPTION_1 = "med dig" `
+                           + `AND TEST_OPTION_1 = "også med dig"`
+                           + `AND TEST_OPTION_1 = "hejsadejsa"`);
+  }
+  catch (error) {
+    actual = false;
+  }
+  actualObject = await object.query(`SELECT *`, `TEST_OPTION_1 = "med dig"`);
+  console.log(actualObject);
+
+  actual = actualObject[0].TEST_OPTION_1;
+  expected = `med dig`;
+  assert.equal(actual, expected,
+    `(4.9.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data der indsætter på samme kolonne`);
+
+  actualObject = await object.query(`SELECT *`, `TEST_OPTION_1 = "hej også med dig"`);
+
+  actual = actualObject[0].TEST_OPTION_1;
+  expected = `også med dig`;
+  assert.equal(actual, expected,
+    `(4.9.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data der indsætter på samme kolonne`);
+
+  actualObject = await object.query(`SELECT *`, `TEST_OPTION_1 = "hejsadejsa"`);
+
+  actual = actualObject[0].TEST_OPTION_1;
+  expected = `hejsadejsa`;
+  assert.equal(actual, expected,
+    `(4.9.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data der indsætter på samme kolonne`);
+
+
   /* 5.1 */
   console.log(`5: Database.js skal kunne opdatere data til MySQL databasen`);
   try {
@@ -516,7 +575,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
 
   /* 5.3 */
   try {
-    await object.inputParser(`UPDATE`, `TEST_OPTION_1 = "Must Not Happen`, textoff);
+    await object.inputParser(`UPDATE`, `TEST_OPTION_1 = "Must Not Happen`);
     actual = false;
   }
   catch (error) {
@@ -527,7 +586,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
 
   /* 5.4 */
   try {
-    await object.query(`UPDATE`, `notATable = "notAValue_mod" WHERE notATable = "notAValue"`, textoff);
+    await object.query(`UPDATE`, `notATable = "notAValue_mod" WHERE notATable = "notAValue"`);
     actual = false;
   }
   catch (error) {
@@ -554,7 +613,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   }
 
   try {
-    await object.query(`DELETE`, `notATable = "notAValue_mod`, textoff);
+    await object.query(`DELETE`, `notATable = "notAValue_mod`);
     actual = false;
   }
   catch (error) {
@@ -565,7 +624,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
 
   /* 6.3 */
   try {
-    await object.inputParser(`DELETE`, ``, textoff);
+    await object.inputParser(`DELETE`, ``);
     actual = false;
   }
   catch (error) {
@@ -623,7 +682,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   /* 8.1 */
   console.log(`8: Database.js skal kunne give information om hvordan Database.js API fungere`);
   expected = true;
-  actual = object.info(textoff);
+  actual = object.info();
   assert.equal(actual, expected,
     `(8.1) {Returnere true hvis info metoden er implementeret} Databasen skal have en informations metode til hvordan den bruges`);
 

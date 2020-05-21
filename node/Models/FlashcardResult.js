@@ -5,11 +5,11 @@ const { Model } = require(`./AbstractClasses/Model`);
 /* UNDER CONSTRUCTION! Alt i denne fil er alene for test_purposes og intet andet som det står nu. */
 
 class FlashcardResult extends Model {
+  /* Alle flashcardResultType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super(req);
-    this.elementType = `flashcard_result`;
-    this.table = `flashcard_result`;
-    this.idDocument = `11111111-aaaa-bbbb-1111-111111111111`; // Hardcoded into every section - can be changed in the future
+    this.elementType = `${this.flashcardResultType}`;
+    this.table = `${this.flashcardResultTable}`;
 
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
@@ -17,7 +17,7 @@ class FlashcardResult extends Model {
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
-          this.idColumnName   = `ID_FLASHCARD_RESULT`;
+          this.idColumnName   = `${this.flashcardResultCol}`;
           this.idQuery        =  req.params.idQuery;
           break;
         case `POST`:
@@ -25,10 +25,6 @@ class FlashcardResult extends Model {
           this.points  = req.body.score.points;
           this.total = req.body.score.total;
           this.questionArray = req.body.questionsArray;
-          break;
-        case `TEST`:
-          this.elementType = `flashcardResult`;
-          this.table = `flashcard_result`;
           break;
         default: break;
       }
