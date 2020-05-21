@@ -155,7 +155,6 @@ class Keyword extends Model {
    * Output: N/A
    */
   async createKeywords(keywordArray) {
-    console.log(keywordArray);
     let queryString = ``;
     queryString = this.makeKeywordQueryString(keywordArray);
     const existingKeywords = await this.getExistingKeywords(queryString);
