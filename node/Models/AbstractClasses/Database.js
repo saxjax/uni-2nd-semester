@@ -37,6 +37,11 @@ class Database extends ParseSql {
       database: this.database,
     };
     this.connect = mysql.createConnection(this.dbConfig);
+    this.connect.connect((error) => {
+      if (error) {
+        throw error;
+      }
+    });
 
     this.table = `${this.databaseTable}`;
     this.elementType = `${this.databaseType}`;
@@ -48,7 +53,7 @@ class Database extends ParseSql {
   }
 
   /* Formål: Naar der sker fejl ved brug af querymetoden vil denne metode give den nodvendige information med det samme.
-   *         Desuden fungere dette som dokumentation af Database klassen som helhed.
+   *         Desuden fungerer dette som dokumentation af Database klassen som helhed.
    * Input:  -
    * Output: Metoden har som (primaer) sideeffect information om hvordan querymetoden bruges.
              Metoden outputter true, saa den kan testes i tests/backend/Database/test.Class.js
@@ -80,8 +85,8 @@ class Database extends ParseSql {
     return true;
   }
 
-  /* Formål: Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overridet.
-   *         Dette oger kode genbrug, samt sikre fornuftig testning paa tvaers af hele programmet i forhold til databasen.
+  /* Formål: Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overskrevet.
+   *         Dette oeger kode genbrug, samt sikrer fornuftig testning paa tvaers af hele programmet i forhold til databasen.
    * Input:  @choice bestemmer hvilken slags SQL der søges. Kan være "SELECT *", "SELECT kolonnenavn"
    *            "INSERT", "UPDATE", "DELETE" eller "HEAD".
    *         @data er de data der queries for, og har en struktur på "kolonnenavn = "værdi" ", hvor "" omkring værdi er væsentlige
@@ -111,7 +116,7 @@ class Database extends ParseSql {
    *        (`HEAD`,`COLUMN_NAME`) giver os column navne retur fra databasen
    * Output: Metoden outputter en brugbar SQL streng til brug i mysql
    * Formaal: Ved at standardisere maaden der skrives SQL kan andre modeller nemmere haandtere queries.
-   *         Det oger laesbarheden af koden, samtidigt med at det ikke abstrahere for meget,
+   *         Det oger laesbarheden af koden, samtidigt med at det ikke abstraherer for meget,
    *         da det er SQL kommandoer der bruges.
    */
   inputParser(choice, data) {
@@ -164,8 +169,8 @@ class Database extends ParseSql {
     return sql;
   }
 
-  /* Formaal: Ved at validere om formattet er overholdt, kan der testes om et evt. problem opstaar ved metodekaldet eller i operationerne.
-   *         Dette gor debugging mere overskueligt, og sikre at dem der bruger metoden hurtigt faar respons paa metodens API.
+  /* Formaal: Ved at validere om formatet er overholdt, kan der testes om et evt. problem opstaar ved metodekaldet eller i operationerne.
+   *         Dette gor debugging mere overskueligt, og sikrer at dem, der bruger metoden hurtigt faar respons paa metodens API.
    * Input: Metoden modtager de valg som brugeren har lavet
    * Output: Metoden outputter true hvis baade choice og data folger det fastsatte format.
              Ellers false med information om hvordan metoden bruges
@@ -277,7 +282,6 @@ class Database extends ParseSql {
     return dataArr;
   }
 }
-
 
 module.exports = {
   Database,

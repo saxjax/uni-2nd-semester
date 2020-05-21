@@ -3,19 +3,20 @@
   <head>
     <%- include('meta/header') %> 
     <link rel="stylesheet" href="/css/design.css">
-    <link rel="stylesheet" href="/css/viewEvaluationsRecipient.css">
     <title>GroupHub | Evalueringer</title>
   </head>
   <body>
     <%- include('meta/navbar') %> 
 
     <h1>Evalueringer du har oprettet</h1>
-    <% console.log(data) %> 
     <% data.evaluations.forEach(evaluation => { %>
       <div class="evaluationDiv container">
         <div class="row">
           <div class="col">
             <p class="evaluationTitle">
+              <strong>
+                Titel: 
+              </strong> 
               <%= evaluation.title %>
             </p>
           </div>

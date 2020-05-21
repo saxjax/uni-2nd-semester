@@ -51,10 +51,12 @@ class Keyword extends Model {
   */
   // FIXME: lav check om createkeywords og createKeywordLinks har oprettet det de skal i databasen og return true
   async insertToDatabase(idLinks, keywordArray) {
-    let keywordArrayUpper = this.makeArrayUppercaseAndEscape(keywordArray);
-    keywordArrayUpper = this.removeDuplicates(keywordArrayUpper);
-    await this.createKeywords(keywordArrayUpper);
-    await this.createKeywordLinks(idLinks, keywordArrayUpper);
+    if (keywordArray.length > 0) {
+      let keywordArrayUpper = this.makeArrayUppercaseAndEscape(keywordArray);
+      keywordArrayUpper = this.removeDuplicates(keywordArrayUpper);
+      await this.createKeywords(keywordArrayUpper);
+      await this.createKeywordLinks(idLinks, keywordArrayUpper);
+    }
   }
 
   /* Formål: At oprette reference ID'er mellem input keywords og input ID'er i ${keywordLink.table} tabellen.

@@ -156,7 +156,6 @@ class Model extends Database {
       || choice === `QuizQuestion`) {
       queryData = this.getKeywordsInObject(queryData, choice);
     }
-
     return queryData;
   }
 

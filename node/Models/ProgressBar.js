@@ -43,8 +43,7 @@ class ProgressBar extends Model {
                                                               AND qr.${this.userCol} = "${this.idUser}"`);
     if (EvaluationsForUser[0].UserTotal > 0) {
       EvaluationsForUser = EvaluationsForUser[0].UserTotal;
-      progress.totalProgress = (EvaluationsForUser / totalEvaluationsForGroup);
-      progress.totalProgress = progress.totalProgress.toFixed(2) * 100; // Round to 2 decimals and multiply by 100 to get percentage.
+      progress.totalProgress = (EvaluationsForUser / totalEvaluationsForGroup) * 100;
     }
 
     // Get how many evaluations a specific user has taken where all questions are correct.
@@ -56,8 +55,7 @@ class ProgressBar extends Model {
                                                                  AND qr.${this.userCol} = "${this.idUser}"`);
     if (totalCorrectProgressForUser[0].TotalCorrect > 0) {
       totalCorrectProgressForUser = totalCorrectProgressForUser[0].TotalCorrect;
-      progress.totalCorrectProgress = (totalCorrectProgressForUser / totalEvaluationsForGroup);
-      progress.totalCorrectProgress = progress.totalCorrectProgress.toFixed(2) * 100; // Round to 2 decimals and multiply by 100 to get percentage.
+      progress.totalCorrectProgress = (totalCorrectProgressForUser / totalEvaluationsForGroup) * 100;
     }
     return progress;
   }
