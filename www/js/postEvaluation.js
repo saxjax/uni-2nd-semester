@@ -7,6 +7,7 @@ class Evaluation {
     this.keywords = this.getKeywords();
   }
 
+  /* Formål: Finder keywords som tilhører evalueringen */
   getKeywords() {
     const keywordsArray = [];
     const allKeywordsContainer = document.getElementById(`allKeywordsContainer`);
@@ -18,6 +19,8 @@ class Evaluation {
   }
 }
 
+
+/* Formål: Når man klikker på 'submitButton' sendes et POST til serveren som opretter en ny evaluering i databasen. */
 document.getElementById(`submitButton`).addEventListener(`click`, async () => {
   const evaluationForm = document.getElementById(`evaluationForm`);
   const response = await fetch(`/post/evaluation`, {
