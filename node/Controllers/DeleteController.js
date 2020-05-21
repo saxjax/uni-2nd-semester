@@ -5,10 +5,9 @@ const { ErrorController } = require(`./AbstractControllers/ErrorController`);
 
 /* UNDER CONSTRUCTION */
 
-class DeleteController extends ErrorController {
+class DeleteController {
   /* UNDER CONSTRUCTION */
   constructor(root) {
-    super();
     this.name = `CreateController`;
     this.root = root;
   }
@@ -20,7 +19,8 @@ class DeleteController extends ErrorController {
       res.send({ response: `OK` });
     }
     catch (error) {
-      const errorMsg = this.produceErrorMessageToUser(error);
+      const E = new ErrorController(error);
+      const errorMsg = E.produceErrorMessageToUser();
       res.send({ error: errorMsg });
     }
   }

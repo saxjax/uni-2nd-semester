@@ -36,6 +36,11 @@ class Database {
       database: this.database,
     };
     this.connect = mysql.createConnection(this.dbConfig);
+    this.connect.connect((error) => {
+      if (error) {
+        throw error;
+      }
+    });
 
     this.table = `database`;
     this.elementType = `test`;

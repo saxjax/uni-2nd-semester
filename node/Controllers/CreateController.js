@@ -1,5 +1,5 @@
 /* eslint-disable guard-for-in */
-/* eslint no-console: off */
+
 const { Group } = require(`../Models/Group`);
 const { User } = require(`../Models/User`);
 const { Document } = require(`../Models/Document`);
@@ -11,10 +11,8 @@ const { ErrorController } = require(`./AbstractControllers/ErrorController`);
 
 /* UNDER CONSTRUCTION */
 
-class CreateController extends ErrorController {
-  /* UNDER CONSTRUCTION */
+class CreateController {
   constructor(settings) {
-    super(settings.debug);
     this.name = `CreateController`;
     this.root = settings.root;
   }
@@ -30,7 +28,8 @@ class CreateController extends ErrorController {
       res.send({ url: `/groups` });
     }
     catch (error) {
-      const errorMsg = this.produceErrorMessageToUser(error);
+      const E = new ErrorController(error);
+      const errorMsg = E.produceErrorMessageToUser();
       res.send({ error: errorMsg });
     }
     G.connect.end();
@@ -48,7 +47,8 @@ class CreateController extends ErrorController {
       res.redirect(`/`);
     }
     catch (error) { // User could not be validated
-      const errorMsg = this.produceErrorMessageToUser(error);
+      const E = new ErrorController(error);
+      const errorMsg = E.produceErrorMessageToUser();
       res.send(errorMsg);
     }
     newUser.connect.end();
@@ -62,7 +62,8 @@ class CreateController extends ErrorController {
       res.redirect(`/view/sectionsAndEvaluations/document/${idQuery}`);
     }
     catch (error) {
-      const errorMsg = this.produceErrorMessageToUser(error);
+      const E = new ErrorController(error);
+      const errorMsg = E.produceErrorMessageToUser();
       res.send(errorMsg);
     }
     D.connect.end();
@@ -76,7 +77,8 @@ class CreateController extends ErrorController {
       res.send({ url: `/view/section/${idSection}` });
     }
     catch (error) {
-      const errorMsg = this.produceErrorMessageToUser(error);
+      const E = new ErrorController(error);
+      const errorMsg = E.produceErrorMessageToUser();
       res.send({ error: errorMsg });
     }
     S.connect.end();
@@ -90,7 +92,8 @@ class CreateController extends ErrorController {
       res.send({ url: `/post/questions?idEvaluation=${idEvaluation}&titleEvaluation=${E.title}` });
     }
     catch (error) {
-      const errorMsg = this.produceErrorMessageToUser(error);
+      const Err = new ErrorController(error);
+      const errorMsg = Err.produceErrorMessageToUser();
       res.send({ error: errorMsg });
     }
     E.connect.end();
@@ -107,7 +110,8 @@ class CreateController extends ErrorController {
       res.send({ url: `/view/evaluations/expert` }); // TODO: Kan eventuelt senere videredirigere til siden, hvor man kan tage evalueringen
     }
     catch (error) {
-      const errorMsg = this.produceErrorMessageToUser(error);
+      const E = new ErrorController(error);
+      const errorMsg = E.produceErrorMessageToUser();
       res.send({ error: errorMsg });
     }
     QQ.connect.end();
@@ -126,7 +130,8 @@ class CreateController extends ErrorController {
       res.send({ newURL: `/view/evaluationResult/${idAttempt}`, quizResultData });
     }
     catch (error) {
-      const errorMsg = this.produceErrorMessageToUser(error);
+      const E = new ErrorController(error);
+      const errorMsg = E.produceErrorMessageToUser();
       res.send({ error: errorMsg });
     }
     QR.connect.end();

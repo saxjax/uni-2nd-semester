@@ -4,17 +4,17 @@ const path = require(`path`);
 const { User } = require(`../Models/User`);
 const { Group } = require(`../Models/Group`);
 
-/* UNDER CONSTRUCTION */
-
+/* Formål: AccessControllerens opgave er at håndtere alle requests omhandlende adgang til platformen
+ * Input:  Modtager en settingsfil, indeholder serverinstillingerne bestemt i filen serverSettings.js i roden
+ */
 class AccessController {
-  /* UNDER CONSTRUCTION */
   constructor(settings) {
     this.name = `ViewController`;
     this.root = settings.root;
     this.ejs = ``;
   }
 
-  /* FIXME: UNDER CONSTRUCTION */
+  /* Formål */
   dbDown(req, res) {
     this.ejs = path.join(`${this.root}/www/views/dbDown.ejs`);
     res.render(this.ejs);

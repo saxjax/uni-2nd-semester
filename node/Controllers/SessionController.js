@@ -9,9 +9,8 @@ const { ErrorController } = require(`./AbstractControllers/ErrorController`);
  * Omdirigere altid til `/` (som det står nu)
  */
 
-class SessionController extends ErrorController {
+class SessionController {
   constructor(settings) {
-    super(settings.debug);
     this.name = `SessionController`;
     this.root = settings.root;
   }
@@ -27,7 +26,8 @@ class SessionController extends ErrorController {
       res.redirect(`/access/view/groups`);
     }
     catch (error) {
-      const errorMsg = this.produceErrorMessageToUser(error);
+      const E = new ErrorController(error);
+      const errorMsg = E.produceErrorMessageToUser();
       res.send(errorMsg);
     }
 
