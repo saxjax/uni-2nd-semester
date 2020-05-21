@@ -2,7 +2,6 @@
 
 const { Model } = require(`./AbstractClasses/Model.js`);
 const { KeywordLink } = require(`./KeywordLink`);
-const { P } = require(`./AbstractClasses/ParseSQL`);
 const SqlString = require(`sqlstring`);
 
 /* FIXME: UNDER CONSTRUCTION */
@@ -232,8 +231,8 @@ class Keyword extends Model {
   makeArrayUppercaseAndEscape(keywordArray) {
     const uppercaseKeywordArray = [];
     keywordArray.forEach((word) => {
-      word = SqlString.escape(word);
-      uppercaseKeywordArray.push(word.toUpperCase());
+      const Upperword = SqlString.escape(word);
+      uppercaseKeywordArray.push(Upperword.toUpperCase());
     });
     return uppercaseKeywordArray;
   }
