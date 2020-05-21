@@ -86,7 +86,7 @@ class Section extends Model {
   }
 
   async deleteFromDatabase() {
-    await this.query(`CUSTOM`, `DELETE FROM ${this.quizResultTable} WHERE ${this.evaluationCol} in (SELECT ${this.evaluationCOl} FROM ${this.evaluationTable} WHERE ${this.sectionCol} = "${this.idQuery}")`);
+    await this.query(`CUSTOM`, `DELETE FROM ${this.quizResultTable} WHERE ${this.evaluationCol} in (SELECT ${this.evaluationCol} FROM ${this.evaluationTable} WHERE ${this.sectionCol} = "${this.idQuery}")`);
     await this.query(`CUSTOM`, `DELETE FROM ${this.spacedRepetitionTable} WHERE ${this.quizQuestionCol} in (SELECT ${this.quizQuestionCol} 
                                                                                          FROM ${this.quizQuestionTable} 
                                                                                          INNER JOIN ${this.evaluationTable} 
