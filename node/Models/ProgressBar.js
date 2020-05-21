@@ -28,6 +28,7 @@ class ProgressBar extends Model {
 
   async getProgressFromDB() {
     const progress = { totalProgress: 0, totalCorrectProgress: 0 };
+    // Totalt Evalueringer for en gruppe.
     let totalEvaluationsForGroup = await this.query(`CUSTOM`, `SELECT COUNT(*) as TOTAL
                                                         FROM evaluation e
                                                         WHERE e.ID_DOCUMENT IN (SELECT ID_DOCUMENT FROM document WHERE ID_USER_GROUP = "${this.idGroup}");`);
@@ -71,22 +72,3 @@ class ProgressBar extends Model {
 module.exports = {
   ProgressBar,
 };
-
-
-// -- Totalt Evalueringer for en gruppe.
-// SELECT COUNT(*)
-// FROM evaluation e
-// WHERE e.ID_DOCUMENT IN (SELECT ID_DOCUMENT FROM document WHERE ID_USER_GROUP = "34701dd1-7c29-11ea-86e2-2c4d54532c7a");
-//
-// -- Gennemførte Evalueringer for en bruger.
-// SELECT DISTINCT(qr.ID_EVALUATION) FROM quiz_result qr
-// INNER JOIN evaluation e ON qr.ID_EVALUATION = e.ID_EVALUATION
-// WHERE e.ID_DOCUMENT IN (SELECT ID_DOCUMENT from document WHERE ID_USER_GROUP = "34701dd1-7c29-11ea-86e2-2c4d54532c7a")
-// AND qr.ID_USER = "553e422d-7c29-11ea-86e2-2c4d54532c7a";
-//
-// -- Correct gennemførte evalueringer for en bruger.
-// SELECT DISTINCT(qr.ID_EVALUATION) FROM quiz_result qr
-// INNER JOIN evaluation e ON qr.ID_EVALUATION = e.ID_EVALUATION
-// WHERE e.ID_DOCUMENT IN (SELECT ID_DOCUMENT FROM document WHERE ID_USER_GROUP = "34701dd1-7c29-11ea-86e2-2c4d54532c7a")
-// AND qr.POINT = qr.TOTAL
-// AND qr.ID_USER = "553e422d-7c29-11ea-86e2-2c4d54532c7a";
