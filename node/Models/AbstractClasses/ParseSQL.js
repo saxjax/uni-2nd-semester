@@ -88,7 +88,7 @@ class ParseSql {
     this.KKeywordCol = `KEYWORD`;
     /* KeywordLink kolonner */
     /* Spaced Repetition kolonner */
-    this.SRRepetitionDate = `REPETITION_DATE`;
+    this.SRRepetitionDateCol = `REPETITION_DATE`;
   }
 
   /* Formål: Dette er tiltænkt som den overordnede funktion, som bliver kaldt fra Database.js
@@ -236,6 +236,7 @@ class ParseSql {
       // IDs
       idQuizQuestion: data[this.quizQuestionCol],
       idEvaluation: data[this.evaluationCol],
+      idGroup: data[this.groupCol],
       // data
       question: data[this.QQQuestionCol],
       answers: data[this.QQAnswersCol].split(`;`),
@@ -274,7 +275,7 @@ class ParseSql {
       idQuizQuestion: data[this.quizQuestionCol],
       idUser: data[this.userCol],
       idGroup: data[this.groupCol],
-      repetitionDate: data[this.SRRepetitionDate],
+      repetitionDate: data[this.SRRepetitionDateCol],
     };
   }
 

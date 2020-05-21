@@ -45,7 +45,7 @@ class SpacedRepetition extends Model {
     const now = (new Date()).toISOString().slice(0, 19).replace(`T`, ` `);// konverterer en JS Date til SQL format
 
     this.table = `${this.spacedRepetitionTable}`;// sætter table til repetition_task for en sikkerhedsskyld, da denne funktion kan kaldes fra andre klasser
-    const queryResult = await this.query(`SELECT ${this.quizQuestionCol}`, `${this.SRRepetitionDate} <= "${now}" 
+    const queryResult = await this.query(`SELECT ${this.quizQuestionCol}`, `${this.SRRepetitionDateCol} <= "${now}" 
                                     AND ${this.userCol} = "${this.idUser}" 
                                     AND ${this.groupCol} = "${this.idGroup}"`);
 
@@ -127,8 +127,8 @@ class SpacedRepetition extends Model {
     this.table = `repetition_task`;
 
     resultData.forEach(async (result) => {
-      result.nextRepetition = result.nextRepetition.toISOString().slice(0, 19).replace(`T`, ` `); // eslint-disable-line no-param-reassign
-      await this.query(`CUSTOM`, `INSERT INTO ${this.table} (ID_QUIZ_QUESTION, ID_USER, ID_GROUP, REPETITION_DATE) 
+      result.nextRepetition = result.nextRepetition.toISOString().slice(0, 19).replace(`T`, ` `);
+      await this.query(`CUSTOM`, `INSERT INTO ${this.table} (${this.quizQuestionCol}, ${this.userCol}, ${this.groupCol}, ${this.SRRepetitionDateCol}) 
                     VALUES ("${result.idQuizQuestion}", "${result.idUser}", "${this.idGroup}", "${result.nextRepetition}") ON DUPLICATE KEY UPDATE REPETITION_DATE = "${result.nextRepetition}" `);
       successfullInsert = true;
     });
