@@ -7,6 +7,32 @@
 class ParseSql {
   constructor() {
     this.parsedData = [];
+    /* Tabel navnene */
+    this.groupTable = `user_group`;
+    this.userTable = `user`;
+    this.documentTable = `document`;
+    this.sectionTable = `document_section`;
+    this.evaluationTable = `evaluation`;
+    this.quizQuestionTable = `quiz_question`;
+    this.quizResultTable = `quiz_result`;
+    this.flashcardTable = `flashcard`;
+    this.flashcardResultTable = `flashcard_result`;
+    this.keywordTable = `keyword`;
+    this.keywordLinkTable = `keyword_link`;
+    this.spacedRepetitionTable = `repetition_task`;
+    /* Elementtypes */
+    this.groupType = `group`;
+    this.userType = `user`;
+    this.documentType = `document`;
+    this.sectionType = `section`;
+    this.evaluationType = `evaluation`;
+    this.quizQuestionType = `quiz_question`;
+    this.quizResultType = `quiz_result`;
+    this.flashcardType = `flashcard`;
+    this.flashcardResultType = `flashcard_result`;
+    this.keywordType = `keyword`;
+    this.keywordLinkType = `keyword_link`;
+    this.spacedRepetitionType = `repetition_task`;
     /* ID kolonner der bruges alt efter hieraki */
     this.groupCol = `ID_USER_GROUP`;
     this.userCol = `ID_USER`;

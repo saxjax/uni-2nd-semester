@@ -11,7 +11,7 @@ class Keyword extends Model {
   constructor(req) {
     super(req);
     this.elementType = `keyword`;
-    this.table = `keyword`;
+    this.table = `${this.keywordTable}`;
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
       this.idUser  = req.session.idUser;
@@ -20,7 +20,7 @@ class Keyword extends Model {
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
-          this.idColumnName = `ID_KEYWORD`;
+          this.idColumnName = `${this.keywordCol}`;
           this.idQuery      = req.params.idQuery;
           break;
         case `POST`:
@@ -82,19 +82,19 @@ class Keyword extends Model {
     let idCollumn = ``;
     switch (elementType) {
       case `document`:
-        idCollumn = `ID_DOCUMENT`;
+        idCollumn = `${this.documentCol}`;
         break;
       case `section`:
-        idCollumn = `ID_DOCUMENT_SECTION`;
+        idCollumn = `${this.sectionCol}`;
         break;
       case `evaluation`:
-        idCollumn = `ID_EVALUATION`;
+        idCollumn = `${this.evaluationCol}`;
         break;
       case `quiz_question`:
-        idCollumn = `ID_QUIZ_QUESTION`;
+        idCollumn = `${this.quizQuestionCol}`;
         break;
       case `flashcard`:
-        idCollumn = `ID_FLASHCARD`;
+        idCollumn = `${this.flashcardCol}`;
         break;
       default:
         break;
@@ -108,10 +108,10 @@ class Keyword extends Model {
    * Output: Et array af id'er
    */
   async getIdFromCollumn(keyword, idCollumn) {
-    const idKeyword =  await this.query(`SELECT *`, `KEYWORD = ${keyword}`);
+    const idKeyword =  await this.query(`SELECT *`, `${this.KKeywordCol} = ${keyword}`);
     const DocumentsIdData =  await this.query(`CUSTOM`, `SELECT ${idCollumn} `
-                                            + `FROM keyword_link `
-                                            + `WHERE ID_KEYWORD = "${idKeyword[0].idKeyword}" `
+                                            + `FROM ${this.keywordLinkTable} `
+                                            + `WHERE ${this.keywordCol} = "${idKeyword[0].idKeyword}" `
                                             + `AND ${idCollumn} IS NOT NULL `
                                             + `AND ${idCollumn} != "" `
                                             + `GROUP BY ${idCollumn}`);
@@ -128,12 +128,12 @@ class Keyword extends Model {
    */
   async checkIfKeywordLinkExist(keywordLink, idKeyword) {
     const keywordLinkExist = await this.query(`CUSTOM`, `SELECT * FROM ${keywordLink.table} WHERE`
-                                      + ` ID_DOCUMENT = "${keywordLink.idDocument}"`
-                                      + ` AND ID_DOCUMENT_SECTION = "${keywordLink.idSection}"`
-                                      + ` AND ID_EVALUATION = "${keywordLink.idEvaluation}"`
-                                      + ` AND ID_QUIZ_QUESTION = "${keywordLink.idQuizQuestion}"`
-                                      + ` AND ID_FLASHCARD = "${keywordLink.idFlashcard}"`
-                                      + ` AND ID_KEYWORD = "${idKeyword}"`);
+                                      + ` ${this.documentCol} = "${keywordLink.idDocument}"`
+                                      + ` AND ${this.sectionCol} = "${keywordLink.idSection}"`
+                                      + ` AND ${this.evaluationCol} = "${keywordLink.idEvaluation}"`
+                                      + ` AND ${this.quizQuestionCol} = "${keywordLink.idQuizQuestion}"`
+                                      + ` AND ${this.flashcardCol} = "${keywordLink.idFlashcard}"`
+                                      + ` AND ${this.keywordCol} = "${idKeyword}"`);
     return keywordLinkExist;
   }
 
@@ -144,7 +144,7 @@ class Keyword extends Model {
    */
   async insertKeywordLink(keywordLink, idKeyword) {
     const keywordIdInsertString = `("${keywordLink.idDocument}","${keywordLink.idSection}","${keywordLink.idEvaluation}","${keywordLink.idQuizQuestion}","${idKeyword}","${keywordLink.idFlashcard}")`;
-    await this.query(`CUSTOM`, `INSERT INTO ${keywordLink.table} (ID_DOCUMENT,ID_DOCUMENT_SECTION,ID_EVALUATION,ID_QUIZ_QUESTION,ID_KEYWORD,ID_FLASHCARD) VALUES ${keywordIdInsertString}`);
+    await this.query(`CUSTOM`, `INSERT INTO ${keywordLink.table} (${this.documentCol},${this.sectionCol},${this.evaluationCol},${this.quizQuestionCol},${this.keywordCol},${this.flashcardCol}) VALUES ${keywordIdInsertString}`);
   }
 
 
@@ -159,7 +159,7 @@ class Keyword extends Model {
     const insertArray = keywordArray.filter((n) => !existingKeywords.includes(n)); // Subtract existing keywords from input to determine if it needs to be inserted.
     if (insertArray.length > 0) {
       const insertString = this.makeKeywordInsertString(insertArray);
-      await this.query(`CUSTOM`, `INSERT INTO ${this.table} (KEYWORD) VALUES ${insertString}`);
+      await this.query(`CUSTOM`, `INSERT INTO ${this.table} (${this.KKeywordCol}) VALUES ${insertString}`);
     }
   }
 
@@ -169,7 +169,7 @@ class Keyword extends Model {
    */
   async makeKeywordIdArray(keywordArray) {
     const queryString = this.makeKeywordQueryString(keywordArray);
-    const queryResult = await this.query(`CUSTOM`, `SELECT * FROM ${this.table} WHERE KEYWORD in (${queryString}) ORDER BY KEYWORD`);
+    const queryResult = await this.query(`CUSTOM`, `SELECT * FROM ${this.table} WHERE ${this.KKeywordCol} in (${queryString}) ORDER BY ${this.KKeywordCol}`);
 
     const keywordIdArray = [];
     for (let i = 0; i < queryResult.length; i++) {
@@ -183,7 +183,7 @@ class Keyword extends Model {
    * Output: Array af eksisterende Keywords
    */
   async getExistingKeywords(queryString) {
-    const queryResult =  await this.query(`CUSTOM`, `SELECT * FROM ${this.table} WHERE KEYWORD in (${queryString}) ORDER BY KEYWORD`);
+    const queryResult =  await this.query(`CUSTOM`, `SELECT * FROM ${this.table} WHERE ${this.KKeywordCol} in (${queryString}) ORDER BY ${this.KKeywordCol}`);
 
     const existingKeywords = [];
     for (let i = 0; i < queryResult.length; i++) {

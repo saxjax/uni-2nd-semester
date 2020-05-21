@@ -15,7 +15,7 @@ class ProgressBar extends Model {
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
-          this.idColumnName = `ID_USER`;
+          this.idColumnName = `${this.userCol}`;
           this.idQuery       = req.params.idQuery;
           break;
         case `POST`:
@@ -30,8 +30,8 @@ class ProgressBar extends Model {
     const progress = { totalProgress: 0, totalCorrectProgress: 0 };
     // Totalt Evalueringer for en gruppe.
     let totalEvaluationsForGroup = await this.query(`CUSTOM`, `SELECT COUNT(*) as TOTAL
-                                                        FROM evaluation e
-                                                        WHERE e.ID_DOCUMENT IN (SELECT ID_DOCUMENT FROM document WHERE ID_USER_GROUP = "${this.idGroup}");`);
+                                                        FROM ${this.evaluationTable} e
+                                                        WHERE e.ID_DOCUMENT IN (SELECT ID_DOCUMENT FROM document WHERE ${this.groupCol} = "${this.idGroup}");`);
     totalEvaluationsForGroup = totalEvaluationsForGroup[0].TOTAL;
 
     // Get how many evaluations a specific user has taken.

@@ -6,7 +6,7 @@ class KeywordLink extends Model {
   constructor(req) {
     super(req);
     this.elementType = `keyword_link`;
-    this.table = `keyword_link`;
+    this.table = `${this.keywordLinkTable}`;
 
     this.idKeyword = req.idKeyword === undefined ? `` : req.idKeyword;
     this.idDocument = req.idDocument === undefined ? `` : req.idDocument;

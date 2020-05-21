@@ -8,7 +8,7 @@ class Group extends Model {
   constructor(req) {
     super();
     this.elementType = `user_group`;
-    this.table = `user_group`;
+    this.table = `${this.groupTable}`;
 
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
@@ -16,7 +16,7 @@ class Group extends Model {
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
-          this.idColumnName = `ID_USER_GROUP`;
+          this.idColumnName = `${this.groupCol}`;
           this.idQuery = this.idGroup;
           break;
         case `POST`:
@@ -34,13 +34,13 @@ class Group extends Model {
    */
   async insertToDatabase() {
     this.idGroup = await this.getUuid();
-    await this.query(`INSERT`, `NAME = "${this.name}" AND ID_USER_GROUP = "${this.idGroup}"`);
+    await this.query(`INSERT`, `${this.GNameCol} = "${this.name}" AND ${this.groupCol} = "${this.idGroup}"`);
 
     this.table = `user`;
     for (let i = 0; i < this.members.length; i++) {
-      const newUser = await this.query(`SELECT *`, `USER_NAME = "${this.members[i]}"`);
+      const newUser = await this.query(`SELECT *`, `${this.UUsernameCol} = "${this.members[i]}"`);
       if (newUser[0].idGroup === `undefined`) {
-        await this.query(`UPDATE`, `ID_USER_GROUP = "${this.idGroup}" WHERE USER_NAME = "${this.members[i]}"`);
+        await this.query(`UPDATE`, `${this.groupCol} = "${this.idGroup}" WHERE ${this.UUsernameCol} = "${this.members[i]}"`);
       }
       else if (newUser[0].elementType === `user`) {
         // FIXME: En respons til brugeren om at brugernavnet er tastet forkert. Dette skal dog nok valideres inden på Frontend siden på en eller anden måde.

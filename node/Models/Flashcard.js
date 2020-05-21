@@ -9,7 +9,7 @@ class Flashcard extends Model {
   constructor(req) {
     super();
     this.elementType = `flashcard`;
-    this.table = `flashcard`;
+    this.table = `${this.flashcardTable}`;
 
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
@@ -19,7 +19,7 @@ class Flashcard extends Model {
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
-          this.idColumnName = `ID_FLASHCARD`;
+          this.idColumnName = `${this.flashcardCol}`;
           this.idQuery = req.params.idQuery;
           break;
         case `POST`:

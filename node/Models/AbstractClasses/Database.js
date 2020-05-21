@@ -16,7 +16,7 @@ const { serverSettings } = require(`../../../serverSettings`);
  * Alle modeller der extender Databasen skal oprette et tilsvarende this.table der henviser til modellens tilhorende tabel.
  */
 
-class Database {
+class Database extends ParseSql {
   /* Formål: konstruere forbindelse til databasen og øger genbrugelighed af koden.
    *         Giver desuden oversigt over alle de værdier som en given model skal huske at oversskrive.
    *         Alle variable efter mellemrummet skal overskrives af en model. Variablene over mellemrummet skal ikke.
@@ -25,6 +25,7 @@ class Database {
    * Output: Extender alle disse variable til modellerne.
    */
   constructor() {
+    super();
     this.settings = serverSettings;
 
     this.database = `p2`;
@@ -79,7 +80,6 @@ class Database {
     return true;
   }
 
-  // FIXME:skriv et eksempel på brug af funktionen.
   /* Formål: Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overridet.
    *         Dette oger kode genbrug, samt sikre fornuftig testning paa tvaers af hele programmet i forhold til databasen.
    * Input:  @choice bestemmer hvilken slags SQL der søges. Kan være "SELECT *", "SELECT kolonnenavn"
@@ -96,8 +96,8 @@ class Database {
           reject(error);
         }
         else if (/SELECT/.test(choice)) { // Parseren er kun relevant når der hentes data fra databasen (eg. et select)
-          const outputParser = new ParseSql();
-          const parsedResult = outputParser.parseArrayOfObjects(result);
+          const parsedResult = this.parseArrayOfObjects(result);
+          this.parsedData = [];
           resolve(parsedResult);
         }
         else {
@@ -126,17 +126,17 @@ class Database {
     }
     else if (/^SELECT [A-Za-z0-9*]+/.test(choice)) {
       if (data === undefined || data === ``) {
-        sql = `${choice}, ELEMENT_TYPE FROM ${this.database}.${this.table}`;
+        sql = `${choice}, ${this.typeCol} FROM ${this.database}.${this.table}`;
       }
       else {
-        sql = `${choice}, ELEMENT_TYPE FROM ${this.database}.${this.table} WHERE ${data}`;
+        sql = `${choice}, ${this.typeCol} FROM ${this.database}.${this.table} WHERE ${data}`;
       }
     }
     else {
       switch (choice) {
         case `INSERT`: {
           const dataArr = this.insertSplitter(data);
-          sql = `INSERT INTO ${this.database}.${this.table} (${dataArr.columns}, ELEMENT_TYPE) VALUES (${dataArr.values}, "${this.elementType}")`;
+          sql = `INSERT INTO ${this.database}.${this.table} (${dataArr.columns}, ${this.typeCol}) VALUES (${dataArr.values}, "${this.elementType}")`;
           break;
         }
         case `UPDATE`:
