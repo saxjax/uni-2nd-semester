@@ -16,7 +16,7 @@ const { serverSettings } = require(`../../../serverSettings`);
  * Alle modeller der extender Databasen skal oprette et tilsvarende this.table der henviser til modellens tilhorende tabel.
  */
 
-class Database {
+class Database extends ParseSql {
   /* Formål: konstruere forbindelse til databasen og øger genbrugelighed af koden.
    *         Giver desuden oversigt over alle de værdier som en given model skal huske at oversskrive.
    *         Alle variable efter mellemrummet skal overskrives af en model. Variablene over mellemrummet skal ikke.
@@ -25,6 +25,7 @@ class Database {
    * Output: Extender alle disse variable til modellerne.
    */
   constructor() {
+    super();
     this.settings = serverSettings;
 
     this.database = `p2`;
@@ -36,9 +37,14 @@ class Database {
       database: this.database,
     };
     this.connect = mysql.createConnection(this.dbConfig);
+    this.connect.connect((error) => {
+      if (error) {
+        throw error;
+      }
+    });
 
-    this.table = `database`;
-    this.elementType = `test`;
+    this.table = `${this.databaseTable}`;
+    this.elementType = `${this.databaseType}`;
     this.idColumnName = `ID_DATABASE`;
 
     this.debug = this.settings.debug;
@@ -47,7 +53,7 @@ class Database {
   }
 
   /* Formål: Naar der sker fejl ved brug af querymetoden vil denne metode give den nodvendige information med det samme.
-   *         Desuden fungere dette som dokumentation af Database klassen som helhed.
+   *         Desuden fungerer dette som dokumentation af Database klassen som helhed.
    * Input:  -
    * Output: Metoden har som (primaer) sideeffect information om hvordan querymetoden bruges.
              Metoden outputter true, saa den kan testes i tests/backend/Database/test.Class.js
@@ -79,9 +85,8 @@ class Database {
     return true;
   }
 
-  // FIXME:skriv et eksempel på brug af funktionen.
-  /* Formål: Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overridet.
-   *         Dette oger kode genbrug, samt sikre fornuftig testning paa tvaers af hele programmet i forhold til databasen.
+  /* Formål: Ved at implementere en almen "query" metode, kan andre modeller inherit den, hvis blot this.table er overskrevet.
+   *         Dette oeger kode genbrug, samt sikrer fornuftig testning paa tvaers af hele programmet i forhold til databasen.
    * Input:  @choice bestemmer hvilken slags SQL der søges. Kan være "SELECT *", "SELECT kolonnenavn"
    *            "INSERT", "UPDATE", "DELETE" eller "HEAD".
    *         @data er de data der queries for, og har en struktur på "kolonnenavn = "værdi" ", hvor "" omkring værdi er væsentlige
@@ -96,8 +101,8 @@ class Database {
           reject(error);
         }
         else if (/SELECT/.test(choice)) { // Parseren er kun relevant når der hentes data fra databasen (eg. et select)
-          const outputParser = new ParseSql();
-          const parsedResult = outputParser.parseArrayOfObjects(result);
+          const parsedResult = this.parseArrayOfObjects(result);
+          this.parsedData = [];
           resolve(parsedResult);
         }
         else {
@@ -111,7 +116,7 @@ class Database {
    *        (`HEAD`,`COLUMN_NAME`) giver os column navne retur fra databasen
    * Output: Metoden outputter en brugbar SQL streng til brug i mysql
    * Formaal: Ved at standardisere maaden der skrives SQL kan andre modeller nemmere haandtere queries.
-   *         Det oger laesbarheden af koden, samtidigt med at det ikke abstrahere for meget,
+   *         Det oger laesbarheden af koden, samtidigt med at det ikke abstraherer for meget,
    *         da det er SQL kommandoer der bruges.
    */
   inputParser(choice, data) {
@@ -126,17 +131,17 @@ class Database {
     }
     else if (/^SELECT [A-Za-z0-9*]+/.test(choice)) {
       if (data === undefined || data === ``) {
-        sql = `${choice}, ELEMENT_TYPE FROM ${this.database}.${this.table}`;
+        sql = `${choice}, ${this.typeCol} FROM ${this.database}.${this.table}`;
       }
       else {
-        sql = `${choice}, ELEMENT_TYPE FROM ${this.database}.${this.table} WHERE ${data}`;
+        sql = `${choice}, ${this.typeCol} FROM ${this.database}.${this.table} WHERE ${data}`;
       }
     }
     else {
       switch (choice) {
         case `INSERT`: {
           const dataArr = this.insertSplitter(data);
-          sql = `INSERT INTO ${this.database}.${this.table} (${dataArr.columns}, ELEMENT_TYPE) VALUES (${dataArr.values}, "${this.elementType}")`;
+          sql = `INSERT INTO ${this.database}.${this.table} (${dataArr.columns}, ${this.typeCol}) VALUES (${dataArr.values}, "${this.elementType}")`;
           break;
         }
         case `UPDATE`:
@@ -164,8 +169,8 @@ class Database {
     return sql;
   }
 
-  /* Formaal: Ved at validere om formattet er overholdt, kan der testes om et evt. problem opstaar ved metodekaldet eller i operationerne.
-   *         Dette gor debugging mere overskueligt, og sikre at dem der bruger metoden hurtigt faar respons paa metodens API.
+  /* Formaal: Ved at validere om formatet er overholdt, kan der testes om et evt. problem opstaar ved metodekaldet eller i operationerne.
+   *         Dette gor debugging mere overskueligt, og sikrer at dem, der bruger metoden hurtigt faar respons paa metodens API.
    * Input: Metoden modtager de valg som brugeren har lavet
    * Output: Metoden outputter true hvis baade choice og data folger det fastsatte format.
              Ellers false med information om hvordan metoden bruges
@@ -277,7 +282,6 @@ class Database {
     return dataArr;
   }
 }
-
 
 module.exports = {
   Database,

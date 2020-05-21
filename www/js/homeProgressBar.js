@@ -1,3 +1,4 @@
+/* Formål: Indsætter procentuelle værdier til progress baren på homescreen */
 async function calculateCurrentProgress() {
   const takenBar = document.getElementById(`taken`);
   const takenBarWidth = document.getElementById(`takenWidth`);
@@ -7,8 +8,8 @@ async function calculateCurrentProgress() {
   let correctVal = 0;
 
   const progress = await getTakenProgress();
-  takenVal = progress.totalProgress;
-  correctVal = progress.correctProgress;
+  takenVal = Math.round(progress.totalProgress);
+  correctVal = Math.round(progress.correctProgress);
 
   // Progressbar for gennemgåede evalueringer
   if (takenVal === 0) {
@@ -31,6 +32,9 @@ async function calculateCurrentProgress() {
   }
 }
 
+/* Formål: Sender et GET til serveren, som spørger om evaluerings data for en pågældende bruger
+*  Output: JSON object med procent data.
+*/
 async function getTakenProgress() {
   let progress;
   const response = await fetch(`/view/evaluationProgress`, {

@@ -15,10 +15,11 @@ const sec = new Section(req);
  */
 
 class Section extends Model {
+  /* Alle sectionType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super(req);
-    this.elementType = `section`;
-    this.table = `document_section`;
+    this.elementType = `${this.sectionType}`;
+    this.table = `${this.sectionTable}`;
     this.req = req;
 
     if (this.validRequest(req)) {
@@ -27,7 +28,7 @@ class Section extends Model {
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
-          this.idColumnName   = `ID_DOCUMENT_SECTION`;
+          this.idColumnName   = `${this.sectionCol}`;
           this.idQuery        =  req.params.idQuery;
           break;
         case `POST`:
@@ -38,20 +39,6 @@ class Section extends Model {
           this.keywords = req.body.keywords;
           this.number   = req.body.number;
           break;
-        case `TEST`:
-          this.elementType = `section`;
-          this.table = `document_section`;
-          this.idSection =  undefined;
-          this.idDocument =  undefined;
-          this.idUser =  undefined;
-          this.idGroup =  undefined;
-          this.title =  undefined;
-          this.content =  undefined;
-          this.number =  undefined;
-          this.teaser =  undefined;
-          this.keywords =  undefined;
-          break;
-
         default: break;
       }
     }
@@ -65,13 +52,13 @@ class Section extends Model {
   async insertToDatabase() {
     this.idSection = await this.getUuid();
     // Insert section to database
-    const data = `ID_DOCUMENT_SECTION = "${this.idSection}" AND `
-               + `SECTION_TITLE = "${this.title}" AND `
-               + `SECTION_CONTENT = "${this.content}" AND `
-               + `ID_DOCUMENT = "${this.idDocument}" AND `
-               + `SECTION_NUMBER = "${this.number}" AND `
-               + `ID_USER_GROUP = "${this.idGroup}" AND `
-               + `ID_USER = "${this.idUser}"`;
+    const data = `${this.sectionCol} = "${this.idSection}" AND `
+               + `${this.STitleCol} = "${this.title}" AND `
+               + `${this.SContentCol} = "${this.content}" AND `
+               + `${this.documentCol} = "${this.idDocument}" AND `
+               + `${this.SNumberCol} = "${this.number}" AND `
+               + `${this.groupCol} = "${this.idGroup}" AND `
+               + `${this.userCol} = "${this.idUser}"`;
     await this.query(`INSERT`, data);
     // Insert keywords to database
     const ids = {
@@ -99,17 +86,17 @@ class Section extends Model {
   }
 
   async deleteFromDatabase() {
-    await this.query(`CUSTOM`, `DELETE FROM quiz_result WHERE ID_EVALUATION in (SELECT ID_EVALUATION FROM evaluation WHERE ID_DOCUMENT_SECTION = "${this.idQuery}")`);
-    await this.query(`CUSTOM`, `DELETE FROM repetition_task WHERE ID_QUIZ_QUESTION in (SELECT ID_QUIZ_QUESTION 
-                                                                                         FROM quiz_question 
-                                                                                         INNER JOIN evaluation 
-                                                                                         ON evaluation.ID_EVALUATION = quiz_question.ID_EVALUATION 
-                                                                                         WHERE evaluation.ID_DOCUMENT_SECTION = "${this.idQuery}")`);
+    await this.query(`CUSTOM`, `DELETE FROM ${this.quizResultTable} WHERE ${this.evaluationCol} in (SELECT ${this.evaluationCOl} FROM ${this.evaluationTable} WHERE ${this.sectionCol} = "${this.idQuery}")`);
+    await this.query(`CUSTOM`, `DELETE FROM ${this.spacedRepetitionTable} WHERE ${this.quizQuestionCol} in (SELECT ${this.quizQuestionCol} 
+                                                                                         FROM ${this.quizQuestionTable} 
+                                                                                         INNER JOIN ${this.evaluationTable} 
+                                                                                         ON ${this.evaluationTable}.${this.evaluationCol} = ${this.quizQuestionTable}.${this.evaluationCol} 
+                                                                                         WHERE ${this.evaluationTable}.${this.sectionCol} = "${this.idQuery}")`);
 
-    await this.query(`CUSTOM`, `DELETE FROM quiz_question WHERE ID_EVALUATION in (SELECT ID_EVALUATION FROM evaluation WHERE ID_DOCUMENT_SECTION = "${this.idQuery}")`);
-    await this.query(`CUSTOM`, `DELETE FROM keyword_link WHERE ID_DOCUMENT_SECTION = "${this.idQuery}"`);
-    await this.query(`CUSTOM`, `DELETE FROM evaluation WHERE ID_DOCUMENT_SECTION = "${this.idQuery}"`);
-    await this.query(`CUSTOM`, `DELETE FROM document_section WHERE ID_DOCUMENT_SECTION = "${this.idQuery}"`);
+    await this.query(`CUSTOM`, `DELETE FROM ${this.quizQuestionTable} WHERE ${this.evaluationCol} in (SELECT ${this.evaluationCol} FROM ${this.evaluationTable} WHERE ${this.sectionCol} = "${this.idQuery}")`);
+    await this.query(`CUSTOM`, `DELETE FROM ${this.keywordLinkTable} WHERE ${this.sectionCol} = "${this.idQuery}"`);
+    await this.query(`CUSTOM`, `DELETE FROM ${this.evaluationTable} WHERE ${this.sectionCol} = "${this.idQuery}"`);
+    await this.query(`CUSTOM`, `DELETE FROM ${this.sectionTable} WHERE ${this.sectionCol} = "${this.idQuery}"`);
   }
 }
 

@@ -5,18 +5,19 @@ const { Model } = require(`./AbstractClasses/Model.js`);
 /* FIXME: UNDER CONSTRUCTION */
 
 class User extends Model {
+  /* Alle userType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super();
     this.req = req;
-    this.elementType = `user`;
-    this.table = `user`;
+    this.elementType = `${this.userType}`;
+    this.table = `${this.userTable}`;
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
       this.idUser  = req.session.idUser;
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
-          this.idColumnName = `ID_USER`;
+          this.idColumnName = `${this.userCol}`;
           this.idQuery       = this.idUser;
           break;
         case `POST`:
@@ -40,16 +41,16 @@ class User extends Model {
    */
   async insertToDatabase() {
     this.idUser = await this.getUuid();
-    await this.query(`INSERT`, `ID_USER_GROUP = "${this.idGroup}" `
-                     + `AND ID_USER = "${this.idUser}" `
-                     + `AND USER_NAME = "${this.username}" `
-                     + `AND PASSWORD = "${this.password}" `
-                     + `AND FIRST_NAME = "${this.firstName}" `
-                     + `AND LAST_NAME = "${this.lastName}" `
-                     + `AND UNIVERSITY = "${this.university}" `
-                     + `AND STUDY_SUBJECT = "${this.studySubject}" `
-                     + `AND EMAIL = "${this.email}" `
-                     + `AND SEMESTER = "${this.semester}"`);
+    await this.query(`INSERT`, `${this.groupCol} = "${this.idGroup}" `
+                     + `AND ${this.userCol} = "${this.idUser}" `
+                     + `AND ${this.UUsernameCol} = "${this.username}" `
+                     + `AND ${this.UPasswordCol} = "${this.password}" `
+                     + `AND ${this.UFirstNameCol} = "${this.firstName}" `
+                     + `AND ${this.ULastNameCol} = "${this.lastName}" `
+                     + `AND ${this.UUniversityCol} = "${this.university}" `
+                     + `AND ${this.UStudySubjectCol} = "${this.studySubject}" `
+                     + `AND ${this.UEmailCol} = "${this.email}" `
+                     + `AND ${this.USemesterCol} = "${this.semester}"`);
     return this.idUser;
   }
 
@@ -58,7 +59,7 @@ class User extends Model {
    * Output: En row af data fra 1 bruger.
    */
   async loginValid() {
-    const data = await this.query(`SELECT *`, `USER_NAME = "${this.username}" AND PASSWORD = "${this.password}"`);
+    const data = await this.query(`SELECT *`, `${this.UUsernameCol} = "${this.username}" AND ${this.UPasswordCol} = "${this.password}"`);
     if (Object.keys(data[0]).length > 1) {
       this.req.session.idUser = data[0].idUser;
       this.req.session.loggedIn = true;
@@ -82,7 +83,7 @@ class User extends Model {
    * Output: True/false */
   async validateRegister() {
     if (!isEmpty(this.username) && !isEmpty(this.firstName) && !isEmpty(this.lastName) && !isEmpty(this.email)) { // FIXME: Logisk udtryk bliver lavet om til metodekald
-      this.data = await this.query(`CUSTOM`, `SELECT * FROM  ${this.table} WHERE USER_NAME = "${this.username}" OR EMAIL = "${this.email}"`); // FIXME: Returnerer et tomt Rowpackage hvsi den ikke er custom
+      this.data = await this.query(`CUSTOM`, `SELECT * FROM  ${this.table} WHERE ${this.UUsernameCol} = "${this.username}" OR ${this.UEmailCol} = "${this.email}"`); // FIXME: Returnerer et tomt Rowpackage hvsi den ikke er custom
       if (this.data.length !== 0) { // Means that user hasn't registered before
         throw new Error(`USER_ALREADY_REGISTERED`);
       }
