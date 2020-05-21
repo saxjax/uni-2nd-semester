@@ -474,6 +474,39 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   assert.equal(actual, expected,
     `(4.7.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data med specialtegn der indeholder mellemrum.`);
 
+  /* 4.8 DENNE TEST AKTIVERES NÅR VI FORSØGER AT OPNÅ DET DER STÅR HERUNDER! */
+  /*
+  try {
+    await object.query(`INSERT`, `TEST_OPTION_1 = "med dig" `
+                           + `AND TEST_OPTION_1 = "også med dig"`
+                           + `AND TEST_OPTION_1 = "hejsadejsa"`);
+  }
+  catch (error) {
+    actual = false;
+  }
+  actualObject = await object.query(`SELECT *`, `TEST_OPTION_1 = "med dig"`);
+  console.log(actualObject);
+
+  actual = actualObject[0].TEST_OPTION_1;
+  expected = `med dig`;
+  assert.equal(actual, expected,
+    `(4.8.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data der indsætter på samme kolonne`);
+
+  actualObject = await object.query(`SELECT *`, `TEST_OPTION_1 = "hej også med dig"`);
+
+  actual = actualObject[0].TEST_OPTION_1;
+  expected = `også med dig`;
+  assert.equal(actual, expected,
+    `(4.8.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data der indsætter på samme kolonne`);
+
+  actualObject = await object.query(`SELECT *`, `TEST_OPTION_1 = "hejsadejsa"`);
+
+  actual = actualObject[0].TEST_OPTION_1;
+  expected = `hejsadejsa`;
+  assert.equal(actual, expected,
+    `(4.8.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data der indsætter på samme kolonne`);
+
+
   /* 5.1 */
   console.log(`5: Database.js skal kunne opdatere data til MySQL databasen`);
   try {
