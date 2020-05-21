@@ -40,17 +40,26 @@ class SessionController {
   async groupSession(req, res) {
     const G = new Group(req);
     G.idGroup = req.params.idQuery;
-    const data = await G.getThisGroupData();
-    if (Object.keys(data[0]).length > 1) {
-      req.session.idGroup = data[0].idGroup;
-      req.session.groupname = data[0].name;
-      G.connect.end();
-      res.redirect(`/`);
+    let data = [{}];
+    try {
+      data = await G.getThisGroupData();
+      if (Object.keys(data[0]).length > 1) {
+        req.session.idGroup = data[0].idGroup;
+        req.session.groupname = data[0].name;
+        G.connect.end();
+        res.redirect(`/`);
+      }
+      else {                     // FIXME: Dokumentation mangler - hvornår rammer man denne else-clause?
+        G.connect.end();
+        res.redirect(`/access/view/groups`); // FIXME: Statuskode indsættes
+      }
     }
-    else {                     // FIXME: Dokumentation mangler - hvornår rammer man denne else-clause?
-      G.connect.end();
-      res.redirect(`/access/view/groups`); // FIXME: Statuskode indsættes
+    catch (error) {
+      const E = new ErrorController(error);
+      const errorMsg = E.produceErrorMessageToUser();
+      res.send(errorMsg);
     }
+    G.connect.end;
   }
 
   /* Formål: At gøre det muligt at skifte bruger og grupperum.
