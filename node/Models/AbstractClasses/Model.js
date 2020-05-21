@@ -105,9 +105,7 @@ class Model extends Database {
   async getThisGroupData() {
     const trueObjectTable = this.table;
     this.table = `${this.groupTable}`;
-    const data = this.query(`SELECT *`, `${this.idColumnGroup} = "${this.idGroup}"`)
-      .then((result) => result)
-      .catch((error) => error);
+    const data = await this.query(`SELECT *`, `${this.idColumnGroup} = "${this.idGroup}"`);
     this.table = trueObjectTable;
     return data;
   }
@@ -122,9 +120,7 @@ class Model extends Database {
   async getThisUserData() {
     const trueObjectTable = this.table;
     this.table = `${this.userTable}`;
-    const data = this.query(`SELECT *`, `${this.idColumnUser} = "${this.idUser}"`)
-      .then((result) => result)
-      .catch((error) => error);
+    const data = await this.query(`SELECT *`, `${this.idColumnUser} = "${this.idUser}"`);
     this.table = trueObjectTable;
     return data;
   }

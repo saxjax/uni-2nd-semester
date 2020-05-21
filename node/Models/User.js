@@ -82,12 +82,17 @@ class User extends Model {
    * input: Request sendt fra register form
    * Output: True/false */
   async validateRegister() {
-    if (!isEmpty(this.username) && !isEmpty(this.firstName) && !isEmpty(this.lastName) && !isEmpty(this.email)) { // FIXME: Logisk udtryk bliver lavet om til metodekald
-      this.data = await this.query(`CUSTOM`, `SELECT * FROM  ${this.table} WHERE ${this.UUsernameCol} = "${this.username}" OR ${this.UEmailCol} = "${this.email}"`); // FIXME: Returnerer et tomt Rowpackage hvsi den ikke er custom
-      if (this.data.length !== 0) { // Means that user hasn't registered before
-        throw new Error(`USER_ALREADY_REGISTERED`);
+    if (this.necessaryInfo()) {
+      this.data = await this.query(`SELECT *`, `${this.UUsernameCol} = "${this.username}" OR ${this.UEmailCol} = "${this.email}"`);
+      if (Object.keys(this.data[0]).length > 1) { // Means that user has registered before
+        throw new Error(`USER_ALREADY_REGISTERED: User is already registered in the system.`);
       }
     }
+  }
+
+  // Formål: Returnerer true, hvis den nødvendige information er til rådighed for funktionen validateRegister(), false hvis den ikke er.
+  necessaryInfo() {
+    return (!isEmpty(this.username) && !isEmpty(this.firstName) && !isEmpty(this.lastName) && !isEmpty(this.email));
   }
 }
 

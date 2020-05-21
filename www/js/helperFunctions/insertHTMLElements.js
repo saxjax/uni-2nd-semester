@@ -1,4 +1,5 @@
 /* eslint no-unused-vars: 0 */
+/* eslint no-console: 0 */
 
 /* Formål: Indsætter et DOM-element før insBeforeThisElem
  * Input:  @tagName           skal være en tekststreng som specificerer hvilken type tag skal oprettes
