@@ -128,7 +128,7 @@ class CreateController {
       const idAttempt = await QR.insertToDatabase();
       const quizResultData = await QR.getHistoricQuizResultData(idAttempt, req.body.questionsArray);
       await QR.insertToDatabaseSpacedRepetition(quizResultData.resultData);
-      res.send({ newURL: `/view/evaluationResult/${idAttempt}`, quizResultData });
+      res.send({ newURL: `/view/evaluationResult/${idAttempt}` });
     }
     catch (error) {
       const E = new ErrorController(error);
