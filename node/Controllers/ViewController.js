@@ -247,7 +247,7 @@ class ViewController {
       await E.getThisGroupData(),    // dataArray[0]
       await E.getThisUserData(),     // dataArray[1]
       await E.getThis(),             // dataArray[2]
-      await E.getAllQuizQuestions(), // dataArray[3]
+      await E.getAllElementsOfType(`${E.quizQuestionType}`), // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], questions: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/viewEvaluation.ejs`);
@@ -277,10 +277,9 @@ class ViewController {
       await QR.getThisGroupData(),                    // dataArray[0]
       await QR.getThisUserData(),                     // dataArray[1]
       await QR.getThis(),                             // dataArray[2]
-      await QR.getAllQuizQuestions(),                 // dataArray[3]
+      await QR.getAllQuizQuestionResults(),                 // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2],   quizQuestions: dataArray[3] };
-
     this.ejs = path.join(`${this.root}/www/views/viewEvaluationResult.ejs`);
     QR.connect.end();
     res.render(this.ejs, { data });

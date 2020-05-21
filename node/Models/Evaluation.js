@@ -64,23 +64,6 @@ class Evaluation extends Model {
     this.table = `${this.evaluationTable}`;
     return idDocumentArr[0].idDocument;
   }
-
-  // FIXME:denne funktion findes allerede getAllElementsOftype(`quiz_question`)
-  /* Bliver brugt i viewControlleren i funktionen viewEvaluationPage
-  Bruges til at hente alle spørgsmålene til den pågældende evaluering
-  */
-  async getAllQuizQuestions() {
-    this.table = `${this.quizQuestionTable}`;
-    let queryResult;
-    try {
-      queryResult = await this.query(`SELECT *`, `${this.idColumnName} = "${this.idQuery}"`);
-    }
-    catch (error) {
-      console.log(error);
-    }
-    this.table = `${this.evaluationTable}`;
-    return queryResult;
-  }
 }
 module.exports = {
   Evaluation,

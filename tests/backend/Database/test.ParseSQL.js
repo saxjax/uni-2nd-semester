@@ -756,10 +756,15 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
     `(4.6.8) Parserens forventede keywords kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question kolonnenavn`);
   objKeysCount++;
 
+  actual = actualObject.find((obj) => obj.COLUMN_NAME === p.groupCol);
+  assert.true(actual,
+    `(4.6.9) Parserens forventede idGroup kolonne skal stemme overens med MySQL Databasens tilsvarende quiz_question kolonnenavn`);
+  objKeysCount++;
+
   expected = Object.keys(p.parseQuizQuestion({ ANSWERS: `ans1;ans2` })).length;
   actual = objKeysCount;
   assert.equal(actual, expected,
-    `(4.6.9){Keys i ParseSQL: ${expected} Antal keys testet: ${actual}} Mængden af tests af Quiz Question attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
+    `(4.6.10){Keys i ParseSQL: ${expected} Antal keys testet: ${actual}} Mængden af tests af Quiz Question attributter skal være lige med mængden af kolonnenavne på MySQL databasen`);
   objKeysCount = 0;
 
   QQ.connect.end();
