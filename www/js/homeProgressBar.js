@@ -13,20 +13,14 @@ async function calculateCurrentProgress() {
 
   // Progressbar for gennemgåede evalueringer
   if (takenVal === 0) {
-    takenBar.innerHTML = `Ingen data at beregne endnu`;
+    takenBar.innerHTML = `Du har ikke taget nogen evalueringer endnu`;
     takenBarWidth.style.width = `100%`;
+    correctBar.innerHTML = `Du har ikke taget nogen evalueringer endnu`;
+    correctBarWidth.style.width = `100%`;
   }
   else {
     takenBar.innerHTML = `${takenVal}%`;
     takenBarWidth.style.width = `${takenVal}%`;
-  }
-
-  // Progressbar for korrekt besvarede evalueringer
-  if (correctVal === 0) {
-    correctBar.innerHTML = `Ingen data at beregne endnu`;
-    correctBarWidth.style.width = `100%`;
-  }
-  else {
     correctBar.innerHTML = `${correctVal}%`;
     correctBarWidth.style.width = `${correctVal}%`;
   }

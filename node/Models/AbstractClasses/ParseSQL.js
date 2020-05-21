@@ -5,6 +5,7 @@
  */
 
 class ParseSql {
+  /* Dette er en oversigt over alle de tabelnavne, elementtyper og kolonnenavne som programmet gør brug af */
   constructor() {
     this.parsedData = [];
     /* Tabel navnene */
@@ -23,7 +24,7 @@ class ParseSql {
     this.spacedRepetitionTable = `repetition_task`;
     /* Elementtypes */
     this.databaseType         = `test`;
-    this.groupType            = `group`;
+    this.groupType            = `user_group`;
     this.userType             = `user`;
     this.documentType         = `document`;
     this.sectionType          = `section`;
@@ -105,19 +106,19 @@ class ParseSql {
     }
     for (let i = 0; i < data.length; i++) { // Looper igennem "data" og parser alle RowDataPacket til camelCase
       switch (data[i][this.typeCol]) {
-        case `test`:             this.parsedData.push(this.parseTest(data[i]));             break;
-        case `user_group`:       this.parsedData.push(this.parseGroup(data[i]));            break;
-        case `user`:             this.parsedData.push(this.parseUser(data[i]));             break;
-        case `document`:         this.parsedData.push(this.parseDocument(data[i]));         break;
-        case `section`:          this.parsedData.push(this.parseSection(data[i]));          break;
-        case `evaluation`:       this.parsedData.push(this.parseEvaluation(data[i]));       break;
-        case `quiz_question`:    this.parsedData.push(this.parseQuizQuestion(data[i]));     break;
-        case `quiz_result`:      this.parsedData.push(this.parseQuizResult(data[i]));       break;
-        case `repetition_task`:  this.parsedData.push(this.parseRepetitionTask(data[i]));   break;
-        // case `flashcard`:        this.parsedData.push(this.parseFlashcard(data[i]));        break;
-        // case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i]));  break;
-        case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));          break;
-        case `keyword_link`:     this.parsedData.push(this.parseKeywordLink(data[i]));      break;
+        case this.databaseType:         this.parsedData.push(this.parseTest(data[i]));             break;
+        case this.groupType:            this.parsedData.push(this.parseGroup(data[i]));            break;
+        case this.userType:             this.parsedData.push(this.parseUser(data[i]));             break;
+        case this.documentType:         this.parsedData.push(this.parseDocument(data[i]));         break;
+        case this.sectionType:          this.parsedData.push(this.parseSection(data[i]));          break;
+        case this.evaluationType:       this.parsedData.push(this.parseEvaluation(data[i]));       break;
+        case this.quizQuestionType:     this.parsedData.push(this.parseQuizQuestion(data[i]));     break;
+        case this.quizResultType:       this.parsedData.push(this.parseQuizResult(data[i]));       break;
+        case this.spacedRepetitionType: this.parsedData.push(this.parseRepetitionTask(data[i]));   break;
+        // case this.flashcardType:        this.parsedData.push(this.parseFlashcard(data[i]));        break;
+        // case this.flashcardResultType:  this.parsedData.push(this.parseFlashcardResult(data[i]));  break;
+        case this.keywordType:          this.parsedData.push(this.parseKeyword(data[i]));          break;
+        case this.keywordLinkType:      this.parsedData.push(this.parseKeywordLink(data[i]));      break;
         default: throw new Error(`NO_ELEMENTTYPE: elementType er IKKE oprettet i ParseSQL.js!`);
       }
     }
@@ -135,7 +136,6 @@ class ParseSql {
   /* Formål: At parse Group-data
    * Input:  Et dataobjekt af typen "Group" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
-   * FIXME: Metoden skal udvikles
    */
   parseGroup(data) {
     return {
@@ -150,7 +150,6 @@ class ParseSql {
   /* Formål: At parse User-data
    * Input:  Et dataobjekt af typen "user" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
-   * FIXME: Metoden skal udvikles
    */
   parseUser(data) {
     return {
@@ -170,7 +169,6 @@ class ParseSql {
     };
   }
 
-  /* TODO: */
   /* Formål: At parse Document-data
    * Input:  Et dataobjekt af typen "document" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
@@ -207,7 +205,6 @@ class ParseSql {
     };
   }
 
-  // TODO: keywords er undefined
   /* Formål: At parse Quiz-data
    * Input:  Et dataobjekt af typen "evaluation" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
@@ -248,7 +245,6 @@ class ParseSql {
   /* Formål: At parse Quiz-result
    * Input:  Et dataobjekt af typen "quiz_result" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
-   * FIXME: Metoden skal udvikles
    */
   parseQuizResult(data) {
     return {
@@ -269,6 +265,10 @@ class ParseSql {
     };
   }
 
+  /* Formål: At parse data fra repetition_task
+   * Input:  Et array som indeholder nedenstående properties
+   * Output: Et parset array, som kan forståes af spacedrepetition funktionerne
+   */
   parseRepetitionTask(data) {
     return {
       idRepetitionTask: data[this.spacedRepetitionCol],
@@ -304,7 +304,6 @@ class ParseSql {
   /* Formål: At parse Keyword-data
    * Input:  Et dataobjekt af typen "keyword" fra parse metoden.
    * Output: Et parset dataobjekt, som kan forståes på frontend
-   * FIXME: Metoden skal udvikles
    */
   parseKeyword(data) {
     return {
@@ -316,6 +315,10 @@ class ParseSql {
     };
   }
 
+  /* Formål: At parse et KeywordLink så et keyword kan linkes til forskellige instanser
+   * Input:  Et dataobjekt af typen "keyword_link" fra parse metoden.
+   * Output: Et parset dataobjekt, som kan forståes på backend og frontend
+   */
   parseKeywordLink(data) {
     return {
       elementType: data[this.typeCol],

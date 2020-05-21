@@ -213,9 +213,9 @@ class Model extends Database {
    */
   async getKeywordsInObject(object, choice = this.elementType) {
     try {
-      if (this.idColumnName === `${this.userCol}`) { // FIXME: Når en User prøver at se alle sine evalueringer vil evalueringerne hente alle keywords.
-        return object;                               //        Siden keyword_link pt. ikke er knyttet til en user, kan denne query ikke foretages.
-      }                                              //        Det kan evt. give mening at tilføje ID_USER til keyword link???
+      if (this.idColumnName === `${this.userCol}`) { // Keywords knyttes ikke til users, så en user kan ikke få alle sine keywords som det står nu.
+        return object;
+      }
       const objectCopy = object;
       const choiceColName = this.getChoiceColName(choice);
       const keywords = await this.query(`CUSTOM`, `SELECT ${this.keywordLinkTable}.${this.keywordCol}, ${this.KKeywordCol}, ${choiceColName} `

@@ -14,6 +14,8 @@ const { serverSettings } = require(`../../../serverSettings`);
  * delete (dvs. slette elementer i databasen)
  *
  * Alle modeller der extender Databasen skal oprette et tilsvarende this.table der henviser til modellens tilhorende tabel.
+ * Databasen extender ParseSql, da den indeholder alle de hjælpefunktioner der parser de data databasen modtager, så resten
+ *   af programmet kan forstå det.
  */
 
 class Database extends ParseSql {

@@ -3,6 +3,11 @@
 const { Model }   = require(`./AbstractClasses/Model`);
 const { Keyword } = require(`./keyword.js`);
 
+/* Evaluation er klassen der indeholder de quiz, flashcard, mv. som en bruger kan tage
+ * Evaluation er primært kun en container som indeholder evalueringselementer, så de er struktureret.
+ * Evaluation ligger i en Section, Document og Group.
+ */
+
 class Evaluation extends Model {
   /* Alle evaluationType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
@@ -14,7 +19,6 @@ class Evaluation extends Model {
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
       this.idUser  = req.session.idUser;
-      // this.idDocument?
       this.loggedIn = req.session.loggedIn;
       switch (req.method) {
         case `GET`: case `UPDATE`: case `DELETE`:
@@ -25,7 +29,7 @@ class Evaluation extends Model {
           this.title = req.body.evaluationTitle;
           this.idSection = req.body.selectSection;
           this.keywords = req.body.keywords;
-          this.idDocument = undefined;
+          this.idDocument = `IsInitialisedInInsertToDatabase`;
           break;
         default: break;
       }
@@ -58,6 +62,10 @@ class Evaluation extends Model {
     return this.idEvaluation;
   }
 
+  /* Formål: Da en Evaluation oprettes ud fra en section, så kræves en funktion der henter sectionens documentId
+   * Input : None, men gør brug af idSection som set i constructoren kommer fra requestet
+   * Output: Det idDocument som idSection er en del af.
+   */
   async getDocId() {
     this.table = `${this.sectionTable}`;
     const idDocumentArr = await this.query(`SELECT ${this.documentCol}`, `${this.sectionCol} = "${this.idSection}"`);

@@ -3,9 +3,10 @@
 const { Model }   = require(`./AbstractClasses/Model`);
 const { Keyword } = require(`./keyword.js`);
 
-
-/* MANGLER DESIGN!!!!
- * Det kan vel ikke passe at vi hardcoder 4 svarmuligheder? kommaseparering/opreting af ny sql database /whatever er muligheder
+/* QuizQuestion er et spørgsmål/svarmuligheder par der kan oprettes i en Evaluation
+ * QuizQuestion holder styr på svarene og spørgsmålene, og bruges sammen med QuizResult til at en bruger kan tage quizzen
+ * Siden QuizQuestion får sine klasser i grupper fra en frontend post, så har den nogle specielle funktioner til
+ *   at håndtere oprettelsen af flere QuizQuestion på en gang.
  */
 class QuizQuestion extends Model {
   /* Alle quizQuestionType/Col og Table er hentet fra ParseSql! */
@@ -16,8 +17,6 @@ class QuizQuestion extends Model {
     if (this.validRequest(req)) {
       this.idGroup = req.session.idGroup;
       this.idUser  = req.session.idUser;
-      // this.idDocument?
-      // this.idSection?
       this.loggedIn = req.session.loggedIn;
       this.req = req;
       switch (req.method) {

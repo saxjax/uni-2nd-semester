@@ -2,8 +2,10 @@
 
 const { Model } = require(`./AbstractClasses/Model`);
 
-/* FIXME: UNDER CONSTRUCTION */
-
+/* Group er, sammen med User, de to overordnede klasser der operere i hele programmet
+ * Group indeholder det unikke grupperum, hvor alle resourcer der oprettes i grupperummet knyttes til Group
+ * Group sikrer at alle brugere kan arbejde sammen med fælles resourcer, uden inteference fra andre brugere af programmet.
+ */
 class Group extends Model {
   /* Alle groupType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
@@ -49,6 +51,11 @@ class Group extends Model {
     }
   }
 
+  /* Formål: At vise brugeren de grupperum som er mulige at vælge imellem.
+             Denne funktion er nødvendig, da den undgår req.session.idGroup (som brugeren jo ikke har valgt endnu)
+   * Input : @User som er den user der er logget ind og skal til at vælge grupperum
+   * Output: Intet, men opretter en this.idGroup til brug til at oprette req.session.idGroup
+   */
   async getIdGroupFromUser(User) {
     const groupIdFromUser = await User.query(`SELECT ${User.idColumnGroup}`, `${User.idColumnUser} = "${User.idUser}"`);
     this.idGroup = groupIdFromUser[0].idGroup;
