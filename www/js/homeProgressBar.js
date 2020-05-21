@@ -7,8 +7,8 @@ async function calculateCurrentProgress() {
   let correctVal = 0;
 
   const progress = await getTakenProgress();
-  takenVal = progress.totalProgress;
-  correctVal = progress.correctProgress;
+  takenVal = Math.round(progress.totalProgress);
+  correctVal = Math.round(progress.correctProgress);
 
   // Progressbar for gennemgåede evalueringer
   if (takenVal === 0) {
