@@ -97,6 +97,14 @@ class Section extends Model {
     }
     return keywords;
   }
+
+  async deleteFromDatabase() {
+    await this.query(`CUSTOM`, `DELETE FROM quiz_result WHERE ID_EVALUATION in (SELECT ID_EVALUATION FROM evaluation WHERE ID_DOCUMENT_SECTION = "${this.idQuery}")`);
+    await this.query(`CUSTOM`, `DELETE FROM quiz_question WHERE ID_EVALUATION in (SELECT ID_EVALUATION FROM evaluation WHERE ID_DOCUMENT_SECTION = "${this.idQuery}")`);
+    await this.query(`CUSTOM`, `DELETE FROM keyword_link WHERE ID_DOCUMENT_SECTION = "${this.idQuery}"`);
+    await this.query(`CUSTOM`, `DELETE FROM evaluation WHERE ID_DOCUMENT_SECTION = "${this.idQuery}"`);
+    await this.query(`CUSTOM`, `DELETE FROM document_section WHERE ID_DOCUMENT_SECTION = "${this.idQuery}"`);
+  }
 }
 
 module.exports = {

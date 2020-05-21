@@ -6,7 +6,8 @@ const { Model } = require(`./AbstractClasses/Model.js`);
 
 class User extends Model {
   constructor(req) {
-    super(req);
+    super();
+    this.req = req;
     this.elementType = `user`;
     this.table = `user`;
     if (this.validRequest(req)) {
@@ -57,9 +58,15 @@ class User extends Model {
    * Output: En row af data fra 1 bruger.
    */
   async loginValid() {
-    return this.query(`SELECT *`, `USER_NAME = "${this.username}" AND PASSWORD = "${this.password}"`)
-      .then((result) => result)
-      .catch((error) => error);
+    const data = await this.query(`SELECT *`, `USER_NAME = "${this.username}" AND PASSWORD = "${this.password}"`);
+    if (Object.keys(data[0]).length > 1) {
+      this.req.session.idUser = data[0].idUser;
+      this.req.session.loggedIn = true;
+      this.req.session.username = data[0].username;
+    }
+    else {
+      throw new Error(`USER_NOT_EXISTING: LoginValid() did not find any user matching your input in SQL-Database`);
+    }
   }
 
   alreadyLoggedIn() {

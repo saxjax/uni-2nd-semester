@@ -13,10 +13,10 @@ const { ErrorController } = require(`./AbstractControllers/ErrorController`);
 
 class CreateController extends ErrorController {
   /* UNDER CONSTRUCTION */
-  constructor(root) {
-    super();
+  constructor(settings) {
+    super(settings.debug);
     this.name = `CreateController`;
-    this.root = root;
+    this.root = settings.root;
   }
 
   /* Formål: Gør det muligt for en bruger at oprette et grupperum.
@@ -117,122 +117,21 @@ class CreateController extends ErrorController {
    * Input : req med svar fra klienten. res som bruges til at sende en respons til klienten
    * Output: Intet - men brugeren viderediriges med res til en ny URL
    */
-  /*
-    resultData: [
-    RowDataPacket {
-      ID_EVALUATION: '3d91313e-8e00-11ea-a6c9-2c4d54532c7a',
-      ID_QUIZ_QUESTION: '6b0f6da9-8e00-11ea-a6c9-2c4d54532c7a',
-      ID_USER: '553e422d-7c29-11ea-86e2-2c4d54532c7a',
-      RECENT_RESULT: 'true',
-      RECENT_ATTEMPT_DATE: 2020-05-11T12:19:50.000Z,
-      NEXT_REPITITION: '-----',
-      TOTAL: 18,
-      FAILED_ATTEMPTS: 10,
-      SUCESS_ATTEMPTS: 8
-    },
-    resultData: [
-    RowDataPacket {
-      ID_EVALUATION: '3d91313e-8e00-11ea-a6c9-2c4d54532c7a',
-      ID_QUIZ_QUESTION: '6b0f6da9-8e00-11ea-a6c9-2c4d54532c7a',
-      ID_USER: '553e422d-7c29-11ea-86e2-2c4d54532c7a',
-      RECENT_RESULT: 'true',
-      RECENT_ATTEMPT_DATE: 2020-05-11T14:24:47.000Z,
-      NEXT_REPITITION: '-----',
-      TOTAL: 11,
-      FAILED_ATTEMPTS: 2,
-      SUCESS_ATTEMPTS: 9,
-      idQuizQuestion: '6b0f6da9-8e00-11ea-a6c9-2c4d54532c7a',
-      idUser: '553e422d-7c29-11ea-86e2-2c4d54532c7a',
-      recentResult: 'true',
-      recentAttemptDate: 2020-05-11T14:24:47.000Z,
-      nextRepetition: 2020-05-31T20:24:46.924Z,
-      repetitions: 11,
-      failedAttempts: 2,
-      successAttempts: 9
-    },
-    RowDataPacket {
-      ID_EVALUATION: '3d91313e-8e00-11ea-a6c9-2c4d54532c7a',
-      ID_QUIZ_QUESTION: '6b10793b-8e00-11ea-a6c9-2c4d54532c7a',
-      ID_USER: '553e422d-7c29-11ea-86e2-2c4d54532c7a',
-      RECENT_RESULT: 'false',
-      RECENT_ATTEMPT_DATE: 2020-05-11T14:24:47.000Z,
-      NEXT_REPITITION: '-----',
-      TOTAL: 10,
-      FAILED_ATTEMPTS: 1,
-      SUCESS_ATTEMPTS: 9,
-      idQuizQuestion: '6b10793b-8e00-11ea-a6c9-2c4d54532c7a',
-      idUser: '553e422d-7c29-11ea-86e2-2c4d54532c7a',
-      recentResult: 'false',
-      recentAttemptDate: 2020-05-11T14:24:47.000Z,
-      nextRepetition: 2020-05-12T14:24:46.924Z,
-      repetitions: 10,
-      failedAttempts: 1,
-      successAttempts: 9
-    },
-    RowDataPacket {
-      ID_EVALUATION: '3d91313e-8e00-11ea-a6c9-2c4d54532c7a',
-      ID_QUIZ_QUESTION: '6b1174c9-8e00-11ea-a6c9-2c4d54532c7a',
-      ID_USER: '553e422d-7c29-11ea-86e2-2c4d54532c7a',
-      RECENT_RESULT: 'true',
-      RECENT_ATTEMPT_DATE: 2020-05-11T14:24:47.000Z,
-      NEXT_REPITITION: '-----',
-      TOTAL: 10,
-      FAILED_ATTEMPTS: 4,
-      SUCESS_ATTEMPTS: 6,
-      idQuizQuestion: '6b1174c9-8e00-11ea-a6c9-2c4d54532c7a',
-      idUser: '553e422d-7c29-11ea-86e2-2c4d54532c7a',
-      recentResult: 'true',
-      recentAttemptDate: 2020-05-11T14:24:47.000Z,
-      nextRepetition: 2020-05-13T20:24:46.925Z,
-      repetitions: 10,
-      failedAttempts: 4,
-      successAttempts: 6
-    }
-  ]
-  */
   async createAnswers(req, res) {
     const QR = new QuizResult(req);
-    let idAttempt;
-    let quizResultData;
     try {
-      idAttempt = await QR.insertToDatabase();
-      quizResultData = await QR.getHistoricQuizResultData(idAttempt, req.body.questionsArray);
-
-      quizResultData.resultData.forEach((quizResult) => {
-        const result = quizResult;
-        result.idQuizQuestion = quizResult.ID_QUIZ_QUESTION;
-        result.idUser = quizResult.ID_USER;
-        result.recentResult = quizResult.RECENT_RESULT;
-        result.recentAttemptDate = quizResult.RECENT_ATTEMPT_DATE;
-        result.nextRepetition = quizResult.NEXT_REPITITION;
-        result.repetitions = quizResult.TOTAL;
-        result.failedAttempts = quizResult.FAILED_ATTEMPTS;
-        result.successAttempts = quizResult.SUCESS_ATTEMPTS;
-        result.nextRepetition = QR.calculateNextRepetitionTimeStampForEvaluation(quizResult);
-      });
-
-      quizResultData.resultData.forEach((quizResult) => {
-        const result = quizResult;
-        result.NEXT_REPITITION = quizResult.nextRepetition;
-      });
-    }
-    catch (error) {
-      console.log(error);
-      res.redirect(503, `/dbdown`);
-    }
-
-    try {
+      const idAttempt = await QR.insertToDatabase();
+      const quizResultData = await QR.getHistoricQuizResultData(idAttempt, req.body.questionsArray);
       await QR.insertToDatabaseSpacedRepetition(quizResultData.resultData);
       res.send({ newURL: `/view/evaluationResult/${idAttempt}`, quizResultData });
     }
     catch (error) {
-      console.log(error);
-      res.redirect(204, `/dbdown`);
+      const errorMsg = this.produceErrorMessageToUser(error);
+      res.send({ error: errorMsg });
     }
     QR.connect.end();
   }
 }
-
 
 module.exports = {
   CreateController,

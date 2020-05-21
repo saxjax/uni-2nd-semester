@@ -11,9 +11,9 @@ const { Group } = require(`../Models/Group`);
  */
 
 class TestController {
-  constructor(root) {
+  constructor(settings) {
     this.name = `TestController`;
-    this.root = root;
+    this.root = settings.root;
     this.ejs = ``;
   }
 

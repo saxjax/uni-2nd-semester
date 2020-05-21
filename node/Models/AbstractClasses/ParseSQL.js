@@ -1,5 +1,3 @@
-/* eslint no-console: off */
-
 /* ParseSql er en hjælpeklasse til Database.js.
  * ParseSql parser den SQL, som vi får leveret af databasen til et format, som frontend kan forstå
  * Klassen skal kunne parse alle former for input fra databasen, og sikre at JavaScript siden
@@ -57,6 +55,7 @@ class ParseSql {
     this.QRResultCol = `RESULT`;
     this.QRCreatedDateCol = `CREATED_DATE`;
     this.QRUserAnswerCol  = `USER_ANSWER`;
+
     /* Flashcard Kolonner */
     /* FLASHCARD IKKE IMPLEMENTERET!
     this.FConceptCol = `CONCEPT`;
@@ -245,6 +244,29 @@ class ParseSql {
       createdData: data[this.QRCreatedDateCol],
       userAnswers: data[this.QRUserAnswerCol],
     };
+  }
+
+
+  /* Formål: At parse Quiz-resultData specialdesignet returværdi fra SQL databasen
+   * Input:  Et array som indeholder nedenstående properties
+   * Output: Et parset array, som kan forståes af spacedrepetition funktionerne
+   */
+  parseQuizResultsForSpacedRepetition(quizResultData) {
+    const result = [];
+    quizResultData.forEach((quizResult) => {
+      result.push({
+        idQuizQuestion: quizResult.ID_QUIZ_QUESTION,
+        idUser: quizResult.ID_USER,
+        recentResult: quizResult.RECENT_RESULT,
+        recentAttemptDate: quizResult.RECENT_ATTEMPT_DATE,
+        nextRepetition: quizResult.NEXT_REPITITION,
+        repetitions: quizResult.TOTAL,
+        failedAttempts: quizResult.FAILED_ATTEMPTS,
+        successAttempts: quizResult.SUCESS_ATTEMPTS,
+      });
+    });
+
+    return result;
   }
 
   /* Formål: At parse Flashcard-data
