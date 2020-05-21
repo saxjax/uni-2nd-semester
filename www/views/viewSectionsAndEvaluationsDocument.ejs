@@ -55,13 +55,13 @@
               <br>
             </div>
           </div>
-          <div class="col-6">
-            <div class="rightside">
-              <h2> <%= data.document[0].title %>'s Keywords </h2>
-              <% data.document[0].keywords.forEach((keyObj) => { %>
-                <p><%= keyObj.keyword %></p>
-              <% }); %>
-            </div>
+        </div>
+        <div class="col-6">
+          <div class="rightside">
+            <h2> <%= data.document[0].title %>'s Keywords </h2>
+            <% data.document[0].keywords.forEach((keyObj) => { %>
+              <p><%= keyObj.keyword %></p>
+            <% }); %>
           </div>
         </div>
       </div>
