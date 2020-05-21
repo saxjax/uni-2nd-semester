@@ -9,7 +9,7 @@ const { Keyword } = require(`./keyword.js`);
  */
 // TODO:
 class QuizQuestion extends Model {
-  // TODO:
+  /* Alle quizQuestionType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super();
     this.elementType = `quiz_question`;

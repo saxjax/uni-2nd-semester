@@ -5,6 +5,7 @@ const { Model } = require(`./AbstractClasses/Model`);
 /* FIXME: UNDER CONSTRUCTION */
 
 class Group extends Model {
+  /* Alle groupType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super();
     this.elementType = `user_group`;

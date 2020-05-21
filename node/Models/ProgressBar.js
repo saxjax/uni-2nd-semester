@@ -5,6 +5,7 @@ const { Model } = require(`./AbstractClasses/Model.js`);
 /* FIXME: UNDER CONSTRUCTION */
 
 class ProgressBar extends Model {
+  /* Alle "modelnavn"Type/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super(req);
     this.elementType = `quiz_result`;

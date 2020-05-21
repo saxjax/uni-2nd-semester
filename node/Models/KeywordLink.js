@@ -3,6 +3,7 @@
 const { Model } = require(`./AbstractClasses/Model.js`);
 
 class KeywordLink extends Model {
+  /* Alle keywordLinkType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super(req);
     this.elementType = `keyword_link`;

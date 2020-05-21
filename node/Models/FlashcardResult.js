@@ -5,6 +5,7 @@ const { Model } = require(`./AbstractClasses/Model`);
 /* UNDER CONSTRUCTION! Alt i denne fil er alene for test_purposes og intet andet som det står nu. */
 
 class FlashcardResult extends Model {
+  /* Alle flashcardResultType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super(req);
     this.elementType = `flashcard_result`;

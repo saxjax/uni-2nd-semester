@@ -12,6 +12,7 @@ const { Database } = require(`./Database.js`);
  */
 
 class Model extends Database {
+  /* Alle "modelnavn"Type/Col og Table er hentet fra ParseSql! */
   constructor() {
     super();
     this.idColumnGroup = `${this.groupCol}`;

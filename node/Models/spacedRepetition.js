@@ -6,6 +6,7 @@ const { Model } = require(`./AbstractClasses/Model`);
 
 // extend Model
 class SpacedRepetition extends Model {
+  /* Alle spacedRepetitionType/Col og Table er hentet fra ParseSql! */
   constructor() {
     super();
     this.minTimestamp = 2; // 24 timer

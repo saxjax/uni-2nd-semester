@@ -5,6 +5,7 @@ const { Model } = require(`./AbstractClasses/Model.js`);
 /* FIXME: UNDER CONSTRUCTION */
 
 class User extends Model {
+  /* Alle userType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super();
     this.req = req;

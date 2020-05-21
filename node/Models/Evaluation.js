@@ -4,6 +4,7 @@ const { Model }   = require(`./AbstractClasses/Model`);
 const { Keyword } = require(`./keyword.js`);
 
 class Evaluation extends Model {
+  /* Alle evaluationType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super(req);
     this.elementType = `evaluation`;

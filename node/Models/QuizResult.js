@@ -4,6 +4,7 @@ const { SpacedRepetition } = require(`./spacedRepetition`);
 const { ParseSql } = require(`../Models/AbstractClasses/ParseSQL`);
 
 class QuizResult extends SpacedRepetition {
+  /* Alle quizResultType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super(req);
     this.elementType = `quiz_result`;

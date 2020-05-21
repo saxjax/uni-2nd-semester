@@ -8,6 +8,7 @@ const SqlString = require(`sqlstring`);
 /* FIXME: UNDER CONSTRUCTION */
 
 class Keyword extends Model {
+  /* Alle keywordType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super(req);
     this.elementType = `keyword`;

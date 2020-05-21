@@ -15,6 +15,7 @@ const sec = new Section(req);
  */
 
 class Section extends Model {
+  /* Alle sectionType/Col og Table er hentet fra ParseSql! */
   constructor(req) {
     super(req);
     this.elementType = `section`;
