@@ -92,7 +92,9 @@ class QuizResult extends SpacedRepetition {
     return queryResult;
   }
 
-  /* Formål:  */
+  /* Formål: At lave den querystring som skal bruges til at hente alle QuizResults
+   * Input : @idQuizQuestions 
+   */
   createQueryString(idQuizQuestions) {
     let string = ``;
     idQuizQuestions.forEach((element, index) => {
