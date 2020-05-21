@@ -24,7 +24,7 @@ class ParseSql {
     this.spacedRepetitionTable = `repetition_task`;
     /* Elementtypes */
     this.databaseType         = `test`;
-    this.groupType            = `group`;
+    this.groupType            = `user_group`;
     this.userType             = `user`;
     this.documentType         = `document`;
     this.sectionType          = `section`;
@@ -106,19 +106,19 @@ class ParseSql {
     }
     for (let i = 0; i < data.length; i++) { // Looper igennem "data" og parser alle RowDataPacket til camelCase
       switch (data[i][this.typeCol]) {
-        case `test`:             this.parsedData.push(this.parseTest(data[i]));             break;
-        case `user_group`:       this.parsedData.push(this.parseGroup(data[i]));            break;
-        case `user`:             this.parsedData.push(this.parseUser(data[i]));             break;
-        case `document`:         this.parsedData.push(this.parseDocument(data[i]));         break;
-        case `section`:          this.parsedData.push(this.parseSection(data[i]));          break;
-        case `evaluation`:       this.parsedData.push(this.parseEvaluation(data[i]));       break;
-        case `quiz_question`:    this.parsedData.push(this.parseQuizQuestion(data[i]));     break;
-        case `quiz_result`:      this.parsedData.push(this.parseQuizResult(data[i]));       break;
-        case `repetition_task`:  this.parsedData.push(this.parseRepetitionTask(data[i]));   break;
-        // case `flashcard`:        this.parsedData.push(this.parseFlashcard(data[i]));        break;
-        // case `flashcard_result`: this.parsedData.push(this.parseFlashcardResult(data[i]));  break;
-        case `keyword`:          this.parsedData.push(this.parseKeyword(data[i]));          break;
-        case `keyword_link`:     this.parsedData.push(this.parseKeywordLink(data[i]));      break;
+        case this.databaseType:         this.parsedData.push(this.parseTest(data[i]));             break;
+        case this.groupType:            this.parsedData.push(this.parseGroup(data[i]));            break;
+        case this.userType:             this.parsedData.push(this.parseUser(data[i]));             break;
+        case this.documentType:         this.parsedData.push(this.parseDocument(data[i]));         break;
+        case this.sectionType:          this.parsedData.push(this.parseSection(data[i]));          break;
+        case this.evaluationType:       this.parsedData.push(this.parseEvaluation(data[i]));       break;
+        case this.quizQuestionType:     this.parsedData.push(this.parseQuizQuestion(data[i]));     break;
+        case this.quizResultType:       this.parsedData.push(this.parseQuizResult(data[i]));       break;
+        case this.spacedRepetitionType: this.parsedData.push(this.parseRepetitionTask(data[i]));   break;
+        // case this.flashcardType:        this.parsedData.push(this.parseFlashcard(data[i]));        break;
+        // case this.flashcardResultType:  this.parsedData.push(this.parseFlashcardResult(data[i]));  break;
+        case this.keywordType:          this.parsedData.push(this.parseKeyword(data[i]));          break;
+        case this.keywordLinkType:      this.parsedData.push(this.parseKeywordLink(data[i]));      break;
         default: throw new Error(`NO_ELEMENTTYPE: elementType er IKKE oprettet i ParseSQL.js!`);
       }
     }

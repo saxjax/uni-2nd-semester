@@ -33,29 +33,30 @@ class SessionController {
     currentUser.connect.end();
   }
 
-  /* Formål: At oprette den session som bestemmer hvilken gruppe brugeren er tilkoblet.
-   * Input : et groupId
-   * Output: redirect til `/`
+  /* Formål: Opretter gruppen som en del af brugerens session
+   * Input : Et groupId som en del af :idQuery
+   * Output: redirect til `/` (home), hvis brugeren allerede har valgt gruppe
+   *         redirect til `/access/view/groups` (valg af grupperumsssiden), hvis ikke brugeren har valgt en gruppe
    */
   async groupSession(req, res) {
     const G = new Group(req);
     G.idGroup = req.params.idQuery;
-    let data = [{}];
+    let data;
     try {
       data = await G.getThisGroupData();
-      if (Object.keys(data[0]).length > 1) {
-        req.session.idGroup = data[0].idGroup;
-        req.session.groupname = data[0].name;
-        res.redirect(`/`);
-      }
-      else {                     // FIXME: Dokumentation mangler - hvornår rammer man denne else-clause?
-        res.redirect(`/access/view/groups`); // FIXME: Statuskode indsættes
-      }
     }
     catch (error) {
       const E = new ErrorController(error);
       const errorMsg = E.produceErrorMessageToUser();
       res.send(errorMsg);
+    }
+    if (Object.keys(data[0]).length > 1) { // Hvis brugeren allerede har valgt gruppe
+      req.session.idGroup = data[0].idGroup;
+      req.session.groupname = data[0].name;
+      res.redirect(`/`);
+    }
+    else { // Ellers skal brugeren vælge en gruppe
+      res.redirect(`/access/view/groups`);
     }
     G.connect.end();
   }

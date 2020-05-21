@@ -259,9 +259,6 @@ class MasterController {
   /* Formål: At sikre sig at man ikke kan tilgå et grupperum uden en session
    * Input : Et request
    * Output: En omdirigering til login siden hvis man ikke er logget ind, eller til groups siden hvis man ikke har valgt gruppe.
-   * FIXME: Denne funktion kan udvides til også at indeholde sikkerhed såsom
-   *        at sikre sig at idUser og idGroup stemmer overens.
-   *        Hvordan det gøres er dog lettere usikkert.
    */
   noSessionNoAccess(req, res, next) {
     if (isAccessURL(req)) {
