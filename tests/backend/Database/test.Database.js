@@ -8,7 +8,7 @@ const { Database } = require(`../../../node/Models/AbstractClasses/Database.js`)
 let actualObject = true;
 let actual = true;
 let expected = true;
-let object = new Database();
+const object = new Database();
 
 /* Dokumentation */
 /*
