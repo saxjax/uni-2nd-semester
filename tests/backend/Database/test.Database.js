@@ -473,7 +473,34 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   assert.equal(actual, expected,
     `(4.7.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data med specialtegn der indeholder mellemrum.`);
 
-  /* 4.8 DENNE TEST AKTIVERES NÅR VI FORSØGER AT OPNÅ DET DER STÅR HERUNDER! */
+  /* 4.8 */
+  try {
+    await object.query(`INSERT`, `TEST_OPTION_1 = " SQL "" INJECTION " fdfj " """ " AND `
+                               + `TEST_OPTION_2 = "!"#¤%&/()??)(/&%¤"!@£$€{[]}|" AND `
+                               + `TEST_OPTION_3 = " AND = "`);
+  }
+  catch (error) {
+    actual = false;
+  }
+  actualObject = await object.query(`SELECT *`, `TEST_OPTION_3 = "!\"#¤%&/()??)(/&%¤\"!@£$€{[]}|" AND "`);
+
+  actual = actualObject[0].TEST_OPTION_1;
+  expected = ` SQL "" INJECTION " fdfj " """ " AND `;
+  assert.equal(actual, expected,
+    `(4.8.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne SQL escape mærkelige værdier `);
+
+  actual = actualObject[0].TEST_OPTION_2;
+  expected = `!"#¤%&/()??)(/&%¤"!@£$€{[]}|`;
+  assert.equal(actual, expected,
+    `(4.8.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne SQL escape mærkelige værdier`);
+
+  actual = actualObject[0].TEST_OPTION_3;
+  expected = ` AND `;
+  assert.equal(actual, expected,
+    `(4.8.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne SQL escape mærkelige værdier`);
+
+
+  /* 4.9 DENNE TEST AKTIVERES NÅR VI FORSØGER AT OPNÅ DET DER STÅR HERUNDER! */
   /*
   try {
     await object.query(`INSERT`, `TEST_OPTION_1 = "med dig" `
@@ -489,21 +516,21 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   actual = actualObject[0].TEST_OPTION_1;
   expected = `med dig`;
   assert.equal(actual, expected,
-    `(4.8.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data der indsætter på samme kolonne`);
+    `(4.9.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data der indsætter på samme kolonne`);
 
   actualObject = await object.query(`SELECT *`, `TEST_OPTION_1 = "hej også med dig"`);
 
   actual = actualObject[0].TEST_OPTION_1;
   expected = `også med dig`;
   assert.equal(actual, expected,
-    `(4.8.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data der indsætter på samme kolonne`);
+    `(4.9.2) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data der indsætter på samme kolonne`);
 
   actualObject = await object.query(`SELECT *`, `TEST_OPTION_1 = "hejsadejsa"`);
 
   actual = actualObject[0].TEST_OPTION_1;
   expected = `hejsadejsa`;
   assert.equal(actual, expected,
-    `(4.8.1) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data der indsætter på samme kolonne`);
+    `(4.9.3) {Forventet: ${expected} Reel: ${actual}} Databasen skal kunne gemme flere rows af data der indsætter på samme kolonne`);
 
 
   /* 5.1 */
