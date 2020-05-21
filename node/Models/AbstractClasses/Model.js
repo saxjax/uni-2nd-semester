@@ -188,6 +188,7 @@ class Model extends Database {
       case `${this.quizQuestionType}`: return `${this.quizQuestionTable}`;
       case `${this.sectionType}`:      return `${this.sectionTable}`;
       case `${this.userType}`:         return `${this.userTable}`;
+      case `${this.quizResultTable}`:  return `${this.quizResultTable}`;
       default: throw new Error(`WARNING: Element Type not implemented in parseElementTypesTable in Model`);
     }
   }

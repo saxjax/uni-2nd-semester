@@ -65,7 +65,7 @@ class QuizResult extends SpacedRepetition {
     return string.slice(0, -1);
   }
 
-  async getAllQuizQuestions() {
+  async getAllQuizQuestionResults() {
     const trueTable = this.table;
 
     let string = ``;

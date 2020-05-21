@@ -64,6 +64,7 @@ class QuizQuestion extends Model {
         + `AND ${this.QQQuestionCol} = "${question.question}" `
         + `AND ${this.QQCorrectnessCol} = "${question.correctAnswers.join(`;`)}" `
         + `AND ${this.QQKeywordsCol} = "${question.keyword.join(`;`)}" `
+        + `AND ${this.groupCol} = "${this.idGroup}" `
         + `AND ${this.QQAnswersCol} = "${question.answers.join(`;`)}"`);
   }
 
