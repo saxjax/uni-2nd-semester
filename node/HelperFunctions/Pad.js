@@ -1,7 +1,9 @@
 /* Formål: "Padder" en streng til en længde, så læsbarheden øges.
- * Input: Param paddingLength can both be positive or negative
- *        Hvis længden er positiv justere den til venstre.
- *        Er længden derimod negativ, justere den til højre.
+ * Input:  @strIn den streng som skal paddes
+ *         @newStrLen kan både være positiv og negativ
+ *         - Hvis længden er positiv justere den til venstre.
+ *         - Er længden derimod negativ, justere den til højre.
+ *         @padChar den karakter som skal udfylde de tomme pladser i strengen
  * Output: Returnere den "paddede" streng
  */
 function pad(strIn, newStrLen, padChar) {

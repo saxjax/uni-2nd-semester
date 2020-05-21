@@ -9,9 +9,9 @@
     <script defer src="/js/addKeywordEventListener.js"></script>
     <script defer src="/js/scanContentForKeywords.js"></script>
     <script defer src="/js/postSection.js"></script>
+    <script> const data = <%- JSON.stringify(data) %> </script>
   </head>
   <body>
-    <script> const data = <%- JSON.stringify(data) %> </script>
     <%- include('meta/navbar') %>
     <div class="container" id="container-content" style="text-align: center; font-weight: bold;">
   		<h3>Nyt afsnit til: <%= data.document[0].title %></h3>

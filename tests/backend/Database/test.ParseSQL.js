@@ -460,7 +460,7 @@ test(`Test af ParseSQL i node/Database`, async (assert) => {
 
   parsedColNames = [`typeCol`, `groupCol`, `GNameCol`];
   for (let i = 0; i < parserKeys.length; i++) {
-    actual = actualObject.find((obj) => obj.COLUMN_NAME === p[parsedColNames[i]]);
+    actual = actualObject.find((obj) => obj.COLUMN_NAME === p[parsedColNames[i]]); // eslint-disable-line no-loop-func
     assert.true(actual,
       `(4.1.${++testCount}) ParseSQL.${parsedColNames[i]} = ${p[parsedColNames[i]]}, er et kolonnenavn i MySQL Databasens tabel: KeywordLink.`);
     objKeysCount++;

@@ -8,8 +8,6 @@ const { Document } = require(`../Models/Document`);
 const { Section } = require(`../Models/Section`);
 const { Evaluation } = require(`../Models/Evaluation`);
 const { QuizResult } = require(`../Models/QuizResult`);
-const { Flashcard } = require(`../Models/Flashcard`);
-const { Keyword } = require(`../Models/Keyword`);
 const { ProgressBar } = require(`../Models/ProgressBar`);
 
 /* Formål: ViewController er den controller som præsentere alle de "views" som brugeren kan se i et grupperum.

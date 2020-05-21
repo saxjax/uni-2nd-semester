@@ -1,8 +1,10 @@
+/* eslint no-undef: 0 */
+
 /* Denne   */
 class Question {
   constructor(questionContainer, index) {
     this.idQuestion         = questionContainer.getAttribute(`idQuestion`);
-    this.idEvaluation       = data.questions[index].idEvaluation;
+    this.idEvaluation       = data.questions[index].idEvaluation; // "data" bliver sendt med EJSen
     this.questionText       = questionContainer.getElementsByClassName(`questionText`)[0].innerHTML;
     this.userAnswers        = this.getUserAnswers(questionContainer);
     this.correctAnswers     = data.questions[index].correctness;

@@ -22,7 +22,7 @@ class ErrorController {
   produceErrorMessageToUser() {
     let errorMsg = ``;
     // RegExen læser alt frem til det første kolon den finder, da SQL-error-beskeder ser ud på formen: "ERROR_CODE: Because.... "
-    const errorType = /^[^:]+/.exec(this.error.message)[0];
+    const errorType = /^[^:^ ]+/.exec(this.error.message)[0];
     switch (errorType) {
       /* LOGIN FEJL */
       case `USER_ALREADY_REGISTERED`:
@@ -35,6 +35,11 @@ class ErrorController {
       /* DATABASE FEJL */
       case `ER_PARSE_ERROR`: case `ER_BAD_FIELD_ERROR`:
         errorMsg = `Lad lige være med at bruge fjollede bogstaver.`;
+        break;
+
+      /* PARSE.SQL FEJL */
+      case `NO_ELEMENTTYPE`:
+        errorMsg = `Vi beklager. Den data du forsøger at hente er ugyldig.`;
         break;
 
       default:
