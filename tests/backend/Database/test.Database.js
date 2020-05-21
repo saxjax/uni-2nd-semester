@@ -94,7 +94,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
     assert.equal(actual, expected,
       `(2.1.1) (get) Databasen skal kunne omskrive sit input til en valid SQL streng efter metodevalg`);
 
-    expected = `INSERT INTO ${object.database}.${object.table} (testfield1, testfield2, ELEMENT_TYPE) VALUES (\'test1\', \'test2\', "test")`;
+    expected = `INSERT INTO ${object.database}.${object.table} (testfield1, testfield2, ELEMENT_TYPE) VALUES ('test1', 'test2', "test")`;
     actual = object.inputParser(`INSERT`, `testfield1 = "test1" AND testfield2 = "test2"`);
     assert.equal(actual, expected,
       `(2.1.2) (post) Databasen skal kunne omskrive sit input, så indtastede værdier escapes og korrekt ELEMENT_TYPE sendes med`);
@@ -481,7 +481,7 @@ test(`Test af Database Klassen i node/Database`, async (assert) => {
   catch (error) {
     actual = false;
   }
-  actualObject = await object.query(`SELECT *`, `TEST_OPTION_3 = "!\"#¤%&/()??)(/&%¤\"!@£$€{[]}|" AND "`);
+  actualObject = await object.query(`SELECT *`, `TEST_OPTION_3 = "!"#¤%&/()??)(/&%¤"!@£$€{[]}|" AND "`);
 
   actual = actualObject[0].TEST_OPTION_1;
   expected = ` SQL "" INJECTION " fdfj " """ " AND `;

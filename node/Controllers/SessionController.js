@@ -59,7 +59,7 @@ class SessionController {
       const errorMsg = E.produceErrorMessageToUser();
       res.send(errorMsg);
     }
-    G.connect.end;
+    G.connect.end();
   }
 
   /* Formål: At gøre det muligt at skifte bruger og grupperum.
