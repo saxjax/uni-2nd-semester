@@ -51,7 +51,7 @@ class Database extends ParseSql {
 
     this.debug = this.settings.debug;
     this.seperator = ` ;:;:;:; `; // En seperationsstreng, som bruges i InsertSplitter og som aldrig må være mulig at gætte for brugeren.
-    // FIXME: PT. må brugeren ikke bruge "=" og "AND", da det ødelægger INSERT splitteren / laver SQL injection i en CUSTOM.
+    // FIXME: Future works: PT. må brugeren ikke bruge "=" og "AND", da det ødelægger INSERT splitteren / laver SQL injection i en CUSTOM.
   }
 
   /* Formål: Naar der sker fejl ved brug af querymetoden vil denne metode give den nodvendige information med det samme.
