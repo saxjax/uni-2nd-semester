@@ -2,32 +2,22 @@
 <html>
   <head>
     <%- include('meta/header') %> 
-    <link href="/css/design.css" rel="stylesheet">
     <title>GroupHub | Groups</title>
   </head>
   <body>
     <%- include('meta/navbar') %> 
-    <div class="container" id="content">
-      <div class="row">
-          <div class="col-sm-12">
-            <h1>Vælg dit grupperum</h1>
-          </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12">
-            <% if(data.group[0].name) { %>
+    <div class="content">
+        <h1>Vælg dit grupperum</h1>
+          <% if(data.group[0].name) { %>  
             <a href="/session/group/<%= data.group[0].idGroup %>">
               <h2><%= data.group[0].name %></h2>
             </a> 
             <p>Vi beklager at man indtil videre kun kan være en del af èn gruppe resten af evigheden eller lav en ny user</p>
-            <% } else { %>
-              <button>
-                  <a href="/access/post/group">Opret Grupperum</a>
-              </button>
-            <% } %>
-        </div>
-        <p><a href="/access/about">Hvis du vil høre om hvad du kan med den her side, klik her!</a></p> 
-      </div>
+          <% } else { %>
+            <button class="btn btn-primary">
+              <a href="/access/post/group">Opret Grupperum</a>
+            </button>
+          <% } %>
     </div>
     <%- include('meta/footer') %> 
   </body>

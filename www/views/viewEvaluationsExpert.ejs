@@ -2,7 +2,6 @@
 <html>
   <head>
     <%- include('meta/header') %> 
-    <link rel="stylesheet" href="/css/design.css">
     <title>GroupHub | Evalueringer</title>
   </head>
   <body>
@@ -10,15 +9,10 @@
 
     <h1>Evalueringer du har oprettet</h1>
     <% data.evaluations.forEach(evaluation => { %>
-      <div class="evaluationDiv container">
+      <div class="container">
         <div class="row">
           <div class="col">
-            <p class="evaluationTitle">
-              <strong>
-                Titel: 
-              </strong> 
-              <%= evaluation.title %>
-            </p>
+            <p class="evaluationTitle"> <strong>Titel:</strong> <%= evaluation.title %> </p>
           </div>
           <div class="col">
             <p class="evaluationSection"><strong>Sektion:</strong> <%= evaluation.idEvaluation %></p>

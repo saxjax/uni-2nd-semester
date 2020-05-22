@@ -24,7 +24,7 @@ function showTheCorrectAnswers(htmlAnswersArray, i) {
   const correctAnswers = data.quizQuestions[i - 1].correctness.split(`;`); // "data" bliver sendt med EJSen
   correctAnswers.forEach((answer, index) => {
     if (answer === `true`) {
-      htmlAnswersArray[index].innerHTML += ` - (This was the correct answer)`;
+      htmlAnswersArray[index].innerHTML += ` - (Dette var det korrekte svar) <i class="fa fa-check"></i>`;
       htmlAnswersArray[index].classList.add(`correctAnswer`);
     }
   });
@@ -35,7 +35,7 @@ function showTheUsersAnswers(htmlAnswersArray, i) {
   const userAnswersArray = data.evaluation[i - 1].userAnswers.split(`;`); // "data" bliver sendt med EJSen
   userAnswersArray.forEach((answer, index) => {
     if (answer === `true`) {
-      htmlAnswersArray[index].innerHTML += ` - (Your answer)`;
+      htmlAnswersArray[index].innerHTML += ` - (Dit svar)`;
       htmlAnswersArray[index].classList.add(`userAnswer`);
     }
   });

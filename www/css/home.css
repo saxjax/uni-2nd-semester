@@ -1,0 +1,12 @@
+li{
+    font-weight: 500;
+}
+
+.documents, .feed, .unsusedEvaluations, .progressBar{
+    margin: 2px 5px 20px;
+}
+
+.barDescription{
+    margin: 0;
+}
+

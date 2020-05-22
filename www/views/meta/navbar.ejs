@@ -1,14 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">
-    <img src="https://avatars0.githubusercontent.com/u/15886122?s=400&u=49c1f65de00172d06ed9c83f7333c9d2b8526693&v=4" style="width: 30px; height: 30px;" alt="">
-  </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       <% if (isloggedin) { %>
-        <p>Hej <%= data.user[0].username %> </p>
+         <span id="helloUser">Hej <%= data.user[0].username %> </span>
         <a class="nav-item nav-link" href="/">Forsiden</a>
         <a class="nav-item nav-link" href="/session/logout">Logout</a>
         <a class="nav-item nav-link" href="/view/evaluations/expert">Dine Evalueringer</a>

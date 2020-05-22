@@ -3,7 +3,7 @@
   <head>
     <%- include('meta/header') %> 
     <link href="/css/design.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/evaluation.css">
+    <link rel="stylesheet" href="/css/viewEvaluation.css">
     <script src="/js/helperFunctions/insertHTMLElements.js"></script>
     <script defer src="/js/useEvaluation.js" ></script>
     <title>GroupHub | Evaluering</title>
@@ -13,25 +13,33 @@
     <%- include('meta/navbar') %> 
     <!-- Evalueringen indeholder altid data, men det er kun hvis der findes mindst et spørgsmål til evalueringen at evalueringen vises. -->
     <% if(data.questions[0].question){ %>
-      <div id="allQuestions">
+      <div id="allQuestions" class="container">
         <% let questionCount = 1; %>
         <% data.questions.forEach((question, i) => { %>
-          <div class="questionDiv" idQuestion="<%= data.questions[i].idQuizQuestion %>">
-            <h3 class="questionText"> <%= question.question %> </h3>
+          <div class="row">
+            <div class="col questionDiv" idQuestion="<%= data.questions[i].idQuizQuestion %>">
+              <h3 class="questionText"> <%= question.question %> </h3>
               <div>
                 <% let answerCount = 1 %>
                 <% question.answers.forEach(answer => { %>
-                  <input id = <%= `question${questionCount}answer${answerCount++}` %> class ="correctAnswerCheckbox" type="checkbox">
-                  <p class = "answer">  <%= answer %> </p>
+                  <div class="row">
+                    <div class="col">
+                      <input id = <%= `question${questionCount}answer${answerCount++}` %> class ="correctAnswerCheckbox" type="checkbox">
+                      <span class = "answer">  <%= answer %> </span>
+                    </div>
+                  </div>
                 <% }); %>
               </div>
             </div>
-          <% questionCount++ %>
+            <% questionCount++ %>
+          </div>
           <% }); %>
       </div>
-      <button id="submitButton">Indsend!</button>
+      <button class="btn btn-primary" id="submitButton">Indsend!</button>
     <% } else { %>
-      <h3 class="noContent">Denne evaluering er tom</h3>
+      <div class="noContent">
+        <h3>Denne evaluering er tom</h3>
+      </div>
     <% } %> 
     <%- include('meta/footer') %> 
   </body>

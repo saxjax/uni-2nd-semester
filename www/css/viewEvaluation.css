@@ -1,0 +1,40 @@
+.noContent{
+    height: 500px;
+    position: relative;
+}
+
+.noContent>h2{
+    text-align: center;
+}
+
+.questionDiv{
+    border-bottom: 2px solid black;
+}
+
+#submitButton, #returnButton{
+    margin: 20px;
+}
+
+#allQuestions{
+    margin-top: 20px;
+}
+
+.true{
+    background-color: rgb(64, 224, 85);
+}
+
+.false{
+    background-color: tomato;
+}
+
+.correctAnswer{
+    color: teal;
+}
+
+.userAnswer{
+    text-decoration: underline;
+}
+
+.fa-check{
+    color: greenyellow;
+}

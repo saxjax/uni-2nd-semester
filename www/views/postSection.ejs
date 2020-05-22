@@ -3,7 +3,6 @@
   <head>
   	<%- include(`meta/header.ejs`)  %> 
     <title>GroupHub | New Section</title>
-    <link rel="stylesheet" href="/css/design.css">
     <script src="/js/helperFunctions/insertHTMLElements.js"></script>
     <script src="/js/helperFunctions/createInputField.js"></script>
     <script defer src="/js/addKeywordEventListener.js"></script>
@@ -29,10 +28,10 @@
         <p>Nøgleord scannes løbende når du skriver indholdet.</p>
         <p>ADVARSEL!: Overskriver når nyt indhold skrives!</p>
         <div id="allKeywordsContainer"></div>
-        <button id="addKeywordBtn">Tilføj nyt keyword</button>
+        <button class="btn btn-success" id="addKeywordBtn">Tilføj nyt keyword</button>
         <br>
         <br>
-        <button id="submitBtn">Indsend</button>
+        <button class="btn btn-primary" id="submitBtn">Indsend</button>
         <p id="errorMessage"></p>
       </div>
     </div>
