@@ -4,7 +4,7 @@ const { Model } = require(`./AbstractClasses/Model`);
 
 /* FlashcardResult er den klasse der holder styr på hvilke resultater brugerne har fået ved brugen af et flashcard
  * Den holder dermed styr på hver eneste gang en bruger tager et specifikt flashcard.
- * TODO: Er pt. ikke implementeret
+ * TODO: Future works: Er pt. ikke implementeret
  */
 
 class FlashcardResult extends Model {
