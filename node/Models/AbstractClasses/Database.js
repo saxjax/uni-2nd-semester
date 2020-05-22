@@ -30,11 +30,11 @@ class Database extends ParseSql {
     super();
     this.settings = serverSettings;
 
-    this.database = `p2`;
+    this.database = this.settings.db.schema;
     this.dbConfig = {
-      host: `213.32.247.201`,
-      user: `ADMIN`,
-      port: `3306`,
+      host: this.settings.db.host,
+      user: this.settings.db.user,
+      port: this.settings.db.port,
       password: fs.readFileSync(`${this.settings.root}/node/Models/AbstractClasses/password.txt`, `utf8`),
       database: this.database,
     };
