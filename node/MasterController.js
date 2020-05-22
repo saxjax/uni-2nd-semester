@@ -233,6 +233,7 @@ class MasterController {
       store: sessionStore,
       resave: false,
       saveUninitialized: false,
+      rolling: true,
       cookie: { maxAge: 3600000, sameSite: `lax`, secure: false },
     }));
     if (this.skipAccess) {
