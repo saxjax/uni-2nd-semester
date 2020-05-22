@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>GroupHub | Login</title>
+    <link rel="stylesheet" href="/css/register.css">
 		<%- include(`meta/header.ejs`)  %> 
     </head>
 	<body>
@@ -9,10 +10,22 @@
     <div class="container">
 		  <div class="login-form">
 		  	<h1>Login Form</h1>
-		  	<form action="/session/auth/user" method="POST">
-		  		<input type="text" name="username" placeholder="Username" required>
-		  		<input type="password" name="password" placeholder="Password" required>
-		  		<button class="btn btn-primary"> Log ind</button>
+        <form action="/session/auth/user" method="POST">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <label for="username">Brugernavn: </label>
+                <input id="username" type="text" name="username" placeholder="Brugernavn" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <label for="password">Kodeord: </label>
+                <input id="password" type="password" name="password" placeholder="Password" required>
+              </div>
+            </div>
+            <button class="btn btn-primary"> Log ind</button>
+          </div>
 		  	</form>
           <p><a href="/access/register">Opret en ny bruger her!</a></p>
 		  </div>
@@ -20,3 +33,4 @@
 		<%- include(`meta/footer.ejs`) %> 	
 	</body>
 </html>
+
