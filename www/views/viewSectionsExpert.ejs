@@ -9,9 +9,10 @@
     <%- include('meta/navbar') %> 
     <h1>Afsnit du har oprettet</h1>
     <div class="container">
+      
       <% data.sections.forEach((section) => { %>
         <div class="row">
-          
+         
           <div class="col">
             <p> <strong>Title: </strong> <%= section.title %> </p>
           </div>
@@ -22,10 +23,19 @@
             <p> <strong>Content:</strong> <%= section.content %> </p>
           </div>
           <div class="col">
-            <p><strong> Section ID:</strong><%= section.idSection %> </p>
+            <p class="evaluationDocument"><strong>Dokument:</strong>  
+              <% if(Object.keys(data.sections[0]).length > 1 ) { %>
+                <div></div> 
+                <a class="btn btn-primary"><a class="goToDocument" href="/view/sectionsAndEvaluations/document/<%= section.idDocument %>">Gå til dokumentet</a></a>
+              <% }; %>
+            </p>
           </div>
           <div class="col">
-            <button class="btn btn-primary"><a class="goToSection" href="/view/section/<%= section.idSection %>">Gå til sektionen</a></button>
+            <p class="evaluationSection"><strong>Sektion:</strong>
+            <% if(Object.keys(data.sections[0]).length > 1 ) { %>
+              <div></div> 
+              <button class="btn btn-primary"><a class="goToSection" href="/view/section/<%= section.idSection %>">Gå til sektionen</a></button>
+            <% }; %>
           </div>
 
         </div>

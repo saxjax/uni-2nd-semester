@@ -8,6 +8,7 @@
     <%- include('meta/navbar') %> 
 
     <h1>Evalueringer du har oprettet</h1>
+    <% console.log(data) %>
     <% data.evaluations.forEach(evaluation => { %>
       <div class="container">
         <div class="row">
@@ -15,18 +16,30 @@
             <p class="evaluationTitle"> <strong>Titel:</strong> <%= evaluation.title %> </p>
           </div>
           <div class="col">
-            <p class="evaluationSection"><strong>Sektion:</strong> <%= evaluation.idEvaluation %></p>
+            <p class="evaluationSection"><strong>Sektion:</strong>
+              <% if(Object.keys(data.evaluations[0]).length > 1 ) { %>
+                <div></div> 
+                <a class="btn btn-primary"><a class="goToSection" href="/view/section/<%= evaluation.idSection %>">Gå til sektionen</a></a>
+              <% }; %> 
+            </p>
           </div>
           <div class="col">
-            <p class="evaluationSection"><strong>Dokument:</strong> <%= evaluation.idDocument %></p>
+            <p class="evaluationDocument"><strong>Dokument:</strong>  
+              <% if(Object.keys(data.evaluations[0]).length > 1 ) { %>
+                <div></div> 
+                <a class="btn btn-primary"><a class="goToDocument" href="/view/sectionsAndEvaluations/document/<%= evaluation.idDocument %>">Gå til dokumentet</a></a>
+              <% }; %>
+            </p>
           </div>
           <div class="col">
+            <p class="evaluationDocument"><strong>Evaluering:</strong>  
+            <% if(Object.keys(data.evaluations[0]).length > 1 ) { %>
             <a class="btn btn-primary" href="<%=evaluation.idEvaluation%>">Gå til denne evaluering</a>
+            <% }; %>
           </div>
         </div>
       </div>
     <% }); %>
-
     <%- include('meta/footer') %> 
   </body>
 </html>
