@@ -5,13 +5,15 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       <% if (isloggedin) { %>
-         <span id="helloUser">Hej <%= data.user[0].username %> </span>
+        <span id="helloUser">Hej <%= data.user[0].username %> </span>
         <a class="nav-item nav-link" href="/">Forsiden</a>
-        <a class="nav-item nav-link" href="/session/logout">Logout</a>
         <a class="nav-item nav-link" href="/view/evaluations/expert">Dine Evalueringer</a>
         <a class="nav-item nav-link" href="/view/sections/expert">Dine Afsnit</a>
-      <% } else { %>
-        <a class="nav-item nav-link" href="/access/login">Login</a>
+        <span class="logout">
+          <a class="nav-item nav-link" href="/session/logout">Log ud</a>
+        </span>
+        <% } else { %>
+          <a class="nav-item nav-link" href="/access/login">Log ind</a>
       <% } %>
     </div>
   </div>
