@@ -34,9 +34,7 @@ class Keyword extends Model {
   /* Formål: At kunne oprette den givne model i databasen ud fra posted data fra en form.
              Der bliver desuden automatisk oprettet de forskellige dependencies/foreign keys som objektet tilhører.
    * Input : Object som indeholder reference ID'er og array af Keywords.
-   * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
-  // FIXME: Future works: lav check om createkeywords og createKeywordLinks har oprettet det de skal i databasen og return true
   async insertToDatabase(idLinks, keywordArray) {
     if (keywordArray.length > 0) {
       let keywordArrayUpper = this.makeArrayUppercaseAndEscape(keywordArray);
