@@ -2,8 +2,8 @@
 <html>
   <head>
     <%- include('meta/header') %> 
-    <link href="/css/design.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/evaluation.css">
+    <link href="/css/viewEvaluation.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="/js/helperFunctions/insertHTMLElements.js"></script>
     <script defer src="/js/viewQuizResult.js"></script>
     <title>GroupHub | Evaluering resultat</title>
@@ -12,26 +12,27 @@
     <%- include('meta/navbar') %> 
     <script> const data = <%- JSON.stringify(data) %> </script>
 
-    <h1>Result for QUIZ!</h1>
+    <h1>Sådan gik det!</h1>
     <% let questionCount = 1; %>
-    <% data.quizQuestions.forEach((question) => { %>
-      <div class="questionDiv" id="question<%=questionCount%>">
-        <h3><%=question.question%></h3>
-        <label for="">Answers: </label>
-          <% let answerCount = 1 %>
-          <% question.answers.forEach(answer => { %>
-            <p> <%= answer %> </p>
-            <% answerCount++ %>
-      <% }); %>
-      </div>
-      <% questionCount++%>
-    <%});%>
+    <div class="container">
+      <% data.quizQuestions.forEach((question) => { %>
+        <div class="row questionDiv" id="question<%=questionCount%>">
+          <div class="col">
+            <h3><%=question.question%></h3>
+            <% let answerCount = 1 %>
+            <% question.answers.forEach(answer => { %>
+              <p> <%= answer %> </p>
+              <% answerCount++ %>
+            <% }); %>
+          </div>
+          <% questionCount++%>
+        </div>
+      <%});%>
+    </div>
             
-    <%- include('meta/footer') %> 
-
-    <button class="btn btn-primary">
-      <a id="returnButton" href="/">Gå tilbage til forsiden</a>
+    <button id="returnButton" class="btn btn-primary">
+      <a href="/">Gå tilbage til forsiden</a>
     </button>
-
+    <%- include('meta/footer') %> 
   </body>
 </html>

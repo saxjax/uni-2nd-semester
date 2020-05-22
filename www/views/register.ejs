@@ -1,30 +1,81 @@
 <!DOCTYPE html>
 <html>
   <head>
-  	<%- include(`meta/header.ejs`)  %> 
-      <title>GroupHub | Register</title>
-      <link href="/css/design.css" rel="stylesheet">
-  	<link rel="stylesheet" href="/css/login_register_form.css">
+    <%- include(`meta/header.ejs`)  %> 
+    <link rel="stylesheet" href="/css/register.css">
+    <title>GroupHub | Opret bruger</title>
   </head>
   <body>
-    <%- include('meta/navbar') %> 
+    <%- include(`meta/navbar.ejs`) %> 
     <div class="container">
   	  <div class="login-form">
-  		  <h1>Register</h1>
-  		  <form action="/access/register" method="POST">
-			    <input type="text" name="username" placeholder="username" required>
-			    <input type="password" name="password" placeholder="Password" required>	
-			    <input type="text" name="firstName" placeholder="First name" required>
-			    <input type="text" name="lastName" placeholder="Last name" required>
-			    <input type="text" name="studySubject" placeholder="Study subject" required>
-			    <input type="number" name="semester" placeholder="semester" required>
-			    <input type="text" name="university" placeholder="University" required>
-			    <input type="email" name="email" placeholder="Email">
-  		    <input type="submit">
-		    </form>
+  		  <h1>Opret bruger</h1>
+        <form action="/access/register" method="POST">
+
+          <div class="containter">
+
+            <div class="row">
+              <div class="col">
+                <label for="userName">Brugernavn: </label>
+                <input type="text" placeholder="Brugernavn" name="username">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <label for="password">Kodeord: </label>
+                <input type="password" placeholder="Kodeord" name="password">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <label for="firstName">Fornavn: </label>
+                <input type="text" placeholder="Fornavn" name="firstName">
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col">
+                <label for="lastName">Efternavn: </label>
+                <input type="text" placeholder="Efternavn" name="lastName">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <label for="university">Universitet: </label>
+                <input type="text" placeholder="Universitet" name="university">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <label for="studySubject">Fag: </label>
+                <input type="text" placeholder="Fag" name="studySubject">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <label for="email">Email: </label>
+                <input type="email" placeholder="Email" name="email">
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col">
+                <label for="semester">Semester: </label>
+                <input type="number" placeholder="Semester" name="semester">
+              </div>
+            </div>
+            
+            <button class="btn btn-primary" type="submit"> Opret bruger</button>
+
+          </form>
 		    <p>
-			    Already registered? <br>
-			    <a href="/access/login">Log in here.</a>
+			    Har du allerede en bruger? <br>
+			    <a href="/access/login">Log ind her!</a>
 		    </p>
       </div>
     </div>

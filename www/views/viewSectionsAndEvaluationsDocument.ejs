@@ -12,7 +12,7 @@
     <div class="container" id="content">
       <div class="row">
         <div class="col-6"> 
-          <h2> <%= data.document[0].title %>'s Afsnit </h2>
+          <h2> <%= data.document[0].title %>'s Afsnit: </h2 >
           <div class="leftside">
             <button class="btn btn-info">
               <a href="/post/section/<%= data.document[0].idDocument %>"> Opret Afsnit til <%= data.document[0].title %> </a>
@@ -58,7 +58,7 @@
         </div>
         <div class="col-6">
           <div class="rightside">
-            <h2> <%= data.document[0].title %>'s Keywords </h2>
+            <h2> Keywords tilknyttet dette dokument: </h2>
             <% data.document[0].keywords.forEach((keyObj) => { %>
               <p><%= keyObj.keyword %></p>
             <% }); %>

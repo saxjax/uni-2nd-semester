@@ -19,7 +19,7 @@ addAnotherQuestionButton.addEventListener(`click`, addAnotherQuestion);
 
 function addAnotherQuestion() {
   const uniqueQuestionId = `question${++questionCount}`;
-  const questionContainer = appendDomNode(`DIV`, questionsContainer, undefined, [{ class: `questionContainer` }]);
+  const questionContainer = appendDomNode(`DIV`, questionsContainer, undefined, [{ class: `questionContainer` }, { class: `container` }]);
 
   const questionInputContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `questionInputContainer` }]);
   const questionLabel = appendDomNode(`LABEL`, questionInputContainer, `Spørgsmål:`);
@@ -30,7 +30,7 @@ function addAnotherQuestion() {
   addAnswerElements(questionContainer);
   addKeywordElements(questionContainer);
 
-  const removeQuestionBtn = appendDomNode(`BUTTON`, questionContainer, `X`, [{ class: `removeQuestionBtn` }, { class: `btn` }, { class: `btn-danger` }]);
+  const removeQuestionBtn = appendDomNode(`BUTTON`, questionContainer, `Fjern dette spørgsmål`, [{ class: `removeQuestionBtn` }, { class: `btn` }, { class: `btn-danger` }]);
   removeQuestionBtn.addEventListener(`click`, () => {
     const amountOfQuestions = questionsContainer.children.length;
     if (amountOfQuestions > 1) {
@@ -43,8 +43,8 @@ function addAnotherQuestion() {
 }
 
 function addAnswerElements(questionContainer) {
-  const allAnswersContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `answersContainer` }]);
-  const addAnotherAnswerButton = appendDomNode(`BUTTON`, questionContainer, `Tilføj svar`);
+  const allAnswersContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `answersContainer` }, { class: `btn` }]);
+  const addAnotherAnswerButton = appendDomNode(`BUTTON`, questionContainer, `Tilføj svarmulighed`, [{ class: `btn` }, { class: `btn-success` }]);
 
   createAnswerField(allAnswersContainer);
   createAnswerField(allAnswersContainer);
@@ -68,7 +68,7 @@ function createAnswerField(appendToThis) {
 
 function addKeywordElements(questionContainer) {
   const allKeywordsContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `allKeywordsContainer` }]);
-  const addAnotherKeywordButton = appendDomNode(`BUTTON`, questionContainer, `Tilføj keyword`);
+  const addAnotherKeywordButton = appendDomNode(`BUTTON`, questionContainer, `Tilføj keyword`, [{ class: `btn` }, { class: `btn-success` }]);
 
   createInputField(allKeywordsContainer, `Keyword`, 1); // Ligger i createInputField.js
   addAnotherKeywordButton.addEventListener(`click`, () => {

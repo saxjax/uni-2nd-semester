@@ -194,25 +194,6 @@ class ViewController {
 
   /* Evaluation Views */
 
-  /* Formål: At gøre det muligt for en bruger dynamisk at oprette en evaluering så den er tillagt en
-             section (og sectionens document), med et ubestemt antal spørgsmål og svarmuligheder.
-   * Input : En session med userId og groupId (og muligvis document/section id?)
-   * Output: En præsentation af den form der gør det muligt at oprette en evaluering
-   */
-  async postEvaluationDocumentPage(req, res) {
-    const Doc = new Document(req);
-    const dataArray = await Promise.all([
-      Doc.getThisGroupData(),               // dataArray[0]
-      Doc.getThisUserData(),                // dataArray[1]
-      Doc.getThis(),                        // dataArray[2]
-      Doc.getAllElementsOfType(`Section`),  // dataArray[3]
-    ]);
-    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], sections: dataArray[3] };
-    this.ejs = path.join(`${this.root}/www/views/postEvaluationDocument.ejs`);
-    Doc.connect.end();
-    res.render(this.ejs, { data });
-  }
-
   /* Formål: At vise en side for brugeren, hvor brugeren kan oprette et nyt afsnit til et dokument */
   async postEvaluationSectionPage(req, res) {
     const Sec = new Section(req);

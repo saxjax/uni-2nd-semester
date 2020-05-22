@@ -1,28 +1,37 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <%- include('meta/header') %> 
-        <link rel="stylesheet" href="/css/design.css">
-        <title>GroupHub | Sections</title>
-    </head>
-    <body>
-        <%- include('meta/navbar') %> 
-        <h1>Afsnit du har oprettet</h1>
-        <ol>
-            <% data.sections.forEach((section) => { %>
-                <li>
-                    <div>
-                        <button class="btn btn-primary"><a class="goToSection" href="/view/section/<%= section.idSection %>">Click here to go to the section</a></button>
-                        <p>Section ID: <%= section.idSection %> </p>
-                        <strong>Title: </strong>     <%= section.title %> 
-                        <p> <strong>Content:</strong> <%= section.content %> </p>
-                        <p><strong>Keywords:</strong> <%= section.keywords %> </p>
-                    </div> 
-                </li>
-                <% }); %> 
-            </ol>
-            
-        <%- include('meta/footer') %> 
-  </body>
-  <script src="/js/view-design.js"></script>
+  <head>
+    <link rel="stylesheet" href="/css/viewEvaluationsExpert.css">
+    <%- include('meta/header') %> 
+    <title>GroupHub | Sections</title>
+  </head>
+  <body>
+    <%- include('meta/navbar') %> 
+    <h1>Afsnit du har oprettet</h1>
+    <div class="container">
+      <% data.sections.forEach((section) => { %>
+        <div class="row">
+          
+          <div class="col">
+            <p> <strong>Title: </strong> <%= section.title %> </p>
+          </div>
+          <div class="col">
+            <p class="keywords"><strong>Keywords:</strong> <%= section.keywords %> </p>
+          </div>
+          <div class="col">
+            <p> <strong>Content:</strong> <%= section.content %> </p>
+          </div>
+          <div class="col">
+            <p><strong> Section ID:</strong><%= section.idSection %> </p>
+          </div>
+          <div class="col">
+            <button class="btn btn-primary"><a class="goToSection" href="/view/section/<%= section.idSection %>">Gå til sektionen</a></button>
+          </div>
+
+        </div>
+          <% }); %>         
+    </div>
+    <%- include('meta/footer') %> 
+</body>
+<script src="/js/view-design.js"></script>
 </html>   

@@ -3,10 +3,9 @@
   <head>
     <%- include('meta/header') %> 
     <title>GroupHub | Tilføj Spørgsmål</title>
-    <link rel="stylesheet" href="/css/design.css">
     <link rel="stylesheet" href="/css/postQuestions.css">
-    <script src="/js/helperFunctions/insertHTMLElements.js"></script>
-    <script src="/js/helperFunctions/createInputField.js"></script>
+    <script defer src="/js/helperFunctions/insertHTMLElements.js"></script>
+    <script defer src="/js/helperFunctions/createInputField.js"></script>
     <script defer src="/js/addAnotherQuestion.js"></script>
     <script defer src="/js/postQuizQuestions.js"></script>
   </head>
@@ -24,8 +23,8 @@
       </ol>
       <!--Det her bliver fyldt ind fra den tilhørende JS-fil, når brugeren trykker på knappen addAnotherQuestionButton-->
       <div id="questionsContainer"></div>
-      <button type="button" id="addAnotherQuestionButton">Tilføj endnu et spørgsmål</button><br>
-      <button id="submit">Indsend</button>
+      <button class="btn btn-success" type="button" id="addAnotherQuestionButton">Tilføj endnu et spørgsmål</button><br>
+      <button class="btn btn-primary" id="submit">Indsend</button>
     </div>
     <%- include('meta/footer') %> 
   </body>

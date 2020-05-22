@@ -1,32 +1,57 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <%- include('meta/header') %> 
-        <title> GroupHub </title>
-        <link href="/css/design.css" rel="stylesheet">
+      <link rel="stylesheet" href="/css/home.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <%- include('meta/header') %> 
+      <title> GroupHub </title>
     </head>
     <body>
     <%- include('meta/navbar') %> 
     <div class="container" id="content">
       <div class="row">
-        <div class="col">
-          <div class="leftside">
-            <h2> Oprettede Dokumenter </h2>
+
+        <div class="col leftSide documents">
+          <h2> <i class="fa fa-file"></i> Oprettede Dokumenter: </h2>
+          <ul>
             <% data.documents.forEach((document) => { %>
-              <p>
+              <li>
                 <a href="view/sectionsAndEvaluations/document/<%= document.idDocument %>">
                   <strong><%= document.title %></strong>
                 </a>
-              </p>
+              </li>
             <% }); %>
-            <button class="btn btn-info">
-              <a href="/post/document"> Opret Dokument </a>
-            </button>
+          </ul>
+          <button class="btn btn-info">
+            <a href="/post/document"> Opret Nyt Dokument </a>
+          </button>
+        </div>
+
+        <div class="col rightSide progressBar">
+          <%- include(`homeProgressBar`) %>
+        </div>
+      </div>  
+
+      <div class="row">
+        <div class="col leftSide unsusedEvaluations">
+          <div class="unusedEvaluations"> 
+            <h2><i class="fa fa-question"></i> Du har ikke taget følgende evalueringer endnu:</h2>
+            <ul>
+              <% data.evaluationsNotYetTaken.forEach((evaluation, i) => { %>
+                <div class="row">
+                  <li>
+                    <div class="col">
+                      <a href="/view/evaluations/<%= evaluation.ID_EVALUATION %> "><%= evaluation.EVALUATION_TITLE %></a>
+                    </div>
+                  </li>
+                </div>
+              <% }) %>
+            </ul>
           </div>
         </div>
-        <div class="rightside">
-          <%- include(`homeProgressBar`) %> 
-          <h2> News Feed</h2>
+
+        <div class="col rightSide feed">
+          <h2> <i class="fa fa-exclamation"></i> News Feed</h2>
             <!-- <a href="/view/spacedrepetition">der er opgaver til repetition</a> -->
             <% if (data.repetitionTask.length > 0 ) { %>
                 <a href="/view/spacedrepetition">Der er <%= data.repetitionTask.length %> opgaver til repetition</a>
@@ -34,25 +59,10 @@
               <p>Der er pt. ingen opgaver til repetetion</p>
             <% } %>
         </div>
-      </div>  
+
+      </div>
+
     </div>
-    <div class="unusedEvaluations">
-      <h3>Du har ikke taget følgende evalueringer endnu:</h1>
-        <ul>
-          <% data.evaluationsNotYetTaken.forEach((evaluation, i) => { %>
-            <li>
-              <p style="display: inline;">
-                <%= evaluation.EVALUATION_TITLE %> |
-              </p>
-              <p style="display: inline;">
-                <a href="/view/evaluations/<%= evaluation.ID_EVALUATION %> ">Gå til denne evaluering</a>
-              </p>
-            </li>
-          <% }) %>
-        </ul>
-    </div>
-    <div class='footer'>
-      <%- include('meta/footer') %>
-    </div> 
+    <%- include('meta/footer') %>
   </body>
 </html>

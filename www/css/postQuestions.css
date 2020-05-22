@@ -1,12 +1,12 @@
-input{
-    margin: 5px;
-}
 
-.questionContainer {
-    border-style: groove;
+.questionContainer{
     position: relative;
+    border-bottom: 2px solid black;
+    padding: 10px;
 }
 
 .removeQuestionBtn{
-    position:absolute; top:10%; right:5%;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
