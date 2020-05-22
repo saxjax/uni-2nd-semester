@@ -1,0 +1,15 @@
+.nav-item:hover{
+    background-color: rgba(255, 255, 255, 0.418);
+}
+.navbar{
+    background-color: rgba(33, 80, 48, 0.322) !important;
+}
+
+.navbar-collapse{
+    position: relative;
+}
+
+.logout{
+    position: absolute;
+    right: 0;
+}
