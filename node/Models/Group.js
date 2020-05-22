@@ -46,7 +46,7 @@ class Group extends Model {
         await this.query(`UPDATE`, `${this.groupCol} = "${this.idGroup}" WHERE ${this.UUsernameCol} = "${this.members[i]}"`); // eslint-disable-line no-await-in-loop
       }
       else if (newUser[0].elementType === `user`) {
-        // FIXME: En respons til brugeren om at brugernavnet er tastet forkert. Dette skal dog nok valideres inden på Frontend siden på en eller anden måde.
+        // TODO: Future works: En respons til brugeren om at brugernavnet er tastet forkert. Dette skal dog nok valideres inden på Frontend siden på en eller anden måde.
       }
     }
   }

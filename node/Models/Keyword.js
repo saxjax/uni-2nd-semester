@@ -36,7 +36,7 @@ class Keyword extends Model {
    * Input : Object som indeholder reference ID'er og array af Keywords.
    * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
-  // FIXME: lav check om createkeywords og createKeywordLinks har oprettet det de skal i databasen og return true
+  // FIXME: Future works: lav check om createkeywords og createKeywordLinks har oprettet det de skal i databasen og return true
   async insertToDatabase(idLinks, keywordArray) {
     if (keywordArray.length > 0) {
       let keywordArrayUpper = this.makeArrayUppercaseAndEscape(keywordArray);

@@ -5,7 +5,7 @@ const { Model }   = require(`./AbstractClasses/Model`);
 
 /* Flashcard er den klasse der består af et concept og en definition
  * Sammen med QuizQuestion er de pt. de primære evalueringselementer i en Evaluation.
- * TODO: Flashcard er ikke implementeret pt.
+ * TODO: Future works: Flashcard er ikke implementeret pt.
  */
 
 class Flashcard extends Model {
@@ -39,7 +39,7 @@ class Flashcard extends Model {
    * Output: True hvis queren inserter, ellers false hvis der sker en fejl.
    */
   async insertToDatabase() {
-    // TODO: Gør ligesom QuizQuestion
+    // TODO: Future works: Gør ligesom QuizQuestion
   }
 }
 module.exports = {
