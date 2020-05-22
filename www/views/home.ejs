@@ -10,7 +10,6 @@
     <%- include('meta/navbar') %> 
     <div class="container" id="content">
       <div class="row">
-
         <div class="col leftSide documents">
           <h2> <i class="fa fa-file"></i> Oprettede Dokumenter: </h2>
           <ul>
@@ -26,12 +25,10 @@
             <a href="/post/document"> Opret Nyt Dokument </a>
           </button>
         </div>
-
         <div class="col rightSide progressBar">
           <%- include(`homeProgressBar`) %>
         </div>
-      </div>  
-
+      </div>
       <div class="row">
         <div class="col leftSide unsusedEvaluations">
           <div class="unusedEvaluations"> 
@@ -49,7 +46,6 @@
             </ul>
           </div>
         </div>
-
         <div class="col rightSide feed">
           <h2> <i class="fa fa-exclamation"></i> News Feed</h2>
             <!-- <a href="/view/spacedrepetition">der er opgaver til repetition</a> -->
@@ -59,9 +55,7 @@
               <p>Der er pt. ingen opgaver til repetetion</p>
             <% } %>
         </div>
-
       </div>
-
     </div>
     <%- include('meta/footer') %>
   </body>
