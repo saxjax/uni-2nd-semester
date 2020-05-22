@@ -15,11 +15,13 @@
           <h2> <i class="fa fa-file"></i> Oprettede Dokumenter: </h2>
           <ul>
             <% data.documents.forEach((document) => { %>
-              <li>
-                <a href="view/sectionsAndEvaluations/document/<%= document.idDocument %>">
-                  <strong><%= document.title %></strong>
-                </a>
-              </li>
+              <div class="row">
+                <li>
+                  <a href="view/sectionsAndEvaluations/document/<%= document.idDocument %>">
+                    <strong><%= document.title %></strong>
+                  </a>
+                </li>
+              </div>
             <% }); %>
           </ul>
           <button class="btn btn-info">

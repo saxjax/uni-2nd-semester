@@ -32,19 +32,21 @@ ul{
   width: 100%;
 }
 
-
 .footer{
   width: 100%;
   height: 50px;
-  background-color:#f8f9fa;
+  background-color: rgba(33, 80, 48, 0.322);
   bottom: 0;
   position: relative;
+}
+
+.badge{
+  height: fit-content;
 }
 
 .about{
   position: absolute;
   right: 5px;
-  top: 10%;
 }
 
 .btn{
