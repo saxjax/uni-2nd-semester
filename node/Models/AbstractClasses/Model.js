@@ -206,16 +206,17 @@ class Model extends Database {
    */
   async getKeywordsInObject(object) {
     try {
-      if (this.idColumnName === `${this.userCol}`) { // Keywords knyttes ikke til users, så en user kan ikke få alle sine keywords som det står nu.
+      if (this.idColumnName === `${this.userCol}`
+       || Object.keys(object[0]).length === 1) { // Keywords knyttes ikke til users, så en user kan ikke få alle sine keywords som det står nu.
+        object.keywords = {};
         return object;
       }
       const objectCopy = object;
-      const choiceColName = this.getChoiceColName(object[0].elementType);
+      const choiceColName = this.getChoiceColName(objectCopy[0].elementType);
       const keywords = await this.query(`CUSTOM`, `SELECT ${this.keywordLinkTable}.${this.keywordCol}, ${this.KKeywordCol}, ${choiceColName} `
                                       + `FROM ${this.keywordLinkTable} `
                                       + `INNER JOIN ${this.keywordTable} ON ${this.keywordLinkTable}.${this.keywordCol} = ${this.keywordTable}.${this.keywordCol} `
                                       + `WHERE ${this.keywordLinkTable}.${this.idColumnName} = "${this.idQuery}"`);
-
       for (let j = 0; j < objectCopy.length; j++) {
         objectCopy[j].keywords = [];
       }
@@ -231,7 +232,7 @@ class Model extends Database {
       return objectCopy;
     }
     catch (error) {
-      throw new Error(`Keywords blev ikke joined korrekt`);
+      throw new Error(`Keywords blev ikke joined korrekt`, error);
     }
   }
 
