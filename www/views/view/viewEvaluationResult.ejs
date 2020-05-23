@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%- include('meta/header') %> 
+    <%- include(`../meta/header`) %> 
     <link href="/css/viewEvaluation.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="/js/helperFunctions/insertHTMLElements.js"></script>
-    <script defer src="/js/viewQuizResult.js"></script>
+    <script defer src="/js/view/viewQuizResult.js"></script>
     <title>GroupHub | Evaluering resultat</title>
   </head>
   <body>
-    <%- include('meta/navbar') %> 
+    <%- include(`../meta/navbar`) %> 
     <script> const data = <%- JSON.stringify(data) %> </script>
 
     <h1>Sådan gik det!</h1>
@@ -33,6 +33,6 @@
     <button id="returnButton" class="btn btn-primary">
       <a href="/">Gå tilbage til forsiden</a>
     </button>
-    <%- include('meta/footer') %> 
+    <%- include(`../meta/footer`) %> 
   </body>
 </html>

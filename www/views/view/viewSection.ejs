@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%- include('meta/header') %> 
+    <%- include(`../meta/header`) %> 
     <link rel="stylesheet" href="/css/viewSection.css">
-    <script defer src="/js/viewSection.js"></script>
+    <script defer src="/js/view/viewSection.js"></script>
     <title>GroupHub | <%= data.section[0].title %> </title>
   </head>
   <body>
-    <%- include('meta/navbar') %> 
+    <%- include(`../meta/navbar`) %> 
     <div class="container">
       <div class="row">
         <div class="col">
@@ -46,6 +46,6 @@
         </div>
       </div>
     </div>
-    <%- include('meta/footer') %> 
+    <%- include(`../meta/footer`) %> 
   </body>
 </html>

@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%- include('meta/header') %> 
+    <%- include(`../meta/header`) %> 
     <link href="/css/design.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/viewEvaluation.css">
     <script src="/js/helperFunctions/insertHTMLElements.js"></script>
-    <script defer src="/js/useEvaluation.js" ></script>
+    <script defer src="/js/view/useEvaluation.js" ></script>
     <title>GroupHub | Evaluering</title>
     <script> const data = <%- JSON.stringify(data) %> </script>
   </head>
   <body>
-    <%- include('meta/navbar') %> 
+    <%- include(`../meta/navbar`) %> 
     <!-- Evalueringen indeholder altid data, men det er kun hvis der findes mindst et spørgsmål til evalueringen at evalueringen vises. -->
     <% if(data.questions[0].question){ %>
       <div id="allQuestions" class="container">
@@ -41,6 +41,6 @@
         <h3>Denne evaluering er tom</h3>
       </div>
     <% } %> 
-    <%- include('meta/footer') %> 
+    <%- include(`../meta/footer`) %> 
   </body>
 </html>

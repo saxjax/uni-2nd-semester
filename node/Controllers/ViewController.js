@@ -39,7 +39,7 @@ class ViewController {
       PB.getEvaluationsNotYetTaken(),                 // dataArray[4]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], documents: dataArray[2], repetitionTask: dataArray[3], evaluationsNotYetTaken: dataArray[4] };
-    this.ejs = path.join(`${this.root}/www/views/home.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/home/home.ejs`);
     res.render(this.ejs, { data });
   }
 
@@ -56,7 +56,7 @@ class ViewController {
       Expert.getThisUserData(),                // dataArray[1]
     ]);
     const data = { group: dataArray[0], user: dataArray[1] };
-    this.ejs = path.join(`${this.root}/www/views/postDocument.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/post/postDocument.ejs`);
     Expert.connect.end();
     res.render(this.ejs, { data });
   }
@@ -65,7 +65,7 @@ class ViewController {
    * Input : Et request med et queryId samt en session med userId og groupId
    * Output: Visning af et dokument
    */
-  async viewDocumentPage(req, res) {
+  /*  async viewDocumentPage(req, res) {
     const Doc = new Document(req);
     const dataArray = await Promise.all([
       Doc.getThisGroupData(),                 // dataArray[0]
@@ -76,7 +76,7 @@ class ViewController {
     this.ejs = path.join(`${this.root}/www/views/viewDocument.ejs`);
     Doc.connect.end();
     res.render(this.ejs, { data });
-  }
+  } */
 
   /* Formål: At hente data, som gør det muligt at vise en side for brugeren med de afsnit, som brugeren har oprettet
    * Input : En session med userId og groupId
@@ -91,7 +91,7 @@ class ViewController {
     ]);
     const data = { group: dataArray[0], user: dataArray[1], sections: dataArray[2] };
     console.log(data);
-    this.ejs = path.join(`${this.root}/www/views/viewSectionsExpert.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/view/viewSectionsExpert.ejs`);
     Expert.connect.end();
     res.render(this.ejs, { data });
   }
@@ -116,7 +116,7 @@ class ViewController {
       sections: dataArray[3],
       evaluations: dataArray[4],
     };
-    this.ejs = path.join(`${this.root}/www/views/viewSectionsAndEvaluationsDocument.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/view/viewSectionsAndEvaluationsDocument.ejs`);
     Doc.connect.end();
     res.render(this.ejs, { data });
   }
@@ -134,7 +134,7 @@ class ViewController {
       Doc.getAllElementsOfType(`section`),
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], reservedSections: dataArray[3] };
-    this.ejs = path.join(`${this.root}/www/views/postSection.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/post/postSection.ejs`);
     Doc.connect.end();
     res.render(this.ejs, { data });
   }
@@ -151,7 +151,7 @@ class ViewController {
       Sec.getThis(),                        // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], section: dataArray[2] };
-    this.ejs = path.join(`${this.root}/www/views/viewSection.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/view/viewSection.ejs`);
     res.render(this.ejs, { data });
   }
 
@@ -170,7 +170,7 @@ class ViewController {
       Expert.getAllElementsOfType(`flashcard`),  // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluations: dataArray[2], flashcards: dataArray[3] };
-    this.ejs = path.join(`${this.root}/www/views/viewEvaluationsExpert.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/view/viewEvaluationsExpert.ejs`);
     res.render(this.ejs, { data });
   }
 
@@ -188,7 +188,7 @@ class ViewController {
       Sec.getAllElementsOfType(`flashcard`),  // dataArray[4]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], evaluations: dataArray[3], flashcards: dataArray[4] };
-    this.ejs = path.join(`${this.root}/www/views/viewEvaluationsSection.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/view/viewEvaluationsSection.ejs`);
     Sec.connect.end();
     res.render(this.ejs, { data });
   }
@@ -204,7 +204,7 @@ class ViewController {
       Sec.getThis(),          // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], section: dataArray[2] };
-    this.ejs = path.join(`${this.root}/www/views/postEvaluationSection.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/post/postEvaluationSection.ejs`);
     Sec.connect.end();
     res.render(this.ejs, { data });
   }
@@ -213,7 +213,7 @@ class ViewController {
   async postQuestionsPage(req, res) {
     const E = new Evaluation(req);
     const data = { user: await E.getThisUserData() };
-    this.ejs = path.join(`${this.root}/www/views/postQuestions.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/post/postQuestions.ejs`);
     res.render(this.ejs, { data });
   }
 
@@ -230,7 +230,7 @@ class ViewController {
       await E.getAllElementsOfType(`${E.quizQuestionType}`), // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], questions: dataArray[3] };
-    this.ejs = path.join(`${this.root}/www/views/viewEvaluation.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/view/viewEvaluation.ejs`);
     E.connect.end();
     res.render(this.ejs, { data });
   }
@@ -245,7 +245,7 @@ class ViewController {
       await QR.getTasksforRepetition(),               // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], questions: dataArray[3] };
-    this.ejs = path.join(`${this.root}/www/views/viewEvaluation.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/view/viewEvaluation.ejs`);
     QR.connect.end();
     res.render(this.ejs, { data });
   }
@@ -260,7 +260,7 @@ class ViewController {
       await QR.getAllQuizQuestionResults(),                 // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2],   quizQuestions: dataArray[3] };
-    this.ejs = path.join(`${this.root}/www/views/viewEvaluationResult.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/view/viewEvaluationResult.ejs`);
     QR.connect.end();
     res.render(this.ejs, { data });
   }

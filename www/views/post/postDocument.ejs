@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%- include('meta/header') %> 
+    <%- include(`../meta/header`) %> 
     <link rel="stylesheet" href="/css/design.css">
     <title>Create Document</title>
   </head>
   <body>
-    <%- include('meta/navbar') %> 
+    <%- include(`../meta/navbar`) %> 
     <div class="container" id="content" style="text-align: center; font-weight: bold;">
         <h1>Opret et nyt dokument</h1>
     <form action="/post/document" method="POST">
@@ -16,6 +16,6 @@
       <button class="btn btn-primary"type="submit" >Opret</button>
     </form>
   </div>
-    <%- include('meta/footer') %> 
+    <%- include(`../meta/footer`) %> 
   </body>
 </html>

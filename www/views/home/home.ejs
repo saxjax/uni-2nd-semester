@@ -3,11 +3,11 @@
     <head>
       <link rel="stylesheet" href="/css/home.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-      <%- include('meta/header') %> 
+      <%- include(`../meta/header`) %> 
       <title> GroupHub </title>
     </head>
     <body>
-    <%- include('meta/navbar') %> 
+    <%- include(`../meta/navbar`) %> 
     <div class="container" id="content">
       <div class="row">
         <div class="col leftSide documents">
@@ -28,7 +28,7 @@
           </button>
         </div>
         <div class="col rightSide progressBar">
-          <%- include(`homeProgressBar`) %>
+          <%- include(`./homeProgressBar`) %>
         </div>
       </div>
       <div class="row">
@@ -57,6 +57,6 @@
         </div>
       </div>
     </div>
-    <%- include('meta/footer') %>
+    <%- include(`../meta/footer`) %>
   </body>
 </html>
