@@ -5,6 +5,7 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       <% if (isloggedin) { %>
+        <img src="/img/grouphubicon.png" alt="GroupHub ikon" width="40">
         <span id="helloUser">Hej <%= data.user[0].username %> </span>
         <a class="nav-item nav-link" href="/">Forsiden</a>
         <a class="nav-item nav-link" href="/view/evaluations/expert">Dine Evalueringer</a>
@@ -12,8 +13,10 @@
         <span class="logout">
           <a class="nav-item nav-link" href="/session/logout">Log ud</a>
         </span>
-        <% } else { %>
-          <a class="nav-item nav-link" href="/access/login">Log ind</a>
+      <% } else { %>
+        <img src="/img/grouphubicon.png" alt="GroupHub ikon" width="40">
+        <a class="nav-item nav-link" href="/access/login">Log ind</a>
+        <a class="nav-item nav-link" href="/access/register">Registrer</a>
       <% } %>
     </div>
   </div>
