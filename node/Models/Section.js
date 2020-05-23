@@ -67,20 +67,20 @@ class Section extends Model {
     return this.idSection;
   }
 
-  /* Formål: At generere keywords automatisk ud fra det content der bliver posted
-   * Input : Intet, men bruger this.content
-   * Output: Et array af Keywords der skal oprettes tilknyttet denne section.
-   */
-  generateKeywords() {
-    const potentialKeywords = this.content.split(` `);
-    const keywords = [];
-    for (let i = 0; i < potentialKeywords.length; i++) {
-      if (potentialKeywords[i].length > 10) {
-        keywords.push(potentialKeywords[i]);
-      }
-    }
-    return keywords;
-  }
+  // /* Formål: At generere keywords automatisk ud fra det content der bliver posted
+  //  * Input : Intet, men bruger this.content
+  //  * Output: Et array af Keywords der skal oprettes tilknyttet denne section.
+  //  */
+  // generateKeywords() {
+  //   const potentialKeywords = this.content.split(` `);
+  //   const keywords = [];
+  //   for (let i = 0; i < potentialKeywords.length; i++) {
+  //     if (potentialKeywords[i].length > 10) {
+  //       keywords.push(potentialKeywords[i]);
+  //     }
+  //   }
+  //   return keywords;
+  // }
 
   /* Formål: At slette et afsnit (section) fra databasen samt alt hvad der ligger under afsnittet. */
   async deleteFromDatabase() {

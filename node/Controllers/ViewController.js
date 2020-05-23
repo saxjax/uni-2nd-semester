@@ -108,6 +108,7 @@ class ViewController {
       Doc.getAllElementsOfType(`section`),    // dataArray[3]
       Doc.getAllElementsOfType(`evaluation`), // dataArray[4]
     ]);
+
     const data = {
       group: dataArray[0],
       user: dataArray[1],

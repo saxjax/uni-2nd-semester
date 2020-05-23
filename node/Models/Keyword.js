@@ -235,6 +235,22 @@ class Keyword extends Model {
     const uniqueKeywordArray = [...new Set(keywordArray)];
     return uniqueKeywordArray;
   }
+
+  /* Formål: Denne funktion bruges sammen med Array.sort(keyword) til at sortere keywords alfabetisk
+   * Input : to strings eller numbers
+   * Output: -1 hvis a skal være før b ,0 hvis der ikke skal gøres noget ,-1 hvis b skal være før a
+   */
+  compareTitle(a, b) {
+    // a skal være før b efter sortering
+    if (a < b) {
+      return -1;
+    // b skal være før a efter sortering
+    } if (a > b) {
+      return 1;
+    // and and b are the same
+    }
+    return 0;
+  }
 }
 module.exports = {
   Keyword,
