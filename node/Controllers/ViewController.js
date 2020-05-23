@@ -90,6 +90,7 @@ class ViewController {
       Expert.getAllElementsOfType(`section`),  // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], sections: dataArray[2] };
+    console.log(data);
     this.ejs = path.join(`${this.root}/www/views/viewSectionsExpert.ejs`);
     Expert.connect.end();
     res.render(this.ejs, { data });

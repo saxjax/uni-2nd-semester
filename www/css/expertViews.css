@@ -1,0 +1,21 @@
+.row{
+    margin-top: 5px;
+}
+
+.center{
+    text-align: center;
+}
+
+.section, .evaluation{
+    border-bottom: 2px solid black;
+}
+
+.content{
+    max-height: 120px;
+    position: relative;
+    overflow-y: scroll ;
+}
+
+.borderDashed{
+    border-right: 1px dashed rgba(0, 0, 0, 0.185);
+}

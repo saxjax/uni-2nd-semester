@@ -5,8 +5,9 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       <% if (isloggedin) { %>
-        <img src="/img/grouphubicon.png" alt="GroupHub ikon" width="40">
-        <span id="helloUser">Hej <%= data.user[0].username %> </span>
+        <a id="iconAnchor" class="nav-item nav-link" href="/"><img id="icon" src="/img/grouphubicon.ico" ></a>
+        <span id="helloUser"> Hej <%= data.user[0].username %> </span>
+
         <a class="nav-item nav-link" href="/">Forsiden</a>
         <a class="nav-item nav-link" href="/view/evaluations/expert">Dine Evalueringer</a>
         <a class="nav-item nav-link" href="/view/sections/expert">Dine Afsnit</a>

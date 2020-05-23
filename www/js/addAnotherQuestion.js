@@ -43,7 +43,7 @@ function addAnotherQuestion() {
 }
 
 function addAnswerElements(questionContainer) {
-  const allAnswersContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `answersContainer` }, { class: `btn` }]);
+  const allAnswersContainer = appendDomNode(`DIV`, questionContainer, undefined, [{ class: `answersContainer` }]);
   const addAnotherAnswerButton = appendDomNode(`BUTTON`, questionContainer, `Tilføj svarmulighed`, [{ class: `btn` }, { class: `btn-success` }]);
 
   createAnswerField(allAnswersContainer);

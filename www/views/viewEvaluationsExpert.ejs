@@ -2,41 +2,52 @@
 <html>
   <head>
     <%- include('meta/header') %> 
+    <link rel="stylesheet" href="/css/expertViews.css">
     <title>GroupHub | Evalueringer</title>
   </head>
   <body>
     <%- include('meta/navbar') %> 
-
-    <h1>Evalueringer du har oprettet</h1>
+    <div class="container">
+      <h1>Evalueringer du har oprettet</h1>
+    </div>
     <% data.evaluations.forEach(evaluation => { %>
       <div class="container">
-        <div class="row">
-          <div class="col">
-            <p class="evaluationTitle"> <strong>Titel:</strong> <%= evaluation.title %> </p>
+        <br>
+        <div class="row evaluation">
+
+          <div class="col borderDashed">
+            <p class="center"> <strong>Titel:</strong> </p>
+            <p> <%= evaluation.title %> </p>
           </div>
-          <div class="col">
-            <p class="evaluationSection"><strong>Sektion:</strong>
+          <div class="col borderDashed">
+            <p class="center"><strong>Sektion:</strong>  
               <% if(Object.keys(data.evaluations[0]).length > 1 ) { %>
-                <div></div> 
-                <a class="btn btn-primary"><a class="goToSection" href="/view/section/<%= evaluation.idSection %>">Gå til sektionen</a></a>
+                <button class="btn btn-primary">
+                  <a href="/view/section/<%= evaluation.idSection %>">Gå til den tilhørende sektion</a>
+                </button>  
               <% }; %> 
             </p>
           </div>
-          <div class="col">
-            <p class="evaluationDocument"><strong>Dokument:</strong>  
+          <div class="col borderDashed">
+            <p class="center"><strong>Dokument:</strong>  
               <% if(Object.keys(data.evaluations[0]).length > 1 ) { %>
-                <div></div> 
-                <a class="btn btn-primary"><a class="goToDocument" href="/view/sectionsAndEvaluations/document/<%= evaluation.idDocument %>">Gå til dokumentet</a></a>
+                <button class="btn btn-primary">
+                  <a href="/view/sectionsAndEvaluations/document/<%= evaluation.idDocument %>">Gå til det tilhørende dokument</a>
+                </button>
               <% }; %>
             </p>
           </div>
-          <div class="col">
-            <p class="evaluationDocument"><strong>Evaluering:</strong>  
+          <div class="col borderDashed">
+            <p class="center"><strong>Evaluering:</strong>  
             <% if(Object.keys(data.evaluations[0]).length > 1 ) { %>
-            <a class="btn btn-primary" href="<%=evaluation.idEvaluation%>">Gå til denne evaluering</a>
+              <button class="btn btn-primary">
+                <a href="<%=evaluation.idEvaluation%>">Gå til denne evaluering</a>
+              </button>
             <% }; %>
           </div>
+
         </div>
+
       </div>
     <% }); %>
     <%- include('meta/footer') %> 
