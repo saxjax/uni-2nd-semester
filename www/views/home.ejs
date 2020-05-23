@@ -39,9 +39,7 @@
               <% data.evaluationsNotYetTaken.forEach((evaluation, i) => { %>
                 <div class="row">
                   <li>
-                    <div class="col">
-                      <a href="/view/evaluations/<%= evaluation.ID_EVALUATION %> "><%= evaluation.EVALUATION_TITLE %></a>
-                    </div>
+                    <a href="/view/evaluations/<%= evaluation.ID_EVALUATION %> "><%= evaluation.EVALUATION_TITLE %></a>
                   </li>
                 </div>
               <% }) %>

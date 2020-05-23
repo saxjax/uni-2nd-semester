@@ -2,7 +2,8 @@
     background-color: rgba(255, 255, 255, 0.418);
 }
 .navbar{
-    background-color: rgba(33, 80, 48, 0.322) !important;
+    background-color: #d8ebb570 !important;
+    color: black;
 }
 
 .navbar-collapse{
@@ -12,4 +13,8 @@
 .logout{
     position: absolute;
     right: 0;
+}
+
+.navbar-light .navbar-nav .nav-link{
+    color: black;
 }
