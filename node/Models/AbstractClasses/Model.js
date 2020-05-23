@@ -49,7 +49,7 @@ class Model extends Database {
       return false;
     }
 
-    let valid = ``;
+    let valid = false;
     if (req.session) {
       if (methodNeedsParamsInRequest && req.params) {
         valid = true;
@@ -73,14 +73,7 @@ class Model extends Database {
    * Input : Et kald fra et unikt objekt, som desuden vælger hvilken kolonne der søges efter.
    * Output: En enkel værdi ud fra id og kolonne, der bruges til at konstruere objektet.
    */
-  async getThis(column) {
-    let choice = ``;
-    if (column) {
-      choice = column;
-    }
-    else {
-      choice = `*`;
-    }
+  async getThis(choice = `*`) {
     let queryData = await this.query(`SELECT ${choice}`, `${this.idColumnName} = "${this.idQuery}"`)
       .then((result) => result)
       .catch((error) => error);
@@ -135,11 +128,11 @@ class Model extends Database {
    * Input : valg af den tabel der ønskes at blive opslået i ud fra et andet objekts id.
    * Output: En liste af underobjekter som er udvalgt ud fra Id'et i det øvre objekt.
    */
-  async getAllElementsOfType(choice) {
+  async getAllElementsOfType(elemType) {
     const trueObjectTable = this.table;
-    const choiceTable = this.parseElementTypesTable(choice);
+    const choiceTable = this.parseElementTypesTable(elemType);
     this.table = choiceTable;
-    let queryData = await this.query(`SELECT *`, `${this.idColumnName} = "${this.idQuery}" AND ${this.idColumnGroup} = "${this.idGroup}"`)
+    let queryData = await this.query(`SELECT *`, `${this.idColumnName} = "${this.idQuery}"`)
       .then((result) => {
         this.table = trueObjectTable;
         return result;
@@ -150,11 +143,11 @@ class Model extends Database {
         return error;
       });
 
-    if (choice === `Document` // et check for om objektet skal hente keywords
-      || choice === `Section`
-      || choice === `Evaluation`
-      || choice === `QuizQuestion`) {
-      queryData = this.getKeywordsInObject(queryData, choice);
+    if (elemType === `${this.documentType}` // et check for om objektet skal hente keywords
+      || elemType === `${this.sectionType}`
+      || elemType === `${this.evaluationType}`
+      || elemType === `${this.quizQuestionType}`) {
+      queryData = this.getKeywordsInObject(queryData);
     }
     return queryData;
   }
@@ -211,13 +204,13 @@ class Model extends Database {
    * Input : @object er det queryobjekt der kommer fra databasen med 0 til flere arrays af objekter
    * Output: Et array af objekter som har fået et array af keywords-objekter (med keyword og idKeyword) på hver eneste objekt
    */
-  async getKeywordsInObject(object, choice = this.elementType) {
+  async getKeywordsInObject(object) {
     try {
       if (this.idColumnName === `${this.userCol}`) { // Keywords knyttes ikke til users, så en user kan ikke få alle sine keywords som det står nu.
         return object;
       }
       const objectCopy = object;
-      const choiceColName = this.getChoiceColName(choice);
+      const choiceColName = this.getChoiceColName(object[0].elementType);
       const keywords = await this.query(`CUSTOM`, `SELECT ${this.keywordLinkTable}.${this.keywordCol}, ${this.KKeywordCol}, ${choiceColName} `
                                       + `FROM ${this.keywordLinkTable} `
                                       + `INNER JOIN ${this.keywordTable} ON ${this.keywordLinkTable}.${this.keywordCol} = ${this.keywordTable}.${this.keywordCol} `
