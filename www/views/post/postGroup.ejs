@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%- include('meta/header') %> 
+    <%- include(`../meta/header`) %> 
     <title>GroupHub | New Group</title>
     <link rel="stylesheet" href="/css/design.css">
     <script src="/js/helperFunctions/insertHTMLElements.js"></script>
     <script src="/js/helperFunctions/createInputField.js"></script>
-    <script defer src="/js/addAnotherMember.js"></script>
-    <script defer src="/js/postGroup.js"></script>
+    <script defer src="/js/post/addAnotherMember.js"></script>
+    <script defer src="/js/post/postGroup.js"></script>
   </head>
   <body>
-    <%- include('meta/navbar') %> 
+    <%- include(`../meta/navbar`) %> 
     <div class="container" id="content" style="text-align: center; font-weight: bold;">
     <h1>Opret en ny gruppe</h1>
     <div id="formContainer">
@@ -26,6 +26,6 @@
       <button class="btn btn-primary" id="submitBtn">Lav gruppen!</button>
     </div>
   </div>
-    <%- include('meta/footer') %> 
+    <%- include(`../meta/footer`) %> 
   </body>
 </html>

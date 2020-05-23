@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%- include('meta/header') %> 
+    <%- include(`../meta/header`) %> 
     <title>GroupHub | New evaluation</title>
     <link rel="stylesheet" href="/css/design.css">
     <script src="/js/helperFunctions/insertHTMLElements.js"></script>
     <script src="/js/helperFunctions/createInputField.js"></script>
-    <script defer src="/js/addKeywordEventListener.js"></script>
-    <script defer src="/js/postEvaluation.js"></script>
+    <script defer src="/js/post/addKeywordEventListener.js"></script>
+    <script defer src="/js/post/postEvaluation.js"></script>
   </head>
   <body>
-    <%- include('meta/navbar') %> 
+    <%- include(`../meta/navbar`) %> 
     <div class="container" id="content">
       <h1>Lav ny evaluering til <%= data.section[0].title %></h1>
       <!-- Posts via function when submitbutton is clicked -->
@@ -23,6 +23,6 @@
         <button class="btn btn-primary" id="submitButton" type="submit">Opret evaluering</button>
       </div>
     </div>
-    <%- include('meta/footer') %> 
+    <%- include(`../meta/footer`) %> 
   </body>
 </html>

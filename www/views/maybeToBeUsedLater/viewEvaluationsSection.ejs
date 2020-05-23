@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <%- include('meta/header') %> 
+        <%- include(`../meta/header`) %> 
         <link href="/css/design.css" rel="stylesheet">
         <title>GroupHub | Evalueringer</title>
     </head>
     <body>
-        <%- include('meta/navbar') %> 
+        <%- include(`../meta/navbar`) %> 
         <div class="container" id="content">    
             <h1> Afsnit: <%= data.section[0].section_number %></h1><br>
             <p> Keywords for afsnit: <%= data.section[0].keywords %> </p>
@@ -41,6 +41,6 @@
                     </div>
                 </div>
         </div>    
-        <%- include('meta/footer') %> 
+        <%- include(`../meta/footer`) %> 
     </body>
 </html>

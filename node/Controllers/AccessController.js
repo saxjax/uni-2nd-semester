@@ -16,7 +16,7 @@ class AccessController {
 
   /* Formål: At rendere en side, som fortæller brugeren at vores database ikke virker */
   dbDown(req, res) {
-    this.ejs = path.join(`${this.root}/www/views/dbDown.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/seesion/dbDown.ejs`);
     res.render(this.ejs);
   }
 
@@ -32,7 +32,7 @@ class AccessController {
       user: await U.getThisUserData(),
       group: await G.getThisGroupData(),
     };
-    this.ejs = path.join(`${this.root}/www/views/groups.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/session/groups.ejs`);
     U.connect.end();
     G.connect.end();
     res.render(this.ejs, { data });
@@ -49,7 +49,7 @@ class AccessController {
       user: await U.getThisUserData(),
       group: await G.getThisGroupData(),
     };
-    this.ejs = path.join(`${this.root}/www/views/postGroup.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/post/postGroup.ejs`);
     U.connect.end();
     G.connect.end();
     res.render(this.ejs, { data });
@@ -60,13 +60,13 @@ class AccessController {
 
   /* Formål: At rendere en side for brugeren, hvor brugeren kan registrere en bruger i systemet */
   registerPage(req, res) {
-    this.ejs = path.join(`${this.root}/www/views/register.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/session/register.ejs`);
     res.render(this.ejs);
   }
 
   /* Formål: At rendere en side for brugeren, hvor brugeren kan logge ind */
   loginPage(req, res) {
-    this.ejs = path.join(`${this.root}/www/views/login.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/session/login.ejs`);
     res.render(this.ejs);
   }
 
@@ -78,7 +78,7 @@ class AccessController {
   async aboutPage(req, res) {
     const U = new User(req);
     const data = { user: await U.getThisUserData() };
-    this.ejs = path.join(`${this.root}/www/views/about.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/home/about.ejs`);
     res.render(this.ejs, { data });
   }
 }

@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-  	<%- include(`meta/header.ejs`)  %> 
+  	<%- include(`../meta/header.ejs`)  %> 
     <title>GroupHub | New Section</title>
     <script src="/js/helperFunctions/insertHTMLElements.js"></script>
     <script src="/js/helperFunctions/createInputField.js"></script>
-    <script defer src="/js/addKeywordEventListener.js"></script>
-    <script defer src="/js/scanContentForKeywords.js"></script>
-    <script defer src="/js/postSection.js"></script>
+    <script defer src="/js/post/addKeywordEventListener.js"></script>
+    <script defer src="/js/post/scanContentForKeywords.js"></script>
+    <script defer src="/js/post/postSection.js"></script>
     <script> const data = <%- JSON.stringify(data) %> </script>
   </head>
   <body>
-    <%- include('meta/navbar') %>
+    <%- include(`../meta/navbar`) %>
     <div class="container" id="container-content" style="text-align: center; font-weight: bold;">
   		<h3>Nyt afsnit til: <%= data.document[0].title %></h3>
       <div id="formContainer">
@@ -35,6 +35,6 @@
         <p id="errorMessage"></p>
       </div>
     </div>
-  	<%- include(`meta/footer.ejs`) %> 
+  	<%- include(`../meta/footer.ejs`) %> 
   </body>
 </html>
