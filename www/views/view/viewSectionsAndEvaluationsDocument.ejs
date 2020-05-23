@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%- include('meta/header') %>
+    <%- include(`../meta/header`) %>
     <link href="/css/design.css" rel="stylesheet">
     <script src="/js/helperFunctions/insertHTMLElements.js"></script>
-    <script defer src="/js/viewSectionsAndEvaluationsDocument.js"></script>
+    <script defer src="/js/view/viewSectionsAndEvaluationsDocument.js"></script>
     <title>GroupHub | Document </title>
   </head>
   <body>
-    <%- include('meta/navbar') %> 
+    <%- include(`../meta/navbar`) %> 
     <div class="container" id="content">
       <div class="row">
         <div class="col-6"> 
@@ -66,6 +66,6 @@
         </div>
       </div>
     </div>
-    <%- include('meta/footer') %> 
+    <%- include(`../meta/footer`) %> 
   </body>
 </html>   

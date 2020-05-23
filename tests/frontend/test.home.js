@@ -36,7 +36,7 @@ test(`Test af home.ejs i www/views`, (assert) => {
 
   /* 1.2 */
   actual = document.getElementsByClassName(`footer`)[0].innerHTML;
-  expected = `\n      &lt;%- include('meta/footer') %&gt;\n    `; // Footeren bliver ikke renderet
+  expected = `\n      &lt;%- include(`../../meta/footer`) %&gt;\n    `; // Footeren bliver ikke renderet
   assert.equal(actual, expected,
     `(1.2) Dokumentet skal have en footer.`);
 

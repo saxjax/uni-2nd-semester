@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%- include('meta/header') %> 
+    <%- include(`../meta/header`) %> 
     <title>GroupHub | Tilføj Spørgsmål</title>
     <link rel="stylesheet" href="/css/postQuestions.css">
     <script defer src="/js/helperFunctions/insertHTMLElements.js"></script>
     <script defer src="/js/helperFunctions/createInputField.js"></script>
-    <script defer src="/js/addAnotherQuestion.js"></script>
-    <script defer src="/js/postQuizQuestions.js"></script>
+    <script defer src="/js/post/addAnotherQuestion.js"></script>
+    <script defer src="/js/post/postQuizQuestions.js"></script>
   </head>
   <body>
-    <%- include('meta/navbar') %> 
+    <%- include(`../meta/navbar`) %> 
     <div class="container" id="content">
       <h1 id="quizTitleHeader"><!-- Create new questions for ${titleQuiz} (inserted from JS) --></h1>
       <p>Følg disse instruktioner for at tilføje spørgsmål til din evaluering:</p>
@@ -26,6 +26,6 @@
       <button class="btn btn-success" type="button" id="addAnotherQuestionButton">Tilføj endnu et spørgsmål</button><br>
       <button class="btn btn-primary" id="submit">Indsend</button>
     </div>
-    <%- include('meta/footer') %> 
+    <%- include(`../meta/footer`) %> 
   </body>
 </html>

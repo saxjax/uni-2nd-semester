@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%- include('meta/header') %> 
+    <%- include(`../meta/header`) %> 
     <title>GroupHub | Groups</title>
   </head>
   <body>
-    <%- include('meta/navbar') %> 
+    <%- include(`../meta/navbar`) %> 
     <div class="content">
         <h1>Vælg dit grupperum</h1>
           <% if(data.group[0].name) { %>  
@@ -19,6 +19,6 @@
             </button>
           <% } %>
     </div>
-    <%- include('meta/footer') %> 
+    <%- include(`../meta/footer`) %> 
   </body>
 </html>
