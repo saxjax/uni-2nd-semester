@@ -90,7 +90,6 @@ class ViewController {
       Expert.getAllElementsOfType(`section`),  // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], sections: dataArray[2] };
-    console.log(data);
     this.ejs = path.join(`${this.root}/www/views/view/viewSectionsExpert.ejs`);
     Expert.connect.end();
     res.render(this.ejs, { data });
@@ -113,7 +112,7 @@ class ViewController {
       group: dataArray[0],
       user: dataArray[1],
       document: dataArray[2],
-      sections: dataArray[3],
+      sections: dataArray[3].sort(Doc.compareSectionNumber),
       evaluations: dataArray[4],
     };
     this.ejs = path.join(`${this.root}/www/views/view/viewSectionsAndEvaluationsDocument.ejs`);

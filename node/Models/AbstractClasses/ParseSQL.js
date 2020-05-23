@@ -198,7 +198,7 @@ class ParseSql {
       idDocument: data[this.documentCol],
       idSection: data[this.sectionCol],
       // data
-      number: data[this.SnumberCol],
+      number: data[this.SNumberCol],
       title: data[this.STitleCol],
       content: data[this.SContentCol],
       teaser: data[this.STeaserCol] || (data[this.SContentCol] ? data[this.SContentCol].slice(0, 200) : undefined), // dette gøres for at undgå at der throwes en Error, i tilfælde af at data[this.SContentCol] giver undefined (eg. man kan ikke "slice" undefined)
