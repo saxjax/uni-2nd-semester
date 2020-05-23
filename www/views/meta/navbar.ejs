@@ -7,14 +7,17 @@
       <% if (isloggedin) { %>
         <a id="iconAnchor" class="nav-item nav-link" href="/"><img id="icon" src="/img/grouphubicon.ico" ></a>
         <span id="helloUser"> Hej <%= data.user[0].username %> </span>
+
         <a class="nav-item nav-link" href="/">Forsiden</a>
         <a class="nav-item nav-link" href="/view/evaluations/expert">Dine Evalueringer</a>
         <a class="nav-item nav-link" href="/view/sections/expert">Dine Afsnit</a>
         <span class="logout">
           <a class="nav-item nav-link" href="/session/logout">Log ud</a>
         </span>
-        <% } else { %>
-          <a class="nav-item nav-link" href="/access/login">Log ind</a>
+      <% } else { %>
+        <img src="/img/grouphubicon.png" alt="GroupHub ikon" width="40">
+        <a class="nav-item nav-link" href="/access/login">Log ind</a>
+        <a class="nav-item nav-link" href="/access/register">Registrer</a>
       <% } %>
     </div>
   </div>
