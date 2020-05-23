@@ -42,17 +42,17 @@ function scanContentForKeywords(content) {
  *         Er primært en algoritme til at vise funktionaliteten.
  */
 function longWordAlgorithm(arrayOfWords) {
-  const DEF_OF_LONG_WORD = 8; // Angiver definition af hvad "et langt ord" betyder
-
-  const keywords = [];
+  const DEF_OF_LONG_WORD = 12; // Angiver definition af hvad "et langt ord" betyder
+  let keywords = [];
   for (let i = 0; i < arrayOfWords.length; i++) {
-    if (arrayOfWords[i].length >= DEF_OF_LONG_WORD) {
+    if (arrayOfWords[i].length >= DEF_OF_LONG_WORD) { // hvis ordet er langt
       keywords.push(arrayOfWords[i]);
     }
+    keywords = keywords.filter((value, index) => keywords.indexOf(value) === index);
   }
-
   return keywords;
 }
+
 
 /* Formål: Indsætter fundne keywords fra content i et nyt keyword input fælt */
 function insertKeywords(keywords) {
