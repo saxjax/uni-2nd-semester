@@ -129,10 +129,10 @@ class ViewController {
   async postSectionPage(req, res) {
     const Doc = new Document(req);
     const dataArray = await Promise.all([
-      Doc.getThisGroupData(),               // dataArray[0]
-      Doc.getThisUserData(),                // dataArray[1]
-      Doc.getThis(),                        // dataArray[2]
-      Doc.getAllElementsOfType(`section`),
+      Doc.getThisGroupData(),              // dataArray[0]
+      Doc.getThisUserData(),               // dataArray[1]
+      Doc.getThis(),                       // dataArray[2]
+      Doc.getAllElementsOfType(`section`), // dataArray[2]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2], reservedSections: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/post/postSection.ejs`);
@@ -225,10 +225,10 @@ class ViewController {
   async viewEvaluationPage(req, res) {
     const E = new Evaluation(req);
     const dataArray = await Promise.all([
-      await E.getThisGroupData(),    // dataArray[0]
-      await E.getThisUserData(),     // dataArray[1]
-      await E.getThis(),             // dataArray[2]
-      await E.getAllElementsOfType(`${E.quizQuestionType}`), // dataArray[3]
+      E.getThisGroupData(),                            // dataArray[0]
+      E.getThisUserData(),                             // dataArray[1]
+      E.getThis(),                                     // dataArray[2]
+      E.getAllElementsOfType(`${E.quizQuestionType}`), // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], questions: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/view/viewEvaluation.ejs`);
@@ -240,10 +240,10 @@ class ViewController {
   async viewSpacedRepetitionPage(req, res) {
     const QR = new QuizResult(req);
     const dataArray = await Promise.all([
-      await QR.getThisGroupData(),                    // dataArray[0]
-      await QR.getThisUserData(),                     // dataArray[1]
-      await QR.getThis(),                             // dataArray[2]
-      await QR.getTasksforRepetition(),               // dataArray[3]
+      QR.getThisGroupData(),      // dataArray[0]
+      QR.getThisUserData(),       // dataArray[1]
+      QR.getThis(),               // dataArray[2]
+      QR.getTasksforRepetition(), // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2], questions: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/view/viewEvaluation.ejs`);
@@ -255,10 +255,10 @@ class ViewController {
   async viewEvaluationResultPage(req, res) {
     const QR = new QuizResult(req);
     const dataArray = await Promise.all([
-      await QR.getThisGroupData(),                    // dataArray[0]
-      await QR.getThisUserData(),                     // dataArray[1]
-      await QR.getThis(),                             // dataArray[2]
-      await QR.getAllQuizQuestionResults(),                 // dataArray[3]
+      QR.getThisGroupData(),          // dataArray[0]
+      QR.getThisUserData(),           // dataArray[1]
+      QR.getThis(),                   // dataArray[2]
+      QR.getAllQuizQuestionResults(), // dataArray[3]
     ]);
     const data = { group: dataArray[0], user: dataArray[1], evaluation: dataArray[2],   quizQuestions: dataArray[3] };
     this.ejs = path.join(`${this.root}/www/views/view/viewEvaluationResult.ejs`);
@@ -270,10 +270,11 @@ class ViewController {
   async viewEvaluationProgress(req, res) {
     const PB = new ProgressBar(req);
     const takenEvalProgress = await PB.getProgressFromDB();
-    const totalP = takenEvalProgress.totalProgress;
-    const correctP = takenEvalProgress.totalCorrectProgress;
     PB.connect.end();
-    res.send({ totalProgress: totalP, correctProgress: correctP });
+    res.send({
+      totalProgress: takenEvalProgress.totalProgress,
+      correctProgress: takenEvalProgress.totalCorrectProgress,
+    });
   }
 }
 
