@@ -214,19 +214,21 @@ class Model extends Database {
       }
       const objectCopy = object;
       const choiceColName = this.getChoiceColName(objectCopy[0].elementType);
-      const keywords = await this.query(`CUSTOM`, `SELECT ${this.keywordLinkTable}.${this.keywordCol}, ${this.KKeywordCol}, ${choiceColName} `
+      const keywordQuery = await this.query(`CUSTOM`, `SELECT ${this.keywordLinkTable}.${this.keywordCol}, ${this.KKeywordCol}, ${choiceColName} `
                                       + `FROM ${this.keywordLinkTable} `
                                       + `INNER JOIN ${this.keywordTable} ON ${this.keywordLinkTable}.${this.keywordCol} = ${this.keywordTable}.${this.keywordCol} `
                                       + `WHERE ${this.keywordLinkTable}.${this.idColumnName} = "${this.idQuery}"`);
       for (let j = 0; j < objectCopy.length; j++) {
         objectCopy[j].keywords = [];
       }
-      for (let i = 0; i < keywords.length; i++) {
-        if (keywords[i][choiceColName] !== ``) {
-          const objectId = keywords[i][choiceColName];
+      for (let i = 0; i < keywordQuery.length; i++) {
+        if (keywordQuery[i][choiceColName].length > 0) {
+          const objectId = keywordQuery[i][choiceColName];
           const colToCamelCase = this.getColInCamelCase(choiceColName);
           const objectWithKeyword = objectCopy.find((owk) => owk[colToCamelCase] === objectId);
-          objectWithKeyword.keywords.push({ keyword: keywords[i].KEYWORD, idKeyword: keywords[i].ID_KEYWORD });
+          if (objectWithKeyword !== undefined) {
+            objectWithKeyword.keywords.push({ keyword: keywordQuery[i].KEYWORD, idKeyword: keywordQuery[i].ID_KEYWORD });
+          }
         }
       }
 
