@@ -62,6 +62,22 @@ class Document extends Model {
     return 0;
   }
 
+  /* Formål: Denne funktion bruges sammen med Array.sort(compareSectionNumber) til at sortere sections efter sectionnumber
+   * Input : to section objekter
+   * Output: -1 hvis a skal være før b ,0 hvis der ikke skal gøres noget ,-1 hvis b skal være før a
+   */
+  compareKeyword(a, b) {
+    // a skal være før b efter sortering
+    if (a.keyword < b.keyword) {
+      return -1;
+    // b skal være før a efter sortering
+    } if (a.keyword > b.keyword) {
+      return 1;
+    // and and b are the same
+    }
+    return 0;
+  }
+
   /* Formål: Denne funktion bruges sammen med Array.sort(compareTitle) til at sortere sections efter titel
    * Input : to section objekter
    * Output: -1 hvis a skal være før b ,0 hvis der ikke skal gøres noget ,-1 hvis b skal være før a
