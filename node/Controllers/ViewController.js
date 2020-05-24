@@ -112,11 +112,12 @@ class ViewController {
     const data = {
       group: dataArray[0],
       user: dataArray[1],
-      document: dataArray[2][0].keywords.sort(Doc.compareKeyword),
+      document: dataArray[2],
       sections: dataArray[3].sort(Doc.compareSectionNumber),
       evaluations: dataArray[4],
+      keywords: dataArray[2][0].keywords.sort(Doc.compareKeyword),
     };
-    console.log(data.document[0].keywords);
+    console.log(data.keywords);
     this.ejs = path.join(`${this.root}/www/views/view/viewSectionsAndEvaluationsDocument.ejs`);
     Doc.connect.end();
     res.render(this.ejs, { data });
