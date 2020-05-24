@@ -102,9 +102,9 @@ class ViewController {
   async viewSectionsAndEvaluationsDocumentPage(req, res) {
     const Doc = new Document(req);
     const dataArray = await Promise.all([
-      Doc.getThisGroupData(),                 // dataArray[0]
-      Doc.getThisUserData(),                  // dataArray[1]
-      Doc.getThis(),                          // dataArray[2]
+      Doc.getThisGroupData(),                             // dataArray[0]
+      Doc.getThisUserData(),                              // dataArray[1]
+      Doc.getThis(),                                      // dataArray[2]
       Doc.getAllElementsOfType(`section`),    // dataArray[3]
       Doc.getAllElementsOfType(`evaluation`), // dataArray[4]
     ]);

@@ -231,7 +231,14 @@ class Model extends Database {
           const objectId = keywordQuery[i][choiceColName];
           const colToCamelCase = this.getColInCamelCase(choiceColName);
           const objectWithKeyword = objectCopy.find((owk) => owk[colToCamelCase] === objectId);
-          if (objectWithKeyword !== undefined) {
+          const keywordAlreadyExistsInObject = objectWithKeyword.keywords.find((keyword) => keyword.idKeyword === keywordQuery[i].ID_KEYWORD);
+          if (objectWithKeyword === undefined) {
+            // pass
+          }
+          else if (keywordAlreadyExistsInObject) {
+            // evt. lav en counter? Indtil videre bare pass
+          }
+          else {
             objectWithKeyword.keywords.push({ keyword: keywordQuery[i].KEYWORD, idKeyword: keywordQuery[i].ID_KEYWORD });
           }
         }
