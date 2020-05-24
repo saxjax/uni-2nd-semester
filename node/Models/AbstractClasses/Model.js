@@ -207,8 +207,8 @@ class Model extends Database {
    */
   async getKeywordsInObject(object) {
     try {
-      if (this.idColumnName === `${this.userCol}`
-       || Object.keys(object[0]).length === 1) { // Keywords knyttes ikke til users, så en user kan ikke få alle sine keywords som det står nu.
+      if (Object.keys(object[0]).length === 1   // Tjek for om der er en tom RowDataPacket
+       || this.idColumnName === this.userCol) { // Tjek for at users ikke kalder et getAllElementsOfType da det pt. breaker i eksempelvis evaluation/expert.
         object.keywords = {};
         return object;
       }
@@ -221,6 +221,11 @@ class Model extends Database {
       for (let j = 0; j < objectCopy.length; j++) {
         objectCopy[j].keywords = [];
       }
+      // Dette loop går igennem alle keywords, hvor tomme keywords skippes jænvfør den første if
+      // Dernæst ses der hvilket objekt Keyword er koblet til (eg. hvis elementType er en section findes keywordets idSection)
+      // Dette id findes så i objectCopyen (som evt. kan være et document), hvilket gørat objectWithKeyword fungere som en pointer til et objekt i objectCopy
+      // objectWithKeyword returnere det objekt der findes i objectCopy som har det rigtige objectId (medmindre den ikke findes aka. giver undefined)
+      // Når objektet så er fundet pushes det keyword der ledes efter ind med sit keyword navn og keyword id.
       for (let i = 0; i < keywordQuery.length; i++) {
         if (keywordQuery[i][choiceColName].length > 0) {
           const objectId = keywordQuery[i][choiceColName];

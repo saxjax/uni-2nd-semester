@@ -50,7 +50,7 @@ class Database extends ParseSql {
     this.idColumnName = `ID_DATABASE`;
 
     this.debug = this.settings.debug;
-    this.seperator = ` ;:;:;:; `; // En seperationsstreng, som bruges i InsertSplitter og som aldrig må være mulig at gætte for brugeren.
+    this.seperator = `AND`; // En seperationsstreng, som bruges i InsertSplitter og som aldrig må være mulig at gætte for brugeren.
     // FIXME: Future works: PT. må brugeren ikke bruge "=" og "AND", da det ødelægger INSERT splitteren / laver SQL injection i en CUSTOM.
   }
 
