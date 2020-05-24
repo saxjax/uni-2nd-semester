@@ -117,7 +117,6 @@ class ViewController {
       evaluations: dataArray[4],
       keywords: dataArray[2][0].keywords.sort(Doc.compareKeyword),
     };
-    console.log(data.keywords);
     this.ejs = path.join(`${this.root}/www/views/view/viewSectionsAndEvaluationsDocument.ejs`);
     Doc.connect.end();
     res.render(this.ejs, { data });
