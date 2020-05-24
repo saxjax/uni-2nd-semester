@@ -53,7 +53,6 @@ class SessionController {
         res.redirect(`/access/view/groups`);
       }
     }
-
     catch (error) {
       const E = new ErrorController(error);
       const errorMsg = E.produceErrorMessageToUser();
@@ -67,12 +66,15 @@ class SessionController {
    * Output: Et reset af brugerens session data, og redirect til loginpagen
    */
   logout(req, res) {
-    req.session.destroy((err) => {
-      if (err) {
-        return console.log(err);
+    req.session.destroy((error) => {
+      if (error) {
+        const E = new ErrorController(error);
+        const errorMsg = E.produceErrorMessageToUser();
+        res.send(errorMsg);
       }
-      res.redirect(`/access/login`);
-      return false;
+      else {
+        res.redirect(302, `/access/login`);
+      }
     });
   }
 }
