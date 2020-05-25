@@ -61,23 +61,6 @@ class ViewController {
     res.render(this.ejs, { data });
   }
 
-  /* Formål: At give et overblik over det individuelle dokument, med de sections og evalueringer der er tilknyttet.
-   * Input : Et request med et queryId samt en session med userId og groupId
-   * Output: Visning af et dokument
-   */
-  /*  async viewDocumentPage(req, res) {
-    const Doc = new Document(req);
-    const dataArray = await Promise.all([
-      Doc.getThisGroupData(),                 // dataArray[0]
-      Doc.getThisUserData(),                  // dataArray[1]
-      Doc.getThis(),                          // dataArray[2]
-    ]);
-    const data = { group: dataArray[0], user: dataArray[1], document: dataArray[2] };
-    this.ejs = path.join(`${this.root}/www/views/viewDocument.ejs`);
-    Doc.connect.end();
-    res.render(this.ejs, { data });
-  } */
-
   /* Formål: At hente data, som gør det muligt at vise en side for brugeren med de afsnit, som brugeren har oprettet
    * Input : En session med userId og groupId
    * Output: En liste af de sections som brugeren har oprettet
@@ -102,9 +85,9 @@ class ViewController {
   async viewSectionsAndEvaluationsDocumentPage(req, res) {
     const Doc = new Document(req);
     const dataArray = await Promise.all([
-      Doc.getThisGroupData(),                             // dataArray[0]
-      Doc.getThisUserData(),                              // dataArray[1]
-      Doc.getThis(),                                      // dataArray[2]
+      Doc.getThisGroupData(),                 // dataArray[0]
+      Doc.getThisUserData(),                  // dataArray[1]
+      Doc.getThis(),                          // dataArray[2]
       Doc.getAllElementsOfType(`section`),    // dataArray[3]
       Doc.getAllElementsOfType(`evaluation`), // dataArray[4]
     ]);
