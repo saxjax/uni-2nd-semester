@@ -51,15 +51,20 @@ class Keyword extends Model {
   async createKeywordLinks(idLinks, keywordArray) {
     const keywordLink = new KeywordLink(idLinks);
     const keywordIdArray = await this.makeKeywordIdArray(keywordArray);
-    let keywordLinkExist;
+    const keywordLinkExistPromise = []; // Array for alle promises som fortæller om keyworded findes allerede
 
-    keywordIdArray.forEach(async (idKeyword) =>  {
-      keywordLinkExist = await this.checkIfKeywordLinkExist(keywordLink, idKeyword);
+    for (let i = 0; i < keywordIdArray.length; i++) {
+      keywordLinkExistPromise.push(this.checkIfKeywordLinkExist(keywordLink, keywordIdArray[i]));
+    }
+    const keywordLinkExist = await Promise.all(keywordLinkExistPromise);
 
-      if (keywordLinkExist.length === 0) {
-        await this.insertKeywordLink(keywordLink, idKeyword);
+    const insertkeywordLinkPromise = [];
+    for (let i = 0; i < keywordLinkExist.length; i++) {
+      if (keywordLinkExist[i].length === 0) {
+        insertkeywordLinkPromise.push(this.insertKeywordLink(keywordLink, keywordIdArray[i]));
       }
-    });
+    }
+    await Promise.all(insertkeywordLinkPromise);
   }
 
   /* Formål: Hent Array af id'er som linker til keyword knyttet til en bestemt elementtype
@@ -131,6 +136,7 @@ class Keyword extends Model {
    * Output: N/A
    */
   async insertKeywordLink(keywordLink, idKeyword) {
+    console.log(`Sætter et keyword ind`);
     const keywordIdInsertString = `("${keywordLink.idDocument}","${keywordLink.idSection}","${keywordLink.idEvaluation}","${keywordLink.idQuizQuestion}","${idKeyword}","${keywordLink.idFlashcard}")`;
     await this.query(`CUSTOM`, `INSERT INTO ${keywordLink.table} (${this.documentCol},${this.sectionCol},${this.evaluationCol},${this.quizQuestionCol},${this.keywordCol},${this.flashcardCol}) VALUES ${keywordIdInsertString}`);
   }
