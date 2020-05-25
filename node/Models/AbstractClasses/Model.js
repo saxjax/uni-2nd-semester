@@ -57,15 +57,17 @@ class Model extends Database {
       else if (methodNeedsBodyInRequest && req.body) {
         valid = true;
       }
-      else {
+      else if (this.debug) {
         console.warn(`Params (hvis get/update/delete) eller Body (hvis Post) er ikke oprettet!`);
       }
     }
-
     else {
-      console.warn(`Session er ikke oprettet!`);
+      if (this.debug) {
+        console.warn(`Session er ikke oprettet!`);
+      }
       valid = false;
     }
+
     return valid;
   }
 
