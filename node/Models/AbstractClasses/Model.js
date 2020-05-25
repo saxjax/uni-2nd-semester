@@ -1,5 +1,6 @@
 /* eslint no-console: off */
 const { Database } = require(`./Database.js`);
+const fs = require(`fs`);
 
 /* Model er det objekt som virker som bindeled mellem databasen og de andre modeller
  * Model bruger databasens query funktion til at implementere generelle funktionaliteter.
@@ -57,15 +58,17 @@ class Model extends Database {
       else if (methodNeedsBodyInRequest && req.body) {
         valid = true;
       }
-      else {
+      else if (this.debug) {
         console.warn(`Params (hvis get/update/delete) eller Body (hvis Post) er ikke oprettet!`);
       }
     }
-
     else {
-      console.warn(`Session er ikke oprettet!`);
+      if (this.debug) {
+        console.warn(`Session er ikke oprettet!`);
+      }
       valid = false;
     }
+
     return valid;
   }
 
