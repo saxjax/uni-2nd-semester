@@ -6,7 +6,7 @@ const settings = {
 
   // developer settings
   debug: true,       // Angiver om programmet skal køre i udviklingsmode eller i productionmode.
-  skipAccess: true, // Angiver om programmet automatisk skal logges ind som Test User i Tester Group
+  skipAccess: false, // Angiver om programmet automatisk skal logges ind som Test User i Tester Group
 
   // SQLDatabase settings
   db: {
