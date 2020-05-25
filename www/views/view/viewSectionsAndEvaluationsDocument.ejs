@@ -2,7 +2,6 @@
 <html>
   <head>
     <%- include(`../meta/header`) %>
-    <link href="/css/design.css" rel="stylesheet">
     <script src="/js/helperFunctions/insertHTMLElements.js"></script>
     <script defer src="/js/view/viewSectionsAndEvaluationsDocument.js"></script>
     <title>GroupHub | Document </title>
@@ -59,9 +58,11 @@
         <div class="col-6">
           <div class="rightside">
             <h2> Keywords tilknyttet dette dokument: </h2>
-            <% data.keywords.forEach((keyObj) => { %>
-              <p><%= keyObj.keyword %></p>
-            <% }); %>
+            <div class="textContent">
+              <% data.keywords.forEach((keyObj) => { %>
+                <p><%= keyObj.keyword %></p>
+              <% }); %>
+            </div>
           </div>
         </div>
       </div>
