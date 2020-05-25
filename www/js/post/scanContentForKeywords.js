@@ -25,14 +25,16 @@ input.addEventListener(`keyup`, () => {
 function scanContentForKeywords(content) {
   let wordsInContent = content.value;
 
-  wordsInContent = wordsInContent.replace(/,/g, ``);  // fjerner alle kommaer
-  wordsInContent = wordsInContent.replace(/\./g, ``); // fjerner alle punktummer
-  wordsInContent = wordsInContent.replace(/\(/g, ``); // fjerner alle startparenteser
-  wordsInContent = wordsInContent.replace(/\)/g, ``); // fjerner alle slutparenteser
-  wordsInContent = wordsInContent.split(` `);         // omdanner strengen til et array
+  wordsInContent = wordsInContent.replace(/,/g, ``)  // fjerner alle kommaer
+    .replace(/\./g, ``) // fjerner alle punktummer
+    .replace(/\(/g, ``) // fjerner alle startparenteser
+    .replace(/\)/g, ``) // fjerner alle slutparenteser
+    .replace(/!/g, ``) // fjerner alle udråbstegn
+    .replace(/\?/g, ``) // fjerner alle spørgsmålstegn
+    .split(` `);        // omdanner strengen til et array
 
   let keywords = longWordAlgorithm(wordsInContent);
-  keywords = interestingWordAlgorithm(keywords);
+  keywords = oftenOccurringWordAlgorithm(keywords);
 
   return keywords;
 }
@@ -52,7 +54,7 @@ function longWordAlgorithm(arrayOfWords) {
   return keywords;
 }
 
-function interestingWordAlgorithm(keywIn) {
+function oftenOccurringWordAlgorithm(keywIn) {
   const lowerCaseKeywords = keywIn.map((keyword) => keyword.toLowerCase()); // Sørger for at keyword er det samme som Keyword
 
   const mapOfKeywords = lowerCaseKeywords.reduce((keywordCountObj, currentKeyword) => { // laver en mapping over hvor mange gange hvert keyword finder sted: { keyword: 5, keyword2: 3 }
@@ -60,12 +62,12 @@ function interestingWordAlgorithm(keywIn) {
     return keywordCountObj;
   }, {});
 
-  const totalKeywords = lowerCaseKeywords.length;
-  const uniqueKeywords = Object.keys(mapOfKeywords).length;
-  const avg = totalKeywords / uniqueKeywords;
+  const uniqueKeywords = lowerCaseKeywords.filter((value, index) => lowerCaseKeywords.indexOf(value) === index); // Frasorterer duplicates
+  const totalKeywordsAmount = lowerCaseKeywords.length;
+  const uniqueKeywordsAmount = uniqueKeywords.length;
+  const avg = totalKeywordsAmount / uniqueKeywordsAmount;
 
-  let keywords = lowerCaseKeywords.filter((value, index) => lowerCaseKeywords.indexOf(value) === index); // Frasorterer duplicates
-  keywords = keywords.filter((word) => mapOfKeywords[word] >= avg); // Frasorterer ord som er mindre end gennemsnitslængden
+  const keywords = uniqueKeywords.filter((word) => mapOfKeywords[word] >= avg); // Frasorterer ord som er mindre end gennemsnitslængden
 
   return keywords;
 }
