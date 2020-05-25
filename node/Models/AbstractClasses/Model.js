@@ -1,6 +1,5 @@
 /* eslint no-console: off */
 const { Database } = require(`./Database.js`);
-const fs = require(`fs`);
 
 /* Model er det objekt som virker som bindeled mellem databasen og de andre modeller
  * Model bruger databasens query funktion til at implementere generelle funktionaliteter.

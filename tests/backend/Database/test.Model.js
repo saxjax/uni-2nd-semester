@@ -9,7 +9,8 @@ const test = testDecorater(tape);
 const { Model } = require(`../../../node/Models/AbstractClasses/Model`);
 
 let actual = true;
-let expected = true;
+const expected = true;
+let notExpected = true;
 const object = new Model();
 const emptyRowPacket = [{ RowDataPacket: {} }];
 let req = {
@@ -43,9 +44,9 @@ test(`Test af Model Klassen i node/Database`, async (assert) => {
   catch (err) {
     actual = emptyRowPacket;
   }
-  expected = emptyRowPacket;
+  notExpected = emptyRowPacket;
 
-  assert.isNotDeepEqual(actual, expected,
+  assert.isNotDeepEqual(actual, notExpected,
     `(${M}.${++t}) {Databasens svar: ${actual}} Forventede at få noget data, som ikke er en tom RowDataPacket.`);
 
   console.log(`${++M}: Model skal kunne tjekke om et request er valid.`); t = 0;
