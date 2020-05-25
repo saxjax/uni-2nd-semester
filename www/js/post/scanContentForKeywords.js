@@ -27,9 +27,14 @@ function scanContentForKeywords(content) {
 
   wordsInContent = wordsInContent.replace(/,/g, ``);  // fjerner alle kommaer
   wordsInContent = wordsInContent.replace(/\./g, ``); // fjerner alle punktummer
+  wordsInContent = wordsInContent.replace(/\(/g, ``); // fjerner alle startparenteser
+  wordsInContent = wordsInContent.replace(/\)/g, ``); // fjerner alle slutparenteser
   wordsInContent = wordsInContent.split(` `);         // omdanner strengen til et array
 
-  return longWordAlgorithm(wordsInContent);
+  let keywords = longWordAlgorithm(wordsInContent);
+  keywords = interestingWordAlgorithm(keywords);
+
+  return keywords;
 }
 
 /* ALLE ALGORITMER! */
@@ -42,19 +47,31 @@ function scanContentForKeywords(content) {
  *         Er primært en algoritme til at vise funktionaliteten.
  */
 function longWordAlgorithm(arrayOfWords) {
-  const DEF_OF_LONG_WORD = 12; // Angiver definition af hvad "et langt ord" betyder
-  let keywords = [];
-  for (let i = 0; i < arrayOfWords.length; i++) {
-    if (arrayOfWords[i].length >= DEF_OF_LONG_WORD) { // hvis ordet er langt
-      keywords.push(arrayOfWords[i]);
-    }
-    keywords = keywords.filter((value, index) => keywords.indexOf(value) === index);
-  }
+  const DEF_OF_LONG_WORD = 8; // Angiver definition af hvad "et langt ord" betyder
+  const keywords = arrayOfWords.filter((word) => word.length > DEF_OF_LONG_WORD); // Frasorterer ord som er mindre end DEF_OF_LONG_WORD
+  return keywords;
+}
+
+function interestingWordAlgorithm(keywIn) {
+  const lowerCaseKeywords = keywIn.map((keyword) => keyword.toLowerCase()); // Sørger for at keyword er det samme som Keyword
+
+  const mapOfKeywords = lowerCaseKeywords.reduce((keywordCountObj, currentKeyword) => { // laver en mapping over hvor mange gange hvert keyword finder sted: { keyword: 5, keyword2: 3 }
+    keywordCountObj[currentKeyword] = ++keywordCountObj[currentKeyword] || 1;
+    return keywordCountObj;
+  }, {});
+
+  const totalKeywords = lowerCaseKeywords.length;
+  const uniqueKeywords = Object.keys(mapOfKeywords).length;
+  const avg = totalKeywords / uniqueKeywords;
+
+  let keywords = lowerCaseKeywords.filter((value, index) => lowerCaseKeywords.indexOf(value) === index); // Frasorterer duplicates
+  keywords = keywords.filter((word) => mapOfKeywords[word] >= avg); // Frasorterer ord som er mindre end gennemsnitslængden
+
   return keywords;
 }
 
 
-/* Formål: Indsætter fundne keywords fra content i et nyt keyword input fælt */
+/* Formål: Indsætter fundne keywords fra content i et nyt keyword input felt */
 function insertKeywords(keywords) {
   removeInputFields();
   keywords.forEach((longWord, i) => {
@@ -65,7 +82,7 @@ function insertKeywords(keywords) {
   }
 }
 
-/* Formål: HTML håndtering til at indsætte keyword + keyword input fælt */
+/* Formål: HTML håndtering til at indsætte keyword + keyword input felt */
 function insertKeywordOnPage(newWord, keyWordNum) {
   const keywordInputFields = allKeywordsContainer.getElementsByTagName(`input`);
   let newKeywordInputField;
