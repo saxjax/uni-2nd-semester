@@ -75,14 +75,15 @@ class CreateController {
     const S = new Section(req);
     try {
       const idSection = await S.insertToDatabase();
+      S.connect.end();
       res.send({ url: `/view/section/${idSection}` });
     }
     catch (error) {
+      S.connect.end();
       const E = new ErrorController(error);
       const errorMsg = E.produceErrorMessageToUser();
       res.send({ error: errorMsg });
     }
-    S.connect.end();
   }
 
   /* Formål: At oprette en evaluering (evaluation) i databasen */
