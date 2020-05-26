@@ -46,7 +46,8 @@ function scanContentForKeywords(content) {
  */
 
 /* Formål: En simpel algoritme der returnere alle ord over en hvis længde, som antages som nøgleord
- *         Er primært en algoritme til at vise funktionaliteten.
+ * Input : @arrayOfWords funktionen forventer at få et array af ord ind som inputparameter
+ * Output: Et opdateret array af ord (keywords i vores tilfælde)
  */
 function longWordAlgorithm(arrayOfWords) {
   const DEF_OF_LONG_WORD = 8; // Angiver definition af hvad "et langt ord" betyder
@@ -54,8 +55,12 @@ function longWordAlgorithm(arrayOfWords) {
   return keywords;
 }
 
-function oftenOccurringWordAlgorithm(keywIn) {
-  const lowerCaseKeywords = keywIn.map((keyword) => keyword.toLowerCase()); // Sørger for at keyword er det samme som Keyword
+/* Formål: En algoritme der returnere alle de ord, som forekommer flere gange end den gennemsnitlige forekomst af ord i arrayet
+ * Input : @arrayOfWords funktionen forventer at få et array af ord ind som inputparameter (keywords i vores tilfælde)
+ * Output: Et opdateret array af ord (keywords i vores tilfælde)
+ */
+function oftenOccurringWordAlgorithm(arrayOfWords) {
+  const lowerCaseKeywords = arrayOfWords.map((keyword) => keyword.toLowerCase()); // Sørger for at keyword er det samme som Keyword
 
   const mapOfKeywords = lowerCaseKeywords.reduce((keywordCountObj, currentKeyword) => { // laver en mapping over hvor mange gange hvert keyword finder sted: { keyword: 5, keyword2: 3 }
     keywordCountObj[currentKeyword] = ++keywordCountObj[currentKeyword] || 1;
