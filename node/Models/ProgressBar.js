@@ -73,14 +73,23 @@ class ProgressBar extends Model {
 
     // Her hentes alle quizQuestions hvor der udregnes hvor mange man har true kontra hvor mange man har false
     this.table = this.quizResultTable;
+    const totalTakenQuestionProgressForUser = await this.query(`SELECT ${this.QRResultCol}, ${this.QRCreatedDateCol}, ${this.quizQuestionCol}`, `${this.userCol} = "${this.idUser}" AND ${this.groupCol} = "${this.idGroup}" ORDER BY ${this.QRCreatedDateCol} DESC`);
+
+    // Der indsættes kun de seneste besvarelser i latestUniqueTakenQuestions (dette kan gøres da der laves en ORDER BY createdDate i descending order)
+    const latestUniqueTakenQuestions = [];
+    totalTakenQuestionProgressForUser.forEach((resultObject) => {
+      const duplicateObject = latestUniqueTakenQuestions.find((object) => object.idQuizQuestion === resultObject.idQuizQuestion);
+      if (!duplicateObject) {
+        latestUniqueTakenQuestions.push(resultObject);
+      }
+    });
+
+    // Der optælles antal spørgsmål og antal korrekte der udregnes gennemsnit på
     let questionCorrectTaken = 0;
     let questionTotalTaken = 0;
-    const totalTakenQuestionProgressForUser = await this.query(`SELECT ${this.QRResultCol}`, `${this.userCol} = "${this.idUser}" AND ${this.groupCol} = "${this.idGroup}"`);
-    totalTakenQuestionProgressForUser.forEach((resultObject) => {
-      if (resultObject.result === `true`) {
-        questionCorrectTaken += 1;
-      }
+    latestUniqueTakenQuestions.forEach((resultObject) => {
       questionTotalTaken += 1;
+      questionCorrectTaken += (resultObject.result === `true` ? 1 : 0);
     });
     progress.questionCorrectProgress = (questionCorrectTaken / questionTotalTaken) * 100;
 

@@ -260,7 +260,7 @@ class ParseSql {
       point: data[this.QRPointCol],
       total: data[this.QRTotalCol],
       result: data[this.QRResultCol],
-      createdData: data[this.QRCreatedDateCol],
+      createdDate: data[this.QRCreatedDateCol],
       userAnswers: data[this.QRUserAnswerCol],
     };
   }
