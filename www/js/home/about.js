@@ -10,4 +10,7 @@ function Troll() {
   setTimeout(() => appendDomNode(`P`, listen, `OG... TIL... SIDST...`), 9000);
   setTimeout(() => appendDomNode(`P`, listen, `SÅ KAN DU TESTE DIN VIDEN MED EVALUERINGERNE!!!!!!!!!!!!`), 12000);
   setTimeout(() => appendDomNode(`P`, listen, `wow`), 13000);
+  setTimeout(() => {
+    window.location.href = `https://www.youtube.com/watch?v=dQw4w9WgXcQ/autoplay=1`; // Redirect (simulerer et musseklik)
+  }, 13500);
 }
