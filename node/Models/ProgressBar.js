@@ -37,7 +37,11 @@ class ProgressBar extends Model {
    *         --  || --  Ses initialiseret øverst i funktionen
    */
   async getProgressFromDB() {
-    const progress = { totalProgress: 0, totalCorrectProgress: 0 };
+    const progress = {
+      totalProgress: 0,
+      totalCorrectProgress: 0,
+      questionCorrectProgress: 0,
+    };
     // Totalt Evalueringer for en gruppe.
     let totalEvaluationsForGroup = await this.query(`CUSTOM`, `SELECT COUNT(*) as TOTAL
                                                         FROM ${this.evaluationTable} e
@@ -66,6 +70,20 @@ class ProgressBar extends Model {
       totalCorrectProgressForUser = totalCorrectProgressForUser[0].TotalCorrect;
       progress.totalCorrectProgress = (totalCorrectProgressForUser / totalEvaluationsForGroup) * 100;
     }
+
+    // Her hentes alle quizQuestions hvor der udregnes hvor mange man har true kontra hvor mange man har false
+    this.table = this.quizResultTable;
+    let questionCorrectTaken = 0;
+    let questionTotalTaken = 0;
+    const totalTakenQuestionProgressForUser = await this.query(`SELECT ${this.QRResultCol}`, `${this.userCol} = "${this.idUser}" AND ${this.groupCol} = "${this.idGroup}"`);
+    totalTakenQuestionProgressForUser.forEach((resultObject) => {
+      if (resultObject.result === `true`) {
+        questionCorrectTaken += 1;
+      }
+      questionTotalTaken += 1;
+    });
+    progress.questionCorrectProgress = (questionCorrectTaken / questionTotalTaken) * 100;
+
     return progress;
   }
 

@@ -250,13 +250,14 @@ class ViewController {
   }
 
   /* Formål: En API som stiller data til rådighed for progressbaren */
-  async viewEvaluationProgress(req, res) {
+  async apiEvaluationProgress(req, res) {
     const PB = new ProgressBar(req);
     const takenEvalProgress = await PB.getProgressFromDB();
     PB.connect.end();
     res.send({
       totalProgress: takenEvalProgress.totalProgress,
       correctProgress: takenEvalProgress.totalCorrectProgress,
+      questionProgress: takenEvalProgress.questionCorrectProgress,
     });
   }
 }
