@@ -136,7 +136,6 @@ class Keyword extends Model {
    * Output: N/A
    */
   async insertKeywordLink(keywordLink, idKeyword) {
-    console.log(`Sætter et keyword ind`);
     const keywordIdInsertString = `("${keywordLink.idDocument}","${keywordLink.idSection}","${keywordLink.idEvaluation}","${keywordLink.idQuizQuestion}","${idKeyword}","${keywordLink.idFlashcard}")`;
     await this.query(`CUSTOM`, `INSERT INTO ${keywordLink.table} (${this.documentCol},${this.sectionCol},${this.evaluationCol},${this.quizQuestionCol},${this.keywordCol},${this.flashcardCol}) VALUES ${keywordIdInsertString}`);
   }
