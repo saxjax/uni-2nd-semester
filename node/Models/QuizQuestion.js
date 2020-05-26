@@ -43,11 +43,12 @@ class QuizQuestion extends Model {
     const docAndSecID = await this.getDocumentAndSectionID();
     const promiseArray = [];
     const AllQuizQuestionUUIDs = await this.getQuizQuestionUUID(this.questions.length); // får alle UUIDs fra databasen som skal benyttes, i ét database kald.
+
+    // insertKeywordQuizQuestion() Skal awaites i loopet, for at undgå at det samme keyword bliver forsøgt indsat flere gange
     for (let i = 0; i < this.questions.length; i++) {
       const insertQuestionQuery = this.insertQuestionToDatabase(this.questions[i], AllQuizQuestionUUIDs[i].UUID);
       promiseArray.push(insertQuestionQuery);
-      const insertKeywordsQuery = this.insertKeywordQuizQuestion(this.questions[i], AllQuizQuestionUUIDs[i].UUID, docAndSecID);
-      promiseArray.push(insertKeywordsQuery);
+      await this.insertKeywordQuizQuestion(this.questions[i], AllQuizQuestionUUIDs[i].UUID, docAndSecID); // eslint-disable-line no-await-in-loop
     }
     await Promise.all(promiseArray);
   }
