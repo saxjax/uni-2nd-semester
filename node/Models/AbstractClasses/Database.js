@@ -3,8 +3,10 @@
 const mysql = require(`mysql`);
 const SqlString = require(`sqlstring`);
 const fs = require(`fs`);
-const { ParseSql } = require(`./ParseSQL`);
-const { serverSettings } = require(`../../../serverSettings`);
+const path = require(`path`);
+
+const { ParseSql } = require(path.join(__dirname, `ParseSQL`));
+const { serverSettings } = require(path.join(__dirname, `..`, `..`, `..`, `serverSettings`));
 
 /* Database objektet stiller alle manipulationer af databasen til raadighed for modeller med tilhorende database tabeller.
  * Databasen er designet efter et REST princip, som betyder at databasen skal kunne:

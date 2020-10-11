@@ -1,7 +1,10 @@
 /* eslint-disable guard-for-in */
 /* eslint no-console: off */
-const { Section } = require(`../Models/Section`);
-const { ErrorController } = require(`./AbstractControllers/ErrorController`);
+
+const path = require(`path`);
+
+const { Section } = require(path.join(__dirname, `..`, `Models`, `Section`));
+const { ErrorController } = require(path.join(__dirname, `AbstractControllers`, `ErrorController`));
 
 /* Formål: CreateControllerens opgave er at håndtere alle DELETE-requests fra platformen
  * Input:  Modtager en settingsfil, indeholder serverinstillingerne bestemt i filen serverSettings.js i roden

@@ -1,8 +1,11 @@
 /* eslint-disable guard-for-in */
 /* eslint no-console: off */
-const { User } = require(`../Models/User`);
-const { Group } = require(`../Models/Group`);
-const { ErrorController } = require(`./AbstractControllers/ErrorController`);
+
+const path = require(`path`);
+
+const { User } = require(path.join(__dirname, `..`, `Models`, `User`));
+const { Group } = require(path.join(__dirname, `..`, `Models`, `Group`));
+const { ErrorController } = require(path.join(__dirname, `AbstractControllers`, `ErrorController`));
 
 
 /* Formål: SessionControllerens opgave er at håndtere alle requests omhandlende sessions på platformen

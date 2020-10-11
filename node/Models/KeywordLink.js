@@ -1,6 +1,8 @@
 /* eslint no-console: off */
 
-const { Model } = require(`./AbstractClasses/Model.js`);
+const path = require(`path`);
+
+const { Model } = require(path.join(__dirname, `AbstractClasses`, `Model`));
 
 /* KeywordLink er den klasse der holder styr på alle de links som et keyword har
  * KeywordLink kan dermed sikre flere links til forskellige dokumenter, section og evalueringer for samme keyword

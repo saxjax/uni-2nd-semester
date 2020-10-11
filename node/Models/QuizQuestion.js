@@ -1,7 +1,9 @@
 /* eslint no-console: off */
 
-const { Model }   = require(`./AbstractClasses/Model`);
-const { Keyword } = require(`./keyword.js`);
+const path = require(`path`);
+
+const { Model } = require(path.join(__dirname, `AbstractClasses`, `Model`));
+const { Keyword } = require(path.join(__dirname, `Keyword.js`));
 
 /* QuizQuestion er et spørgsmål/svarmuligheder par der kan oprettes i en Evaluation
  * QuizQuestion holder styr på svarene og spørgsmålene, og bruges sammen med QuizResult til at en bruger kan tage quizzen

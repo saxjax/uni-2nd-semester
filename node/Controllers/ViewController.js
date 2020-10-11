@@ -2,13 +2,14 @@
 /* eslint-disable guard-for-in */
 /* eslint no-console: off */
 const path = require(`path`);
-const { Group } = require(`../Models/Group`);
-const { User } = require(`../Models/User`);
-const { Document } = require(`../Models/Document`);
-const { Section } = require(`../Models/Section`);
-const { Evaluation } = require(`../Models/Evaluation`);
-const { QuizResult } = require(`../Models/QuizResult`);
-const { ProgressBar } = require(`../Models/ProgressBar`);
+
+const { Group }       = require(path.join(__dirname, `..`, `Models`, `Group`));
+const { User }        = require(path.join(__dirname, `..`, `Models`, `User`));
+const { Document }    = require(path.join(__dirname, `..`, `Models`, `Document`));
+const { Section }     = require(path.join(__dirname, `..`, `Models`, `Section`));
+const { Evaluation }  = require(path.join(__dirname, `..`, `Models`, `Evaluation`));
+const { QuizResult }  = require(path.join(__dirname, `..`, `Models`, `QuizResult`));
+const { ProgressBar } = require(path.join(__dirname, `..`, `Models`, `ProgressBar`));
 
 /* Formål: ViewController er den controller som præsentere alle de "views" som brugeren kan se i et grupperum.
  *         ViewControllerens metoder vil dermed alle sammen hente og vise et ejs dokument, hvor der medsendes data.

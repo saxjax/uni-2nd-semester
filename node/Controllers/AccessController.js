@@ -1,8 +1,9 @@
 /* eslint-disable guard-for-in */
 /* eslint no-console: off */
 const path = require(`path`);
-const { User } = require(`../Models/User`);
-const { Group } = require(`../Models/Group`);
+
+const { User } = require(path.join(__dirname, `..`, `Models`, `User`));
+const { Group } = require(path.join(__dirname, `..`, `Models`, `Group`));
 
 /* Formål: AccessControllerens opgave er at håndtere alle requests omhandlende adgang til platformen
  * Input:  Modtager en settingsfil, indeholder serverinstillingerne bestemt i filen serverSettings.js i roden

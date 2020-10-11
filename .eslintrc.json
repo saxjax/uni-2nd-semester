@@ -27,7 +27,8 @@
         "class-methods-use-this": 0,                                      // Tillader at man undlader at bruge 'this' i class-methods
         "max-len": 0,                                                     // Tillader at man bruger lange linjer kode
         "no-alert": 0,                                                    // Tillader brug af alert
-        "no-param-reassign": ["error", { "props": false }]                /* Tillader at man reassigner properties på et objekt, som bliver medsendt som parameter,
+        "no-param-reassign": ["error", { "props": false }],               /* Tillader at man reassigner properties på et objekt, som bliver medsendt som parameter,
                                                                              - men ikke andre former for reassign til parameter */
+        "import/no-dynamic-require": 0
     }
 }

@@ -1,6 +1,8 @@
 /* eslint no-console: 0 */
 
-const { Model }   = require(`./AbstractClasses/Model`);
+const path = require(`path`);
+
+const { Model }   = require(path.join(__dirname, `AbstractClasses`, `Model`));
 
 
 /* Flashcard er den klasse der består af et concept og en definition

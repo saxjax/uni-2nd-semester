@@ -1,8 +1,10 @@
 /* eslint no-console: off */
 
-const { Model } = require(`./AbstractClasses/Model.js`);
-const { KeywordLink } = require(`./KeywordLink`);
+const path = require(`path`);
 const SqlString = require(`sqlstring`);
+
+const { Model } = require(path.join(__dirname, `AbstractClasses`, `Model`));
+const { KeywordLink } = require(path.join(__dirname, `KeywordLink`));
 
 /* Keyword er et nøglebegreb som knyttes an til andre klasse.
  * Keyword kan knyttes til Document, Section og Evaluation.

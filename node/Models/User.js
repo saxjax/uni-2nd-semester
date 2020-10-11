@@ -1,6 +1,8 @@
 /* eslint no-console: off */
 
-const { Model } = require(`./AbstractClasses/Model.js`);
+const path = require(`path`);
+
+const { Model } = require(path.join(__dirname, `AbstractClasses`, `Model`));
 
 
 /* Formål: At håndtere alle request omhandlende en bruger */

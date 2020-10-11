@@ -5,15 +5,16 @@ const upload = require(`express-fileupload`);
 const session = require(`express-session`);
 const MySQLStore = require(`express-mysql-session`)(session);
 const bodyParser = require(`body-parser`);
+const path = require(`path`);
 
-const { ViewController } = require(`./Controllers/ViewController`);
-const { AccessController } = require(`./Controllers/AccessController`);
-const { SessionController } = require(`./Controllers/SessionController`);
-const { CreateController } = require(`./Controllers/CreateController`);
-const { DeleteController } = require(`./Controllers/DeleteController`);
-const { TestController } = require(`./Controllers/TestController`);
-const { Database } = require(`./Models/AbstractClasses/Database`);
-const pad = require(`./HelperFunctions/Pad`);
+const { ViewController } = require(path.join(__dirname, `Controllers`, `ViewController`));
+const { AccessController } = require(path.join(__dirname, `Controllers`, `AccessController`));
+const { SessionController } = require(path.join(__dirname, `Controllers`, `SessionController`));
+const { CreateController } = require(path.join(__dirname, `Controllers`, `CreateController`));
+const { DeleteController } = require(path.join(__dirname, `Controllers`, `DeleteController`));
+const { TestController } = require(path.join(__dirname, `Controllers`, `TestController`));
+const { Database } = require(path.join(__dirname, `Models`, `AbstractClasses`, `Database`));
+const pad = require(path.join(__dirname, `HelperFunctions`, `Pad`));
 
 /* Formål: MasterController er et objekt der opretter webapplikationen.
  *         MasterController fungere dermed som den primære indgangsvinkel til programmet, og alle dele af programmet kan udledes herfra.

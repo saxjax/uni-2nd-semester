@@ -1,6 +1,8 @@
 /* eslint no-console: off */
 
-const { Model } = require(`./AbstractClasses/Model`);
+const path = require(`path`);
+
+const { Model } = require(path.join(__dirname, `AbstractClasses`, `Model`));
 
 /* Formål: Spaced repetition er en klasse som stiller funktioner til rådighed for at udføre spaced repetition og active recall
  *         Spacedrepetitionalgoritmen udgøres af funktionerne: calculateNextRepetitionTimeStampForEvaluation() og calculateTimeStamp()

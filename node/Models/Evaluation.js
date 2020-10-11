@@ -1,7 +1,9 @@
 /* eslint no-console: 0 */
 
-const { Model }   = require(`./AbstractClasses/Model`);
-const { Keyword } = require(`./Keyword.js`);
+const path = require(`path`);
+
+const { Model }   = require(path.join(__dirname, `AbstractClasses`, `Model`));
+const { Keyword } = require(path.join(__dirname, `Keyword.js`));
 
 /* Evaluation er klassen der indeholder de quiz, flashcard, mv. som en bruger kan tage
  * Evaluation er primært kun en container som indeholder evalueringselementer, så de er struktureret.

@@ -1,7 +1,9 @@
 /* eslint no-console: off */
 
-const { Model } = require(`./AbstractClasses/Model`);
-const { Keyword } = require(`./Keyword`);
+const path = require(`path`);
+
+const { Model } = require(path.join(__dirname, `AbstractClasses`, `Model`));
+const { Keyword } = require(path.join(__dirname, `Keyword`));
 
 /* Section er den klasse som indeholder data vedrørende de afsnit der findes i et dokument.
  * Det er muligt at oprette et section object med alle elementer sat til undefined til test brug.

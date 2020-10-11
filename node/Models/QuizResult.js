@@ -1,7 +1,8 @@
 /* eslint no-console: off */
+const path = require(`path`);
 
-const { SpacedRepetition } = require(`./SpacedRepetition`);
-const { ParseSql } = require(`./AbstractClasses/ParseSQL`);
+const { SpacedRepetition } = require(path.join(__dirname, `SpacedRepetition`));
+const { ParseSql } = require(path.join(__dirname, `AbstractClasses`, `ParseSQL`));
 
 /* QuizResult er den klasse som holder styr på de resultater som en bruger har til et specifikt QuizQuestion
  * QuizResult nedarver fra SpacedRepetition, da den indeholder nogle hjælpefunktioner til at sikre spaced repetition

@@ -1,6 +1,8 @@
 /* eslint no-console: off */
 
-const { Model } = require(`./AbstractClasses/Model`);
+const path = require(`path`);
+
+const { Model } = require(path.join(__dirname, `AbstractClasses`, `Model`));
 
 /* Group er, sammen med User, de to overordnede klasser der operere i hele programmet
  * Group indeholder det unikke grupperum, hvor alle resourcer der oprettes i grupperummet knyttes til Group

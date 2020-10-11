@@ -1,6 +1,8 @@
 /* eslint no-console: off */
 
-const { Model } = require(`./AbstractClasses/Model.js`);
+const path = require(`path`);
+
+const { Model } = require(path.join(__dirname, `AbstractClasses`, `Model`));
 
 /* ProgressBar er en hjælperfunktion til quizResult, som sørger for at sende data til frontend når det efterspørges
  * ProgressBar er den bar i programmet, som holder styr på en brugers foreløbige fremskridt med evalueringerne.

@@ -1,13 +1,15 @@
 /* eslint-disable guard-for-in */
 
-const { Group } = require(`../Models/Group`);
-const { User } = require(`../Models/User`);
-const { Document } = require(`../Models/Document`);
-const { Section } = require(`../Models/Section`);
-const { Evaluation } = require(`../Models/Evaluation`);
-const { QuizQuestion } = require(`../Models/QuizQuestion`);
-const { QuizResult } = require(`../Models/QuizResult`);
-const { ErrorController } = require(`./AbstractControllers/ErrorController`);
+const path = require(`path`);
+
+const { Group }           = require(path.join(__dirname, `..`, `Models`, `Group`));
+const { User }            = require(path.join(__dirname, `..`, `Models`, `User`));
+const { Document }        = require(path.join(__dirname, `..`, `Models`, `Document`));
+const { Section }         = require(path.join(__dirname, `..`, `Models`, `Section`));
+const { Evaluation }      = require(path.join(__dirname, `..`, `Models`, `Evaluation`));
+const { QuizQuestion }    = require(path.join(__dirname, `..`, `Models`, `QuizQuestion`));
+const { QuizResult }      = require(path.join(__dirname, `..`, `Models`, `QuizResult`));
+const { ErrorController } = require(path.join(__dirname, `AbstractControllers`, `ErrorController`));
 
 /* Formål: CreateControllerens opgave er at håndtere alle POST-requests fra platformen
  * Input:  Modtager en settingsfil, indeholder serverinstillingerne bestemt i filen serverSettings.js i roden

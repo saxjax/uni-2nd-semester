@@ -1,6 +1,8 @@
 /* eslint no-console: off */
 
-const { Model } = require(`./AbstractClasses/Model.js`);
+const path = require(`path`);
+
+const { Model } = require(path.join(__dirname, `AbstractClasses`, `Model.js`));
 
 /* Document er det øverste objekt indenfor en Group.
  * Document har Evaluation og Section knyttet til sig, primært.

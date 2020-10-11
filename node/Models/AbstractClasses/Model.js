@@ -1,5 +1,8 @@
 /* eslint no-console: off */
-const { Database } = require(`./Database.js`);
+
+const path = require(`path`);
+
+const { Database } = require(path.join(__dirname, `Database.js`));
 
 /* Model er det objekt som virker som bindeled mellem databasen og de andre modeller
  * Model bruger databasens query funktion til at implementere generelle funktionaliteter.
