@@ -1,7 +1,7 @@
 /* eslint no-console: off */
 
 const { SpacedRepetition } = require(`./SpacedRepetition`);
-const { ParseSql } = require(`../Models/AbstractClasses/ParseSQL`);
+const { ParseSql } = require(`./AbstractClasses/ParseSQL`);
 
 /* QuizResult er den klasse som holder styr på de resultater som en bruger har til et specifikt QuizQuestion
  * QuizResult nedarver fra SpacedRepetition, da den indeholder nogle hjælpefunktioner til at sikre spaced repetition
