@@ -40,7 +40,7 @@ class Database extends ParseSql {
       password: fs.readFileSync(`${this.settings.root}/node/Models/AbstractClasses/password.txt`, `utf8`),
       database: this.database,
     };
-    console.log(`The password is: ${this.dbConfig.password}`);
+    console.log(`The password is: >>${this.dbConfig.password}<<`)
     this.connect = mysql.createConnection(this.dbConfig);
     this.connect.connect((error) => {
       if (error) {
