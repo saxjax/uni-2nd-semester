@@ -37,7 +37,7 @@ class Database extends ParseSql {
       host: this.settings.db.host,
       user: this.settings.db.user,
       port: this.settings.db.port,
-      password: fs.readFileSync(`${this.settings.root}/node/Models/AbstractClasses/password.txt`, `utf8`),
+      password: JSON.parse(fs.readFileSync(`${this.settings.root}/node/Models/AbstractClasses/password.json`, `utf8`)).password,
       database: this.database,
     };
     console.log(`The password is: >>${this.dbConfig.password}<<`)
