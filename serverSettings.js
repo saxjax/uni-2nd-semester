@@ -11,9 +11,9 @@ const settings = {
   // SQLDatabase settings
   db: {
     schema: `p2`,         // navn på SQLDatabasen
-    host: `213.32.247.201`, // ip addressen på SQLDatabasen
-    port: `3306`,           // portnummer på SQLDatabasen
-    user: `ADMIN`,          // brugernavn på SQLDatabasen
+    host: `localhost`,    // ip addressen på SQLDatabasen
+    port: `3306`,         // portnummer på SQLDatabasen
+    user: `admin`,        // brugernavn på SQLDatabasen
   },
 //   // spaced repetition settings
 //   minTimestampDebug: 1, // angiver hvor mange timer der min skal gå før en evalueringsopgave skal repeteres i debugmode

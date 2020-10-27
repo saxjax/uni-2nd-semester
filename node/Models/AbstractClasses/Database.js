@@ -43,8 +43,7 @@ class Database extends ParseSql {
     this.connect = mysql.createConnection(this.dbConfig);
     this.connect.connect((error) => {
       if (error) {
-        // throw error;
-        console.log(`Unable to connect to database. Continuing...`);
+        throw error;
       }
     });
 
