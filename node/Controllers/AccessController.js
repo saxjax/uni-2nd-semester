@@ -79,7 +79,7 @@ class AccessController {
   async aboutPage(req, res) {
     const U = new User(req);
     const data = { user: await U.getThisUserData() };
-    this.ejs = path.join(`${this.root}/www/views/home/about.ejs`);
+    this.ejs = path.join(`${this.root}/www/views/home/aboutNoTroll.ejs`);
     res.render(this.ejs, { data });
   }
 }
