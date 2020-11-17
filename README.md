@@ -1,4 +1,7 @@
 # P2-vidensdeling
+Dette er et semesterprojekt lavet af 7 studerende fra Aalborg Universitet på deres 2. semester.
+
+En demo af programmet kan findes her: https://grouphub.skaalum.tech/
 
 ## Start server:
 node main.js
