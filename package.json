@@ -40,7 +40,7 @@
     "eslint-plugin-ejs": "0.0.2",
     "eslint-plugin-import": "^2.20.2",
     "jsdom": "^16.2.2",
-    "tap-spec": "^5.0.0",
+    "tap-spec": "^2.2.2",
     "tape": "^4.13.3",
     "tape-promise": "^4.0.0"
   }
