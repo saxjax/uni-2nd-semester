@@ -76,7 +76,7 @@ class SpacedRepetition extends Model {
    */
   async getQuizQuestionContent(idQuizQuestions) {
     const trueObjectTable = this.table;
-    this.table = `quiz_Question`;
+    this.table = `quiz_question`;
     let quizQuestionContent = [];
 
 
