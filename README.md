@@ -1,4 +1,6 @@
-# P2-vidensdeling
+# Second semester project - dissemination of knowledge
+
+A project in which we created a web platform for testing and improving a student's knowledge in preparation for exams.
 
 ## Start server:
 node main.js
@@ -21,7 +23,7 @@ node_modules\.bin\tape tests/frontend/meta/test.*.js | node_modules\.bin\tap-spe
 ### Realtime test:
 nodemon tests/backend_eller_frontend/mappeMedDinTest/test.filNavn.js | .\node_modules\.bin\tap-spec
 
-## Korrekt Eksport:
+## Correct Eksport:
 module.exports = {
   functionOne,
   functionTwo,
@@ -30,5 +32,5 @@ module.exports = {
 };
 
 ## Node moduler
-Kør`npm install` for at installerer alle dependencies.
+Run`npm install` to install all dependencies.
 
